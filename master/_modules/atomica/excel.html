@@ -1,0 +1,1199 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.excel &mdash; Atomica  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_documentation.html">Code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>atomica.excel</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for atomica.excel</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Miscellaneous utility functions for Excel files</span>
+
+<span class="sd">This module implements utility functions for Excel functionality that is common</span>
+<span class="sd">to different kinds of spreadsheets used in Atomica (e.g. Databooks and Program Books).</span>
+<span class="sd">For example, Excel formatting, and time-varying data entry tables, are implemented here.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">xlsxwriter.utility</span> <span class="k">import</span> <span class="n">xl_rowcol_to_cell</span> <span class="k">as</span> <span class="n">xlrc</span>
+<span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">openpyxl</span>
+<span class="kn">from</span> <span class="nn">openpyxl.comments</span> <span class="k">import</span> <span class="n">Comment</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">logger</span>
+
+<div class="viewcode-block" id="standard_formats"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.standard_formats">[docs]</a><span class="k">def</span> <span class="nf">standard_formats</span><span class="p">(</span><span class="n">workbook</span><span class="p">):</span>
+    <span class="c1"># Add standard formatting to a workbook and return the set of format objects</span>
+    <span class="c1"># for use when writing within the workbook</span>
+    <span class="sd">&quot;&quot;&quot; the formats used in the spreadsheet &quot;&quot;&quot;</span>
+<span class="c1">#    darkgray = &#39;#413839&#39;</span>
+<span class="c1">#    optima_blue = &#39;#18C1FF&#39;</span>
+    <span class="n">atomica_blue</span> <span class="o">=</span> <span class="s1">&#39;#98E0FA&#39;</span>
+    <span class="n">optional_orange</span> <span class="o">=</span> <span class="s1">&#39;#FFA500&#39;</span>
+    <span class="n">BG_COLOR</span> <span class="o">=</span> <span class="n">atomica_blue</span>
+    <span class="n">OPT_COLOR</span> <span class="o">=</span> <span class="n">optional_orange</span>
+    <span class="n">BORDER_COLOR</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span>
+
+    <span class="n">formats</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Locked formats</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;bold&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bold&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;align&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bold&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;align&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;rc_title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;rc_title&#39;</span><span class="p">][</span><span class="s1">&#39;right&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;rc_title&#39;</span><span class="p">][</span><span class="s1">&#39;right&#39;</span><span class="p">][</span><span class="s1">&#39;T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bold&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;align&#39;</span><span class="p">:</span> <span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;text_wrap&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;rc_title&#39;</span><span class="p">][</span><span class="s1">&#39;right&#39;</span><span class="p">][</span><span class="s1">&#39;F&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bold&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;align&#39;</span><span class="p">:</span> <span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;text_wrap&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;rc_title&#39;</span><span class="p">][</span><span class="s1">&#39;left&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;rc_title&#39;</span><span class="p">][</span><span class="s1">&#39;left&#39;</span><span class="p">][</span><span class="s1">&#39;T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bold&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;align&#39;</span><span class="p">:</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;text_wrap&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;rc_title&#39;</span><span class="p">][</span><span class="s1">&#39;left&#39;</span><span class="p">][</span><span class="s1">&#39;F&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bold&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;align&#39;</span><span class="p">:</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;text_wrap&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+
+    <span class="c1"># Unlocked formats</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;unlocked&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;locked&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;bg_color&#39;</span><span class="p">:</span> <span class="n">BG_COLOR</span><span class="p">,</span> <span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;border_color&#39;</span><span class="p">:</span> <span class="n">BORDER_COLOR</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_unlocked&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;align&#39;</span><span class="p">:</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="s1">&#39;locked&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;bg_color&#39;</span><span class="p">:</span> <span class="n">BG_COLOR</span><span class="p">,</span> <span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;border_color&#39;</span><span class="p">:</span> <span class="n">BORDER_COLOR</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;general&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;locked&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;num_format&#39;</span><span class="p">:</span> <span class="mh">0x00</span><span class="p">,</span> <span class="s1">&#39;bg_color&#39;</span><span class="p">:</span> <span class="n">BG_COLOR</span><span class="p">,</span> <span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;border_color&#39;</span><span class="p">:</span> <span class="n">BORDER_COLOR</span><span class="p">})</span>
+
+    <span class="c1"># Conditional formats</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;unlocked_boolean_true&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bg_color&#39;</span><span class="p">:</span> <span class="n">OPT_COLOR</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;unlocked_boolean_false&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bg_color&#39;</span><span class="p">:</span> <span class="n">BG_COLOR</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;not_required&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bg_color&#39;</span><span class="p">:</span> <span class="s1">&#39;#EEEEEE&#39;</span><span class="p">,</span> <span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;border_color&#39;</span><span class="p">:</span> <span class="s1">&#39;#CCCCCC&#39;</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;white_bg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bg_color&#39;</span><span class="p">:</span> <span class="s1">&#39;#FFFFFF&#39;</span><span class="p">,</span> <span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;border_color&#39;</span><span class="p">:</span> <span class="s1">&#39;#CCCCCC&#39;</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;ignored&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;pattern&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">})</span>  <span class="c1"># Hatched with diagonal lines - this represents a cell whose value will not be used in the model run (e.g., an assumption that also has time-specific points)</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;warning&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;bg_color&#39;</span><span class="p">:</span> <span class="s1">&#39;#FF0000&#39;</span><span class="p">})</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;ignored_warning&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;pattern&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;bg_color&#39;</span><span class="p">:</span> <span class="s1">&#39;#FF0000&#39;</span><span class="p">})</span>  <span class="c1"># hatched, with red background</span>
+    <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;ignored_not_required&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">add_format</span><span class="p">({</span><span class="s1">&#39;pattern&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;bg_color&#39;</span><span class="p">:</span> <span class="s1">&#39;#EEEEEE&#39;</span><span class="p">,</span> <span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;border_color&#39;</span><span class="p">:</span> <span class="s1">&#39;#CCCCCC&#39;</span><span class="p">})</span>  <span class="c1"># hatched, with grey background</span>
+
+    <span class="k">return</span> <span class="n">formats</span></div>
+
+
+<div class="viewcode-block" id="apply_widths"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.apply_widths">[docs]</a><span class="k">def</span> <span class="nf">apply_widths</span><span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="n">width_dict</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">width</span> <span class="ow">in</span> <span class="n">width_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">1.1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="update_widths"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.update_widths">[docs]</a><span class="k">def</span> <span class="nf">update_widths</span><span class="p">(</span><span class="n">width_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Keep track of required width for a column</span>
+
+<span class="sd">    ``width_dict`` is a dict that is keyed by column index e.g. 0,1,2</span>
+<span class="sd">    and the value is the length of the longest contents seen for that column</span>
+
+<span class="sd">    :param width_dict: Storage dictionary</span>
+<span class="sd">    :param column_index: Index of the column value has been inserted in</span>
+<span class="sd">    :param contents: Content, length of which is used to set width</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">width_dict</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">contents</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">contents</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">column_index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">width_dict</span><span class="p">:</span>
+        <span class="n">width_dict</span><span class="p">[</span><span class="n">column_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">width_dict</span><span class="p">[</span><span class="n">column_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">width_dict</span><span class="p">[</span><span class="n">column_index</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">contents</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="transfer_comments"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.transfer_comments">[docs]</a><span class="k">def</span> <span class="nf">transfer_comments</span><span class="p">(</span><span class="n">target</span><span class="p">:</span><span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">,</span> <span class="n">comment_source</span><span class="p">:</span><span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copy comments between spreadsheets</span>
+
+<span class="sd">    This function copies comments from one spreadsheet to another. Under the hood,</span>
+<span class="sd">    a new spreadsheet is created with values from the ``target`` Spreadsheet</span>
+<span class="sd">    and cell-wise formatting from the ``comment_source`` Spreadsheet. If a cell exists in</span>
+<span class="sd">    this spreadsheet and not in the source, it will be retained as-is. If more cells exist in</span>
+<span class="sd">    the ``comment_source`` than in this spreadsheet, those cells will be dropped. If a sheet exists in</span>
+<span class="sd">    the ``comment_source`` and not in the current workbook, it will be added</span>
+
+<span class="sd">    :param target: The target spreadsheet to write comments into</span>
+<span class="sd">    :param comment_source: The source spreadsheet containing comments</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comment_source</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">)</span>
+
+    <span class="n">this_workbook</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">load_workbook</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">tofile</span><span class="p">(),</span> <span class="n">data_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># This is the value source workbook</span>
+    <span class="n">old_workbook</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">load_workbook</span><span class="p">(</span><span class="n">comment_source</span><span class="o">.</span><span class="n">tofile</span><span class="p">(),</span> <span class="n">data_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># A openpyxl workbook for the old content</span>
+
+    <span class="k">for</span> <span class="n">sheet</span> <span class="ow">in</span> <span class="n">this_workbook</span><span class="o">.</span><span class="n">worksheets</span><span class="p">:</span>
+
+        <span class="c1"># If this sheet isn&#39;t in the old workbook, do nothing</span>
+        <span class="k">if</span> <span class="n">sheet</span><span class="o">.</span><span class="n">title</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">old_workbook</span><span class="o">.</span><span class="n">sheetnames</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># Transfer comments</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">old_workbook</span><span class="p">[</span><span class="n">sheet</span><span class="o">.</span><span class="n">title</span><span class="p">]</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">comment</span><span class="p">:</span>
+                    <span class="n">sheet</span><span class="p">[</span><span class="n">cell</span><span class="o">.</span><span class="n">coordinate</span><span class="p">]</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">Comment</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">comment</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Save the modified spreadsheet to a new buffer</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">this_workbook</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="read_tables"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.read_tables">[docs]</a><span class="k">def</span> <span class="nf">read_tables</span><span class="p">(</span><span class="n">worksheet</span><span class="p">):</span>
+    <span class="c1"># This function takes in a openpyxl worksheet, and returns tables</span>
+    <span class="c1"># A table consists of a block of rows with any #ignore rows skipped</span>
+    <span class="c1"># This function will start at the top of the worksheet, read rows into a buffer</span>
+    <span class="c1"># until it gets to the first entirely empty row</span>
+    <span class="c1"># And then returns the contents of that buffer as a table. So a table is a list of openpyxl rows</span>
+    <span class="c1"># This function continues until it has exhausted all of the rows in the sheet</span>
+
+    <span class="n">buffer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tables</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">start_rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">rows</span><span class="p">):</span>
+
+        <span class="c1"># Skip any rows starting with &#39;#ignore&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#ignore&#39;</span><span class="p">)):</span>
+            <span class="k">continue</span>  <span class="c1"># Move on to the next row if row skipping is marked True</span>
+            
+        <span class="c1"># Find out whether we need to add the row to the buffer</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>  <span class="c1"># If the row has a non-empty cell, add the row to the buffer</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">buffer</span><span class="p">:</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Excel rows are indexed starting at 1</span>
+                <span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># If the row was empty, then yield the buffer and flag that it should be cleared at the next iteration</span>
+            <span class="k">if</span> <span class="n">buffer</span><span class="p">:</span>
+                <span class="n">tables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>  <span class="c1"># Only append the buffer if it is not empty</span>
+                <span class="n">start_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+            <span class="n">buffer</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># After the last row, if the buffer has some un-flushed contents, then yield it</span>
+    <span class="k">if</span> <span class="n">buffer</span><span class="p">:</span>
+        <span class="n">tables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
+        <span class="n">start_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tables</span><span class="p">,</span> <span class="n">start_rows</span></div>
+
+<div class="viewcode-block" id="TimeDependentConnections"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.TimeDependentConnections">[docs]</a><span class="k">class</span> <span class="nc">TimeDependentConnections</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Structure for reading/writing interactions</span>
+
+<span class="sd">    A :class:`TimeDependentConnections` object is suitable when there are time dependent interactions between two quantities</span>
+<span class="sd">    This class is used for both transfers and interactions. The content that it writes consists of</span>
+
+<span class="sd">    - A connection matrix table that has Y/N selection of which interactions are present between two things</span>
+<span class="sd">    - A set of pairwise connections specifying to, from, units, assumption, and time</span>
+
+<span class="sd">    Interactions can have a diagonal, whereas transfers cannot (e.g. a population can infect itself but cannot transfer to itself).</span>
+
+<span class="sd">    In Excel, a :class:`TimeDependentConnections` maps to three tables</span>
+
+<span class="sd">    1. A table to enter the code name and full name</span>
+<span class="sd">    2. An interactions matrix with Y/N indicating whether an interaction between two populations exists</span>
+<span class="sd">    3. A set of rows for entering time varying data for each pair of populations</span>
+
+<span class="sd">    :param code_name: the code name of this quantity e.g. &#39;aging&#39;</span>
+<span class="sd">    :param full_name: the full name of this quantity e.g. &#39;Aging&#39;</span>
+<span class="sd">    :param tvec: time values for the time-dependent rows</span>
+<span class="sd">    :param pops: list of strings to use as the rows and columns - these are typically lists of population code names</span>
+<span class="sd">    :param type: &#39;transfer&#39; or &#39;interaction&#39;. A transfer cannot have diagonal entries, and can have Number or Probability formats. An Interaction can have</span>
+<span class="sd">                 diagonal entries and only has N.A. formats</span>
+<span class="sd">    :param ts: Optionally specify a dict containing all of the non-empty TimeSeries objects used. The format is ``{(from_pop, to_pop):TimeSeries}``.</span>
+<span class="sd">               An interaction can only be Y/N for clarity, if it is Y then a row is displayed for the TimeSeries. Actually, the Y/N can be</span>
+<span class="sd">               decided in the first instance based on the provided TimeSeries i.e. if a TimeSeries is provided for an interaction, then the</span>
+<span class="sd">               interaction must have been marked with Y</span>
+<span class="sd">    :param pop_type: Specify pop_type, which is used by :meth:`ProjectData.add_pop` to determine which TDCs to add new populations to</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">from_pops</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">to_pops</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">interpop_type</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">ts</span><span class="p">:</span><span class="nb">dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">from_pop_type</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_pop_type</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_name</span> <span class="o">=</span> <span class="n">code_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span> <span class="o">=</span> <span class="n">full_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">interpop_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_pop_type</span> <span class="o">=</span> <span class="n">from_pop_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span> <span class="o">=</span> <span class="n">from_pops</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_pop_type</span> <span class="o">=</span> <span class="n">to_pop_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span> <span class="o">=</span> <span class="n">to_pops</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="n">tvec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span> <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>  <span class="c1">#: Heading to use for assumption column</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have units)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have uncertainty)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have an assumption)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;transfer&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enable_diagonal</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_NUMBER</span> <span class="o">+</span> <span class="s1">&#39; (per year)&#39;</span><span class="p">,</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span> <span class="o">+</span> <span class="s1">&#39; (per year)&#39;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;interaction&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">enable_diagonal</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_SYMBOL_INAPPLICABLE</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unknown TimeDependentConnections type - must be &quot;transfer&quot; or &quot;interaction&quot;&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;TDC </span><span class="si">%s</span><span class="s1"> &quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TimeDependentConnections.from_tables"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.TimeDependentConnections.from_tables">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_tables</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">interaction_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiate based on list of tables</span>
+
+<span class="sd">        This method instantiates and initializes a new :class:`TimeDependentConnections` object from</span>
+<span class="sd">        tables that have been read in using :func:`read_tables`. Note that the parent object</span>
+<span class="sd">        such as :class:`ProjectData` is responsible for extracting the tables and passing them</span>
+<span class="sd">        to this function. For instance, the transfers sheet might contain more than one set of</span>
+<span class="sd">        tables, so it is the calling function&#39;s responsibility to split those tables up into</span>
+<span class="sd">        the groups of three expected by this method.</span>
+
+<span class="sd">        :param tables: A list of tables. A table here is a list of rows, and a row is a list of cells.</span>
+<span class="sd">        :param interaction_type: A string identifying the interaction type - either &#39;transfer&#39; or &#39;interaction&#39;</span>
+<span class="sd">        :return: A new :class:`TimeDependentConnections` instance</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">TimeSeries</span>  <span class="c1"># Import here to avoid circular reference</span>
+
+        <span class="k">assert</span> <span class="n">interaction_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;transfer&#39;</span><span class="p">,</span><span class="s1">&#39;interaction&#39;</span><span class="p">},</span> <span class="s1">&#39;Unknown interaction type&#39;</span>
+
+        <span class="c1"># Read the name table</span>
+        <span class="n">code_name</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">full_name</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;from population type&#39;</span> <span class="ow">and</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cell_require_string</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">from_pop_type</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">from_pop_type</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;to population type&#39;</span> <span class="ow">and</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cell_require_string</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">to_pop_type</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">to_pop_type</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">interaction_type</span> <span class="o">==</span> <span class="s1">&#39;transfer&#39;</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">from_pop_type</span> <span class="o">==</span> <span class="n">to_pop_type</span><span class="p">,</span> <span class="s1">&#39;Transfers can only occur between populations of the same type&#39;</span>
+
+        <span class="c1"># Read the pops from the Y/N table. The Y/N content of the table depends on the timeseries objects that</span>
+        <span class="c1"># are present. That is, if the Y/N matrix contains a Y then a TimeSeries must be read in, and vice versa.</span>
+        <span class="c1"># Therefore, we don&#39;t actually parse the matrix, and instead just read in all the TimeSeries instances</span>
+        <span class="c1"># that are defined and infer the matrix that way.</span>
+        <span class="n">to_pops</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+        <span class="n">from_pops</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">from_pops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># Now read any TimeSeries entries that are present. First we need to work out which columns are which, and</span>
+        <span class="c1"># what times are present</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">lowered_headings</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1"># The column where time values normally start</span>
+
+        <span class="k">if</span> <span class="s1">&#39;units&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
+            <span class="n">units_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">)</span>
+            <span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">units_index</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">write_units</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># If the Units column is missing, don&#39;t automatically suppress it if the user later adds some units</span>
+
+
+        <span class="k">if</span> <span class="s1">&#39;uncertainty&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
+            <span class="n">uncertainty_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;uncertainty&#39;</span><span class="p">)</span>
+            <span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">uncertainty_index</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="s1">&#39;constant&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
+            <span class="n">constant_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;constant&#39;</span><span class="p">)</span>
+            <span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="s1">&#39;assumption&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
+            <span class="n">constant_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;assumption&#39;</span><span class="p">)</span>
+            <span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Assumption&#39;</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">constant_index</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">assumption_heading</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:]:</span> <span class="c1"># This handles the case where an empty column is followed by comments</span>
+            <span class="n">t_end</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t_end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+        <span class="n">tvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">t_end</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">ts_entries</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;...&#39;</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="n">from_pops</span><span class="p">,</span> <span class="s1">&#39;Population &quot;</span><span class="si">%s</span><span class="s1">&quot; not found - should be contained in </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">from_pops</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="n">to_pops</span><span class="p">,</span> <span class="s1">&#39;Population &quot;</span><span class="si">%s</span><span class="s1">&quot; not found - should be contained in </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">to_pops</span><span class="p">)</span>
+                <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
+                <span class="n">from_pop</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">to_pop</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">units_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]:</span>
+                    <span class="k">assert</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]),</span> <span class="s2">&quot;The &#39;units&#39; quantity needs to be specified as text e.g. &#39;probability&#39;&quot;</span>
+                    <span class="n">units</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="n">FS</span><span class="o">.</span><span class="n">STANDARD_UNITS</span><span class="p">:</span>
+                        <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># Only lower and strip units if they are standard units</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">units</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="n">ts</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">uncertainty_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">uncertainty_index</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="k">if</span> <span class="n">constant_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">constant_index</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="k">if</span> <span class="n">constant_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;Error with validating row in TDC table &quot;</span><span class="si">%s</span><span class="s1">&quot; (did not find the text &quot;OR&quot; in the expected place)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code_name</span><span class="p">)</span>  <span class="c1"># Check row is as expected</span>
+
+                <span class="n">data_cells</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">t_end</span><span class="p">]</span>
+
+                <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">data_cells</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>  <span class="c1"># Ignore any times that are NaN - this happens if the cell was empty and casted to a float</span>
+                        <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">cell</span><span class="p">))</span>  <span class="c1"># If cell_get_number returns None, this gets handled accordingly by ts.insert()</span>
+                <span class="n">ts_entries</span><span class="p">[(</span><span class="n">from_pop</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ts</span>
+
+        <span class="n">tdc</span> <span class="o">=</span> <span class="n">TimeDependentConnections</span><span class="p">(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">from_pops</span><span class="o">=</span><span class="n">from_pops</span><span class="p">,</span> <span class="n">to_pops</span><span class="o">=</span><span class="n">to_pops</span><span class="p">,</span> <span class="n">interpop_type</span><span class="o">=</span><span class="n">interaction_type</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="n">ts_entries</span><span class="p">,</span> <span class="n">from_pop_type</span><span class="o">=</span><span class="n">from_pop_type</span><span class="p">,</span> <span class="n">to_pop_type</span><span class="o">=</span><span class="n">to_pop_type</span><span class="p">)</span>
+        <span class="n">tdc</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="n">write_assumption</span>
+        <span class="n">tdc</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="n">write_uncertainty</span>
+        <span class="n">tdc</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="n">write_units</span>
+        <span class="k">if</span> <span class="n">assumption_heading</span><span class="p">:</span>
+            <span class="n">tdc</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="n">assumption_heading</span>
+        <span class="k">return</span> <span class="n">tdc</span></div>
+
+<div class="viewcode-block" id="TimeDependentConnections.write"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.TimeDependentConnections.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">,</span> <span class="n">start_row</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">widths</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write to cells in a worksheet</span>
+
+<span class="sd">        :param worksheet: An xlsxwriter worksheet instance</span>
+<span class="sd">        :param start_row: The first row in which to write values</span>
+<span class="sd">        :param formats: Format dict for the opened workbook - typically the return value of :func:`standard_formats` when the workbook was opened</span>
+<span class="sd">        :param references: References dict containing cell references for strings in the current workbook</span>
+<span class="sd">        :param widths: ``dict`` storing column widths</span>
+<span class="sd">        :return: The row index for the next available row for writing in the spreadsheet</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;Constant&#39;</span><span class="p">,</span><span class="s1">&#39;Assumption&#39;</span><span class="p">},</span> <span class="s1">&#39;Unsupported assumption heading&#39;</span>
+        <span class="n">write_units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">any</span><span class="p">((</span><span class="n">ts</span><span class="o">.</span><span class="n">units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">write_uncertainty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">any</span><span class="p">((</span><span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">write_assumption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_assumption</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_assumption</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">any</span><span class="p">((</span><span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">references</span><span class="p">:</span>
+            <span class="n">references</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">}</span>  <span class="c1"># Default null mapping for populations</span>
+
+        <span class="c1"># First, write the name entry table</span>
+        <span class="n">current_row</span> <span class="o">=</span> <span class="n">start_row</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Abbreviation&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Abbreviation&#39;</span><span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Full Name&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Full Name&#39;</span><span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;From population type&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;From population type&#39;</span><span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;To population type&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;To population type&#39;</span><span class="p">)</span>
+
+        <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name</span><span class="p">)</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name</span><span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pop_type</span><span class="p">)</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pop_type</span><span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pop_type</span><span class="p">)</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pop_type</span><span class="p">)</span>
+
+        <span class="n">references</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;=&#39;</span><span class="si">%s</span><span class="s2">&#39;!</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+        <span class="n">references</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;=&#39;</span><span class="si">%s</span><span class="s2">&#39;!</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>  <span class="c1"># Reference to the full name</span>
+
+        <span class="c1"># Then, write the Y/N matrix</span>
+        <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">2</span>  <span class="c1"># Leave a blank row below the matrix</span>
+        <span class="c1"># Note - table_references are local to this TimeDependentConnections instance</span>
+        <span class="c1"># For example, there could be two transfers, and each of them could potentially transfer between 0-4 and 5-14</span>
+        <span class="c1"># so the worksheet might contain two references from 0-4 to 5-14 but they would be for different transfers and thus</span>
+        <span class="c1"># the time-dependent rows would depend on different boolean table cells</span>
+        <span class="n">current_row</span><span class="p">,</span> <span class="n">table_references</span><span class="p">,</span> <span class="n">values_written</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_pop_matrix</span><span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="n">current_row</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">boolean_choice</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="n">widths</span><span class="p">)</span>
+
+        <span class="c1"># Finally, write the time dependent part</span>
+        <span class="n">headings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># From</span>
+        <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># ---&gt;</span>
+        <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># To</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">headings</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">write_units</span><span class="p">:</span>
+            <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Units&#39;</span><span class="p">)</span>
+            <span class="n">units_index</span> <span class="o">=</span> <span class="n">offset</span>  <span class="c1"># Column to write the units in</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">write_uncertainty</span><span class="p">:</span>
+            <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Uncertainty&#39;</span><span class="p">)</span>
+            <span class="n">uncertainty_index</span> <span class="o">=</span> <span class="n">offset</span>  <span class="c1"># Column to write the units in</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">write_assumption</span><span class="p">:</span>
+            <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assumption_heading</span><span class="p">)</span>
+            <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">constant_index</span> <span class="o">=</span> <span class="n">offset</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">2</span>
+
+        <span class="n">headings</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">headings</span><span class="p">):</span>
+            <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">])</span>
+            <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+
+        <span class="c1"># Now, we will write a wrapper that gates the content</span>
+        <span class="c1"># If the gating cell is &#39;Y&#39;, then the content will be displayed, otherwise not</span>
+        <span class="k">def</span> <span class="nf">gate_content</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">gating_cell</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">content</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">):</span>  <span class="c1"># If this is itself a reference</span>
+                <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;=IF(</span><span class="si">%s</span><span class="s1">=&quot;Y&quot;,</span><span class="si">%s</span><span class="s1">,&quot;...&quot;)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gating_cell</span><span class="p">,</span> <span class="n">content</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span><span class="p">(</span><span class="s1">&#39;=IF(</span><span class="si">%s</span><span class="s1">=&quot;Y&quot;,&quot;</span><span class="si">%s</span><span class="s1">&quot;,&quot;...&quot;)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gating_cell</span><span class="p">,</span> <span class="n">content</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">from_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">to_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">)):</span>
+                <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">from_pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="p">[</span><span class="n">from_idx</span><span class="p">]</span>
+                <span class="n">to_pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">[</span><span class="n">to_idx</span><span class="p">]</span>
+                <span class="n">entry_tuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">from_pop</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">)</span>
+                <span class="n">entry_cell</span> <span class="o">=</span> <span class="n">table_references</span><span class="p">[</span><span class="n">entry_tuple</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">entry_tuple</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
+                    <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">entry_tuple</span><span class="p">]</span>
+                    <span class="nb">format</span> <span class="o">=</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;not_required&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ts</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="nb">format</span> <span class="o">=</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;unlocked&#39;</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">ts</span><span class="p">:</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="n">references</span><span class="p">[</span><span class="n">from_pop</span><span class="p">],</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">from_pop</span><span class="p">)</span>
+                    <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">from_pop</span><span class="p">)</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="s1">&#39;---&gt;&#39;</span><span class="p">,</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;---&gt;&#39;</span><span class="p">)</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="n">references</span><span class="p">[</span><span class="n">to_pop</span><span class="p">],</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">to_pop</span><span class="p">)</span>
+                    <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">units_index</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span> <span class="nb">format</span><span class="p">)</span>
+                        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">units_index</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">:</span>
+                            <span class="n">worksheet</span><span class="o">.</span><span class="n">data_validation</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">units_index</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;validate&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">]})</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_uncertainty</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">uncertainty_index</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;not_required&#39;</span><span class="p">])</span>
+                        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">uncertainty_index</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_assumption</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="s1">&#39;OR&#39;</span><span class="p">,</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;OR&#39;</span><span class="p">)</span>
+                        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">constant_index</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;OR&#39;</span><span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="n">references</span><span class="p">[</span><span class="n">from_pop</span><span class="p">],</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="s1">&#39;---&gt;&#39;</span><span class="p">,</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="n">references</span><span class="p">[</span><span class="n">to_pop</span><span class="p">],</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write_blank</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">units_index</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">:</span>
+                            <span class="n">worksheet</span><span class="o">.</span><span class="n">data_validation</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">units_index</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;validate&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">]})</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_uncertainty</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write_blank</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">uncertainty_index</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;not_required&#39;</span><span class="p">])</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_assumption</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write_blank</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="s1">&#39;OR&#39;</span><span class="p">,</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+                        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">constant_index</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>  <span class="s1">&#39;...&#39;</span><span class="p">)</span>
+
+                <span class="c1"># Write hyperlink - it&#39;s a bit convoluted because we can&#39;t read back the contents of the original cell to know</span>
+                <span class="c1"># whether it was originally Y or N</span>
+                <span class="k">if</span> <span class="n">values_written</span><span class="p">[</span><span class="n">entry_cell</span><span class="p">]</span> <span class="o">!=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_SYMBOL_INAPPLICABLE</span><span class="p">:</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write_url</span><span class="p">(</span><span class="n">entry_cell</span><span class="p">,</span> <span class="s1">&#39;internal:</span><span class="si">%s</span><span class="s1">!</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">cell_format</span><span class="o">=</span><span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_unlocked&#39;</span><span class="p">],</span> <span class="n">string</span><span class="o">=</span><span class="n">values_written</span><span class="p">[</span><span class="n">entry_cell</span><span class="p">])</span>
+
+                <span class="n">content</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">ts</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">vals</span><span class="p">):</span>
+                        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span> <span class="o">==</span> <span class="n">t</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">content</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+                <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write_blank</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">idx</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">idx</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+                    <span class="n">widths</span><span class="p">[</span><span class="n">offset</span><span class="o">+</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">widths</span><span class="p">[</span><span class="n">offset</span><span class="o">+</span><span class="n">idx</span><span class="p">],</span><span class="mi">7</span><span class="p">)</span> <span class="k">if</span> <span class="n">offset</span><span class="o">+</span><span class="n">idx</span> <span class="ow">in</span> <span class="n">widths</span> <span class="k">else</span> <span class="mi">7</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_assumption</span><span class="p">:</span>
+                    <span class="c1"># Conditional formatting for the assumption, depending on whether time-values were entered</span>
+                    <span class="n">fcn_empty_times</span> <span class="o">=</span> <span class="s1">&#39;COUNTIF(</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">,&quot;&lt;&gt;&quot; &amp; &quot;&quot;)&gt;0&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">offset</span><span class="p">),</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">idx</span><span class="p">))</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">conditional_format</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;formula&#39;</span><span class="p">,</span> <span class="s1">&#39;criteria&#39;</span><span class="p">:</span> <span class="s1">&#39;=&#39;</span> <span class="o">+</span> <span class="n">fcn_empty_times</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;ignored&#39;</span><span class="p">]})</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">conditional_format</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;formula&#39;</span><span class="p">,</span> <span class="s1">&#39;criteria&#39;</span><span class="p">:</span> <span class="s1">&#39;=AND(</span><span class="si">%s</span><span class="s1">,NOT(ISBLANK(</span><span class="si">%s</span><span class="s1">)))&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fcn_empty_times</span><span class="p">,</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">)),</span> <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;ignored_warning&#39;</span><span class="p">]})</span>
+
+                <span class="c1"># Conditional formatting for the row - it has a white background if the gating cell is &#39;N&#39;</span>
+                <span class="c1"># worksheet.conditional_format(&#39;%s:%s&#39; % (xlrc(current_row, 3), xlrc(current_row, 4)), {&#39;type&#39;: &#39;formula&#39;, &#39;criteria&#39;: &#39;=%s&lt;&gt;&quot;Y&quot;&#39; % (entry_cell), &#39;format&#39;: formats[&#39;white_bg&#39;]})</span>
+                <span class="n">worksheet</span><span class="o">.</span><span class="n">conditional_format</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">idx</span><span class="p">)),</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;formula&#39;</span><span class="p">,</span> <span class="s1">&#39;criteria&#39;</span><span class="p">:</span> <span class="s1">&#39;=</span><span class="si">%s</span><span class="s1">&lt;&gt;&quot;Y&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">entry_cell</span><span class="p">),</span> <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;white_bg&#39;</span><span class="p">]})</span>
+
+        <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">2</span>
+
+        <span class="k">return</span> <span class="n">current_row</span></div>
+
+<div class="viewcode-block" id="TimeDependentConnections._write_pop_matrix"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.TimeDependentConnections._write_pop_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">_write_pop_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">,</span> <span class="n">start_row</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span><span class="nb">dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">boolean_choice</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">widths</span><span class="p">:</span><span class="nb">dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write a square matrix to Excel</span>
+
+<span class="sd">        This function writes the Y/N matrix</span>
+
+<span class="sd">        - Transfer matrix</span>
+<span class="sd">        - Interactions matrix</span>
+
+<span class="sd">        If ``self.enable_diagonal`` is ``False`` then the diagonal will be forced to be ``&#39;N.A.&#39;``. If an entry</span>
+<span class="sd">        is specified for an entry on the diagonal and ``enable_diagonal=False``, an error will be thrown</span>
+
+<span class="sd">        :param worksheet: An xlsxwriter worksheet instance</span>
+<span class="sd">        :param start_row: The first row in which to write values</span>
+<span class="sd">        :param formats: Format dict for the opened workbook - typically the return value of :func:`standard_formats` when the workbook was opened</span>
+<span class="sd">        :param references: Optionally supply dict with references, used to link population names in Excel</span>
+<span class="sd">        :param boolean_choice: If True, values will be coerced to Y/N and an Excel validation will be added</span>
+<span class="sd">        :param widths: ``dict`` storing column widths</span>
+<span class="sd">        :return: Tuple with ``(next_row, table_references, values_written)``. The references are used for hyperlinking to the Excel matrix</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">entries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">references</span><span class="p">:</span>
+            <span class="n">references</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">}</span>  <span class="c1"># This is a null-mapping that takes say &#39;adults&#39;-&gt;&#39;adults&#39; thus simplifying the workflow. Otherwise, it&#39;s assumed a reference exists for every node</span>
+
+        <span class="n">table_references</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">values_written</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Write the headers</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">):</span>
+            <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">start_row</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">references</span><span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="p">):</span>
+            <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">start_row</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">references</span><span class="p">[</span><span class="n">node</span><span class="p">],</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+
+        <span class="c1"># Prepare the content - first replace the dict with one keyed by index. This is because we cannot apply formatting</span>
+        <span class="c1"># after writing content, so have to do the writing in a single pass over the entire matrix</span>
+        <span class="k">if</span> <span class="n">boolean_choice</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">)),</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>  <span class="c1"># This will also coerce the value to string in preparation for writing</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">)),</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>  <span class="c1"># This will also coerce the value to string in preparation for writing</span>
+
+        <span class="k">for</span> <span class="n">interaction</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">entries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">from_pop</span><span class="p">,</span> <span class="n">to_pop</span> <span class="o">=</span> <span class="n">interaction</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_diagonal</span> <span class="ow">and</span> <span class="n">from_pop</span> <span class="o">==</span> <span class="n">to_pop</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Trying to write a diagonal entry to a table that is not allowed to contain diagonal terms&#39;</span><span class="p">)</span>  <span class="c1"># This is because data loss will occur if the user adds entries on the diagonal, then writes the table, and then reads it back in</span>
+            <span class="n">from_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">from_pop</span><span class="p">)</span>
+            <span class="n">to_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">to_pop</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">boolean_choice</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="s1">&#39;N&#39;</span>
+            <span class="n">content</span><span class="p">[</span><span class="n">from_idx</span><span class="p">,</span> <span class="n">to_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="c1"># Write the content</span>
+        <span class="k">for</span> <span class="n">from_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">to_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">)):</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">start_row</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">from_idx</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="n">to_idx</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_diagonal</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">[</span><span class="n">to_idx</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="p">[</span><span class="n">from_idx</span><span class="p">]:</span>  <span class="c1"># Disable the diagonal if it&#39;s linking the same two quantities and that&#39;s desired</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_SYMBOL_INAPPLICABLE</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center&quot;</span><span class="p">])</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">data_validation</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;validate&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;N.A.&quot;</span><span class="p">]})</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="n">from_idx</span><span class="p">,</span> <span class="n">to_idx</span><span class="p">]</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">content</span><span class="p">[</span><span class="n">from_idx</span><span class="p">,</span> <span class="n">to_idx</span><span class="p">],</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_unlocked&quot;</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">boolean_choice</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">data_validation</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;validate&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">]})</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">conditional_format</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;cell&#39;</span><span class="p">,</span> <span class="s1">&#39;criteria&#39;</span><span class="p">:</span> <span class="s1">&#39;equal to&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;&quot;Y&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;unlocked_boolean_true&#39;</span><span class="p">]})</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">conditional_format</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;cell&#39;</span><span class="p">,</span> <span class="s1">&#39;criteria&#39;</span><span class="p">:</span> <span class="s1">&#39;equal to&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;&quot;N&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;unlocked_boolean_false&#39;</span><span class="p">]})</span>
+                <span class="n">table_references</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="p">[</span><span class="n">from_idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">[</span><span class="n">to_idx</span><span class="p">])]</span> <span class="o">=</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># Store reference to this interaction</span>
+                <span class="n">values_written</span><span class="p">[</span><span class="n">table_references</span><span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="p">[</span><span class="n">from_idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pops</span><span class="p">[</span><span class="n">to_idx</span><span class="p">])]]</span> <span class="o">=</span> <span class="n">val</span>
+
+        <span class="n">next_row</span> <span class="o">=</span> <span class="n">start_row</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">from_pops</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">next_row</span><span class="p">,</span> <span class="n">table_references</span><span class="p">,</span> <span class="n">values_written</span></div></div>
+
+
+
+<div class="viewcode-block" id="TimeDependentValuesEntry"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.TimeDependentValuesEntry">[docs]</a><span class="k">class</span> <span class="nc">TimeDependentValuesEntry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Table for time-dependent data entry</span>
+
+<span class="sd">    This class is Databooks and Program books to enter potentially time-varying data.</span>
+<span class="sd">    Conceptually, it maps a set of TimeSeries object to a single name and table in the</span>
+<span class="sd">    spreadsheet. For example, a Characteristic might contain a TimeSeries for each population,</span>
+<span class="sd">    and the resulting TimeDependentValuesEntry (TDVE) table would have a `name` matching the</span>
+<span class="sd">    population, and TimeSeries for each population.</span>
+
+<span class="sd">    The TDVE class optionally allows the specification of units, assumptions, and uncertainty,</span>
+<span class="sd">    which each map to properties on the underlying TimeSeries objects. It also contains a</span>
+<span class="sd">    time vector corresponding to the time values that appear or will appear in the spreadsheet.</span>
+
+<span class="sd">    Note that the units are stored within the TimeSeries objects, which means that they can</span>
+<span class="sd">    are able to differ across rows.</span>
+
+<span class="sd">    :param name: The name/title for this table</span>
+<span class="sd">    :param tvec: Specify the time values for this table. All TimeSeries in the ts dict should have corresponding time values</span>
+<span class="sd">    :param ts: Optionally specify an odict() of TimeSeries objects populating the rows. Could be populated after</span>
+<span class="sd">    :param allowed_units: Optionally specify a list of allowed units that will appear as a dropdown</span>
+<span class="sd">    :param comment: Optionally specify descriptive text that will be added as a comment to the name cell</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tvec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allowed_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ts</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>  <span class="c1">#: Name for th quantity printed in Excel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">comment</span>  <span class="c1">#: A comment that will be added in Excel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">tvec</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">tvec</span>  <span class="c1">#: time axis (e.g. np.arange(2000,2019)) - all TimeSeries time values must exactly match one of the values here</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span> <span class="c1">#: dict of :class:`TimeSeries` objects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">FS</span><span class="o">.</span><span class="n">STANDARD_UNITS</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">allowed_units</span><span class="p">]</span> <span class="k">if</span> <span class="n">allowed_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># Otherwise, can be an odict with keys corresponding to ts - leave as None for no restriction</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>  <span class="c1">#: Heading to use for assumption column</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have units)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have uncertainty)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have an assumption)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">prepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">has_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check whether all time series have data entered</span>
+
+<span class="sd">        :return: True if all of the TimeSeries objects stored in the TDVE have data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">has_data</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+
+<div class="viewcode-block" id="TimeDependentValuesEntry.from_rows"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.TimeDependentValuesEntry.from_rows">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_rows</span><span class="p">(</span><span class="n">rows</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create new instance from Excel rows</span>
+
+<span class="sd">        Given a set of openpyxl rows, instantiate a :class:`TimeDependentValuesEntry` object</span>
+<span class="sd">        That is, the parent object e.g. :class:`ProjectData` is responsible for finding where the TDVE table is,</span>
+<span class="sd">        and reading all of the rows associated with it (skipping ``#ignored`` rows) and then passing those rows,</span>
+<span class="sd">        unparsed, to this function</span>
+
+<span class="sd">        Headings for &#39;units&#39;, &#39;uncertainty&#39;, and &#39;assumption&#39;/&#39;constant&#39; are optional and will be read in</span>
+<span class="sd">        if they are present in the spreadsheet.</span>
+
+<span class="sd">        :param rows: A list of rows</span>
+<span class="sd">        :return: A new :class:`TimeDependentValuesEntry` instance</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">TimeSeries</span>  <span class="c1"># Import here to avoid circular reference</span>
+
+
+        <span class="c1"># First, read the headings</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The name of the table is missing. This can also happen if extra rows have been added without a &quot;#ignore&quot; entry in the first column&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;In cell </span><span class="si">%s</span><span class="s1"> of the spreadsheet, the name of the quantity assigned to this table needs to be a string&#39;</span> <span class="o">%</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="n">tdve</span> <span class="o">=</span> <span class="n">TimeDependentValuesEntry</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">lowered_headings</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+
+        <span class="c1"># We can optionally have units, uncertainty, and constant</span>
+        <span class="c1"># nb. finding the index means this is robust to extra empty</span>
+        <span class="c1"># columns, a user adding one of the these fields to a single table on a page</span>
+        <span class="c1"># might introduce a blank column to all of the other TDVE elements on the page too</span>
+        <span class="c1"># so the code below should be able to deal with this</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># This is the column where the time values start</span>
+
+        <span class="k">if</span> <span class="s1">&#39;units&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
+            <span class="n">units_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">)</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">units_index</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="s1">&#39;uncertainty&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
+            <span class="n">uncertainty_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;uncertainty&#39;</span><span class="p">)</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">uncertainty_index</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="s1">&#39;constant&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
+            <span class="n">constant_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;constant&#39;</span><span class="p">)</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="s1">&#39;assumption&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
+            <span class="n">constant_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;assumption&#39;</span><span class="p">)</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Assumption&#39;</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">constant_index</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:]:</span>
+            <span class="n">t_end</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t_end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+        <span class="n">tvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">t_end</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">ts_entries</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+
+        <span class="c1"># For each TimeSeries that we will instantiate</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;In cell </span><span class="si">%s</span><span class="s1"> of the spreadsheet, the name of the entry was expected to be a string, but it was not. The left-most column is expected to be a name. If you are certain the value is correct, add an single quote character at the start of the cell to ensure it remains as text&#39;</span> <span class="o">%</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span>
+            <span class="n">series_name</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">units_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]:</span>
+                <span class="k">assert</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]),</span> <span class="s2">&quot;The &#39;units&#39; quantity needs to be specified as text e.g. &#39;probability&#39;&quot;</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="n">FS</span><span class="o">.</span><span class="n">STANDARD_UNITS</span><span class="p">:</span>
+                    <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># Only lower and strip units if they are standard units</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="n">ts</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">uncertainty_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">uncertainty_index</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">if</span> <span class="n">constant_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">constant_index</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">if</span> <span class="n">constant_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tvec</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;Error with validating row in TDVE table &quot;</span><span class="si">%s</span><span class="s1">&quot; (did not find the text &quot;OR&quot; in the expected place)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># Check row is as expected</span>
+
+            <span class="n">data_cells</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">t_end</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">data_cells</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>  <span class="c1"># Ignore any times that are NaN - this happens if the cell was empty and casted to a float</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">cell</span><span class="p">))</span>  <span class="c1"># If cell_get_number returns None, this gets handled accordingly by ts.insert()</span>
+            <span class="n">ts_entries</span><span class="p">[</span><span class="n">series_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span>
+
+        <span class="n">tdve</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="n">tvec</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">tvec</span><span class="p">)]</span>  <span class="c1"># Remove empty entries from the array</span>
+        <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">ts_entries</span>
+        <span class="k">return</span> <span class="n">tdve</span></div>
+
+<div class="viewcode-block" id="TimeDependentValuesEntry.write"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.TimeDependentValuesEntry.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">,</span> <span class="n">start_row</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">widths</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write to cells in a worksheet</span>
+
+<span class="sd">        Note that the year columns are drawn from the ``tvec`` attribute. To suppress the year columns (e.g. for the user to enter only an assumption)</span>
+<span class="sd">        then set ``tvec`` to an empty array/list.</span>
+
+<span class="sd">        :param worksheet: An xlsxwriter worksheet instance</span>
+<span class="sd">        :param start_row: The first row in which to write values</span>
+<span class="sd">        :param formats: Format dict for the opened workbook - typically the return value of :func:`standard_formats` when the workbook was opened</span>
+<span class="sd">        :param references: References dict containing cell references for strings in the current workbook</span>
+<span class="sd">        :param widths: ``dict`` storing column widths</span>
+<span class="sd">        :return: The row index for the next available row for writing in the spreadsheet</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;Constant&#39;</span><span class="p">,</span><span class="s1">&#39;Assumption&#39;</span><span class="p">},</span> <span class="s1">&#39;Unsupported assumption heading&#39;</span>
+
+        <span class="n">write_units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">any</span><span class="p">((</span><span class="n">ts</span><span class="o">.</span><span class="n">units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">write_uncertainty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">any</span><span class="p">((</span><span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">write_assumption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_assumption</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_assumption</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">any</span><span class="p">((</span><span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">references</span><span class="p">:</span>
+            <span class="n">references</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="n">current_row</span> <span class="o">=</span> <span class="n">start_row</span>
+
+        <span class="c1"># First, assemble and write the headings</span>
+        <span class="n">headings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># This is the column where the time values start (after the &#39;or&#39;)</span>
+
+        <span class="k">if</span> <span class="n">write_units</span><span class="p">:</span>
+            <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Units&#39;</span><span class="p">)</span>
+            <span class="n">units_index</span> <span class="o">=</span> <span class="n">offset</span>  <span class="c1"># Column to write the units in</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">write_uncertainty</span><span class="p">:</span>
+            <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Uncertainty&#39;</span><span class="p">)</span>
+            <span class="n">uncertainty_index</span> <span class="o">=</span> <span class="n">offset</span>  <span class="c1"># Column to write the units in</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">write_assumption</span><span class="p">:</span>
+            <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assumption_heading</span><span class="p">)</span>
+            <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">constant_index</span> <span class="o">=</span> <span class="n">offset</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">2</span>
+
+        <span class="n">headings</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">headings</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">references</span><span class="p">:</span>
+                <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">references</span><span class="p">[</span><span class="n">entry</span><span class="p">],</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">entry</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">])</span>
+            <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">comment</span><span class="p">:</span>
+            <span class="n">worksheet</span><span class="o">.</span><span class="n">write_comment</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">comment</span><span class="p">)</span>
+
+        <span class="c1"># Now, write the TimeSeries objects - self.ts is an odict and whatever pops are present will be written in whatever order they are in</span>
+        <span class="k">for</span> <span class="n">row_name</span><span class="p">,</span> <span class="n">row_ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Write the name</span>
+            <span class="k">if</span> <span class="n">row_name</span> <span class="ow">in</span> <span class="n">references</span><span class="p">:</span>
+                <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">references</span><span class="p">[</span><span class="n">row_name</span><span class="p">],</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">row_name</span><span class="p">)</span>
+                <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">row_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">worksheet</span><span class="o">.</span><span class="n">write_string</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">row_name</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">])</span>
+                <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">row_name</span><span class="p">)</span>
+
+            <span class="c1"># Write the units</span>
+            <span class="k">if</span> <span class="n">write_units</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">units</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="n">FS</span><span class="o">.</span><span class="n">STANDARD_UNITS</span><span class="p">:</span>  <span class="c1"># Preserve case if nonstandard unit</span>
+                        <span class="n">unit</span> <span class="o">=</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">unit</span> <span class="o">=</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">units_index</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
+                    <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">units_index</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">units_index</span><span class="p">,</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_SYMBOL_INAPPLICABLE</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">row_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">:</span>  <span class="c1"># Add dropdown selection if there is more than one valid choice for the units</span>
+                    <span class="n">allowed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">[</span><span class="n">row_name</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">allowed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">allowed</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="k">if</span> <span class="n">allowed</span><span class="p">:</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">data_validation</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">units_index</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;validate&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">allowed</span><span class="p">})</span>
+
+            <span class="k">if</span> <span class="n">write_uncertainty</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">sigma</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">uncertainty_index</span><span class="p">,</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;not_required&#39;</span><span class="p">])</span> <span class="c1"># NB. For now, uncertainty is always optional</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">uncertainty_index</span><span class="p">,</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;not_required&#39;</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
+                <span class="nb">format</span> <span class="o">=</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;not_required&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">format</span> <span class="o">=</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;unlocked&#39;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">write_assumption</span><span class="p">:</span>
+                <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">,</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">assumption</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">):</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;OR&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center&#39;</span><span class="p">])</span>
+                    <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">constant_index</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;OR&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Write the time values if they are present</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">):</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span>  <span class="c1"># Initialize an empty entry for every time in the TDVE&#39;s tvec</span>
+
+                <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row_ts</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">vals</span><span class="p">):</span>
+                    <span class="c1"># If the TimeSeries contains data for that time point, then insert it now</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span> <span class="o">==</span> <span class="n">t</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
+                        <span class="n">content</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">v</span>
+
+                <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write_blank</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">offset</span><span class="o">+</span><span class="n">idx</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">offset</span><span class="o">+</span><span class="n">idx</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+                    <span class="n">widths</span><span class="p">[</span><span class="n">offset</span><span class="o">+</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">widths</span><span class="p">[</span><span class="n">offset</span><span class="o">+</span><span class="n">idx</span><span class="p">],</span><span class="mi">7</span><span class="p">)</span> <span class="k">if</span> <span class="n">offset</span><span class="o">+</span><span class="n">idx</span> <span class="ow">in</span> <span class="n">widths</span> <span class="k">else</span> <span class="mi">7</span>
+
+                <span class="k">if</span> <span class="n">write_assumption</span><span class="p">:</span>
+                    <span class="c1"># Conditional formatting for the assumption</span>
+                    <span class="c1"># Do this here, because after the loop above, we have easy and clear access to the range of cells to include in the formula</span>
+                    <span class="n">fcn_empty_times</span> <span class="o">=</span> <span class="s1">&#39;COUNTIF(</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">,&quot;&lt;&gt;&quot; &amp; &quot;&quot;)&gt;0&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">offset</span><span class="p">),</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+                    <span class="c1"># Hatched out if the cell will be ignored</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">conditional_format</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;formula&#39;</span><span class="p">,</span> <span class="s1">&#39;criteria&#39;</span><span class="p">:</span> <span class="s1">&#39;=&#39;</span> <span class="o">+</span> <span class="n">fcn_empty_times</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;ignored&#39;</span><span class="p">]})</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">conditional_format</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;formula&#39;</span><span class="p">,</span> <span class="s1">&#39;criteria&#39;</span><span class="p">:</span> <span class="s1">&#39;=AND(</span><span class="si">%s</span><span class="s1">,NOT(ISBLANK(</span><span class="si">%s</span><span class="s1">)))&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fcn_empty_times</span><span class="p">,</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">)),</span> <span class="s1">&#39;format&#39;</span><span class="p">:</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;ignored_warning&#39;</span><span class="p">]})</span>
+
+        <span class="k">return</span> <span class="n">current_row</span> <span class="o">+</span> <span class="mi">2</span>  <span class="c1"># Add two so there is a blank line after this table</span></div></div>
+
+
+<div class="viewcode-block" id="cell_require_string"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.cell_require_string">[docs]</a><span class="k">def</span> <span class="nf">cell_require_string</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check that a cell contains a string</span>
+
+<span class="sd">    :param cell: An openpyxl cell</span>
+<span class="sd">    :raises: :class:`Exception` with informative message if the cell value is not a string</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cell </span><span class="si">%s</span><span class="s1"> needs to contain a string (i.e. not a number, date, or other cell type)&#39;</span> <span class="o">%</span> <span class="n">cell</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cell_get_number"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.cell_get_number">[docs]</a><span class="k">def</span> <span class="nf">cell_get_number</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return numeric value from cell</span>
+
+<span class="sd">    This function is to guard against accidentally having the Excel cell contain a string</span>
+<span class="sd">    instead of a number. If a string has been entered, an error will be raised. The added value</span>
+<span class="sd">    from this function is that if the Excel cell type is empty but the value is</span>
+<span class="sd">    empty or ``N.A.`` then the value will be treated as though the cell was correctly set to a</span>
+<span class="sd">    numeric type but had been left empty.</span>
+
+<span class="sd">    The output is cast to ``dtype`` which means that code that requires numeric input from Excel</span>
+<span class="sd">    can use this input to guarantee that the resulting number is of the correct type, or ``None``.</span>
+
+<span class="sd">    :param cell: An openpyxl cell</span>
+<span class="sd">    :param dtype: If the cell is numeric, cast to this type (default is `float` but could be `int` for example)</span>
+<span class="sd">    :return: A scalar instance of ``dtype`` (e.g. ``float``) or ``None`` if cell is empty or being treated as empty</span>
+<span class="sd">    :raises: :class:`Exception` if the cell contains a string</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span>  <span class="c1"># Numeric type</span>
+        <span class="k">return</span> <span class="n">dtype</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>  <span class="c1"># Only do relatively expensive string processing if it&#39;s actually a string type</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_SYMBOL_INAPPLICABLE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cell </span><span class="si">%s</span><span class="s1"> needs to contain a number&#39;</span> <span class="o">%</span> <span class="n">cell</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="validate_category"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.validate_category">[docs]</a><span class="k">def</span> <span class="nf">validate_category</span><span class="p">(</span><span class="n">workbook</span><span class="p">,</span> <span class="n">expected_category</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check Atomica workbook type</span>
+
+<span class="sd">    This function makes sure that a workbook has a particular category property</span>
+<span class="sd">    stored within it, and displays an appropriate error message if not. If the</span>
+<span class="sd">    category isn&#39;t present or doesn&#39;t start with &#39;atomica&#39;, just ignore it for</span>
+<span class="sd">    robustness (instead, a parsing error will likely be raised)</span>
+
+<span class="sd">    :param workbook: An openpyxl workbook</span>
+<span class="sd">    :param category: The expected string category</span>
+<span class="sd">    :raises: :class:`Exception` if the workbook category is not valid</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">category</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">category</span>
+    <span class="k">if</span> <span class="n">category</span> <span class="ow">and</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">category</span><span class="p">)</span> <span class="ow">and</span> <span class="n">category</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;atomica:&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">category</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="n">expected_category</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="n">expected_type</span> <span class="o">=</span> <span class="n">expected_category</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+            <span class="n">actual_type</span> <span class="o">=</span> <span class="n">category</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Error loading </span><span class="si">%s</span><span class="s1"> - the provided file was a </span><span class="si">%s</span><span class="s1"> file&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expected_type</span><span class="p">,</span> <span class="n">actual_type</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Atomica Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

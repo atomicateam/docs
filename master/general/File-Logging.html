@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Logging cookbook &mdash; Atomica  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Optimization" href="Optimization.html" />
+    <link rel="prev" title="Initializing compartments" href="Compartment-Initialization.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General content</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Contextual-Overview.html">Contextual overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Compartment-Initialization.html">Initializing compartments</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Logging cookbook</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#changing-the-amount-of-output">Changing the amount of output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dumping-output-to-a-log-file">Dumping output to a log file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="programs/Programs.html">Program System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parameters.html">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="population-types/Population-Types.html">Population types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stochastic/stochastic.html">Stochastic models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">General content</a> &raquo;</li>
+        
+      <li>Logging cookbook</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/general/File-Logging.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="logging-cookbook">
+<h1>Logging cookbook<a class="headerlink" href="#logging-cookbook" title="Permalink to this headline">¶</a></h1>
+<p>The Atomica logger is named <code class="docutils literal notranslate"><span class="pre">'atomica'</span></code>. At any point, from anywhere, you can retrieve it using</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;atomica&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="changing-the-amount-of-output">
+<h2>Changing the amount of output<a class="headerlink" href="#changing-the-amount-of-output" title="Permalink to this headline">¶</a></h2>
+<p>Once you have the logger object (e.g. in your own script) you can change the logging level to control the amount of output displayed. The most common levels are</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Show warnings or worse only</td>
+<td><code>logger.setLevel('WARNING')</code></td>
+</tr>
+<tr>
+<td><strong>Default</strong> - Show normal output</td>
+<td><code>logger.setLevel('INFO')</code></td>
+</tr>
+<tr>
+<td>Show extra detailed output</td>
+<td><code>logger.setLevel('DEBUG')</code></td>
+</tr>
+</tbody>
+</table><p>When writing code for Atomica, set the level of the message accordingly e.g. in the code you are writing, use</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;This should be displayed as a warning&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;This is information that the user will normally see&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;This is extra-verbose output&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the use of <code class="docutils literal notranslate"><span class="pre">logger.debug</span></code> means that you do not need to set <code class="docutils literal notranslate"><span class="pre">verbose</span></code> flags and <code class="docutils literal notranslate"><span class="pre">if</span></code> statements - instead, just set the logging level to <code class="docutils literal notranslate"><span class="pre">debug</span></code>.</p>
+<p>Note also that the default logging level is set in <code class="docutils literal notranslate"><span class="pre">atomica/__init__.py</span></code> so normally you should set the logging level in your script <em>after</em> importing Atomica e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">atomica.ui</span> <span class="k">as</span> <span class="nn">au</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you instead do</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">atomica.ui</span> <span class="k">as</span> <span class="nn">au</span>
+</pre></div>
+</div>
+<p>then the logging level will be reset to <code class="docutils literal notranslate"><span class="pre">INFO</span></code> so you won’t see debug messages.</p>
+</div>
+<div class="section" id="dumping-output-to-a-log-file">
+<h2>Dumping output to a log file<a class="headerlink" href="#dumping-output-to-a-log-file" title="Permalink to this headline">¶</a></h2>
+<p>A common task is storing the log messages for a simulation run. This can be accomplished easily
+through the logging module, by adding a file handler to the root logger. At the top of your script,
+add the following snippet:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="s1">&#39;output.log&#39;</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then any messages logged by Atomica will be written to the specified file, in addition to being printed
+in the console. If you run the commands above <em>before</em> importing Atomica, then the version information
+printed when Atomica is imported will be recorded as well (so it is recommended to initialize the
+<code class="docutils literal notranslate"><span class="pre">FileHandler</span></code> at the start of your scripts).</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Atomica Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
