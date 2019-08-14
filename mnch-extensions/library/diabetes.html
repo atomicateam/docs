@@ -1,0 +1,1070 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Diabetes &mdash; Atomica  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Diagnosis-Treated" href="dt.html" />
+    <link rel="prev" title="Cervical cancer" href="cervicalcancer.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Model library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cervicalcancer.html">Cervical cancer</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Diabetes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#contents">Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compartments">Compartments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-source">Compartment: Source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-susceptible">Compartment: Susceptible</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-unaware-uncomplicated">Compartment: Unaware &amp; uncomplicated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-unaware-vascular-damage">Compartment: Unaware &amp; vascular damage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-screened-uncomplicated">Compartment: Screened &amp; uncomplicated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-screened-vascular-damage">Compartment: Screened &amp; vascular damage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-diagnosed-uncomplicated">Compartment: Diagnosed &amp; uncomplicated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-diagnosed-vascular-damage">Compartment: Diagnosed &amp; vascular damage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-successful-treatment-uncomplicated">Compartment: Successful treatment &amp; uncomplicated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-successful-treatment-vascular-damage">Compartment: Successful treatment &amp; vascular damage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-treatment-failure-uncomplicated">Compartment: Treatment failure &amp; uncomplicated</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-treatment-failure-vascular-damage">Compartment: Treatment failure &amp; vascular damage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-dead-diabetes">Compartment: Dead (diabetes)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-dead-other">Compartment: Dead (other)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#characteristics">Characteristics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-population-size">Characteristic: Population size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-all-people-with-t2dm">Characteristic: All people with T2DM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-people-screened-for-t2dm">Characteristic: People screened for T2DM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-people-diagnosed-with-t2dm">Characteristic: People diagnosed with T2DM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-people-treated-for-t2dm">Characteristic: People treated for T2DM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-people-with-hba1c-control">Characteristic: People with HbA1c control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-proportion-screened-for-t2dm">Characteristic: Proportion screened for T2DM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-proportion-diagnosed-with-t2dm">Characteristic: Proportion diagnosed with T2DM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-proportion-treated-for-t2dm">Characteristic: Proportion treated for T2DM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-proportion-with-hba1c-control">Characteristic: Proportion with HbA1c control</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-annual-number-of-births">Parameter: Annual number of births</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-estimated-number-of-new-diabetes-cases-annually">Parameter: Estimated number of new diabetes cases annually</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-acquisition-rate">Parameter: Acquisition rate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-time-before-progression-to-vascular-damage">Parameter: Time before progression to vascular damage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-annual-number-screened">Parameter: Annual number screened</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-yield-among-those-screened">Parameter: Yield among those screened</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-annual-number-screened-positive">Parameter: Annual number screened positive</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-screening-sensitivity">Parameter: Screening sensitivity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-annual-number-of-new-diagnoses">Parameter: Annual number of new diagnoses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-diagnosis-sensitivity">Parameter: Diagnosis sensitivity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-annual-number-newly-initiated-onto-treatment">Parameter: Annual number newly initiated onto treatment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-initiation-rate">Parameter: Initiation rate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-treatment-failure-rate">Parameter: Treatment failure rate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-proportion-of-those-experiencing-treatment-failure-who-are-offered-support">Parameter: Proportion of those experiencing treatment failure who are offered support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-death-rate-for-diabetes-with-vascular-damage">Parameter: Death rate for diabetes with vascular damage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-background-mortality-rate">Parameter: Background mortality rate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interactions">Interactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cascades">Cascades</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cascade-diabetes-care-cascade">Cascade: Diabetes care cascade</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cascade-diabetes-care-cascade-vascular-damage">Cascade: Diabetes care cascade - vascular damage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cascade-diabetes-care-cascade-uncomplicated-cases">Cascade: Diabetes care cascade - uncomplicated cases</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dt.html">Diagnosis-Treated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hiv_dyn.html">HIV with dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hiv.html">HIV without dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hypertension_dyn.html">Hypertension with dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hypertension.html">Hypertension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service.html">Service modalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sir.html">SIR model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tb.html">TB full model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tb_simple_dyn.html">TB simple with dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tb_simple.html">TB simple model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="udt_dyn.html">UDT model with dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="udt.html">UDT model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usdt.html">USDT model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Model library</a> &raquo;</li>
+        
+      <li>Diabetes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/library/diabetes.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="diabetes">
+<h1>Diabetes<a class="headerlink" href="#diabetes" title="Permalink to this headline">¶</a></h1>
+<p><strong>Name</strong>: Diabetes</p>
+<p><strong>Description</strong>: Framework for a diabetes model, including vital dynamics and new cases</p>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="#compartments">Compartments</a></li>
+<li><a class="reference external" href="#characteristics">Characteristics</a></li>
+<li><a class="reference external" href="#parameters">Parameters</a></li>
+<li><a class="reference external" href="#interactions">Interactions</a></li>
+<li><a class="reference external" href="#cascades">Cascades</a></li>
+</ul>
+</div>
+<div class="section" id="compartments">
+<h2>Compartments<a class="headerlink" href="#compartments" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="compartment-source">
+<h3>Compartment: Source<a class="headerlink" href="#compartment-source" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">source</span></code></li>
+<li>Is source</li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-susceptible">
+<h3>Compartment: Susceptible<a class="headerlink" href="#compartment-susceptible" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">sus</span></code></li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-unaware-uncomplicated">
+<h3>Compartment: Unaware &amp; uncomplicated<a class="headerlink" href="#compartment-unaware-uncomplicated" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">unsc_uncomp</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Appears in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-unaware-vascular-damage">
+<h3>Compartment: Unaware &amp; vascular damage<a class="headerlink" href="#compartment-unaware-vascular-damage" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">unsc_vd</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Appears in the databook</li>
+<li>Databook values will be used for model initialization</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-screened-uncomplicated">
+<h3>Compartment: Screened &amp; uncomplicated<a class="headerlink" href="#compartment-screened-uncomplicated" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">sc_uncomp</span></code></li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-screened-vascular-damage">
+<h3>Compartment: Screened &amp; vascular damage<a class="headerlink" href="#compartment-screened-vascular-damage" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">sc_vd</span></code></li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-diagnosed-uncomplicated">
+<h3>Compartment: Diagnosed &amp; uncomplicated<a class="headerlink" href="#compartment-diagnosed-uncomplicated" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">dx_uncomp</span></code></li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-diagnosed-vascular-damage">
+<h3>Compartment: Diagnosed &amp; vascular damage<a class="headerlink" href="#compartment-diagnosed-vascular-damage" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">dx_vd</span></code></li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-successful-treatment-uncomplicated">
+<h3>Compartment: Successful treatment &amp; uncomplicated<a class="headerlink" href="#compartment-successful-treatment-uncomplicated" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">txs_uncomp</span></code></li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-successful-treatment-vascular-damage">
+<h3>Compartment: Successful treatment &amp; vascular damage<a class="headerlink" href="#compartment-successful-treatment-vascular-damage" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">txs_vd</span></code></li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-treatment-failure-uncomplicated">
+<h3>Compartment: Treatment failure &amp; uncomplicated<a class="headerlink" href="#compartment-treatment-failure-uncomplicated" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">txf_uncomp</span></code></li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-treatment-failure-vascular-damage">
+<h3>Compartment: Treatment failure &amp; vascular damage<a class="headerlink" href="#compartment-treatment-failure-vascular-damage" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">txf_vd</span></code></li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-dead-diabetes">
+<h3>Compartment: Dead (diabetes)<a class="headerlink" href="#compartment-dead-diabetes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">dead_dm</span></code></li>
+<li>Is sink</li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="compartment-dead-other">
+<h3>Compartment: Dead (other)<a class="headerlink" href="#compartment-dead-other" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">dead_other</span></code></li>
+<li>Is sink</li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+</div>
+<div class="section" id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="characteristic-population-size">
+<h3>Characteristic: Population size<a class="headerlink" href="#characteristic-population-size" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">alive</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Includes:<ul>
+<li>Susceptible</li>
+<li>Unaware &amp; uncomplicated</li>
+<li>Unaware &amp; vascular damage</li>
+<li>Screened &amp; uncomplicated</li>
+<li>Screened &amp; vascular damage</li>
+<li>Diagnosed &amp; uncomplicated</li>
+<li>Diagnosed &amp; vascular damage</li>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; uncomplicated</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Appears in the databook</li>
+<li>Databook values will be used for model initialization</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="characteristic-all-people-with-t2dm">
+<h3>Characteristic: All people with T2DM<a class="headerlink" href="#characteristic-all-people-with-t2dm" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_all</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Includes:<ul>
+<li>Unaware &amp; uncomplicated</li>
+<li>Unaware &amp; vascular damage</li>
+<li>Screened &amp; uncomplicated</li>
+<li>Screened &amp; vascular damage</li>
+<li>Diagnosed &amp; uncomplicated</li>
+<li>Diagnosed &amp; vascular damage</li>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; uncomplicated</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Appears in the databook</li>
+<li>Databook values will be used for model initialization</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="characteristic-people-screened-for-t2dm">
+<h3>Characteristic: People screened for T2DM<a class="headerlink" href="#characteristic-people-screened-for-t2dm" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_screened</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Includes:<ul>
+<li>Screened &amp; uncomplicated</li>
+<li>Screened &amp; vascular damage</li>
+<li>Diagnosed &amp; uncomplicated</li>
+<li>Diagnosed &amp; vascular damage</li>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; uncomplicated</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Appears in the databook</li>
+<li>Databook values will be used for model initialization</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="characteristic-people-diagnosed-with-t2dm">
+<h3>Characteristic: People diagnosed with T2DM<a class="headerlink" href="#characteristic-people-diagnosed-with-t2dm" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_diag</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Includes:<ul>
+<li>Diagnosed &amp; uncomplicated</li>
+<li>Diagnosed &amp; vascular damage</li>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; uncomplicated</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Appears in the databook</li>
+<li>Databook values will be used for model initialization</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="characteristic-people-treated-for-t2dm">
+<h3>Characteristic: People treated for T2DM<a class="headerlink" href="#characteristic-people-treated-for-t2dm" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_tx</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Includes:<ul>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; uncomplicated</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Appears in the databook</li>
+<li>Databook values will be used for model initialization</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="characteristic-people-with-hba1c-control">
+<h3>Characteristic: People with HbA1c control<a class="headerlink" href="#characteristic-people-with-hba1c-control" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_succ</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Includes:<ul>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+</ul>
+</li>
+<li>Appears in the databook</li>
+<li>Databook values will be used for model initialization</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="characteristic-proportion-screened-for-t2dm">
+<h3>Characteristic: Proportion screened for T2DM<a class="headerlink" href="#characteristic-proportion-screened-for-t2dm" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_propscreened</span></code></li>
+<li>Includes:<ul>
+<li>People screened for T2DM</li>
+</ul>
+</li>
+<li>Denominator: All people with T2DM</li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="characteristic-proportion-diagnosed-with-t2dm">
+<h3>Characteristic: Proportion diagnosed with T2DM<a class="headerlink" href="#characteristic-proportion-diagnosed-with-t2dm" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_propdiag</span></code></li>
+<li>Includes:<ul>
+<li>People diagnosed with T2DM</li>
+</ul>
+</li>
+<li>Denominator: All people with T2DM</li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="characteristic-proportion-treated-for-t2dm">
+<h3>Characteristic: Proportion treated for T2DM<a class="headerlink" href="#characteristic-proportion-treated-for-t2dm" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_proptx</span></code></li>
+<li>Includes:<ul>
+<li>People treated for T2DM</li>
+</ul>
+</li>
+<li>Denominator: All people with T2DM</li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="characteristic-proportion-with-hba1c-control">
+<h3>Characteristic: Proportion with HbA1c control<a class="headerlink" href="#characteristic-proportion-with-hba1c-control" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_propsucc</span></code></li>
+<li>Includes:<ul>
+<li>People with HbA1c control</li>
+</ul>
+</li>
+<li>Denominator: All people with T2DM</li>
+<li>Does not appear in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="parameter-annual-number-of-births">
+<h3>Parameter: Annual number of births<a class="headerlink" href="#parameter-annual-number-of-births" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">birth_rate</span></code></li>
+<li>Units/format: number</li>
+<li>Value restrictions: At least 0</li>
+<li>Contributes to transitions from:<ul>
+<li>“Source” to “Susceptible”</li>
+</ul>
+</li>
+<li>Default value: 15828</li>
+<li>Appears in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-estimated-number-of-new-diabetes-cases-annually">
+<h3>Parameter: Estimated number of new diabetes cases annually<a class="headerlink" href="#parameter-estimated-number-of-new-diabetes-cases-annually" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_acq</span></code></li>
+<li>Units/format: number</li>
+<li>Value restrictions: At least 0</li>
+<li>Default value: None</li>
+<li>Appears in the databook</li>
+<li>Used to compute:<ul>
+<li>“Acquisition rate”</li>
+</ul>
+</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-acquisition-rate">
+<h3>Parameter: Acquisition rate<a class="headerlink" href="#parameter-acquisition-rate" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">acq_rate</span></code></li>
+<li>Units/format: probability</li>
+<li>Value restrictions: 0-1.0000</li>
+<li>Contributes to transitions from:<ul>
+<li>“Susceptible” to “Unaware &amp; uncomplicated”</li>
+</ul>
+</li>
+<li>Default value: None</li>
+<li>Does not appear in the databook</li>
+<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_acq/max(sus,num_acq)</span></code></li>
+<li>Depends on:<ul>
+<li>“Estimated number of new diabetes cases annually”</li>
+<li>“Susceptible”</li>
+</ul>
+</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-time-before-progression-to-vascular-damage">
+<h3>Parameter: Time before progression to vascular damage<a class="headerlink" href="#parameter-time-before-progression-to-vascular-damage" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">prog_rate</span></code></li>
+<li>Units/format: duration</li>
+<li>Value restrictions: At least 0</li>
+<li>Contributes to transitions from:<ul>
+<li>“Unaware &amp; uncomplicated” to “Unaware &amp; vascular damage”</li>
+<li>“Screened &amp; uncomplicated” to “Screened &amp; vascular damage”</li>
+<li>“Diagnosed &amp; uncomplicated” to “Diagnosed &amp; vascular damage”</li>
+<li>“Treatment failure &amp; uncomplicated” to “Treatment failure &amp; vascular damage”</li>
+</ul>
+</li>
+<li>Default value: 1</li>
+<li>Appears in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-annual-number-screened">
+<h3>Parameter: Annual number screened<a class="headerlink" href="#parameter-annual-number-screened" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_screen</span></code></li>
+<li>Units/format: number</li>
+<li>Value restrictions: At least 0</li>
+<li>Default value: None</li>
+<li>Appears in the databook</li>
+<li>Used to compute:<ul>
+<li>“Annual number screened positive”</li>
+</ul>
+</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-yield-among-those-screened">
+<h3>Parameter: Yield among those screened<a class="headerlink" href="#parameter-yield-among-those-screened" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">screen_yield</span></code></li>
+<li>Units/format: probability</li>
+<li>Value restrictions: 0-1.0000</li>
+<li>Default value: None</li>
+<li>Does not appear in the databook</li>
+<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">(unsc_uncomp+unsc_vd)/(unsc_uncomp+unsc_vd+sus)</span></code></li>
+<li>Depends on:<ul>
+<li>“Unaware &amp; uncomplicated”</li>
+<li>“Susceptible”</li>
+<li>“Unaware &amp; vascular damage”</li>
+</ul>
+</li>
+<li>Used to compute:<ul>
+<li>“Annual number screened positive”</li>
+</ul>
+</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-annual-number-screened-positive">
+<h3>Parameter: Annual number screened positive<a class="headerlink" href="#parameter-annual-number-screened-positive" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">pos_screen</span></code></li>
+<li>Units/format: number</li>
+<li>Value restrictions: At least 0</li>
+<li>Default value: None</li>
+<li>Does not appear in the databook</li>
+<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_screen*screen_yield</span></code></li>
+<li>Depends on:<ul>
+<li>“Annual number screened”</li>
+<li>“Yield among those screened”</li>
+</ul>
+</li>
+<li>Used to compute:<ul>
+<li>“Screening sensitivity”</li>
+</ul>
+</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-screening-sensitivity">
+<h3>Parameter: Screening sensitivity<a class="headerlink" href="#parameter-screening-sensitivity" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">screen</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Units/format: probability</li>
+<li>Value restrictions: 0-1.0000</li>
+<li>Contributes to transitions from:<ul>
+<li>“Unaware &amp; uncomplicated” to “Screened &amp; uncomplicated”</li>
+<li>“Unaware &amp; vascular damage” to “Screened &amp; vascular damage”</li>
+</ul>
+</li>
+<li>Default value: None</li>
+<li>Does not appear in the databook</li>
+<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">pos_screen/max(unsc_uncomp+unsc_vd,pos_screen)</span></code></li>
+<li>Depends on:<ul>
+<li>“Unaware &amp; uncomplicated”</li>
+<li>“Annual number screened positive”</li>
+<li>“Unaware &amp; vascular damage”</li>
+</ul>
+</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-annual-number-of-new-diagnoses">
+<h3>Parameter: Annual number of new diagnoses<a class="headerlink" href="#parameter-annual-number-of-new-diagnoses" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_diag</span></code></li>
+<li>Units/format: number</li>
+<li>Value restrictions: At least 0</li>
+<li>Default value: None</li>
+<li>Appears in the databook</li>
+<li>Used to compute:<ul>
+<li>“Diagnosis sensitivity”</li>
+</ul>
+</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-diagnosis-sensitivity">
+<h3>Parameter: Diagnosis sensitivity<a class="headerlink" href="#parameter-diagnosis-sensitivity" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">diag</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Units/format: probability</li>
+<li>Value restrictions: 0-1.0000</li>
+<li>Contributes to transitions from:<ul>
+<li>“Screened &amp; uncomplicated” to “Diagnosed &amp; uncomplicated”</li>
+<li>“Screened &amp; vascular damage” to “Diagnosed &amp; vascular damage”</li>
+</ul>
+</li>
+<li>Default value: None</li>
+<li>Does not appear in the databook</li>
+<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_diag/max(sc_uncomp+sc_vd,num_diag)</span></code></li>
+<li>Depends on:<ul>
+<li>“Screened &amp; vascular damage”</li>
+<li>“Annual number of new diagnoses”</li>
+<li>“Screened &amp; uncomplicated”</li>
+</ul>
+</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-annual-number-newly-initiated-onto-treatment">
+<h3>Parameter: Annual number newly initiated onto treatment<a class="headerlink" href="#parameter-annual-number-newly-initiated-onto-treatment" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_initiate</span></code></li>
+<li>Units/format: number</li>
+<li>Value restrictions: At least 0</li>
+<li>Default value: None</li>
+<li>Appears in the databook</li>
+<li>Used to compute:<ul>
+<li>“Initiation rate”</li>
+</ul>
+</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-initiation-rate">
+<h3>Parameter: Initiation rate<a class="headerlink" href="#parameter-initiation-rate" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">initiate</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Units/format: probability</li>
+<li>Value restrictions: 0-1.0000</li>
+<li>Contributes to transitions from:<ul>
+<li>“Diagnosed &amp; uncomplicated” to “Successful treatment &amp; uncomplicated”</li>
+<li>“Diagnosed &amp; vascular damage” to “Successful treatment &amp; vascular damage”</li>
+</ul>
+</li>
+<li>Default value: None</li>
+<li>Does not appear in the databook</li>
+<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_initiate/max(dx_uncomp+dx_vd,num_initiate)</span></code></li>
+<li>Depends on:<ul>
+<li>“Diagnosed &amp; uncomplicated”</li>
+<li>“Diagnosed &amp; vascular damage”</li>
+<li>“Annual number newly initiated onto treatment”</li>
+</ul>
+</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-treatment-failure-rate">
+<h3>Parameter: Treatment failure rate<a class="headerlink" href="#parameter-treatment-failure-rate" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">treat_fail</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Units/format: probability</li>
+<li>Value restrictions: 0-1.0000</li>
+<li>Contributes to transitions from:<ul>
+<li>“Successful treatment &amp; uncomplicated” to “Treatment failure &amp; uncomplicated”</li>
+<li>“Successful treatment &amp; vascular damage” to “Treatment failure &amp; vascular damage”</li>
+</ul>
+</li>
+<li>Default value: 0.5</li>
+<li>Appears in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-proportion-of-those-experiencing-treatment-failure-who-are-offered-support">
+<h3>Parameter: Proportion of those experiencing treatment failure who are offered support<a class="headerlink" href="#parameter-proportion-of-those-experiencing-treatment-failure-who-are-offered-support" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">treat_suc</span></code></li>
+<li>Value can be used for calibration</li>
+<li>Units/format: probability</li>
+<li>Value restrictions: 0-1.0000</li>
+<li>Contributes to transitions from:<ul>
+<li>“Treatment failure &amp; uncomplicated” to “Successful treatment &amp; uncomplicated”</li>
+<li>“Treatment failure &amp; vascular damage” to “Successful treatment &amp; vascular damage”</li>
+</ul>
+</li>
+<li>Default value: None</li>
+<li>Appears in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-death-rate-for-diabetes-with-vascular-damage">
+<h3>Parameter: Death rate for diabetes with vascular damage<a class="headerlink" href="#parameter-death-rate-for-diabetes-with-vascular-damage" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">death_vd</span></code></li>
+<li>Units/format: probability</li>
+<li>Value restrictions: 0-1.0000</li>
+<li>Contributes to transitions from:<ul>
+<li>“Unaware &amp; vascular damage” to “Dead (diabetes)”</li>
+<li>“Screened &amp; vascular damage” to “Dead (diabetes)”</li>
+<li>“Diagnosed &amp; vascular damage” to “Dead (diabetes)”</li>
+<li>“Successful treatment &amp; vascular damage” to “Dead (diabetes)”</li>
+<li>“Treatment failure &amp; vascular damage” to “Dead (diabetes)”</li>
+</ul>
+</li>
+<li>Default value: 0.025</li>
+<li>Appears in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+<div class="section" id="parameter-background-mortality-rate">
+<h3>Parameter: Background mortality rate<a class="headerlink" href="#parameter-background-mortality-rate" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Code name: <code class="docutils literal notranslate"><span class="pre">death_other</span></code></li>
+<li>Units/format: probability</li>
+<li>Value restrictions: 0-1.0000</li>
+<li>Contributes to transitions from:<ul>
+<li>“Susceptible” to “Dead (other)”</li>
+<li>“Unaware &amp; uncomplicated” to “Dead (other)”</li>
+<li>“Unaware &amp; vascular damage” to “Dead (other)”</li>
+<li>“Screened &amp; uncomplicated” to “Dead (other)”</li>
+<li>“Screened &amp; vascular damage” to “Dead (other)”</li>
+<li>“Diagnosed &amp; uncomplicated” to “Dead (other)”</li>
+<li>“Diagnosed &amp; vascular damage” to “Dead (other)”</li>
+<li>“Successful treatment &amp; uncomplicated” to “Dead (other)”</li>
+<li>“Successful treatment &amp; vascular damage” to “Dead (other)”</li>
+<li>“Treatment failure &amp; uncomplicated” to “Dead (other)”</li>
+<li>“Treatment failure &amp; vascular damage” to “Dead (other)”</li>
+</ul>
+</li>
+<li>Default value: 0.015</li>
+<li>Appears in the databook</li>
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Data entry guidance: <ENTER GUIDANCE></li>
+</ul>
+</div>
+</div>
+<div class="section" id="interactions">
+<h2>Interactions<a class="headerlink" href="#interactions" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="cascades">
+<h2>Cascades<a class="headerlink" href="#cascades" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cascade-diabetes-care-cascade">
+<h3>Cascade: Diabetes care cascade<a class="headerlink" href="#cascade-diabetes-care-cascade" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Stages:<ul>
+<li>All people with T2DM<ul>
+<li>Unaware &amp; uncomplicated</li>
+<li>Unaware &amp; vascular damage</li>
+<li>Screened &amp; uncomplicated</li>
+<li>Screened &amp; vascular damage</li>
+<li>Diagnosed &amp; uncomplicated</li>
+<li>Diagnosed &amp; vascular damage</li>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; uncomplicated</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Screened<ul>
+<li>Screened &amp; uncomplicated</li>
+<li>Screened &amp; vascular damage</li>
+<li>Diagnosed &amp; uncomplicated</li>
+<li>Diagnosed &amp; vascular damage</li>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; uncomplicated</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Diagnosed<ul>
+<li>Diagnosed &amp; uncomplicated</li>
+<li>Diagnosed &amp; vascular damage</li>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; uncomplicated</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Treated<ul>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; uncomplicated</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>HbA1c control<ul>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Successful treatment &amp; vascular damage</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="cascade-diabetes-care-cascade-vascular-damage">
+<h3>Cascade: Diabetes care cascade - vascular damage<a class="headerlink" href="#cascade-diabetes-care-cascade-vascular-damage" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Stages:<ul>
+<li>All people<ul>
+<li>Unaware &amp; vascular damage</li>
+<li>Screened &amp; vascular damage</li>
+<li>Diagnosed &amp; vascular damage</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Screened<ul>
+<li>Screened &amp; vascular damage</li>
+<li>Diagnosed &amp; vascular damage</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Diagnosed<ul>
+<li>Diagnosed &amp; vascular damage</li>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>Treated<ul>
+<li>Successful treatment &amp; vascular damage</li>
+<li>Treatment failure &amp; vascular damage</li>
+</ul>
+</li>
+<li>HbA1c control<ul>
+<li>Successful treatment &amp; vascular damage</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="cascade-diabetes-care-cascade-uncomplicated-cases">
+<h3>Cascade: Diabetes care cascade - uncomplicated cases<a class="headerlink" href="#cascade-diabetes-care-cascade-uncomplicated-cases" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Description: <ENTER DESCRIPTION></li>
+<li>Stages:<ul>
+<li>All people<ul>
+<li>Unaware &amp; uncomplicated</li>
+<li>Screened &amp; uncomplicated</li>
+<li>Diagnosed &amp; uncomplicated</li>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Treatment failure &amp; uncomplicated</li>
+</ul>
+</li>
+<li>Screened<ul>
+<li>Screened &amp; uncomplicated</li>
+<li>Diagnosed &amp; uncomplicated</li>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Treatment failure &amp; uncomplicated</li>
+</ul>
+</li>
+<li>Diagnosed<ul>
+<li>Diagnosed &amp; uncomplicated</li>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Treatment failure &amp; uncomplicated</li>
+</ul>
+</li>
+<li>Treated<ul>
+<li>Successful treatment &amp; uncomplicated</li>
+<li>Treatment failure &amp; uncomplicated</li>
+</ul>
+</li>
+<li>HbA1c control<ul>
+<li>Successful treatment &amp; uncomplicated</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Atomica Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

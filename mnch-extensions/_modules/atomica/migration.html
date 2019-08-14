@@ -1,0 +1,852 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.migration &mdash; Atomica  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_documentation.html">Code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>atomica.migration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for atomica.migration</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Manage Project versions and migration</span>
+
+<span class="sd">Migration refers to updating old :class:`Project` instances so that they</span>
+<span class="sd">can be run with more recent versions of Atomica. This module defines</span>
+
+<span class="sd">- A set of &#39;migration functions&#39; that each transform a :class:`Project` instance from one</span>
+<span class="sd">  version to another</span>
+<span class="sd">- An entry-point that sequentially calls the migration functions to update a project to</span>
+<span class="sd">  the current version used in Atomica</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">from</span> <span class="nn">distutils.version</span> <span class="k">import</span> <span class="n">LooseVersion</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">.version</span> <span class="k">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
+<span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">from</span> <span class="nn">.results</span> <span class="k">import</span> <span class="n">Result</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
+<span class="kn">import</span> <span class="nn">atomica</span>
+<span class="kn">import</span> <span class="nn">types</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># MODULE MIGRATIONS</span>
+<span class="c1">#</span>
+<span class="c1"># In this section, make changes to the Atomica module structure to enable pickle files</span>
+<span class="c1"># to be loaded at all</span>
+
+
+<span class="k">class</span> <span class="nc">_Placeholder</span><span class="p">():</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># First, add any placeholder modules that have been subsequently removed</span>
+<span class="n">atomica</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">(</span><span class="s1">&#39;structure&#39;</span><span class="p">)</span>  <span class="c1"># Removed &#39;structure&#39; module in 1.0.12 20181107</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;atomica.structure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">structure</span>
+
+<span class="c1"># Then, remap any required classes</span>
+<span class="n">atomica</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">TimeSeries</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">TimeSeries</span>  <span class="c1"># Moved &#39;TimeSeries&#39; in 1.0.12 20181107</span>
+
+<span class="c1"># If classes have been removed, then use the Placeholder class to load them</span>
+<span class="c1"># The migration function can then replace Placeholder instances with actual</span>
+<span class="c1"># instances - see the AtomicaSpreadsheet -&gt; sciris.Spreadsheet migration function</span>
+<span class="n">atomica</span><span class="o">.</span><span class="n">excel</span><span class="o">.</span><span class="n">AtomicaSpreadsheet</span> <span class="o">=</span> <span class="n">_Placeholder</span>
+<span class="n">atomica</span><span class="o">.</span><span class="n">optimization</span><span class="o">.</span><span class="n">OptimInstructions</span> <span class="o">=</span> <span class="n">_Placeholder</span>
+
+<span class="c1"># PROJECT MIGRATIONS</span>
+<span class="c1">#</span>
+<span class="c1"># The remaining code manages upgrading Project objects and their contents after they</span>
+<span class="c1"># have been unpickled and instantiated</span>
+
+<span class="c1"># This list stores all of the migrations that are possible</span>
+<span class="n">available_migrations</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="k">class</span> <span class="nc">Migration</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Class representation of a migration</span>
+
+<span class="sd">    This class stores a migration function together with all required metadata. It would</span>
+<span class="sd">    normally be instantiated using the `migration` decorator, which also registers the</span>
+<span class="sd">    migration by adding it to the `available_migrations` list</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">original_version</span><span class="p">,</span> <span class="n">new_version</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">fcn</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">changes_results</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">original_version</span> <span class="o">=</span> <span class="n">original_version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_version</span> <span class="o">=</span> <span class="n">new_version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changes_results</span> <span class="o">=</span> <span class="n">changes_results</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fcn</span> <span class="o">=</span> <span class="n">fcn</span>
+
+    <span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proj</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;MIGRATION: Upgrading </span><span class="si">%s</span><span class="s1"> -&gt; </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">original_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+        <span class="n">proj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fcn</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>  <span class="c1"># Run the migration function</span>
+        <span class="k">if</span> <span class="n">proj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Migration &quot;</span><span class="si">%s</span><span class="s1">&quot; returned None, it is likely missing a return statement&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
+        <span class="n">proj</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_version</span>  <span class="c1"># Update the version</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">changes_results</span><span class="p">:</span>
+            <span class="n">proj</span><span class="o">.</span><span class="n">_result_update_required</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">proj</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Migration(</span><span class="si">%s</span><span class="s1">-&gt;</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">original_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_version</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="migration"><a class="viewcode-back" href="../../_autosummary/atomica.migration.html#atomica.migration">[docs]</a><span class="k">def</span> <span class="nf">migration</span><span class="p">(</span><span class="n">original_version</span><span class="p">,</span> <span class="n">new_version</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">changes_results</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Decorator to register migration functions</span>
+
+<span class="sd">    This decorator constructs a `Migration` object from a decorated migration function, and registers it</span>
+<span class="sd">    in the module&#39;s list of migrations to be run when calling migrate()</span>
+
+<span class="sd">    :param original_version: Version string for the start version. Function will only run on projects whose version is &lt;= this</span>
+<span class="sd">    :param new_version: The resulting project is assigned this version</span>
+<span class="sd">    :param description: A brief overview of the purpose of this migration</span>
+<span class="sd">    :param date: Optionally specify the date when this migration was written</span>
+<span class="sd">    :param changes_results: Optionally flag that changes to model output may occur</span>
+<span class="sd">    :return: None</span>
+
+<span class="sd">    Example usage::</span>
+
+<span class="sd">        @migration(&#39;1.0.0&#39;, &#39;1.0.1&#39;, &#39;Upgrade project&#39;, changes_results=True)</span>
+<span class="sd">        def update_project(proj):</span>
+<span class="sd">            ...</span>
+<span class="sd">            return proj</span>
+
+<span class="sd">    The migration function (update_project()) takes a single argument which is a project object, and returns</span>
+<span class="sd">    a project object. Decorating the function registers the migration and it will automatically be used by</span>
+<span class="sd">    migrate() and therefore Project.load()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="n">available_migrations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Migration</span><span class="p">(</span><span class="n">original_version</span><span class="p">,</span> <span class="n">new_version</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">fcn</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">changes_results</span><span class="o">=</span><span class="n">changes_results</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">f</span>
+    <span class="k">return</span> <span class="n">register</span></div>
+
+
+<span class="k">def</span> <span class="nf">migrate</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Update a project to the latest version</span>
+
+<span class="sd">    Run all of the migrations in the list of available migrations. The migrations are run in ascending order, as long</span>
+<span class="sd">    as the version is &lt;= the migration&#39;s original version. This way, migrations don&#39;t need to be added if a version number</span>
+<span class="sd">    change takes place without actually needing a migration - instead, when adding a migration, just use whatever version</span>
+<span class="sd">    numbers are appropriate at the time the change is introduced, it will behave sensibly.</span>
+
+<span class="sd">    Typically, this function would not be called manually - it happens automatically as part of `Project.load()`.</span>
+
+<span class="sd">    Note that this function returns the updated Project object. Typically the migration functions will update a</span>
+<span class="sd">    project in-place, but this syntax allows migrations to replace parts of the project (or the entire project)</span>
+<span class="sd">    if that is ever necessary in the future. So do not rely on `migrate` having side-effects, make sure the</span>
+<span class="sd">    returned Project object is retained. In principle we could dcp() the Project to ensure that only the</span>
+<span class="sd">    copy gets migrated, but at this point it does not appear worth the performance overhead (since migration at the</span>
+<span class="sd">    moment is only ever called automatically).</span>
+
+<span class="sd">    :param proj: Project object to migrate</span>
+<span class="sd">    :return: Updated Project object</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">migrations</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">available_migrations</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">original_version</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">compareversions</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">proj</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Migrating Project &quot;</span><span class="si">%s</span><span class="s1">&quot; from </span><span class="si">%s</span><span class="s1">-&gt;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">proj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">proj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">migrations</span><span class="p">:</span>  <span class="c1"># Run the migrations in increasing version order</span>
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">compareversions</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">new_version</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">proj</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">upgrade</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
+
+    <span class="n">proj</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>  <span class="c1"># Set project version to the current Atomica version</span>
+    <span class="n">proj</span><span class="o">.</span><span class="n">gitinfo</span> <span class="o">=</span> <span class="n">gitinfo</span>  <span class="c1"># Update gitinfo to current version</span>
+    <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">_result_update_required</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Caution: due to migration, project results may be different if re-run.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="k">def</span> <span class="nf">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Helper generator to iterate over all results in a project</span>
+
+<span class="sd">    Project results may be</span>
+<span class="sd">        - Standalone results</span>
+<span class="sd">        - A list of results</span>
+<span class="sd">        - A UID string (that should be ignored)</span>
+
+<span class="sd">    This function is a generator that allows iteration over all results in a project</span>
+
+<span class="sd">    :param proj: A Project object</span>
+<span class="sd">    :return: A Result (via yield)</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    for result in all_results(proj):</span>
+<span class="sd">        do_stuff(result)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">r</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Result</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Helper generator to iterate over all progsets in a project</span>
+
+<span class="sd">    Project progsets may be</span>
+<span class="sd">        - Standalone progsets</span>
+<span class="sd">        - Contained in a Result</span>
+
+<span class="sd">    This function is a generator that allows iteration over all progsets in a project</span>
+
+<span class="sd">    :param proj: A Project object</span>
+<span class="sd">    :return: A progset (via yield)</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    for progset in all_progsets(proj):</span>
+<span class="sd">        do_stuff(progset)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">progsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">yield</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">progset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">r</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">progset</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Result</span><span class="p">)</span> <span class="ow">and</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">progset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">progset</span>
+
+
+<span class="k">def</span> <span class="nf">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Helper generator to iterate over all frameworks in a project</span>
+
+<span class="sd">    Project frameworks may be</span>
+<span class="sd">        - Standalone frameworks</span>
+<span class="sd">        - Contained in a Result</span>
+
+<span class="sd">    This function is a generator that allows iteration over all frameworks in a project</span>
+
+<span class="sd">    :param proj: A Project object</span>
+<span class="sd">    :return: A framework (via yield)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">r</span><span class="o">.</span><span class="n">framework</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Result</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">result</span><span class="o">.</span><span class="n">framework</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.6&#39;</span><span class="p">,</span> <span class="s1">&#39;Simplify ParameterSet storage&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">simplify_parset_storage</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="c1"># ParameterSets in 1.0.5 store the parameters keyed by the type e.g. &#39;cascade&#39;,&#39;comp&#39;</span>
+    <span class="c1"># In 1.0.6 they are flat</span>
+    <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">new_pars</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">par_type</span><span class="p">,</span> <span class="n">par_list</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">par_list</span><span class="p">:</span>
+                <span class="n">new_pars</span><span class="p">[</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">par</span>
+        <span class="n">parset</span><span class="o">.</span><span class="n">pars</span> <span class="o">=</span> <span class="n">new_pars</span>
+        <span class="k">del</span> <span class="n">parset</span><span class="o">.</span><span class="n">par_ids</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.7&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.8&#39;</span><span class="p">,</span> <span class="s1">&#39;Add version information to model/results&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_model_version</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">add_version</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">version</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">gitinfo</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">gitinfo</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">created</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="n">add_version</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">proj</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.8&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.9&#39;</span><span class="p">,</span> <span class="s1">&#39;Add currency and units to progset quantities&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_currency_and_units</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">add_units</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
+        <span class="c1"># Add in the default units</span>
+        <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">=</span> <span class="s1">&#39;$&#39;</span>
+        <span class="k">for</span> <span class="n">program</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">program</span><span class="o">.</span><span class="n">baseline_spend</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">+</span> <span class="s1">&#39;/year&#39;</span>
+            <span class="n">program</span><span class="o">.</span><span class="n">spend_data</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">+</span> <span class="s1">&#39;/year&#39;</span>
+            <span class="n">program</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">+</span> <span class="s1">&#39;/person&#39;</span>
+            <span class="n">program</span><span class="o">.</span><span class="n">capacity</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;people/year&#39;</span>
+            <span class="n">program</span><span class="o">.</span><span class="n">saturation</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_SYMBOL_INAPPLICABLE</span>
+            <span class="n">program</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;people/year&#39;</span>
+
+    <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="n">add_units</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.9&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.10&#39;</span><span class="p">,</span> <span class="s1">&#39;Remove target_pars from Programs&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">remove_target_pars</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">remove_pars</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">program</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">del</span> <span class="n">program</span><span class="o">.</span><span class="n">target_pars</span>
+
+    <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="n">remove_pars</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.10&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.11&#39;</span><span class="p">,</span> <span class="s1">&#39;Add result update flag to Project&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_result_update_flag</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="n">proj</span><span class="o">.</span><span class="n">_result_update_required</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.12&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.13&#39;</span><span class="p">,</span> <span class="s1">&#39;Add timescale to parameters&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_timescale</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">transitions</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
+            <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;timescale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Default timescale - note that currently only transition parameters are allowed to have a timescale that is not None</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;format&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The Framework now needs to define the units for transition parameters, but the current one does not define units for Parameter &quot;</span><span class="si">%s</span><span class="s1">&quot; and data was not saved either, so cannot infer the unit type. Please modify the Framework spreadsheet to add units&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Get the units from the first ts associated with the table</span>
+                    <span class="n">units</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">units</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">units</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Parameters must now have a single unit for all populations. However, the existing data has more than one unit type associated with Parameter &quot;</span><span class="si">%s</span><span class="s1">&quot; so it is no longer valid.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.13&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.14&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters use TimeSeries internally&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">parameter_use_timeseries</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
+
+            <span class="n">par</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">par</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">par</span><span class="o">.</span><span class="n">y_format</span><span class="p">[</span><span class="n">pop</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="n">pop</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="n">pop</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="c1"># It was an assumption</span>
+                    <span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">pop</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                    <span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+            <span class="k">del</span> <span class="n">par</span><span class="o">.</span><span class="n">y_format</span>
+            <span class="k">del</span> <span class="n">par</span><span class="o">.</span><span class="n">t</span>
+            <span class="k">del</span> <span class="n">par</span><span class="o">.</span><span class="n">y</span>
+            <span class="k">del</span> <span class="n">par</span><span class="o">.</span><span class="n">autocalibrate</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.14&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.15&#39;</span><span class="p">,</span> <span class="s1">&#39;Internal model tidying&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">model_tidying</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">charac</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">characs</span><span class="p">:</span>
+                <span class="n">charac</span><span class="o">.</span><span class="n">_vals</span> <span class="o">=</span> <span class="n">charac</span><span class="o">.</span><span class="n">internal_vals</span>
+                <span class="n">charac</span><span class="o">.</span><span class="n">_is_dynamic</span> <span class="o">=</span> <span class="n">charac</span><span class="o">.</span><span class="n">dependency</span>
+                <span class="k">del</span> <span class="n">charac</span><span class="o">.</span><span class="n">internal_vals</span>
+                <span class="k">del</span> <span class="n">charac</span><span class="o">.</span><span class="n">dependency</span>
+            <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">_is_dynamic</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">dependency</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">_precompute</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">del</span> <span class="n">par</span><span class="o">.</span><span class="n">dependency</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.15&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.16&#39;</span><span class="p">,</span> <span class="s1">&#39;Replace AtomicaSpreadsheet&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">convert_spreadsheets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">placeholder</span><span class="p">):</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">placeholder</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">filename</span><span class="o">=</span><span class="n">placeholder</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">placeholder</span><span class="o">.</span><span class="n">load_date</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">modified</span> <span class="o">=</span> <span class="n">placeholder</span><span class="o">.</span><span class="n">load_date</span>
+        <span class="k">return</span> <span class="n">new</span>
+
+    <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">databook</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">proj</span><span class="o">.</span><span class="n">databook</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">databook</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">progbook</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">proj</span><span class="o">.</span><span class="n">progbook</span> <span class="o">=</span> <span class="n">convert</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">progbook</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.16&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.17&#39;</span><span class="p">,</span> <span class="s1">&#39;Rename capacity constraint&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">rename_capacity_constraint</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">prog</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">capacity_constraint</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">capacity</span>
+            <span class="k">del</span> <span class="n">prog</span><span class="o">.</span><span class="n">capacity</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.27&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.28&#39;</span><span class="p">,</span> <span class="s1">&#39;Rename link labels&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">rename_link_labels</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+    <span class="c1"># Normalize link labels - they should now always derive from their associated parameter</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+                <span class="n">link</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">id</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;:flow&#39;</span><span class="p">,)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_set_vars_by_pop</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.30&#39;</span><span class="p">,</span> <span class="s1">&#39;1.1.3&#39;</span><span class="p">,</span> <span class="s1">&#39;Replace scenarios&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">replace_scenarios</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="c1"># This migration upgrades existing scenarios to match the latest definitions</span>
+    <span class="kn">from</span> <span class="nn">.scenarios</span> <span class="k">import</span> <span class="n">ParameterScenario</span><span class="p">,</span> <span class="n">BudgetScenario</span><span class="p">,</span> <span class="n">CoverageScenario</span>
+    <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">NDict</span><span class="p">,</span> <span class="n">TimeSeries</span>
+
+    <span class="n">new_scens</span> <span class="o">=</span> <span class="n">NDict</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">scen</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="n">scen_name</span> <span class="o">=</span> <span class="n">scen</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">active</span> <span class="o">=</span> <span class="n">scen</span><span class="o">.</span><span class="n">active</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parsetname</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">parset</span><span class="p">(</span><span class="n">scen</span><span class="o">.</span><span class="n">parsetname</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">parsetname</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scen</span><span class="p">,</span> <span class="n">ParameterScenario</span><span class="p">):</span>
+            <span class="n">new_scen</span> <span class="o">=</span> <span class="n">scen</span>  <span class="c1"># No need to migrate parameter scenarios</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scen</span><span class="p">,</span> <span class="n">BudgetScenario</span><span class="p">):</span>
+            <span class="c1"># Convert budget scenario to instructions based on existing logic</span>
+            <span class="k">if</span> <span class="n">scen</span><span class="o">.</span><span class="n">alloc_year</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># If the alloc_year is prior to the program start year, then just use the spending value directly for all times</span>
+                <span class="c1"># For more sophisticated behaviour, the alloc should be passed into the BudgetScenario as a TimeSeries</span>
+                <span class="n">alloc</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">prog_name</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">scen</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">TimeSeries</span><span class="p">)</span>  <span class="c1"># Value must not be a TimeSeries</span>
+                    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">continue</span>  <span class="c1"># Use default spending for any program that does not have a spending overwrite</span>
+                    <span class="n">alloc</span><span class="p">[</span><span class="n">prog_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">scen</span><span class="o">.</span><span class="n">alloc_year</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">scen</span><span class="o">.</span><span class="n">alloc_year</span> <span class="o">&gt;</span> <span class="n">scen</span><span class="o">.</span><span class="n">start_year</span> <span class="ow">and</span> <span class="n">proj</span><span class="o">.</span><span class="n">progsets</span><span class="p">:</span>
+                        <span class="c1"># Add in current spending if a programs instance already exists</span>
+                        <span class="n">progset</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">progsets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="c1"># If adding spending in a future year, linearly ramp from the start year</span>
+                        <span class="n">spend_data</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">prog_name</span><span class="p">]</span><span class="o">.</span><span class="n">spend_data</span>
+                        <span class="n">alloc</span><span class="p">[</span><span class="n">prog_name</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">scen</span><span class="o">.</span><span class="n">start_year</span><span class="p">,</span> <span class="n">spend_data</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">scen</span><span class="o">.</span><span class="n">start_year</span><span class="p">))</span>  <span class="c1"># This will result in a linear ramp</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">alloc</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">prog_name</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">scen</span><span class="o">.</span><span class="n">alloc</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">TimeSeries</span><span class="p">):</span>
+                        <span class="n">alloc</span><span class="p">[</span><span class="n">prog_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">scen</span><span class="o">.</span><span class="n">start_year</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">alloc</span><span class="p">[</span><span class="n">prog_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">alloc</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">scen</span><span class="o">.</span><span class="n">budget_factor</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ts</span><span class="o">.</span><span class="n">vals</span><span class="p">]</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">progsetname</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">progset</span><span class="p">(</span><span class="n">scen</span><span class="o">.</span><span class="n">progsetname</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">progsetname</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+
+            <span class="n">new_scen</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">BudgetScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">scen_name</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="n">active</span><span class="p">,</span> <span class="n">parsetname</span><span class="o">=</span><span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="o">=</span><span class="n">progsetname</span><span class="p">,</span> <span class="n">alloc</span><span class="o">=</span><span class="n">alloc</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="n">scen</span><span class="o">.</span><span class="n">start_year</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scen</span><span class="p">,</span> <span class="n">CoverageScenario</span><span class="p">):</span>
+            <span class="n">coverage</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">prog_name</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">scen</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">TimeSeries</span><span class="p">):</span>
+                    <span class="n">coverage</span><span class="p">[</span><span class="n">prog_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">scen</span><span class="o">.</span><span class="n">start_year</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">coverage</span><span class="p">[</span><span class="n">prog_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">progsetname</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">progset</span><span class="p">(</span><span class="n">scen</span><span class="o">.</span><span class="n">progsetname</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">progsetname</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+
+            <span class="n">new_scen</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">CoverageScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">scen_name</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="n">active</span><span class="p">,</span> <span class="n">parsetname</span><span class="o">=</span><span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="o">=</span><span class="n">progsetname</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="n">coverage</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="n">scen</span><span class="o">.</span><span class="n">start_year</span><span class="p">)</span>
+
+        <span class="n">new_scens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_scen</span><span class="p">)</span>
+
+    <span class="n">proj</span><span class="o">.</span><span class="n">scens</span> <span class="o">=</span> <span class="n">new_scens</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.2.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Add population type&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_pop_type</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">fw</span> <span class="ow">in</span> <span class="n">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+        <span class="c1"># Add default population type sheet</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s1">&#39;population types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">([(</span><span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">,</span> <span class="s1">&#39;Default&#39;</span><span class="p">)],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;code name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">])]</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s1">&#39;population type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">characs</span><span class="p">[</span><span class="s1">&#39;population type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;population type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">interactions</span><span class="p">[</span><span class="s1">&#39;to population type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">interactions</span><span class="p">[</span><span class="s1">&#39;from population type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+
+    <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">pop_spec</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">pop_spec</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+
+        <span class="c1"># Fix up TDVE types</span>
+        <span class="c1"># Fix up transfers and interactions</span>
+        <span class="k">for</span> <span class="n">tdve</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+
+        <span class="k">for</span> <span class="n">interaction</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">transfers</span> <span class="o">+</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">interpops</span><span class="p">:</span>
+            <span class="n">interaction</span><span class="o">.</span><span class="n">from_pop_type</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+            <span class="n">interaction</span><span class="o">.</span><span class="n">to_pop_type</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+
+    <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">parset</span><span class="o">.</span><span class="n">pop_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">pop</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>  <span class="c1"># If there are parsets without data, then we don&#39;t know what pop types to add. Project is essentially incomplete and considered unusable</span>
+
+    <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">pop</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">comp</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">comp</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">progset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
+            <span class="n">pop</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameter can be derivative&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_derivatives</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">fw</span> <span class="ow">in</span> <span class="n">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;is derivative&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">derivative</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.4.3&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters with functions can be overwritten&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_parset_disable_function</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+    <span class="c1"># Add skip_function flag to parset Parameter instances</span>
+    <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
+            <span class="n">par</span><span class="o">.</span><span class="n">skip_function</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">skip_function</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.5.1&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.2&#39;</span><span class="p">,</span> <span class="s1">&#39;OptimInstruction has separate adjustment and start years&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">separate_optiminstruction_years</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s1">&#39;optims&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">optim</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">optims</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s1">&#39;adjustment_year&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">optim</span><span class="o">.</span><span class="n">json</span><span class="p">:</span>
+                <span class="n">optim</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;adjustment_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;start_year&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.7.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.8.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters store interpolation method, deprecate scenario smooth onset&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_parameter_interpolation_method</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
+            <span class="n">par</span><span class="o">.</span><span class="n">_interpolation_method</span> <span class="o">=</span> <span class="s1">&#39;pchip&#39;</span>  <span class="c1"># New projects will default to linear, but migrations use pchip to ensure results don&#39;t change</span>
+    <span class="k">for</span> <span class="n">scen</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scen</span><span class="p">,</span> <span class="n">atomica</span><span class="o">.</span><span class="n">ParameterScenario</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">par_name</span> <span class="ow">in</span> <span class="n">scen</span><span class="o">.</span><span class="n">scenario_values</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">pop_name</span> <span class="ow">in</span> <span class="n">scen</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="s1">&#39;smooth_onset&#39;</span> <span class="ow">in</span> <span class="n">scen</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_name</span><span class="p">][</span><span class="n">pop_name</span><span class="p">]:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Parameter scenario smooth onset is deprecated and will not be used&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.8.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.9.0&#39;</span><span class="p">,</span> <span class="s1">&#39;OptimInstructions functionality moved to apps&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">refactor_optiminstructions</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s1">&#39;optims&#39;</span><span class="p">):</span>
+        <span class="n">delkeys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">optims</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">_Placeholder</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;json&#39;</span><span class="p">):</span>  <span class="c1"># If it was previously an OptimInstructions</span>
+                <span class="c1"># This was a project from the FE, which stores the optimization JSON dicts in</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s1">&#39;optim_jsons&#39;</span><span class="p">):</span>
+                    <span class="n">proj</span><span class="o">.</span><span class="n">optim_jsons</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="n">json</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">json</span>
+                <span class="k">for</span> <span class="n">prog_name</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;prog_spending&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">spend</span> <span class="o">=</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;prog_spending&#39;</span><span class="p">][</span><span class="n">prog_name</span><span class="p">]</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">prog_label</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">progsets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">prog_name</span><span class="p">]</span><span class="o">.</span><span class="n">label</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="n">prog_label</span> <span class="o">=</span> <span class="n">prog_name</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s1">&#39;prog_spending&#39;</span><span class="p">][</span><span class="n">prog_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="n">spend</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="n">spend</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">prog_label</span><span class="p">}</span>
+                <span class="n">proj</span><span class="o">.</span><span class="n">optim_jsons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+                <span class="n">delkeys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">delkeys</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">proj</span><span class="o">.</span><span class="n">optims</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">proj</span><span class="o">.</span><span class="n">optims</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">NDict</span><span class="p">()</span>  <span class="c1"># Make sure it&#39;s defined, even if it&#39;s empty</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.10.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.11.0&#39;</span><span class="p">,</span> <span class="s1">&#39;TDVE stores headings to write internally&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_internal_flags_to_tdve</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="c1"># This migration adds missing attributes to TDVE and TDC objects</span>
+    <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tdve</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">tdc</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">transfers</span> <span class="o">+</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">interpops</span><span class="p">:</span>
+            <span class="n">tdc</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>
+            <span class="n">tdc</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">tdc</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">tdc</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tdc</span><span class="p">,</span> <span class="s1">&#39;from_pops&#39;</span><span class="p">):</span>  <span class="c1"># This was missed in the previous migration `add_pop_type` so add it in here</span>
+                <span class="c1"># If the pop type is missing, then we must be using a legacy framework with only one pop type</span>
+                <span class="n">tdc</span><span class="o">.</span><span class="n">from_pop_type</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pop_types</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">tdc</span><span class="o">.</span><span class="n">from_pops</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="n">tdc</span><span class="o">.</span><span class="n">to_pop_type</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pop_types</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">tdc</span><span class="o">.</span><span class="n">to_pops</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.11.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.12.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Timed compartment updates&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_timed_attribute</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">fw</span> <span class="ow">in</span> <span class="n">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s1">&#39;duration group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">comps</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_birth</span><span class="p">:</span>
+                    <span class="n">comp</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">SourceCompartment</span>
+                <span class="k">elif</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_dead</span><span class="p">:</span>
+                    <span class="n">comp</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">SinkCompartment</span>
+                <span class="k">elif</span> <span class="n">comp</span><span class="o">.</span><span class="n">is_junction</span><span class="p">:</span>
+                    <span class="n">comp</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">JunctionCompartment</span>
+                    <span class="n">comp</span><span class="o">.</span><span class="n">duration_group</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">del</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_birth</span>
+                <span class="k">del</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_dead</span>
+                <span class="k">del</span> <span class="n">comp</span><span class="o">.</span><span class="n">is_junction</span>
+
+        <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">relink</span><span class="p">()</span>  <span class="c1"># Make sure all of the references are updated to the new compartment instance - it has the same ID so it should be fine</span>
+
+    <span class="k">return</span> <span class="n">proj</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Atomica Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
