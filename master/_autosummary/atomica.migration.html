@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../code_documentation.html">Code documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
@@ -173,32 +175,52 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="atomica-migration">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-migration">
 <h1>atomica.migration<a class="headerlink" href="#atomica-migration" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="atomica.migration">
-<code class="descclassname">atomica.</code><code class="descname">migration</code><span class="sig-paren">(</span><em>original_version</em>, <em>new_version</em>, <em>description</em>, <em>date=None</em>, <em>changes_results=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/migration.html#migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.migration" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.</code><code class="sig-name descname">migration</code><span class="sig-paren">(</span><em class="sig-param">original_version</em>, <em class="sig-param">new_version</em>, <em class="sig-param">description</em>, <em class="sig-param">date=None</em>, <em class="sig-param">changes_results=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/migration.html#migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.migration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator to register migration functions</p>
 <p>This decorator constructs a <cite>Migration</cite> object from a decorated migration function, and registers it
 in the module’s list of migrations to be run when calling migrate()</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>original_version</strong> – Version string for the start version. Function will only run on projects whose version is &lt;= this</li>
-<li><strong>new_version</strong> – The resulting project is assigned this version</li>
-<li><strong>description</strong> – A brief overview of the purpose of this migration</li>
-<li><strong>date</strong> – Optionally specify the date when this migration was written</li>
-<li><strong>changes_results</strong> – Optionally flag that changes to model output may occur</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>original_version</strong> – Version string for the start version. Function will only run on projects whose version is &lt;= this</p></li>
+<li><p><strong>new_version</strong> – The resulting project is assigned this version</p></li>
+<li><p><strong>description</strong> – A brief overview of the purpose of this migration</p></li>
+<li><p><strong>date</strong> – Optionally specify the date when this migration was written</p></li>
+<li><p><strong>changes_results</strong> – Optionally flag that changes to model output may occur</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 <p>Example usage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;1.0.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.1&#39;</span><span class="p">,</span> <span class="s1">&#39;Upgrade project&#39;</span><span class="p">,</span> <span class="n">changes_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">update_project</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>

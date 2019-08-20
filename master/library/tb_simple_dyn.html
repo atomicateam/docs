@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Model library</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cervicalcancer.html">Cervical cancer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diabetes.html">Diabetes</a></li>
@@ -221,18 +223,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tb-simple-with-dynamics">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="tb-simple-with-dynamics">
 <h1>TB simple with dynamics<a class="headerlink" href="#tb-simple-with-dynamics" title="Permalink to this headline">¶</a></h1>
 <p><strong>Name</strong>: TB with dynamics</p>
 <p><strong>Description</strong>: Framework for a simple TB model with vital dynamics and new cases</p>
 <div class="section" id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="#compartments">Compartments</a></li>
-<li><a class="reference external" href="#characteristics">Characteristics</a></li>
-<li><a class="reference external" href="#parameters">Parameters</a></li>
-<li><a class="reference external" href="#interactions">Interactions</a></li>
-<li><a class="reference external" href="#cascades">Cascades</a></li>
+<li><p><a class="reference external" href="#compartments">Compartments</a></p></li>
+<li><p><a class="reference external" href="#characteristics">Characteristics</a></p></li>
+<li><p><a class="reference external" href="#parameters">Parameters</a></p></li>
+<li><p><a class="reference external" href="#interactions">Interactions</a></p></li>
+<li><p><a class="reference external" href="#cascades">Cascades</a></p></li>
 </ul>
 </div>
 <div class="section" id="compartments">
@@ -240,94 +266,94 @@
 <div class="section" id="compartment-source">
 <h3>Compartment: Source<a class="headerlink" href="#compartment-source" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">source</span></code></li>
-<li>Is source</li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">source</span></code></p></li>
+<li><p>Is source</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-susceptible">
 <h3>Compartment: Susceptible<a class="headerlink" href="#compartment-susceptible" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">sus</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">sus</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-vaccinated">
 <h3>Compartment: Vaccinated<a class="headerlink" href="#compartment-vaccinated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">vac</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">vac</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-undiagnosed">
 <h3>Compartment: Undiagnosed<a class="headerlink" href="#compartment-undiagnosed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">undx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">undx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-diagnosed">
 <h3>Compartment: Diagnosed<a class="headerlink" href="#compartment-diagnosed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">dx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">dx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-notified-and-treated">
 <h3>Compartment: Notified and treated<a class="headerlink" href="#compartment-notified-and-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">tx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">tx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-lost-to-follow-up">
 <h3>Compartment: Lost to follow-up<a class="headerlink" href="#compartment-lost-to-follow-up" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">lost</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">lost</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-successfully-treated-comp">
 <h3>Compartment: Successfully treated (comp)<a class="headerlink" href="#compartment-successfully-treated-comp" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">txs</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">txs</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-dead-tb">
 <h3>Compartment: Dead (TB)<a class="headerlink" href="#compartment-dead-tb" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">dead_tb</span></code></li>
-<li>Is sink</li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">dead_tb</span></code></p></li>
+<li><p>Is sink</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-dead-other">
 <h3>Compartment: Dead (other)<a class="headerlink" href="#compartment-dead-other" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">dead_other</span></code></li>
-<li>Is sink</li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">dead_other</span></code></p></li>
+<li><p>Is sink</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -336,107 +362,113 @@
 <div class="section" id="characteristic-population-size">
 <h3>Characteristic: Population size<a class="headerlink" href="#characteristic-population-size" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">alive</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Susceptible</li>
-<li>Vaccinated</li>
-<li>Undiagnosed</li>
-<li>Diagnosed</li>
-<li>Notified and treated</li>
-<li>Lost to follow-up</li>
-<li>Successfully treated (comp)</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">alive</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Susceptible</p></li>
+<li><p>Vaccinated</p></li>
+<li><p>Undiagnosed</p></li>
+<li><p>Diagnosed</p></li>
+<li><p>Notified and treated</p></li>
+<li><p>Lost to follow-up</p></li>
+<li><p>Successfully treated (comp)</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-tb-burden">
 <h3>Characteristic: TB burden<a class="headerlink" href="#characteristic-tb-burden" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_people</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Undiagnosed</li>
-<li>Diagnosed</li>
-<li>Notified and treated</li>
-<li>Lost to follow-up</li>
-<li>Successfully treated (comp)</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_people</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Undiagnosed</p></li>
+<li><p>Diagnosed</p></li>
+<li><p>Notified and treated</p></li>
+<li><p>Lost to follow-up</p></li>
+<li><p>Successfully treated (comp)</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-notified">
 <h3>Characteristic: Notified<a class="headerlink" href="#characteristic-notified" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_dx</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Diagnosed</li>
-<li>Notified and treated</li>
-<li>Lost to follow-up</li>
-<li>Successfully treated (comp)</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_dx</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Diagnosed</p></li>
+<li><p>Notified and treated</p></li>
+<li><p>Lost to follow-up</p></li>
+<li><p>Successfully treated (comp)</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-in-care">
 <h3>Characteristic: In care<a class="headerlink" href="#characteristic-in-care" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_curr_linked</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Diagnosed</li>
-<li>Notified and treated</li>
-<li>Successfully treated (comp)</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_curr_linked</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Diagnosed</p></li>
+<li><p>Notified and treated</p></li>
+<li><p>Successfully treated (comp)</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-treated">
 <h3>Characteristic: Treated<a class="headerlink" href="#characteristic-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_tx</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Notified and treated</li>
-<li>Successfully treated (comp)</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_tx</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Notified and treated</p></li>
+<li><p>Successfully treated (comp)</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-successfully-treated">
 <h3>Characteristic: Successfully treated<a class="headerlink" href="#characteristic-successfully-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_vs</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Successfully treated (comp)</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_vs</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Successfully treated (comp)</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -445,360 +477,385 @@
 <div class="section" id="parameter-annual-number-of-births">
 <h3>Parameter: Annual number of births<a class="headerlink" href="#parameter-annual-number-of-births" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">birth_rate</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Contributes to transitions from:<ul>
-<li>“Source” to “Susceptible”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">birth_rate</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Source” to “Susceptible”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-estimated-number-of-new-tb-cases-annually">
 <h3>Parameter: Estimated number of new TB cases annually<a class="headerlink" href="#parameter-estimated-number-of-new-tb-cases-annually" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_acq</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Acquisition rate”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_acq</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Acquisition rate”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-acquisition-rate">
 <h3>Parameter: Acquisition rate<a class="headerlink" href="#parameter-acquisition-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">acq_rate</span></code></li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Susceptible” to “Undiagnosed”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">acq_rate</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Susceptible” to “Undiagnosed”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_acq/max(sus,num_acq)</span></code></li>
-<li>Depends on:<ul>
-<li>“Susceptible”</li>
-<li>“Estimated number of new TB cases annually”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_acq/max(sus,num_acq)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Susceptible”</p></li>
+<li><p>“Estimated number of new TB cases annually”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-natural-recovery-rate">
 <h3>Parameter: Natural recovery rate<a class="headerlink" href="#parameter-natural-recovery-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">rec_rate</span></code></li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Undiagnosed” to “Susceptible”</li>
-<li>“Diagnosed” to “Susceptible”</li>
-<li>“Notified and treated” to “Susceptible”</li>
-<li>“Lost to follow-up” to “Susceptible”</li>
-<li>“Successfully treated (comp)” to “Susceptible”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">rec_rate</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Undiagnosed” to “Susceptible”</p></li>
+<li><p>“Diagnosed” to “Susceptible”</p></li>
+<li><p>“Notified and treated” to “Susceptible”</p></li>
+<li><p>“Lost to follow-up” to “Susceptible”</p></li>
+<li><p>“Successfully treated (comp)” to “Susceptible”</p></li>
 </ul>
 </li>
-<li>Default value: 0.16</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.16</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-vaccinated">
 <h3>Parameter: Annual number vaccinated<a class="headerlink" href="#parameter-annual-number-vaccinated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_vac</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Vaccination rate”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_vac</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Vaccination rate”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-vaccination-rate">
 <h3>Parameter: Vaccination rate<a class="headerlink" href="#parameter-vaccination-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">vac_rate</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Susceptible” to “Vaccinated”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">vac_rate</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Susceptible” to “Vaccinated”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_vac/max(sus,num_vac)</span></code></li>
-<li>Depends on:<ul>
-<li>“Annual number vaccinated”</li>
-<li>“Susceptible”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_vac/max(sus,num_vac)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Annual number vaccinated”</p></li>
+<li><p>“Susceptible”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-of-tests-done">
 <h3>Parameter: Annual number of tests done<a class="headerlink" href="#parameter-annual-number-of-tests-done" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_test</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Annual number tested positive”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_test</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Annual number tested positive”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-test-yield">
 <h3>Parameter: Test yield<a class="headerlink" href="#parameter-test-yield" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">test_yield</span></code></li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">undx/(undx+sus)</span></code></li>
-<li>Depends on:<ul>
-<li>“Susceptible”</li>
-<li>“Undiagnosed”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">test_yield</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">undx/(undx+sus)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Susceptible”</p></li>
+<li><p>“Undiagnosed”</p></li>
 </ul>
 </li>
-<li>Used to compute:<ul>
-<li>“Annual number tested positive”</li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Annual number tested positive”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-tested-positive">
 <h3>Parameter: Annual number tested positive<a class="headerlink" href="#parameter-annual-number-tested-positive" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">pos_test</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_test*test_yield</span></code></li>
-<li>Depends on:<ul>
-<li>“Annual number of tests done”</li>
-<li>“Test yield”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">pos_test</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_test*test_yield</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Annual number of tests done”</p></li>
+<li><p>“Test yield”</p></li>
 </ul>
 </li>
-<li>Used to compute:<ul>
-<li>“Test sensitivity”</li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Test sensitivity”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-test-sensitivity">
 <h3>Parameter: Test sensitivity<a class="headerlink" href="#parameter-test-sensitivity" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">diag</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Undiagnosed” to “Diagnosed”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">diag</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Undiagnosed” to “Diagnosed”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">pos_test/max(undx,pos_test)</span></code></li>
-<li>Depends on:<ul>
-<li>“Undiagnosed”</li>
-<li>“Annual number tested positive”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">pos_test/max(undx,pos_test)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Undiagnosed”</p></li>
+<li><p>“Annual number tested positive”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-newly-initiated-onto-treatment">
 <h3>Parameter: Annual number newly initiated onto treatment<a class="headerlink" href="#parameter-annual-number-newly-initiated-onto-treatment" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_initiate</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Initiation rate”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_initiate</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Initiation rate”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-initiation-rate">
 <h3>Parameter: Initiation rate<a class="headerlink" href="#parameter-initiation-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">initiate</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Diagnosed” to “Notified and treated”</li>
-<li>“Lost to follow-up” to “Notified and treated”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">initiate</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Diagnosed” to “Notified and treated”</p></li>
+<li><p>“Lost to follow-up” to “Notified and treated”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_initiate/max(dx,num_initiate)</span></code></li>
-<li>Depends on:<ul>
-<li>“Diagnosed”</li>
-<li>“Annual number newly initiated onto treatment”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_initiate/max(dx,num_initiate)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Diagnosed”</p></li>
+<li><p>“Annual number newly initiated onto treatment”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-loss-to-follow-up-rate">
 <h3>Parameter: Loss-to-follow-up rate<a class="headerlink" href="#parameter-loss-to-follow-up-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">loss</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Notified and treated” to “Lost to follow-up”</li>
-<li>“Successfully treated (comp)” to “Lost to follow-up”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">loss</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Notified and treated” to “Lost to follow-up”</p></li>
+<li><p>“Successfully treated (comp)” to “Lost to follow-up”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-time-after-initiating-treatment-to-treatment-success-years">
 <h3>Parameter: Time after initiating treatment to treatment success (years)<a class="headerlink" href="#parameter-time-after-initiating-treatment-to-treatment-success-years" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">supp_rate</span></code></li>
-<li>Units/format: duration</li>
-<li>Value restrictions: At least 0</li>
-<li>Contributes to transitions from:<ul>
-<li>“Notified and treated” to “Successfully treated (comp)”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">supp_rate</span></code></p></li>
+<li><p>Units/format: duration</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Notified and treated” to “Successfully treated (comp)”</p></li>
 </ul>
 </li>
-<li>Default value: 0.2</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.2</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-treatment-failure-rate">
 <h3>Parameter: Treatment failure rate<a class="headerlink" href="#parameter-treatment-failure-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">fail_rate</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Successfully treated (comp)” to “Notified and treated”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">fail_rate</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Successfully treated (comp)” to “Notified and treated”</p></li>
 </ul>
 </li>
-<li>Default value: 0.16</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.16</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-death-rate-for-those-with-untreated-tb">
 <h3>Parameter: Death rate for those with untreated TB<a class="headerlink" href="#parameter-death-rate-for-those-with-untreated-tb" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">death_tb</span></code></li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Undiagnosed” to “Dead (TB)”</li>
-<li>“Diagnosed” to “Dead (TB)”</li>
-<li>“Lost to follow-up” to “Dead (TB)”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">death_tb</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Undiagnosed” to “Dead (TB)”</p></li>
+<li><p>“Diagnosed” to “Dead (TB)”</p></li>
+<li><p>“Lost to follow-up” to “Dead (TB)”</p></li>
 </ul>
 </li>
-<li>Default value: 0.12</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.12</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-death-rate-for-those-unsuccessfully-treated">
 <h3>Parameter: Death rate for those unsuccessfully treated<a class="headerlink" href="#parameter-death-rate-for-those-unsuccessfully-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">death_tbtx</span></code></li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Notified and treated” to “Dead (TB)”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">death_tbtx</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Notified and treated” to “Dead (TB)”</p></li>
 </ul>
 </li>
-<li>Default value: 0.06</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.06</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-death-rate-for-those-successfully-treated">
 <h3>Parameter: Death rate for those successfully treated<a class="headerlink" href="#parameter-death-rate-for-those-successfully-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">death_tbtxs</span></code></li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Successfully treated (comp)” to “Dead (TB)”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">death_tbtxs</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Successfully treated (comp)” to “Dead (TB)”</p></li>
 </ul>
 </li>
-<li>Default value: 0.03</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.03</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-background-mortality-rate">
 <h3>Parameter: Background mortality rate<a class="headerlink" href="#parameter-background-mortality-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">death_other</span></code></li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Susceptible” to “Dead (other)”</li>
-<li>“Vaccinated” to “Dead (other)”</li>
-<li>“Undiagnosed” to “Dead (other)”</li>
-<li>“Diagnosed” to “Dead (other)”</li>
-<li>“Notified and treated” to “Dead (other)”</li>
-<li>“Lost to follow-up” to “Dead (other)”</li>
-<li>“Successfully treated (comp)” to “Dead (other)”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">death_other</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Susceptible” to “Dead (other)”</p></li>
+<li><p>“Vaccinated” to “Dead (other)”</p></li>
+<li><p>“Undiagnosed” to “Dead (other)”</p></li>
+<li><p>“Diagnosed” to “Dead (other)”</p></li>
+<li><p>“Notified and treated” to “Dead (other)”</p></li>
+<li><p>“Lost to follow-up” to “Dead (other)”</p></li>
+<li><p>“Successfully treated (comp)” to “Dead (other)”</p></li>
 </ul>
 </li>
-<li>Default value: 0.015</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.015</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -810,26 +867,32 @@
 <div class="section" id="cascade-tb-care-cascade">
 <h3>Cascade: TB care cascade<a class="headerlink" href="#cascade-tb-care-cascade" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Stages:<ul>
-<li>TB burden<ul>
-<li>TB burden</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Stages:</p>
+<ul>
+<li><p>TB burden</p>
+<ul>
+<li><p>TB burden</p></li>
 </ul>
 </li>
-<li>Notified<ul>
-<li>Notified</li>
+<li><p>Notified</p>
+<ul>
+<li><p>Notified</p></li>
 </ul>
 </li>
-<li>In care<ul>
-<li>In care</li>
+<li><p>In care</p>
+<ul>
+<li><p>In care</p></li>
 </ul>
 </li>
-<li>Treated<ul>
-<li>Treated</li>
+<li><p>Treated</p>
+<ul>
+<li><p>Treated</p></li>
 </ul>
 </li>
-<li>Successfully treated<ul>
-<li>Successfully treated</li>
+<li><p>Successfully treated</p>
+<ul>
+<li><p>Successfully treated</p></li>
 </ul>
 </li>
 </ul>

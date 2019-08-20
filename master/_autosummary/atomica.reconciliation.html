@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../code_documentation.html">Code documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
@@ -173,7 +175,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-atomica.reconciliation">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-atomica.reconciliation">
 <span id="atomica-reconciliation"></span><h1>atomica.reconciliation<a class="headerlink" href="#module-atomica.reconciliation" title="Permalink to this headline">¶</a></h1>
 <p>Implements the automatic reconciliation algorithm</p>
 <p>In any given model run, the parameters calculated by the <code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code>
@@ -183,50 +209,50 @@ on the data gathered and the calibration. Reconciliation aims to adjust the
 internal parameters of the <code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code> to best match a <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code>
 in a particular year.</p>
 <p class="rubric">Functions</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#atomica.reconciliation.reconcile" title="atomica.reconciliation.reconcile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconcile</span></code></a>(project,&nbsp;parset,&nbsp;progset,&nbsp;…[,&nbsp;…])</td>
-<td>Modify a progset to optimally match a parset in a specified year</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.reconciliation.reconcile" title="atomica.reconciliation.reconcile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconcile</span></code></a>(project, parset, progset, …[, …])</p></td>
+<td><p>Modify a progset to optimally match a parset in a specified year</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="function">
 <dt id="atomica.reconciliation._convert_to_single_year">
-<code class="descclassname">atomica.reconciliation.</code><code class="descname">_convert_to_single_year</code><span class="sig-paren">(</span><em>progset</em>, <em>reconciliation_year</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_convert_to_single_year"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._convert_to_single_year" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.reconciliation.</code><code class="sig-name descname">_convert_to_single_year</code><span class="sig-paren">(</span><em class="sig-param">progset</em>, <em class="sig-param">reconciliation_year</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_convert_to_single_year"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._convert_to_single_year" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="atomica.reconciliation._extract_targets">
-<code class="descclassname">atomica.reconciliation.</code><code class="descname">_extract_targets</code><span class="sig-paren">(</span><em>result</em>, <em>progset</em>, <em>ti</em>, <em>eval_pars=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_extract_targets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._extract_targets" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.reconciliation.</code><code class="sig-name descname">_extract_targets</code><span class="sig-paren">(</span><em class="sig-param">result</em>, <em class="sig-param">progset</em>, <em class="sig-param">ti</em>, <em class="sig-param">eval_pars=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_extract_targets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._extract_targets" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="atomica.reconciliation._objective">
-<code class="descclassname">atomica.reconciliation.</code><code class="descname">_objective</code><span class="sig-paren">(</span><em>x</em>, <em>mapping</em>, <em>progset</em>, <em>eval_years</em>, <em>target_vals</em>, <em>num_eligible</em>, <em>dt</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._objective" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.reconciliation.</code><code class="sig-name descname">_objective</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">mapping</em>, <em class="sig-param">progset</em>, <em class="sig-param">eval_years</em>, <em class="sig-param">target_vals</em>, <em class="sig-param">num_eligible</em>, <em class="sig-param">dt</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_objective"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._objective" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="atomica.reconciliation._prepare_asd_inputs">
-<code class="descclassname">atomica.reconciliation.</code><code class="descname">_prepare_asd_inputs</code><span class="sig-paren">(</span><em>progset</em>, <em>bounds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_prepare_asd_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._prepare_asd_inputs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.reconciliation.</code><code class="sig-name descname">_prepare_asd_inputs</code><span class="sig-paren">(</span><em class="sig-param">progset</em>, <em class="sig-param">bounds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_prepare_asd_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._prepare_asd_inputs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="atomica.reconciliation._prepare_bounds">
-<code class="descclassname">atomica.reconciliation.</code><code class="descname">_prepare_bounds</code><span class="sig-paren">(</span><em>progset</em>, <em>unit_cost_bounds</em>, <em>baseline_bounds</em>, <em>capacity_bounds</em>, <em>outcome_bounds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_prepare_bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._prepare_bounds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.reconciliation.</code><code class="sig-name descname">_prepare_bounds</code><span class="sig-paren">(</span><em class="sig-param">progset</em>, <em class="sig-param">unit_cost_bounds</em>, <em class="sig-param">baseline_bounds</em>, <em class="sig-param">capacity_bounds</em>, <em class="sig-param">outcome_bounds</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_prepare_bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._prepare_bounds" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="atomica.reconciliation._update_progset">
-<code class="descclassname">atomica.reconciliation.</code><code class="descname">_update_progset</code><span class="sig-paren">(</span><em>asd_vals</em>, <em>mapping</em>, <em>progset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_update_progset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._update_progset" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.reconciliation.</code><code class="sig-name descname">_update_progset</code><span class="sig-paren">(</span><em class="sig-param">asd_vals</em>, <em class="sig-param">mapping</em>, <em class="sig-param">progset</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#_update_progset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation._update_progset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="atomica.reconciliation.reconcile">
-<code class="descclassname">atomica.reconciliation.</code><code class="descname">reconcile</code><span class="sig-paren">(</span><em>project</em>, <em>parset</em>, <em>progset</em>, <em>reconciliation_year</em>, <em>max_time=10</em>, <em>unit_cost_bounds=0.0</em>, <em>baseline_bounds=0.0</em>, <em>capacity_bounds=0.0</em>, <em>outcome_bounds=0.0</em>, <em>eval_pars=None</em>, <em>eval_range=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#reconcile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation.reconcile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.reconciliation.</code><code class="sig-name descname">reconcile</code><span class="sig-paren">(</span><em class="sig-param">project</em>, <em class="sig-param">parset</em>, <em class="sig-param">progset</em>, <em class="sig-param">reconciliation_year</em>, <em class="sig-param">max_time=10</em>, <em class="sig-param">unit_cost_bounds=0.0</em>, <em class="sig-param">baseline_bounds=0.0</em>, <em class="sig-param">capacity_bounds=0.0</em>, <em class="sig-param">outcome_bounds=0.0</em>, <em class="sig-param">eval_pars=None</em>, <em class="sig-param">eval_range=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/reconciliation.html#reconcile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.reconciliation.reconcile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modify a progset to optimally match a parset in a specified year</p>
 <p>Reconciliation is a mapping from one progset to another. The output progset generates optimally matched output parameter
 values compared to the specified parset, in the reconciliation year for the progset’s default spending. The output progset
@@ -235,33 +261,29 @@ input progset may have time varying unit costs etc. after reconciliation, they w
 <p>The upper and lower bounds for unit costs, baseline, capacity_constraint, and outcome are specified as fractions of the initial value. For
 example, entering <code class="docutils literal notranslate"><span class="pre">unit_cost_bounds=0.2</span></code> would mean that unit costs would be allowed to range from 0.8 to 1.2 times the
 value in the input progset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code> instance</li>
-<li><strong>parset</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code> instance (or name of a parset contained in the project)</li>
-<li><strong>progset</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code> instance (or name of a progset contained in the project)</li>
-<li><strong>reconciliation_year</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Year to perform reconciliation in</li>
-<li><strong>max_time</strong> – Optionally override the maximum execution time in ASD</li>
-<li><strong>unit_cost_bounds</strong> – Optionally specify bounds for unit costs. Default is 0.0 (unit costs will not be changed)</li>
-<li><strong>baseline_bounds</strong> – Optionally specify bounds for baseline spending. Default is 0.0 (no changes)</li>
-<li><strong>capacity_bounds</strong> – Optionally specify bounds for capacity_constraint constraints. Default is 0.0 (no changes)</li>
-<li><strong>outcome_bounds</strong> – Optionally specify bounds for outcome values. Default is 0.0 (no changes)</li>
-<li><strong>eval_pars</strong> – Optionally select a subset of parameters for comparison. By default, all parameters overwritten by the progset will be used.</li>
-<li><strong>eval_range</strong> – Optionally specify a range of years over which to evaluate the progset-parset match. By default, it will only use the reconciliation year</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code> instance</p></li>
+<li><p><strong>parset</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code> instance (or name of a parset contained in the project)</p></li>
+<li><p><strong>progset</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code> instance (or name of a progset contained in the project)</p></li>
+<li><p><strong>reconciliation_year</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Year to perform reconciliation in</p></li>
+<li><p><strong>max_time</strong> – Optionally override the maximum execution time in ASD</p></li>
+<li><p><strong>unit_cost_bounds</strong> – Optionally specify bounds for unit costs. Default is 0.0 (unit costs will not be changed)</p></li>
+<li><p><strong>baseline_bounds</strong> – Optionally specify bounds for baseline spending. Default is 0.0 (no changes)</p></li>
+<li><p><strong>capacity_bounds</strong> – Optionally specify bounds for capacity_constraint constraints. Default is 0.0 (no changes)</p></li>
+<li><p><strong>outcome_bounds</strong> – Optionally specify bounds for outcome values. Default is 0.0 (no changes)</p></li>
+<li><p><strong>eval_pars</strong> – Optionally select a subset of parameters for comparison. By default, all parameters overwritten by the progset will be used.</p></li>
+<li><p><strong>eval_range</strong> – Optionally specify a range of years over which to evaluate the progset-parset match. By default, it will only use the reconciliation year</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple containing
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple containing
 - A reconciled <code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code> instance
 - A DataFrame comparing the unreconciled and reconciled progsets
 - A DataFrame comparing the parset parameters and progset</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

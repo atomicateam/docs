@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Model library</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cervicalcancer.html">Cervical cancer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diabetes.html">Diabetes</a></li>
@@ -193,18 +195,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="diagnosis-treated">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="diagnosis-treated">
 <h1>Diagnosis-Treated<a class="headerlink" href="#diagnosis-treated" title="Permalink to this headline">¶</a></h1>
 <p><strong>Name</strong>: DT</p>
 <p><strong>Description</strong>: Framework for a simple 2-stage diagnosed-treated model</p>
 <div class="section" id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="#compartments">Compartments</a></li>
-<li><a class="reference external" href="#characteristics">Characteristics</a></li>
-<li><a class="reference external" href="#parameters">Parameters</a></li>
-<li><a class="reference external" href="#interactions">Interactions</a></li>
-<li><a class="reference external" href="#cascades">Cascades</a></li>
+<li><p><a class="reference external" href="#compartments">Compartments</a></p></li>
+<li><p><a class="reference external" href="#characteristics">Characteristics</a></p></li>
+<li><p><a class="reference external" href="#parameters">Parameters</a></p></li>
+<li><p><a class="reference external" href="#interactions">Interactions</a></p></li>
+<li><p><a class="reference external" href="#cascades">Cascades</a></p></li>
 </ul>
 </div>
 <div class="section" id="compartments">
@@ -212,19 +238,19 @@
 <div class="section" id="compartment-diagnosed-not-treated">
 <h3>Compartment: Diagnosed, not treated<a class="headerlink" href="#compartment-diagnosed-not-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">dx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">dx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-treated">
 <h3>Compartment: Treated<a class="headerlink" href="#compartment-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">tx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">tx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -233,32 +259,34 @@
 <div class="section" id="characteristic-all-diagnosed">
 <h3>Characteristic: All diagnosed<a class="headerlink" href="#characteristic-all-diagnosed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_dx</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Diagnosed, not treated</li>
-<li>Treated</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_dx</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Diagnosed, not treated</p></li>
+<li><p>Treated</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-currently-treated">
 <h3>Characteristic: Currently treated<a class="headerlink" href="#characteristic-currently-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_tx</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Treated</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_tx</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Treated</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -267,57 +295,61 @@
 <div class="section" id="parameter-annual-number-newly-initiated-onto-treatment">
 <h3>Parameter: Annual number newly initiated onto treatment<a class="headerlink" href="#parameter-annual-number-newly-initiated-onto-treatment" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">initiate</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Contributes to transitions from:<ul>
-<li>“Diagnosed, not treated” to “Treated”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">initiate</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Diagnosed, not treated” to “Treated”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-lost-to-follow-up">
 <h3>Parameter: Annual number lost to follow-up<a class="headerlink" href="#parameter-annual-number-lost-to-follow-up" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_loss</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Proportion of those on treatment lost-to-follow-up”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_loss</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Proportion of those on treatment lost-to-follow-up”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-proportion-of-those-on-treatment-lost-to-follow-up">
 <h3>Parameter: Proportion of those on treatment lost-to-follow-up<a class="headerlink" href="#parameter-proportion-of-those-on-treatment-lost-to-follow-up" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">loss</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Treated” to “Diagnosed, not treated”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">loss</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Treated” to “Diagnosed, not treated”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_loss/tx</span></code></li>
-<li>Depends on:<ul>
-<li>“Treated”</li>
-<li>“Annual number lost to follow-up”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_loss/tx</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Treated”</p></li>
+<li><p>“Annual number lost to follow-up”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -329,14 +361,17 @@
 <div class="section" id="cascade-cascade">
 <h3>Cascade: Cascade<a class="headerlink" href="#cascade-cascade" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Stages:<ul>
-<li>All diagnosed<ul>
-<li>All diagnosed</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Stages:</p>
+<ul>
+<li><p>All diagnosed</p>
+<ul>
+<li><p>All diagnosed</p></li>
 </ul>
 </li>
-<li>Currently treated<ul>
-<li>Currently treated</li>
+<li><p>Currently treated</p>
+<ul>
+<li><p>Currently treated</p></li>
 </ul>
 </li>
 </ul>

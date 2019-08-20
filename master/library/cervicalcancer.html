@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Model library</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Cervical cancer</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#contents">Contents</a></li>
@@ -212,18 +214,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="cervical-cancer">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="cervical-cancer">
 <h1>Cervical cancer<a class="headerlink" href="#cervical-cancer" title="Permalink to this headline">¶</a></h1>
 <p><strong>Name</strong>: Cervical cancer</p>
 <p><strong>Description</strong>: Framework for a 4-stage cervical cancer cascade model, with vital dynamics and new cases</p>
 <div class="section" id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="#compartments">Compartments</a></li>
-<li><a class="reference external" href="#characteristics">Characteristics</a></li>
-<li><a class="reference external" href="#parameters">Parameters</a></li>
-<li><a class="reference external" href="#interactions">Interactions</a></li>
-<li><a class="reference external" href="#cascades">Cascades</a></li>
+<li><p><a class="reference external" href="#compartments">Compartments</a></p></li>
+<li><p><a class="reference external" href="#characteristics">Characteristics</a></p></li>
+<li><p><a class="reference external" href="#parameters">Parameters</a></p></li>
+<li><p><a class="reference external" href="#interactions">Interactions</a></p></li>
+<li><p><a class="reference external" href="#cascades">Cascades</a></p></li>
 </ul>
 </div>
 <div class="section" id="compartments">
@@ -231,76 +257,76 @@
 <div class="section" id="compartment-source">
 <h3>Compartment: Source<a class="headerlink" href="#compartment-source" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">source</span></code></li>
-<li>Is source</li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">source</span></code></p></li>
+<li><p>Is source</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-without-cervical-cancer">
 <h3>Compartment: Without cervical cancer<a class="headerlink" href="#compartment-without-cervical-cancer" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">sus</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">sus</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-undiagnosed">
 <h3>Compartment: Undiagnosed<a class="headerlink" href="#compartment-undiagnosed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">undx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">undx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-screened">
 <h3>Compartment: Screened<a class="headerlink" href="#compartment-screened" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">scr</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">scr</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-diagnosed">
 <h3>Compartment: Diagnosed<a class="headerlink" href="#compartment-diagnosed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">dx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">dx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-treated">
 <h3>Compartment: Treated<a class="headerlink" href="#compartment-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">tx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">tx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-dead-other">
 <h3>Compartment: Dead (other)<a class="headerlink" href="#compartment-dead-other" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">dead</span></code></li>
-<li>Is sink</li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">dead</span></code></p></li>
+<li><p>Is sink</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-dead-cervical-cancer">
 <h3>Compartment: Dead (cervical cancer)<a class="headerlink" href="#compartment-dead-cervical-cancer" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">dead_cc</span></code></li>
-<li>Is sink</li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">dead_cc</span></code></p></li>
+<li><p>Is sink</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -309,86 +335,91 @@
 <div class="section" id="characteristic-population-size">
 <h3>Characteristic: Population size<a class="headerlink" href="#characteristic-population-size" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">alive</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Without cervical cancer</li>
-<li>Undiagnosed</li>
-<li>Screened</li>
-<li>Diagnosed</li>
-<li>Treated</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">alive</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Without cervical cancer</p></li>
+<li><p>Undiagnosed</p></li>
+<li><p>Screened</p></li>
+<li><p>Diagnosed</p></li>
+<li><p>Treated</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-estimated-number-of-women-with-cervical-cancer">
 <h3>Characteristic: Estimated number of women with cervical cancer<a class="headerlink" href="#characteristic-estimated-number-of-women-with-cervical-cancer" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_people</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Undiagnosed</li>
-<li>Screened</li>
-<li>Diagnosed</li>
-<li>Treated</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_people</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Undiagnosed</p></li>
+<li><p>Screened</p></li>
+<li><p>Diagnosed</p></li>
+<li><p>Treated</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-estimated-number-of-women-with-cervical-cancer-who-have-ever-been-screened">
 <h3>Characteristic: Estimated number of women with cervical cancer who have ever been screened<a class="headerlink" href="#characteristic-estimated-number-of-women-with-cervical-cancer-who-have-ever-been-screened" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_screened</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Screened</li>
-<li>Diagnosed</li>
-<li>Treated</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_screened</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Screened</p></li>
+<li><p>Diagnosed</p></li>
+<li><p>Treated</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-estimated-number-of-women-with-cervical-cancer-who-have-ever-been-diagnosed">
 <h3>Characteristic: Estimated number of women with cervical cancer who have ever been diagnosed<a class="headerlink" href="#characteristic-estimated-number-of-women-with-cervical-cancer-who-have-ever-been-diagnosed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_dx</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Diagnosed</li>
-<li>Treated</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_dx</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Diagnosed</p></li>
+<li><p>Treated</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-estimated-number-of-women-being-treated-for-cervical-cancer">
 <h3>Characteristic: Estimated number of women being treated for cervical cancer<a class="headerlink" href="#characteristic-estimated-number-of-women-being-treated-for-cervical-cancer" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_tx</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Treated</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_tx</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Treated</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -397,255 +428,274 @@
 <div class="section" id="parameter-annual-number-of-births">
 <h3>Parameter: Annual number of births<a class="headerlink" href="#parameter-annual-number-of-births" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">birth_rate</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Contributes to transitions from:<ul>
-<li>“Source” to “Without cervical cancer”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">birth_rate</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Source” to “Without cervical cancer”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-estimated-number-of-new-cervical-cancer-cases-annually">
 <h3>Parameter: Estimated number of new cervical cancer cases annually<a class="headerlink" href="#parameter-estimated-number-of-new-cervical-cancer-cases-annually" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_acq</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Acquisition rate”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_acq</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Acquisition rate”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-acquisition-rate">
 <h3>Parameter: Acquisition rate<a class="headerlink" href="#parameter-acquisition-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">acq_rate</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Without cervical cancer” to “Undiagnosed”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">acq_rate</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Without cervical cancer” to “Undiagnosed”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_acq/max(sus,num_acq)</span></code></li>
-<li>Depends on:<ul>
-<li>“Estimated number of new cervical cancer cases annually”</li>
-<li>“Without cervical cancer”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_acq/max(sus,num_acq)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Estimated number of new cervical cancer cases annually”</p></li>
+<li><p>“Without cervical cancer”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-screened">
 <h3>Parameter: Annual number screened<a class="headerlink" href="#parameter-annual-number-screened" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_screen</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Annual number screened positive”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_screen</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Annual number screened positive”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-screening-yield">
 <h3>Parameter: Screening yield<a class="headerlink" href="#parameter-screening-yield" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">screen_yield</span></code></li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">undx/(undx+sus)</span></code></li>
-<li>Depends on:<ul>
-<li>“Without cervical cancer”</li>
-<li>“Undiagnosed”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">screen_yield</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">undx/(undx+sus)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Without cervical cancer”</p></li>
+<li><p>“Undiagnosed”</p></li>
 </ul>
 </li>
-<li>Used to compute:<ul>
-<li>“Annual number screened positive”</li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Annual number screened positive”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-screened-positive">
 <h3>Parameter: Annual number screened positive<a class="headerlink" href="#parameter-annual-number-screened-positive" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">pos_screen</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_screen*screen_yield</span></code></li>
-<li>Depends on:<ul>
-<li>“Annual number screened”</li>
-<li>“Screening yield”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">pos_screen</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_screen*screen_yield</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Annual number screened”</p></li>
+<li><p>“Screening yield”</p></li>
 </ul>
 </li>
-<li>Used to compute:<ul>
-<li>“Screening sensitivity”</li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Screening sensitivity”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-screening-sensitivity">
 <h3>Parameter: Screening sensitivity<a class="headerlink" href="#parameter-screening-sensitivity" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">screen</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Undiagnosed” to “Screened”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">screen</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Undiagnosed” to “Screened”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">pos_screen/max(undx,pos_screen)</span></code></li>
-<li>Depends on:<ul>
-<li>“Annual number screened positive”</li>
-<li>“Undiagnosed”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">pos_screen/max(undx,pos_screen)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Annual number screened positive”</p></li>
+<li><p>“Undiagnosed”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-of-new-diagnoses">
 <h3>Parameter: Annual number of new diagnoses<a class="headerlink" href="#parameter-annual-number-of-new-diagnoses" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_diag</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Probability of a positive confirmation following screening”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_diag</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Probability of a positive confirmation following screening”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-probability-of-a-positive-confirmation-following-screening">
 <h3>Parameter: Probability of a positive confirmation following screening<a class="headerlink" href="#parameter-probability-of-a-positive-confirmation-following-screening" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">diag</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Screened” to “Diagnosed”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">diag</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Screened” to “Diagnosed”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_diag/max(scr,num_diag)</span></code></li>
-<li>Depends on:<ul>
-<li>“Screened”</li>
-<li>“Annual number of new diagnoses”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_diag/max(scr,num_diag)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Screened”</p></li>
+<li><p>“Annual number of new diagnoses”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-newly-initiated-onto-treatment">
 <h3>Parameter: Annual number newly initiated onto treatment<a class="headerlink" href="#parameter-annual-number-newly-initiated-onto-treatment" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_initiate</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Initiation rate”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_initiate</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Initiation rate”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-initiation-rate">
 <h3>Parameter: Initiation rate<a class="headerlink" href="#parameter-initiation-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">initiate</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Diagnosed” to “Treated”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">initiate</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Diagnosed” to “Treated”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_initiate/max(dx,num_initiate)</span></code></li>
-<li>Depends on:<ul>
-<li>“Diagnosed”</li>
-<li>“Annual number newly initiated onto treatment”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_initiate/max(dx,num_initiate)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Diagnosed”</p></li>
+<li><p>“Annual number newly initiated onto treatment”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-mortality-rate">
 <h3>Parameter: Mortality rate<a class="headerlink" href="#parameter-mortality-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">death</span></code></li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Without cervical cancer” to “Dead (other)”</li>
-<li>“Undiagnosed” to “Dead (other)”</li>
-<li>“Screened” to “Dead (other)”</li>
-<li>“Diagnosed” to “Dead (other)”</li>
-<li>“Treated” to “Dead (other)”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">death</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Without cervical cancer” to “Dead (other)”</p></li>
+<li><p>“Undiagnosed” to “Dead (other)”</p></li>
+<li><p>“Screened” to “Dead (other)”</p></li>
+<li><p>“Diagnosed” to “Dead (other)”</p></li>
+<li><p>“Treated” to “Dead (other)”</p></li>
 </ul>
 </li>
-<li>Default value: 0.015</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.015</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-mortality-rate-for-those-with-untreated-cervical-cancer">
 <h3>Parameter: Mortality rate for those with untreated cervical cancer<a class="headerlink" href="#parameter-mortality-rate-for-those-with-untreated-cervical-cancer" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">death_cc</span></code></li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Undiagnosed” to “Dead (cervical cancer)”</li>
-<li>“Screened” to “Dead (cervical cancer)”</li>
-<li>“Diagnosed” to “Dead (cervical cancer)”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">death_cc</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Undiagnosed” to “Dead (cervical cancer)”</p></li>
+<li><p>“Screened” to “Dead (cervical cancer)”</p></li>
+<li><p>“Diagnosed” to “Dead (cervical cancer)”</p></li>
 </ul>
 </li>
-<li>Default value: 0.05</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.05</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -657,22 +707,27 @@
 <div class="section" id="cascade-cervical-cancer-cascade">
 <h3>Cascade: Cervical cancer cascade<a class="headerlink" href="#cascade-cervical-cancer-cascade" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Stages:<ul>
-<li>All women with cervical cancer<ul>
-<li>Estimated number of women with cervical cancer</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Stages:</p>
+<ul>
+<li><p>All women with cervical cancer</p>
+<ul>
+<li><p>Estimated number of women with cervical cancer</p></li>
 </ul>
 </li>
-<li>Ever screened<ul>
-<li>Estimated number of women with cervical cancer who have ever been screened</li>
+<li><p>Ever screened</p>
+<ul>
+<li><p>Estimated number of women with cervical cancer who have ever been screened</p></li>
 </ul>
 </li>
-<li>Ever diagnosed<ul>
-<li>Estimated number of women with cervical cancer who have ever been diagnosed</li>
+<li><p>Ever diagnosed</p>
+<ul>
+<li><p>Estimated number of women with cervical cancer who have ever been diagnosed</p></li>
 </ul>
 </li>
-<li>Currently treated<ul>
-<li>Estimated number of women being treated for cervical cancer</li>
+<li><p>Currently treated</p>
+<ul>
+<li><p>Estimated number of women being treated for cervical cancer</p></li>
 </ul>
 </li>
 </ul>

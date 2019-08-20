@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Model library</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cervicalcancer.html">Cervical cancer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diabetes.html">Diabetes</a></li>
@@ -204,18 +206,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="sir-model">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="sir-model">
 <h1>SIR model<a class="headerlink" href="#sir-model" title="Permalink to this headline">¶</a></h1>
 <p><strong>Name</strong>: SIR</p>
 <p><strong>Description</strong>: The SIR model</p>
 <div class="section" id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="#compartments">Compartments</a></li>
-<li><a class="reference external" href="#characteristics">Characteristics</a></li>
-<li><a class="reference external" href="#parameters">Parameters</a></li>
-<li><a class="reference external" href="#interactions">Interactions</a></li>
-<li><a class="reference external" href="#cascades">Cascades</a></li>
+<li><p><a class="reference external" href="#compartments">Compartments</a></p></li>
+<li><p><a class="reference external" href="#characteristics">Characteristics</a></p></li>
+<li><p><a class="reference external" href="#parameters">Parameters</a></p></li>
+<li><p><a class="reference external" href="#interactions">Interactions</a></p></li>
+<li><p><a class="reference external" href="#cascades">Cascades</a></p></li>
 </ul>
 </div>
 <div class="section" id="compartments">
@@ -223,40 +249,40 @@
 <div class="section" id="compartment-susceptible">
 <h3>Compartment: Susceptible<a class="headerlink" href="#compartment-susceptible" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">sus</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">sus</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-infected">
 <h3>Compartment: Infected<a class="headerlink" href="#compartment-infected" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">inf</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">inf</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-recovered">
 <h3>Compartment: Recovered<a class="headerlink" href="#compartment-recovered" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">rec</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">rec</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-dead">
 <h3>Compartment: Dead<a class="headerlink" href="#compartment-dead" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">dead</span></code></li>
-<li>Is sink</li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">dead</span></code></p></li>
+<li><p>Is sink</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -265,118 +291,126 @@
 <div class="section" id="characteristic-total-number-of-entities">
 <h3>Characteristic: Total number of entities<a class="headerlink" href="#characteristic-total-number-of-entities" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_all</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Susceptible</li>
-<li>Infected</li>
-<li>Recovered</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">ch_all</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Susceptible</p></li>
+<li><p>Infected</p></li>
+<li><p>Recovered</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-prevalence">
 <h3>Characteristic: Prevalence<a class="headerlink" href="#characteristic-prevalence" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_prev</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Infected</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">ch_prev</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Infected</p></li>
 </ul>
 </li>
-<li>Denominator: Total number of entities</li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Denominator: Total number of entities</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-number-ever-infected">
 <h3>Characteristic: Number ever infected<a class="headerlink" href="#characteristic-number-ever-infected" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_infrec</span></code></li>
-<li>Includes:<ul>
-<li>Infected</li>
-<li>Recovered</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">ch_infrec</span></code></p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Infected</p></li>
+<li><p>Recovered</p></li>
 </ul>
 </li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-number-infected-or-susceptible">
 <h3>Characteristic: Number infected or susceptible<a class="headerlink" href="#characteristic-number-infected-or-susceptible" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_infsus</span></code></li>
-<li>Includes:<ul>
-<li>Infected</li>
-<li>Susceptible</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">ch_infsus</span></code></p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Infected</p></li>
+<li><p>Susceptible</p></li>
 </ul>
 </li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-number-not-at-risk-of-death">
 <h3>Characteristic: Number not at risk of death<a class="headerlink" href="#characteristic-number-not-at-risk-of-death" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_newinf</span></code></li>
-<li>Includes:<ul>
-<li>Susceptible</li>
-<li>Recovered</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">ch_newinf</span></code></p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Susceptible</p></li>
+<li><p>Recovered</p></li>
 </ul>
 </li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-proportion-ever-infected">
 <h3>Characteristic: Proportion ever infected<a class="headerlink" href="#characteristic-proportion-ever-infected" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_propinfrec</span></code></li>
-<li>Includes:<ul>
-<li>Number ever infected</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">ch_propinfrec</span></code></p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Number ever infected</p></li>
 </ul>
 </li>
-<li>Denominator: Total number of entities</li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Denominator: Total number of entities</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-proportion-infected-or-susceptible">
 <h3>Characteristic: Proportion infected or susceptible<a class="headerlink" href="#characteristic-proportion-infected-or-susceptible" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_propinfsus</span></code></li>
-<li>Includes:<ul>
-<li>Number infected or susceptible</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">ch_propinfsus</span></code></p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Number infected or susceptible</p></li>
 </ul>
 </li>
-<li>Denominator: Total number of entities</li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Denominator: Total number of entities</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-proportion-not-at-risk-of-death">
 <h3>Characteristic: Proportion not at risk of death<a class="headerlink" href="#characteristic-proportion-not-at-risk-of-death" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">ch_propnewinf</span></code></li>
-<li>Includes:<ul>
-<li>Number not at risk of death</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">ch_propnewinf</span></code></p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Number not at risk of death</p></li>
 </ul>
 </li>
-<li>Denominator: Total number of entities</li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Denominator: Total number of entities</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -385,110 +419,118 @@
 <div class="section" id="parameter-transmission-probability-per-contact">
 <h3>Parameter: Transmission probability per contact<a class="headerlink" href="#parameter-transmission-probability-per-contact" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">transpercontact</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Default value: 0.0008</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Force of infection”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">transpercontact</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Default value: 0.0008</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Force of infection”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-number-of-contacts-annually">
 <h3>Parameter: Number of contacts annually<a class="headerlink" href="#parameter-number-of-contacts-annually" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">contacts</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: None</li>
-<li>Default value: 80</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Force of infection”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">contacts</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: None</p></li>
+<li><p>Default value: 80</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Force of infection”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-average-duration-of-infections-years">
 <h3>Parameter: Average duration of infections (years)<a class="headerlink" href="#parameter-average-duration-of-infections-years" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">recrate</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: duration</li>
-<li>Contributes to transitions from:<ul>
-<li>“Infected” to “Recovered”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">recrate</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: duration</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Infected” to “Recovered”</p></li>
 </ul>
 </li>
-<li>Default value: 0.5</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.5</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-death-rate-for-infected-people">
 <h3>Parameter: Death rate for infected people<a class="headerlink" href="#parameter-death-rate-for-infected-people" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">infdeath</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Contributes to transitions from:<ul>
-<li>“Infected” to “Dead”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">infdeath</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Infected” to “Dead”</p></li>
 </ul>
 </li>
-<li>Default value: 0.016</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.016</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-death-rate-for-susceptible-people">
 <h3>Parameter: Death rate for susceptible people<a class="headerlink" href="#parameter-death-rate-for-susceptible-people" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">susdeath</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Contributes to transitions from:<ul>
-<li>“Susceptible” to “Dead”</li>
-<li>“Infected” to “Dead”</li>
-<li>“Recovered” to “Dead”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">susdeath</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Susceptible” to “Dead”</p></li>
+<li><p>“Infected” to “Dead”</p></li>
+<li><p>“Recovered” to “Dead”</p></li>
 </ul>
 </li>
-<li>Default value: 0.008</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Force of infection”</li>
+<li><p>Default value: 0.008</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Force of infection”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-force-of-infection">
 <h3>Parameter: Force of infection<a class="headerlink" href="#parameter-force-of-infection" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">foi</span></code></li>
-<li>Units/format: probability</li>
-<li>Contributes to transitions from:<ul>
-<li>“Susceptible” to “Infected”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">foi</span></code></p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Susceptible” to “Infected”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">(1</span> <span class="pre">-</span> <span class="pre">(1-ch_prev*transpercontact)**floor(contacts)*(1-ch_prev*transpercontact*(contacts-floor(contacts))))*(1-susdeath)</span></code></li>
-<li>Depends on:<ul>
-<li>“Prevalence”</li>
-<li>“Transmission probability per contact”</li>
-<li>“Death rate for susceptible people”</li>
-<li>“Number of contacts annually”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">(1</span> <span class="pre">-</span> <span class="pre">(1-ch_prev*transpercontact)**floor(contacts)*(1-ch_prev*transpercontact*(contacts-floor(contacts))))*(1-susdeath)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Prevalence”</p></li>
+<li><p>“Transmission probability per contact”</p></li>
+<li><p>“Death rate for susceptible people”</p></li>
+<li><p>“Number of contacts annually”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -500,19 +542,23 @@
 <div class="section" id="cascade-main">
 <h3>Cascade: main<a class="headerlink" href="#cascade-main" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Stages:<ul>
-<li>Total number of entities<ul>
-<li>Total number of entities</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Stages:</p>
+<ul>
+<li><p>Total number of entities</p>
+<ul>
+<li><p>Total number of entities</p></li>
 </ul>
 </li>
-<li>Number ever infected<ul>
-<li>Infected</li>
-<li>Recovered</li>
+<li><p>Number ever infected</p>
+<ul>
+<li><p>Infected</p></li>
+<li><p>Recovered</p></li>
 </ul>
 </li>
-<li>Recovered<ul>
-<li>Recovered</li>
+<li><p>Recovered</p>
+<ul>
+<li><p>Recovered</p></li>
 </ul>
 </li>
 </ul>

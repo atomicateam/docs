@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -95,6 +96,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#timescales">Timescales</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#derivatives">Derivatives</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#interpolation-and-smoothing">Interpolation and smoothing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#maximum-compartment-duration">Maximum compartment duration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="population-types/Population-Types.html">Population types</a></li>
@@ -102,6 +104,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
 </ul>
@@ -170,15 +173,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="parameters">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="parameters">
 <h1>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="types-of-parameter">
 <h2>Types of parameter<a class="headerlink" href="#types-of-parameter" title="Permalink to this headline">¶</a></h2>
 <p>Parameters are all defined on the ‘Parameters’ sheet of the framework. Depending on the structure of the model defined in the framework, a parameter may have certain attributes or restrictions if used in a particular way. We therefore introduce three classifications to help refer to such parameters. These classifications are:</p>
 <ul class="simple">
-<li><strong>Transition parameter</strong> - A parameter is referred to as a ‘transition parameter’ if it appears in the transition matrix and is thus <em>directly</em> associated with flow rates.</li>
-<li><strong>Function parameter</strong> - A parameter is referred to as a ‘function parameter’ if a function is provided in the Framework for the parameter</li>
-<li><strong>Output parameter</strong> - A parameter is referred to as an ‘output parameter’ if it does not directly or indirectly contribute to transitions. A parameter contributes directly to transitions if it is an output parameter, but it can also contribute indirectly if it appears in a transition parameter’s function (or even further back, if it appears in the function of any parameter that ends up affecting a transition parameter)</li>
+<li><p><strong>Transition parameter</strong> - A parameter is referred to as a ‘transition parameter’ if it appears in the transition matrix and is thus <em>directly</em> associated with flow rates.</p></li>
+<li><p><strong>Function parameter</strong> - A parameter is referred to as a ‘function parameter’ if a function is provided in the Framework for the parameter</p></li>
+<li><p><strong>Output parameter</strong> - A parameter is referred to as an ‘output parameter’ if it does not directly or indirectly contribute to transitions. A parameter contributes directly to transitions if it is an output parameter, but it can also contribute indirectly if it appears in a transition parameter’s function (or even further back, if it appears in the function of any parameter that ends up affecting a transition parameter)</p></li>
 </ul>
 </div>
 <div class="section" id="functions">
@@ -187,17 +214,17 @@
 <p>Parameters are updated in the order in which they appear in the framework. This means that parameter functions can only refer to parameters that appear above them in the framework. Atomica will automatically validate this when the framework is loaded. This also means that any program overwrites that affect terms inside a parameter function will be performed prior to the function being evaluated.</p>
 <p>As mentioned above, it is possible to include actual flow rates in parameter functions. These can be specified in two ways</p>
 <ul class="simple">
-<li>You can append <code class="docutils literal notranslate"><span class="pre">:flow</span></code> to the name of any transition parameter which resolves to the sum of all transitions driven by that parameter. This means if a parameter drives multiple transitions (e.g. deaths from multiple compartments) they will also be included</li>
-<li>You can use the compartment syntax to specify flows between compartments e.g. <code class="docutils literal notranslate"><span class="pre">sus:vac</span></code> for flows between susceptible and vaccinated, <code class="docutils literal notranslate"><span class="pre">sus:</span></code> for all flows out of susceptible, and <code class="docutils literal notranslate"><span class="pre">:vac</span></code> for all flows into vaccinated. You can also use <code class="docutils literal notranslate"><span class="pre">sus:vac:par_name</span></code> to select only flows between compartments driven by a particular parameter, in the case where multiple parameters contribute independently to the same transition.</li>
+<li><p>You can append <code class="docutils literal notranslate"><span class="pre">:flow</span></code> to the name of any transition parameter which resolves to the sum of all transitions driven by that parameter. This means if a parameter drives multiple transitions (e.g. deaths from multiple compartments) they will also be included</p></li>
+<li><p>You can use the compartment syntax to specify flows between compartments e.g. <code class="docutils literal notranslate"><span class="pre">sus:vac</span></code> for flows between susceptible and vaccinated, <code class="docutils literal notranslate"><span class="pre">sus:</span></code> for all flows out of susceptible, and <code class="docutils literal notranslate"><span class="pre">:vac</span></code> for all flows into vaccinated. You can also use <code class="docutils literal notranslate"><span class="pre">sus:vac:par_name</span></code> to select only flows between compartments driven by a particular parameter, in the case where multiple parameters contribute independently to the same transition.</p></li>
 </ul>
 <div class="admonition caution">
-<p class="first admonition-title">Caution</p>
-<p class="last">All link values are automatically annualized inside the parameter function and are in units of ‘people/year’ - this prevents the values from changing relative to other parameters if the model step size is changed.</p>
+<p class="admonition-title">Caution</p>
+<p>All link values are automatically annualized inside the parameter function and are in units of ‘people/year’ - this prevents the values from changing relative to other parameters if the model step size is changed.</p>
 </div>
 <p>Finally, all parameters are updated prior to computing flow rates. This is because flow rates may need to be rescaled in order to prevent negative compartment sizes, and this rescaling can only take place after all parameters have been computed. Thus, flow rates cannot appear in any parameter that contributes directly or indirectly to transitions, as there would otherwise be a circular dependency.</p>
 <div class="admonition caution">
-<p class="first admonition-title">Caution</p>
-<p class="last">Links can only be used inside parameter functions for output parameters</p>
+<p class="admonition-title">Caution</p>
+<p>Links can only be used inside parameter functions for output parameters</p>
 </div>
 </div>
 <div class="section" id="performance-considerations">
@@ -205,8 +232,8 @@
 <p>The structure of the parameters in the model can have a significant effect on performance. The root causes is that in Python, it is much faster to perform calculations with vectorized operations rather than repeated scalar operations.</p>
 <p>A vectorized operation is one that can be performed on all time points simultaneously, whereas a scalar operation operates on only one time point at a time. Operating one time point at a time is required if two conditions are met</p>
 <ul class="simple">
-<li>The parameter is required to directly or indirectly drive a transition, <strong>and</strong></li>
-<li>The parameter depends on a compartment or characteristic</li>
+<li><p>The parameter is required to directly or indirectly drive a transition, <strong>and</strong></p></li>
+<li><p>The parameter depends on a compartment or characteristic</p></li>
 </ul>
 <p>If a parameter depends on a compartment or characteristic, then it can only be evaluated after the compartment sizes have been computed. In the case of output parameters, this can be performed as a fast vector operation after integration is complete. If that same parameter drives transitions however, then it must be evaluated during integration using slower scalar operations. Similarly, if a parameter only depends on quantities in the databook (even if it depends on other parameters, as long as those parameters only depend on the databook) then the parameter can be evaluated in a fast vector operation either before or after integration, depending on whether it is needed for transitions.</p>
 <p>Atomica will automatically select the fastest possible computation, but be aware that the inclusion of compartments and characteristics in parameter functions can have a significant effect on performance.</p>
@@ -215,31 +242,31 @@
 <h2>Timescales<a class="headerlink" href="#timescales" title="Permalink to this headline">¶</a></h2>
 <p>Transitions in the model are driven by parameters. If the parameter is specified as a probability or a number of people, then there is an implicit time period associated with the flow. This is 1 year by default. So for example,</p>
 <ul class="simple">
-<li>A transition parameter in probability units is interpreted as ‘probability (per year)’</li>
-<li>A transition parameter in number units is interpreted as ‘number of people (per year)’</li>
-<li>A transition parameter in duration units is interpreted in years</li>
+<li><p>A transition parameter in probability units is interpreted as ‘probability (per year)’</p></li>
+<li><p>A transition parameter in number units is interpreted as ‘number of people (per year)’</p></li>
+<li><p>A transition parameter in duration units is interpreted in years</p></li>
 </ul>
 <p>However, working exclusively with years can be problematic for two reasons</p>
 <ol class="arabic simple">
-<li>The values entered in the databook are entered in the same units as the parameter. In some cases, it may be preferable for end users to enter values in different units. For example, for fast processes it may be clearer to enter values in days rather than years. Similarly, in some cases available data may list outcomes over different timescales e.g. probability of treatment success over a 1 month period. Although this can be inconvenient, it is possible to use formulas in the databook to work around this, or conversions in the framework. However, either option adds considerable complexity.</li>
-<li>If models are run with very small timesteps, such as daily time steps (required for frameworks where the fastest processes are on this timescale - for example, the mosquito lifespan for malaria is on this scale) - then the rescaling of probabilities by repeated sampling can suffer from loss of numerical precision. This is particularly problematic when moving between daily and annual probabilities. This is a critical issue that can prevent implementation of a model.</li>
+<li><p>The values entered in the databook are entered in the same units as the parameter. In some cases, it may be preferable for end users to enter values in different units. For example, for fast processes it may be clearer to enter values in days rather than years. Similarly, in some cases available data may list outcomes over different timescales e.g. probability of treatment success over a 1 month period. Although this can be inconvenient, it is possible to use formulas in the databook to work around this, or conversions in the framework. However, either option adds considerable complexity.</p></li>
+<li><p>If models are run with very small timesteps, such as daily time steps (required for frameworks where the fastest processes are on this timescale - for example, the mosquito lifespan for malaria is on this scale) - then the rescaling of probabilities by repeated sampling can suffer from loss of numerical precision. This is particularly problematic when moving between daily and annual probabilities. This is a critical issue that can prevent implementation of a model.</p></li>
 </ol>
 <p>To address this, it is possible to optionally specify a <em>timescale</em> associated with a parameter. The timescale specifies the period in years associated with a parameter. If not specified, parameters are treated as having a timescale of 1, which corresponds to annual units. If a different value is entered, the effect is to change the units of the parameter. For example, if the timescale was entered as <span class="math notranslate nohighlight">\(1/365 = 0.00274\)</span>, then the parameter would be treated as a daily quantity. The exact units depend on the format of the quantity:</p>
 <ul class="simple">
-<li>If the transition parameter has timescale <span class="math notranslate nohighlight">\(1/365\)</span> and format ‘duration’ then the units are ‘days’</li>
-<li>If the transition parameter has timescale <span class="math notranslate nohighlight">\(1/365\)</span> and format ‘probability’ then the units are ‘probability per day’</li>
-<li>If the transition parameter has timescale <span class="math notranslate nohighlight">\(1/365\)</span> and format ‘number’ then the units are ‘number per day’</li>
+<li><p>If the transition parameter has timescale <span class="math notranslate nohighlight">\(1/365\)</span> and format ‘duration’ then the units are ‘days’</p></li>
+<li><p>If the transition parameter has timescale <span class="math notranslate nohighlight">\(1/365\)</span> and format ‘probability’ then the units are ‘probability per day’</p></li>
+<li><p>If the transition parameter has timescale <span class="math notranslate nohighlight">\(1/365\)</span> and format ‘number’ then the units are ‘number per day’</p></li>
 </ul>
 <p>If a parameter has a timescale, then the units in the databook will automatically reflect the timescale. If a timescale is present in the databook, then the framework must have a matching timescale. So for example, if the framework declares that a parameter has timescale <span class="math notranslate nohighlight">\(1/365\)</span> (days) then the databook <em>must</em> provide the value in days (i.e. users cannot change this in the databook by changing it to read ‘weeks’ without making a corresponding change to the framework).</p>
 <p>The timescales affect simulations and plotting in two ways</p>
 <ol class="arabic simple">
-<li>During model integration, the parameter is in the units specified in the framework, but flows in the model (the values stored in <code class="docutils literal notranslate"><span class="pre">Link</span></code> objects) are <em>always</em> in ‘number per timestep’ units. If a parameter has a timescale, that timescale will affect the conversion</li>
-<li>When constructing a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object with time aggregation or accumulation, the timescale will be taken in to account. Where applicable, plots will be labelled including the timescale (e.g. a probability parameter with a timescale of <span class="math notranslate nohighlight">\(1/52\)</span> would have an axis label of ‘Probability (per week)’ on plots).</li>
+<li><p>During model integration, the parameter is in the units specified in the framework, but flows in the model (the values stored in <code class="docutils literal notranslate"><span class="pre">Link</span></code> objects) are <em>always</em> in ‘number per timestep’ units. If a parameter has a timescale, that timescale will affect the conversion</p></li>
+<li><p>When constructing a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object with time aggregation or accumulation, the timescale will be taken in to account. Where applicable, plots will be labelled including the timescale (e.g. a probability parameter with a timescale of <span class="math notranslate nohighlight">\(1/52\)</span> would have an axis label of ‘Probability (per week)’ on plots).</p></li>
 </ol>
 <p>Thus, Parameter objects themselves always store values in the units specified in the framework. Conversion only takes place during computation of flow rates or computation of <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> aggregations.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Because Parameter timescales are only converted when computing flow rates, user-defined parameter functions always operate on parameters in their native units.</p>
+<p class="admonition-title">Note</p>
+<p>Because Parameter timescales are only converted when computing flow rates, user-defined parameter functions always operate on parameters in their native units.</p>
 </div>
 <p>This means that it is up to the modeller to explicitly handle any unit conversions required - for example, if combining a ‘Number per day’ and a ‘Number per week’ in a function, it would likely be necessary to explicitly introduce a factor of <code class="docutils literal notranslate"><span class="pre">7</span></code>. This would be done in the Framework in conjunction with specification of the timescales for the relevant parameters. Users are unable to change the timescale in the databook by design because the conversion is an arbitrary operation and depends on the parameter timescale - the modeller has complete control in the Framework to define the format and units and construct the model accordingly, without having to deal with the possibility of the user entering different formats or units.</p>
 </div>
@@ -250,20 +277,20 @@
 <a class="reference internal image-reference" href="../_images/parameters_1.png"><img alt="../_images/parameters_1.png" src="../_images/parameters_1.png" style="width: 650px;" /></a>
 <p>When marking the parameter as a derivative:</p>
 <ol class="arabic simple">
-<li>The parameter value is initialized as normal from values entered in the databook</li>
-<li>The parameter function <span class="math notranslate nohighlight">\(f(\theta,t)\)</span> is evaluated like normal. The parameter function can refer to any other parameters previously defined in the framework. However, unlike normal parameters, a derivative parameter can also refer to its own value. Derivative parameters are updated out of sync with the rest of the model - after the value of the derivative is computed at time <cite>ti</cite>, we can immediately assign the value of time <code class="docutils literal notranslate"><span class="pre">ti+1</span></code>, whereas with normal parameter, the parameter function needs to be executed at time <code class="docutils literal notranslate"><span class="pre">ti+1</span></code> in order to determine the value. For derivative parameters, the parameter function being evaluated at time <code class="docutils literal notranslate"><span class="pre">ti+1</span></code> yields the value of the <em>derivative</em> at time <code class="docutils literal notranslate"><span class="pre">ti+1</span></code>, rather than the actual value. Therefore, it is possible to refer to the parameter’s current value inside the function, because the function is not being used to compute that value. In effect, you can simply refer to the parameter by name inside a derivative function, as illustrated in the <code class="docutils literal notranslate"><span class="pre">framework_derivative_test.xlsx</span></code> example in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder.</li>
-<li>Normally, the parameter value is updated as  <span class="math notranslate nohighlight">\(P(t) = f(\theta,t)\)</span> - that is, the function is evaluated and directly overwrites the parameter value. However, if the parameter is marked as a derivative, then the update is  <span class="math notranslate nohighlight">\(P(t+1) = P(t) + \Delta t f(\theta,t)\)</span>. That is, a single step of an Euler integration is performed.</li>
+<li><p>The parameter value is initialized as normal from values entered in the databook</p></li>
+<li><p>The parameter function <span class="math notranslate nohighlight">\(f(\theta,t)\)</span> is evaluated like normal. The parameter function can refer to any other parameters previously defined in the framework. However, unlike normal parameters, a derivative parameter can also refer to its own value. Derivative parameters are updated out of sync with the rest of the model - after the value of the derivative is computed at time <cite>ti</cite>, we can immediately assign the value of time <code class="docutils literal notranslate"><span class="pre">ti+1</span></code>, whereas with normal parameter, the parameter function needs to be executed at time <code class="docutils literal notranslate"><span class="pre">ti+1</span></code> in order to determine the value. For derivative parameters, the parameter function being evaluated at time <code class="docutils literal notranslate"><span class="pre">ti+1</span></code> yields the value of the <em>derivative</em> at time <code class="docutils literal notranslate"><span class="pre">ti+1</span></code>, rather than the actual value. Therefore, it is possible to refer to the parameter’s current value inside the function, because the function is not being used to compute that value. In effect, you can simply refer to the parameter by name inside a derivative function, as illustrated in the <code class="docutils literal notranslate"><span class="pre">framework_derivative_test.xlsx</span></code> example in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder.</p></li>
+<li><p>Normally, the parameter value is updated as  <span class="math notranslate nohighlight">\(P(t) = f(\theta,t)\)</span> - that is, the function is evaluated and directly overwrites the parameter value. However, if the parameter is marked as a derivative, then the update is  <span class="math notranslate nohighlight">\(P(t+1) = P(t) + \Delta t f(\theta,t)\)</span>. That is, a single step of an Euler integration is performed.</p></li>
 </ol>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Don’t forget that the databook contains the initialization values for the parameter, and thus needs to be entered in the same units as the parameter itself.</p>
+<p class="admonition-title">Note</p>
+<p>Don’t forget that the databook contains the initialization values for the parameter, and thus needs to be entered in the same units as the parameter itself.</p>
 </div>
 <p>Derivative parameters must have both a databook page (for the initialization value) and a function (for the derivative value) and an error will be raised if either is missing.</p>
 <p>Program overwrites are applied to the derivative. So if you define a derivative parameter, don’t forget that programs do not overwrite the actual value, but they overwrite the derivative. You could set another parameter equal to the derivative parameter and target that instead, if you wish to explicitly overwrite the value of a derivative parameter - however, be cautious and inspect results carefully if you then later switch programs off.</p>
 <p>After integration, the parameter value can be inspected and analyzed as normal. Note that this means you cannot directly read out <span class="math notranslate nohighlight">\(f(\theta,t)\)</span> because the parameter has integrated <span class="math notranslate nohighlight">\(f(\theta,t)\)</span> over time. Note also that the update step multiplies <span class="math notranslate nohighlight">\(f(\theta,t)\)</span>  by <span class="math notranslate nohighlight">\(\Delta t\)</span>. This means that the units of the value returned by the parameter function should be the same as the units of the Parameter, but on a ‘per year’ basis. This is because <span class="math notranslate nohighlight">\(\Delta t\)</span> is in units of years. So in the example above, <code class="docutils literal notranslate"><span class="pre">m_prev</span></code> is a dimensionless fraction, and the parameter function has the same units as <code class="docutils literal notranslate"><span class="pre">dm_prev</span></code>, which is in units of <code class="docutils literal notranslate"><span class="pre">1/years</span></code>, thus when integrated, <code class="docutils literal notranslate"><span class="pre">m_prev</span></code> will be dimensionless. It is important that this multiplication by <span class="math notranslate nohighlight">\(\Delta t\)</span> is taken into account, because this formulation allows consistent results to be obtained even when the step size is changed.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Notice that the parameter timescale does not enter here. The parameter timescale affects the conversion from the parameter value into flow rates. The derivative is always with respect to time, in the <em>simulation</em> units, which are always years. Thus the function value’s units should differ from the parameter’s units by a factor of <code class="docutils literal notranslate"><span class="pre">1/years</span></code> regardless of the timescale of the parameter. If you have set different timescales for quantities appearing in the derivative parameter’s function, you may need to include conversion factors in the parameter function to ensure that the timescale of the derivative comes out correctly.</p>
+<p class="admonition-title">Warning</p>
+<p>Notice that the parameter timescale does not enter here. The parameter timescale affects the conversion from the parameter value into flow rates. The derivative is always with respect to time, in the <em>simulation</em> units, which are always years. Thus the function value’s units should differ from the parameter’s units by a factor of <code class="docutils literal notranslate"><span class="pre">1/years</span></code> regardless of the timescale of the parameter. If you have set different timescales for quantities appearing in the derivative parameter’s function, you may need to include conversion factors in the parameter function to ensure that the timescale of the derivative comes out correctly.</p>
 </div>
 </div>
 <div class="section" id="interpolation-and-smoothing">
@@ -271,6 +298,10 @@
 <p>Parameters generally contain sparse time-dependent values matching those entered in the databook. As part of running the model, these automatically get interpolated onto the simulation time points. This interpolation is linear by default (although legacy projects use spline interpolation). Generally, this means that you can look at the values in the databook and they will be linearly interpolated when running the simulation.</p>
 <p>However, in some cases, it is desirable to incorporate additional assumptions into the input parameters - for example, that they are smoothly changing. To support this, <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects contain a smoothing method, <code class="docutils literal notranslate"><span class="pre">Parameter.smooth</span></code>. This applies smoothing in-place, onto a set of specified time points, replacing the parameter’s value. The most common usage would be to simply use <code class="docutils literal notranslate"><span class="pre">Parameter.smooth(proj.settings.tvec)</span></code> which will smooth the parameter onto the simulation times (assuming the step size is not subsequently modified).</p>
 <p>By specifying a different set of times, you can apply different smoothing methods to different parts of the parameter. For example, you could smooth parameter scenario values differently to the databook values. Don’t forget that you can always modify the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> object contained in the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> as well, to perform arbitrarily specific modifications.</p>
+</div>
+<div class="section" id="maximum-compartment-duration">
+<h2>Maximum compartment duration<a class="headerlink" href="#maximum-compartment-duration" title="Permalink to this headline">¶</a></h2>
+<p>A common, complex situation occurs if there are durations in the model that are significantly larger than the simulation time step (such as the duration of protection of a vaccine). See the documentation on Timed Transitions for details on how to implement this in a framework.</p>
 </div>
 </div>
 

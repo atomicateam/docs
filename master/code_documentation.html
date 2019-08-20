@@ -26,6 +26,7 @@
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -84,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="library/index.html">Model library</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Code documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/atomica.calibration.html">atomica.calibration</a></li>
@@ -171,74 +173,98 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-atomica">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-atomica">
 <span id="code-documentation"></span><h1>Code documentation<a class="headerlink" href="#module-atomica" title="Permalink to this headline">¶</a></h1>
 <p>Atomica root module</p>
 <p>The Atomica module is the entry point for running simulations and performing analysis
 using Atomica. It consists of the following submodules:</p>
 <blockquote>
-<div><table border="1" class="longtable docutils">
+<div><table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="_autosummary/atomica.calibration.html#module-atomica.calibration" title="atomica.calibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calibration</span></code></a></td>
-<td>Implements automatic calibration</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/atomica.calibration.html#module-atomica.calibration" title="atomica.calibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calibration</span></code></a></p></td>
+<td><p>Implements automatic calibration</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_autosummary/atomica.cascade.html#module-atomica.cascade" title="atomica.cascade"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cascade</span></code></a></td>
-<td>Utility functions for working with cascades</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/atomica.cascade.html#module-atomica.cascade" title="atomica.cascade"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cascade</span></code></a></p></td>
+<td><p>Utility functions for working with cascades</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_autosummary/atomica.data.html#module-atomica.data" title="atomica.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></td>
-<td>Implementation of Databook functionality</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/atomica.data.html#module-atomica.data" title="atomica.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
+<td><p>Implementation of Databook functionality</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_autosummary/atomica.defaults.html#module-atomica.defaults" title="atomica.defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">defaults</span></code></a></td>
-<td>Defines some defaults for Atomica projects Version: 2018sep24</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/atomica.defaults.html#module-atomica.defaults" title="atomica.defaults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">defaults</span></code></a></p></td>
+<td><p>Defines some defaults for Atomica projects Version: 2018sep24</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_autosummary/atomica.excel.html#module-atomica.excel" title="atomica.excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">excel</span></code></a></td>
-<td>Miscellaneous utility functions for Excel files</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/atomica.excel.html#module-atomica.excel" title="atomica.excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">excel</span></code></a></p></td>
+<td><p>Miscellaneous utility functions for Excel files</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_autosummary/atomica.framework.html#module-atomica.framework" title="atomica.framework"><code class="xref py py-obj docutils literal notranslate"><span class="pre">framework</span></code></a></td>
-<td>Implements Framework functionality</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/atomica.framework.html#module-atomica.framework" title="atomica.framework"><code class="xref py py-obj docutils literal notranslate"><span class="pre">framework</span></code></a></p></td>
+<td><p>Implements Framework functionality</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_autosummary/atomica.migration.html#atomica.migration" title="atomica.migration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">migration</span></code></a>(original_version,&nbsp;new_version,&nbsp;…)</td>
-<td>Decorator to register migration functions</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/atomica.migration.html#atomica.migration" title="atomica.migration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">migration</span></code></a>(original_version, new_version, …)</p></td>
+<td><p>Decorator to register migration functions</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_autosummary/atomica.model.html#module-atomica.model" title="atomica.model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code></a></td>
-<td>Implements the Atomica computational graph</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/atomica.model.html#module-atomica.model" title="atomica.model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code></a></p></td>
+<td><p>Implements the Atomica computational graph</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_autosummary/atomica.optimization.html#module-atomica.optimization" title="atomica.optimization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimization</span></code></a></td>
-<td>Implements various Optimizations in Atomica</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/atomica.optimization.html#module-atomica.optimization" title="atomica.optimization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimization</span></code></a></p></td>
+<td><p>Implements various Optimizations in Atomica</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_autosummary/atomica.parameters.html#module-atomica.parameters" title="atomica.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a></td>
-<td>Implements data-based model parameters (<code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code>)</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/atomica.parameters.html#module-atomica.parameters" title="atomica.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a></p></td>
+<td><p>Implements data-based model parameters (<code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code>)</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_autosummary/atomica.function_parser.html#module-atomica.function_parser" title="atomica.function_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function_parser</span></code></a></td>
-<td>Implements the parameter function parser</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/atomica.function_parser.html#module-atomica.function_parser" title="atomica.function_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function_parser</span></code></a></p></td>
+<td><p>Implements the parameter function parser</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_autosummary/atomica.plotting.html#module-atomica.plotting" title="atomica.plotting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotting</span></code></a></td>
-<td>Functions for generating plots from model outputs</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/atomica.plotting.html#module-atomica.plotting" title="atomica.plotting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotting</span></code></a></p></td>
+<td><p>Functions for generating plots from model outputs</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_autosummary/atomica.programs.html#module-atomica.programs" title="atomica.programs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">programs</span></code></a></td>
-<td>Classes for implementing Programs</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/atomica.programs.html#module-atomica.programs" title="atomica.programs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">programs</span></code></a></p></td>
+<td><p>Classes for implementing Programs</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_autosummary/atomica.project.html#module-atomica.project" title="atomica.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></td>
-<td>Implements the <code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code> user interface for Atomica</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/atomica.project.html#module-atomica.project" title="atomica.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></p></td>
+<td><p>Implements the <code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code> user interface for Atomica</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_autosummary/atomica.reconciliation.html#module-atomica.reconciliation" title="atomica.reconciliation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconciliation</span></code></a></td>
-<td>Implements the automatic reconciliation algorithm</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/atomica.reconciliation.html#module-atomica.reconciliation" title="atomica.reconciliation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconciliation</span></code></a></p></td>
+<td><p>Implements the automatic reconciliation algorithm</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_autosummary/atomica.results.html#module-atomica.results" title="atomica.results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">results</span></code></a></td>
-<td>Implements interface for working with model outputs</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/atomica.results.html#module-atomica.results" title="atomica.results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">results</span></code></a></p></td>
+<td><p>Implements interface for working with model outputs</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_autosummary/atomica.scenarios.html#module-atomica.scenarios" title="atomica.scenarios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scenarios</span></code></a></td>
-<td>Define classes for handling scenarios</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/atomica.scenarios.html#module-atomica.scenarios" title="atomica.scenarios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scenarios</span></code></a></p></td>
+<td><p>Define classes for handling scenarios</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_autosummary/atomica.system.html#module-atomica.system" title="atomica.system"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system</span></code></a></td>
-<td>Define internal system constants and functions</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/atomica.system.html#module-atomica.system" title="atomica.system"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system</span></code></a></p></td>
+<td><p>Define internal system constants and functions</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_autosummary/atomica.utils.html#module-atomica.utils" title="atomica.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils</span></code></a></td>
-<td>Define utility classes used throughout Atomica</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/atomica.utils.html#module-atomica.utils" title="atomica.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils</span></code></a></p></td>
+<td><p>Define utility classes used throughout Atomica</p></td>
 </tr>
 </tbody>
 </table>

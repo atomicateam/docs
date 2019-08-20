@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../code_documentation.html">Code documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
@@ -173,141 +175,165 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-atomica.system">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-atomica.system">
 <span id="atomica-system"></span><h1>atomica.system<a class="headerlink" href="#module-atomica.system" title="Permalink to this headline">¶</a></h1>
 <p>Define internal system constants and functions</p>
 <p class="rubric">Functions</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#atomica.system.atomica_path" title="atomica.system.atomica_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomica_path</span></code></a>([subdir,&nbsp;trailingsep])</td>
-<td>Returns paths relative to the Atomica parent module</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.system.atomica_path" title="atomica.system.atomica_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atomica_path</span></code></a>([subdir, trailingsep])</p></td>
+<td><p>Returns paths relative to the Atomica parent module</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Classes</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#atomica.system.FrameworkSettings" title="atomica.system.FrameworkSettings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FrameworkSettings</span></code></a></td>
-<td>Define system level keywords</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.system.FrameworkSettings" title="atomica.system.FrameworkSettings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FrameworkSettings</span></code></a></p></td>
+<td><p>Define system level keywords</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Exceptions</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#atomica.system.NotFoundError" title="atomica.system.NotFoundError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NotFoundError</span></code></a></td>
-<td>Error for when an item was not found</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.system.NotFoundError" title="atomica.system.NotFoundError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NotFoundError</span></code></a></p></td>
+<td><p>Error for when an item was not found</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="class">
 <dt id="atomica.system.FrameworkSettings">
-<em class="property">class </em><code class="descclassname">atomica.system.</code><code class="descname">FrameworkSettings</code><a class="reference internal" href="../_modules/atomica/system.html#FrameworkSettings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.system.FrameworkSettings" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">atomica.system.</code><code class="sig-name descname">FrameworkSettings</code><a class="reference internal" href="../_modules/atomica/system.html#FrameworkSettings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.system.FrameworkSettings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define system level keywords</p>
 <p>This class stores sets of keywords such as the keys for different variable types, or the
 supported quantity types (e.g., ‘probability’, ‘number’)</p>
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.DEFAULT_POP_TYPE">
-<code class="descname">DEFAULT_POP_TYPE</code><em class="property"> = 'default'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.DEFAULT_POP_TYPE" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">DEFAULT_POP_TYPE</code><em class="property"> = 'default'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.DEFAULT_POP_TYPE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.DEFAULT_SYMBOL_INAPPLICABLE">
-<code class="descname">DEFAULT_SYMBOL_INAPPLICABLE</code><em class="property"> = 'N.A.'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.DEFAULT_SYMBOL_INAPPLICABLE" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">DEFAULT_SYMBOL_INAPPLICABLE</code><em class="property"> = 'N.A.'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.DEFAULT_SYMBOL_INAPPLICABLE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.KEY_CHARACTERISTIC">
-<code class="descname">KEY_CHARACTERISTIC</code><em class="property"> = 'charac'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_CHARACTERISTIC" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">KEY_CHARACTERISTIC</code><em class="property"> = 'charac'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_CHARACTERISTIC" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.KEY_COMPARTMENT">
-<code class="descname">KEY_COMPARTMENT</code><em class="property"> = 'comp'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_COMPARTMENT" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">KEY_COMPARTMENT</code><em class="property"> = 'comp'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_COMPARTMENT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.KEY_INTERACTION">
-<code class="descname">KEY_INTERACTION</code><em class="property"> = 'interpop'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_INTERACTION" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">KEY_INTERACTION</code><em class="property"> = 'interpop'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_INTERACTION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.KEY_PARAMETER">
-<code class="descname">KEY_PARAMETER</code><em class="property"> = 'par'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_PARAMETER" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">KEY_PARAMETER</code><em class="property"> = 'par'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_PARAMETER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.KEY_POPULATION">
-<code class="descname">KEY_POPULATION</code><em class="property"> = 'pop'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_POPULATION" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">KEY_POPULATION</code><em class="property"> = 'pop'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_POPULATION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.KEY_TRANSFER">
-<code class="descname">KEY_TRANSFER</code><em class="property"> = 'transfer'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_TRANSFER" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">KEY_TRANSFER</code><em class="property"> = 'transfer'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_TRANSFER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.KEY_TRANSITION">
-<code class="descname">KEY_TRANSITION</code><em class="property"> = 'link'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_TRANSITION" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">KEY_TRANSITION</code><em class="property"> = 'link'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.KEY_TRANSITION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.QUANTITY_TYPE_DURATION">
-<code class="descname">QUANTITY_TYPE_DURATION</code><em class="property"> = 'duration'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.QUANTITY_TYPE_DURATION" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">QUANTITY_TYPE_DURATION</code><em class="property"> = 'duration'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.QUANTITY_TYPE_DURATION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.QUANTITY_TYPE_FRACTION">
-<code class="descname">QUANTITY_TYPE_FRACTION</code><em class="property"> = 'fraction'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.QUANTITY_TYPE_FRACTION" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">QUANTITY_TYPE_FRACTION</code><em class="property"> = 'fraction'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.QUANTITY_TYPE_FRACTION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.QUANTITY_TYPE_NUMBER">
-<code class="descname">QUANTITY_TYPE_NUMBER</code><em class="property"> = 'number'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.QUANTITY_TYPE_NUMBER" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">QUANTITY_TYPE_NUMBER</code><em class="property"> = 'number'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.QUANTITY_TYPE_NUMBER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.QUANTITY_TYPE_PROBABILITY">
-<code class="descname">QUANTITY_TYPE_PROBABILITY</code><em class="property"> = 'probability'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.QUANTITY_TYPE_PROBABILITY" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">QUANTITY_TYPE_PROBABILITY</code><em class="property"> = 'probability'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.QUANTITY_TYPE_PROBABILITY" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.QUANTITY_TYPE_PROPORTION">
-<code class="descname">QUANTITY_TYPE_PROPORTION</code><em class="property"> = 'proportion'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.QUANTITY_TYPE_PROPORTION" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">QUANTITY_TYPE_PROPORTION</code><em class="property"> = 'proportion'</em><a class="headerlink" href="#atomica.system.FrameworkSettings.QUANTITY_TYPE_PROPORTION" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.RESERVED_KEYWORDS">
-<code class="descname">RESERVED_KEYWORDS</code><em class="property"> = ['t', 'flow', 'all', 'dt', 'total', 'max', 'min', 'exp', 'floor', 'SRC_POP_AVG', 'TGT_POP_AVG', 'SRC_POP_SUM', 'TGT_POP_SUM', 'pi', 'cos', 'sin', 'sqrt', 'ln', 'rand', 'randn']</em><a class="headerlink" href="#atomica.system.FrameworkSettings.RESERVED_KEYWORDS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">RESERVED_KEYWORDS</code><em class="property"> = ['t', 'flow', 'all', 'dt', 'total', 'max', 'min', 'exp', 'floor', 'SRC_POP_AVG', 'TGT_POP_AVG', 'SRC_POP_SUM', 'TGT_POP_SUM', 'pi', 'cos', 'sin', 'sqrt', 'ln', 'rand', 'randn']</em><a class="headerlink" href="#atomica.system.FrameworkSettings.RESERVED_KEYWORDS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.RESERVED_SYMBOLS">
-<code class="descname">RESERVED_SYMBOLS</code><em class="property"> = {'&quot;', &quot;'&quot;, '*', '+', ',', '-', '/', ':', ';'}</em><a class="headerlink" href="#atomica.system.FrameworkSettings.RESERVED_SYMBOLS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">RESERVED_SYMBOLS</code><em class="property"> = {'&quot;', &quot;'&quot;, '*', '+', ',', '-', '/', ':', ';'}</em><a class="headerlink" href="#atomica.system.FrameworkSettings.RESERVED_SYMBOLS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="atomica.system.FrameworkSettings.STANDARD_UNITS">
-<code class="descname">STANDARD_UNITS</code><em class="property"> = ['probability', 'duration', 'number', 'fraction', 'proportion']</em><a class="headerlink" href="#atomica.system.FrameworkSettings.STANDARD_UNITS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">STANDARD_UNITS</code><em class="property"> = ['probability', 'duration', 'number', 'fraction', 'proportion']</em><a class="headerlink" href="#atomica.system.FrameworkSettings.STANDARD_UNITS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="atomica.system.NotFoundError">
-<em class="property">exception </em><code class="descclassname">atomica.system.</code><code class="descname">NotFoundError</code><a class="reference internal" href="../_modules/atomica/system.html#NotFoundError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.system.NotFoundError" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><code class="sig-prename descclassname">atomica.system.</code><code class="sig-name descname">NotFoundError</code><a class="reference internal" href="../_modules/atomica/system.html#NotFoundError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.system.NotFoundError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Error for when an item was not found</p>
 <p>This error gets thrown if a user-specified input was not found. For example, if the
 user queries a Population for a non-existent variable.</p>
@@ -315,27 +341,23 @@ user queries a Population for a non-existent variable.</p>
 
 <dl class="function">
 <dt id="atomica.system.atomica_path">
-<code class="descclassname">atomica.system.</code><code class="descname">atomica_path</code><span class="sig-paren">(</span><em>subdir=None</em>, <em>trailingsep=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/system.html#atomica_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.system.atomica_path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.system.</code><code class="sig-name descname">atomica_path</code><span class="sig-paren">(</span><em class="sig-param">subdir=None</em>, <em class="sig-param">trailingsep=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/system.html#atomica_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.system.atomica_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns paths relative to the Atomica parent module</p>
 <p>This function by default returns the directory containing the Atomica
 source files. It can also return paths relative to this directory using
 the optional additional arguments</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>subdir</strong> – Append an additional path list to Atomica path</li>
-<li><strong>trailingsep</strong> – If True, a trailing separator will be included so that the
-returned path can have a file name string added to it easily</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>subdir</strong> – Append an additional path list to Atomica path</p></li>
+<li><p><strong>trailingsep</strong> – If True, a trailing separator will be included so that the
+returned path can have a file name string added to it easily</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Absolute path string</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Absolute path string</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

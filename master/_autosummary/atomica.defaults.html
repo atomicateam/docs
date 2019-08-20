@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../code_documentation.html">Code documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
@@ -173,39 +175,63 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-atomica.defaults">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-atomica.defaults">
 <span id="atomica-defaults"></span><h1>atomica.defaults<a class="headerlink" href="#module-atomica.defaults" title="Permalink to this headline">¶</a></h1>
 <p>Defines some defaults for Atomica projects
 Version: 2018sep24</p>
 <p class="rubric">Functions</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#atomica.defaults.default_framework" title="atomica.defaults.default_framework"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_framework</span></code></a>([which,&nbsp;show_options])</td>
-<td></td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.defaults.default_framework" title="atomica.defaults.default_framework"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_framework</span></code></a>([which, show_options])</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#atomica.defaults.default_project" title="atomica.defaults.default_project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_project</span></code></a>([which,&nbsp;do_run,&nbsp;addprogs,&nbsp;…])</td>
-<td>Options for easily creating default projects based on different spreadsheets, including program information – useful for testing Version: 2018mar27</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.defaults.default_project" title="atomica.defaults.default_project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_project</span></code></a>([which, do_run, addprogs, …])</p></td>
+<td><p>Options for easily creating default projects based on different spreadsheets, including program information – useful for testing Version: 2018mar27</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#atomica.defaults.demo" title="atomica.defaults.demo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">demo</span></code></a>([which,&nbsp;kind,&nbsp;do_plot])</td>
-<td>Create a simple demo project</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.defaults.demo" title="atomica.defaults.demo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">demo</span></code></a>([which, kind, do_plot])</p></td>
+<td><p>Create a simple demo project</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#atomica.defaults.make_demo_scenarios" title="atomica.defaults.make_demo_scenarios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_demo_scenarios</span></code></a>(proj)</td>
-<td>Create demo scenarios</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.defaults.make_demo_scenarios" title="atomica.defaults.make_demo_scenarios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_demo_scenarios</span></code></a>(proj)</p></td>
+<td><p>Create demo scenarios</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="function">
 <dt id="atomica.defaults.default_framework">
-<code class="descclassname">atomica.defaults.</code><code class="descname">default_framework</code><span class="sig-paren">(</span><em>which=None</em>, <em>show_options=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/defaults.html#default_framework"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.defaults.default_framework" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.defaults.</code><code class="sig-name descname">default_framework</code><span class="sig-paren">(</span><em class="sig-param">which=None</em>, <em class="sig-param">show_options=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/defaults.html#default_framework"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.defaults.default_framework" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="atomica.defaults.default_project">
-<code class="descclassname">atomica.defaults.</code><code class="descname">default_project</code><span class="sig-paren">(</span><em>which=None</em>, <em>do_run=True</em>, <em>addprogs=True</em>, <em>verbose=False</em>, <em>show_options=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/defaults.html#default_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.defaults.default_project" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.defaults.</code><code class="sig-name descname">default_project</code><span class="sig-paren">(</span><em class="sig-param">which=None</em>, <em class="sig-param">do_run=True</em>, <em class="sig-param">addprogs=True</em>, <em class="sig-param">verbose=False</em>, <em class="sig-param">show_options=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/defaults.html#default_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.defaults.default_project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Options for easily creating default projects based on different spreadsheets, including
 program information – useful for testing
 Version: 2018mar27</p>
@@ -213,31 +239,29 @@ Version: 2018mar27</p>
 
 <dl class="function">
 <dt id="atomica.defaults.demo">
-<code class="descclassname">atomica.defaults.</code><code class="descname">demo</code><span class="sig-paren">(</span><em>which=None</em>, <em>kind=None</em>, <em>do_plot=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/defaults.html#demo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.defaults.demo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.defaults.</code><code class="sig-name descname">demo</code><span class="sig-paren">(</span><em class="sig-param">which=None</em>, <em class="sig-param">kind=None</em>, <em class="sig-param">do_plot=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/defaults.html#demo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.defaults.demo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a simple demo project</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="atomica.defaults.make_demo_scenarios">
-<code class="descclassname">atomica.defaults.</code><code class="descname">make_demo_scenarios</code><span class="sig-paren">(</span><em>proj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/defaults.html#make_demo_scenarios"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.defaults.make_demo_scenarios" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.defaults.</code><code class="sig-name descname">make_demo_scenarios</code><span class="sig-paren">(</span><em class="sig-param">proj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/defaults.html#make_demo_scenarios"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.defaults.make_demo_scenarios" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create demo scenarios</p>
 <p>This method creates three default budget scenarios</p>
 <ul class="simple">
-<li>Default budget</li>
-<li>Doubled budget</li>
-<li>Zero budget</li>
+<li><p>Default budget</p></li>
+<li><p>Doubled budget</p></li>
+<li><p>Zero budget</p></li>
 </ul>
 <p>The scenarios will be created and added to the project’s list of scenarios</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dorun</strong> – If True, and if doadd=True, simulations will be run</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="docutils literal notranslate"><span class="pre">None</span></code></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dorun</strong> – If True, and if doadd=True, simulations will be run</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

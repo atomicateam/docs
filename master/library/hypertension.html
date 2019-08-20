@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,6 +85,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Model library</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cervicalcancer.html">Cervical cancer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diabetes.html">Diabetes</a></li>
@@ -205,18 +207,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="hypertension">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="hypertension">
 <h1>Hypertension<a class="headerlink" href="#hypertension" title="Permalink to this headline">¶</a></h1>
 <p><strong>Name</strong>: Hypertension</p>
 <p><strong>Description</strong>: Framework for a hypertension model. Note that this does not include vital dynamics or new cases</p>
 <div class="section" id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="#compartments">Compartments</a></li>
-<li><a class="reference external" href="#characteristics">Characteristics</a></li>
-<li><a class="reference external" href="#parameters">Parameters</a></li>
-<li><a class="reference external" href="#interactions">Interactions</a></li>
-<li><a class="reference external" href="#cascades">Cascades</a></li>
+<li><p><a class="reference external" href="#compartments">Compartments</a></p></li>
+<li><p><a class="reference external" href="#characteristics">Characteristics</a></p></li>
+<li><p><a class="reference external" href="#parameters">Parameters</a></p></li>
+<li><p><a class="reference external" href="#interactions">Interactions</a></p></li>
+<li><p><a class="reference external" href="#cascades">Cascades</a></p></li>
 </ul>
 </div>
 <div class="section" id="compartments">
@@ -224,46 +250,46 @@
 <div class="section" id="compartment-undiagnosed">
 <h3>Compartment: Undiagnosed<a class="headerlink" href="#compartment-undiagnosed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">undx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">undx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-screened">
 <h3>Compartment: Screened<a class="headerlink" href="#compartment-screened" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">scr</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">scr</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-diagnosed">
 <h3>Compartment: Diagnosed<a class="headerlink" href="#compartment-diagnosed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">dx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">dx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-treated">
 <h3>Compartment: Treated<a class="headerlink" href="#compartment-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">tx</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">tx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="compartment-controlled">
 <h3>Compartment: Controlled<a class="headerlink" href="#compartment-controlled" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">con</span></code></li>
-<li>Does not appear in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">con</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -272,86 +298,91 @@
 <div class="section" id="characteristic-all-people-with-condition">
 <h3>Characteristic: All people with condition<a class="headerlink" href="#characteristic-all-people-with-condition" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_people</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Undiagnosed</li>
-<li>Screened</li>
-<li>Diagnosed</li>
-<li>Treated</li>
-<li>Controlled</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_people</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Undiagnosed</p></li>
+<li><p>Screened</p></li>
+<li><p>Diagnosed</p></li>
+<li><p>Treated</p></li>
+<li><p>Controlled</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-screened-people">
 <h3>Characteristic: Screened people<a class="headerlink" href="#characteristic-screened-people" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_screened</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Screened</li>
-<li>Diagnosed</li>
-<li>Treated</li>
-<li>Controlled</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_screened</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Screened</p></li>
+<li><p>Diagnosed</p></li>
+<li><p>Treated</p></li>
+<li><p>Controlled</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-diagnosed-people">
 <h3>Characteristic: Diagnosed people<a class="headerlink" href="#characteristic-diagnosed-people" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_dx</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Diagnosed</li>
-<li>Treated</li>
-<li>Controlled</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_dx</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Diagnosed</p></li>
+<li><p>Treated</p></li>
+<li><p>Controlled</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-currently-treated">
 <h3>Characteristic: Currently treated<a class="headerlink" href="#characteristic-currently-treated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_tx</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Treated</li>
-<li>Controlled</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_tx</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Treated</p></li>
+<li><p>Controlled</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="characteristic-blood-pressure-controlled">
 <h3>Characteristic: Blood pressure controlled<a class="headerlink" href="#characteristic-blood-pressure-controlled" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">all_con</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Includes:<ul>
-<li>Controlled</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_con</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Controlled</p></li>
 </ul>
 </li>
-<li>Appears in the databook</li>
-<li>Databook values will be used for model initialization</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -360,169 +391,181 @@
 <div class="section" id="parameter-annual-number-screened">
 <h3>Parameter: Annual number screened<a class="headerlink" href="#parameter-annual-number-screened" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_screen</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Screening rate”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_screen</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Screening rate”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-screening-rate">
 <h3>Parameter: Screening rate<a class="headerlink" href="#parameter-screening-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">screen</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Undiagnosed” to “Screened”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">screen</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Undiagnosed” to “Screened”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_screen/max(undx,num_screen)</span></code></li>
-<li>Depends on:<ul>
-<li>“Annual number screened”</li>
-<li>“Undiagnosed”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_screen/max(undx,num_screen)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Annual number screened”</p></li>
+<li><p>“Undiagnosed”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-of-new-diagnoses">
 <h3>Parameter: Annual number of new diagnoses<a class="headerlink" href="#parameter-annual-number-of-new-diagnoses" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_diag</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Diagnosis rate”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_diag</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Diagnosis rate”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-diagnosis-rate">
 <h3>Parameter: Diagnosis rate<a class="headerlink" href="#parameter-diagnosis-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">diag</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Screened” to “Diagnosed”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">diag</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Screened” to “Diagnosed”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_diag/max(scr,num_diag)</span></code></li>
-<li>Depends on:<ul>
-<li>“Screened”</li>
-<li>“Annual number of new diagnoses”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_diag/max(scr,num_diag)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Screened”</p></li>
+<li><p>“Annual number of new diagnoses”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-annual-number-newly-initiated-onto-treatment">
 <h3>Parameter: Annual number newly initiated onto treatment<a class="headerlink" href="#parameter-annual-number-newly-initiated-onto-treatment" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">num_initiate</span></code></li>
-<li>Units/format: number</li>
-<li>Value restrictions: At least 0</li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Used to compute:<ul>
-<li>“Initiation rate”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_initiate</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Initiation rate”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-initiation-rate">
 <h3>Parameter: Initiation rate<a class="headerlink" href="#parameter-initiation-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">initiate</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Diagnosed” to “Treated”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">initiate</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Diagnosed” to “Treated”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Does not appear in the databook</li>
-<li>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_initiate/max(dx,num_initiate)</span></code></li>
-<li>Depends on:<ul>
-<li>“Diagnosed”</li>
-<li>“Annual number newly initiated onto treatment”</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_initiate/max(dx,num_initiate)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Diagnosed”</p></li>
+<li><p>“Annual number newly initiated onto treatment”</p></li>
 </ul>
 </li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-loss-to-follow-up-rate">
 <h3>Parameter: Loss-to-follow-up rate<a class="headerlink" href="#parameter-loss-to-follow-up-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">loss</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Treated” to “Diagnosed”</li>
-<li>“Controlled” to “Diagnosed”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">loss</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Treated” to “Diagnosed”</p></li>
+<li><p>“Controlled” to “Diagnosed”</p></li>
 </ul>
 </li>
-<li>Default value: None</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-time-after-initiating-treatment-to-achieve-bp-control-years">
 <h3>Parameter: Time after initiating treatment to achieve BP control (years)<a class="headerlink" href="#parameter-time-after-initiating-treatment-to-achieve-bp-control-years" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">cont_rate</span></code></li>
-<li>Units/format: duration</li>
-<li>Value restrictions: At least 0</li>
-<li>Contributes to transitions from:<ul>
-<li>“Treated” to “Controlled”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">cont_rate</span></code></p></li>
+<li><p>Units/format: duration</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Treated” to “Controlled”</p></li>
 </ul>
 </li>
-<li>Default value: 0.2</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.2</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 <div class="section" id="parameter-treatment-failure-rate">
 <h3>Parameter: Treatment failure rate<a class="headerlink" href="#parameter-treatment-failure-rate" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Code name: <code class="docutils literal notranslate"><span class="pre">fail_rate</span></code></li>
-<li>Value can be used for calibration</li>
-<li>Units/format: probability</li>
-<li>Value restrictions: 0-1.0000</li>
-<li>Contributes to transitions from:<ul>
-<li>“Controlled” to “Treated”</li>
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">fail_rate</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Controlled” to “Treated”</p></li>
 </ul>
 </li>
-<li>Default value: 0.16</li>
-<li>Appears in the databook</li>
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Data entry guidance: <ENTER GUIDANCE></li>
+<li><p>Default value: 0.16</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
 </ul>
 </div>
 </div>
@@ -534,26 +577,32 @@
 <div class="section" id="cascade-main">
 <h3>Cascade: main<a class="headerlink" href="#cascade-main" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Description: <ENTER DESCRIPTION></li>
-<li>Stages:<ul>
-<li>Prevalent<ul>
-<li>All people with condition</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Stages:</p>
+<ul>
+<li><p>Prevalent</p>
+<ul>
+<li><p>All people with condition</p></li>
 </ul>
 </li>
-<li>Screened<ul>
-<li>Screened people</li>
+<li><p>Screened</p>
+<ul>
+<li><p>Screened people</p></li>
 </ul>
 </li>
-<li>Diagnosed<ul>
-<li>Diagnosed people</li>
+<li><p>Diagnosed</p>
+<ul>
+<li><p>Diagnosed people</p></li>
 </ul>
 </li>
-<li>Treated<ul>
-<li>Currently treated</li>
+<li><p>Treated</p>
+<ul>
+<li><p>Currently treated</p></li>
 </ul>
 </li>
-<li>Controlled<ul>
-<li>Blood pressure controlled</li>
+<li><p>Controlled</p>
+<ul>
+<li><p>Blood pressure controlled</p></li>
 </ul>
 </li>
 </ul>

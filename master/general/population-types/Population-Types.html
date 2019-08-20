@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -101,6 +102,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../code_documentation.html">Code documentation</a></li>
 </ul>
@@ -169,7 +171,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="population-types">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="population-types">
 <h1>Population types<a class="headerlink" href="#population-types" title="Permalink to this headline">¶</a></h1>
 <p>For most standard models, there is a simple relationship between the disease cascade specified in the Framework, and the populations specified in the databook. The two are separated, such that every population contains the same compartments, as shown in the example below:</p>
 <a class="reference internal image-reference" href="../../_images/Slide1.PNG"><img alt="../../_images/Slide1.PNG" src="../../_images/Slide1.PNG" style="width: 500px;" /></a>
@@ -177,34 +203,34 @@
 <a class="reference internal image-reference" href="../../_images/Slide2.PNG"><img alt="../../_images/Slide2.PNG" src="../../_images/Slide2.PNG" style="width: 500px;" /></a>
 <p>In some cases, however, it would be useful to define populations that have different disease cascades. Three initial example use cases are</p>
 <ul class="simple">
-<li>In vector-borne diseases, the disease states of the vector are likely to be different to the disease state for humans. Also, vectors may interact with multiple human populations</li>
-<li>Some diseases may involve the environment (e.g. dynamically varying water pollution)</li>
-<li>Some models may be different cascades for different human populations. For example, a nutrition model may have one treatment cascade for adult women, and a different cascade for young children</li>
+<li><p>In vector-borne diseases, the disease states of the vector are likely to be different to the disease state for humans. Also, vectors may interact with multiple human populations</p></li>
+<li><p>Some diseases may involve the environment (e.g. dynamically varying water pollution)</p></li>
+<li><p>Some models may be different cascades for different human populations. For example, a nutrition model may have one treatment cascade for adult women, and a different cascade for young children</p></li>
 </ul>
 <p>This type of scenario is illustrated below. Note that the population type is reflected in the colour of the populations, not the populations themselves.</p>
 <a class="reference internal image-reference" href="../../_images/Slide3.PNG"><img alt="../../_images/Slide3.PNG" src="../../_images/Slide3.PNG" style="width: 500px;" /></a>
 <p>Atomica is able to implement this type of model by using the optional ‘Population type’ feature. This feature works in the following way</p>
 <ol class="arabic simple">
-<li>You can define several population types in the Framework</li>
-<li>Each quantity in the Framework (compartment, characteristic etc.) gets assigned to a population type</li>
-<li>When creating the databook, you need to specify not just the name of the population, but also its type</li>
+<li><p>You can define several population types in the Framework</p></li>
+<li><p>Each quantity in the Framework (compartment, characteristic etc.) gets assigned to a population type</p></li>
+<li><p>When creating the databook, you need to specify not just the name of the population, but also its type</p></li>
 </ol>
 <p>The result will be a model similar to the one above - that illustrative example corresponds to having two population types in the Framework, and three populations in the Databook.</p>
 <p>The main purpose of having different population types is so that their dynamics can interact when simulating the model. For example, human prevalence might dynamically affect mosquito prevalence in a malaria model. These interactions can be specified in parameter functions in the framework.</p>
 <div class="admonition caution">
-<p class="first admonition-title">Caution</p>
-<p class="last">Transfers assume a 1:1 mapping of compartments between populations. Therefore, it is not possible to have transfers between different population types</p>
+<p class="admonition-title">Caution</p>
+<p>Transfers assume a 1:1 mapping of compartments between populations. Therefore, it is not possible to have transfers between different population types</p>
 </div>
 <p>The restriction that transfers cannot take place across population types helps to clarify the use cases where population types are appropriate, as opposed to simply adding compartments to an existing cascade.</p>
 <ul class="simple">
-<li>There can never be a transfer between a mosquito population and a human population, because this would represent mosquitos turning into humans. Thus, a population type would be appropriate for this</li>
-<li>Similarly, there can never be a transfer between a human population and the environment e.g. a human turning into a lake. Thus, an environment population to track water pollution would be well represented with a different population type</li>
-<li>There may be a separate set of disease states if a model includes coinfection. For example, there may be more possible treatment states for TB+HIV compared to TB or HIV alone. If it is possible for an individual to move from TB to TB+HIV or between other coinfection states, then these should <em>not</em> be different population types. Instead, the all of the coinfection states should be added as compartments within a single population type</li>
-<li>Some nutrition models for maternal and child health model adult women and children completely independently, such that no children grow up and become adult women. In these types of models, children simply exit the model once they reach a certain age (e.g. 5 years old). For this type of model, it would be suitable to have separate population types for women and children. That way, stunting and wasting compartments would not need to be created for adults, only children. However, if it is possible for children to become adults within the model, then there should <em>not</em> be different population types - otherwise, it would be impossible to transfer people from the child populations to the adult population</li>
+<li><p>There can never be a transfer between a mosquito population and a human population, because this would represent mosquitos turning into humans. Thus, a population type would be appropriate for this</p></li>
+<li><p>Similarly, there can never be a transfer between a human population and the environment e.g. a human turning into a lake. Thus, an environment population to track water pollution would be well represented with a different population type</p></li>
+<li><p>There may be a separate set of disease states if a model includes coinfection. For example, there may be more possible treatment states for TB+HIV compared to TB or HIV alone. If it is possible for an individual to move from TB to TB+HIV or between other coinfection states, then these should <em>not</em> be different population types. Instead, the all of the coinfection states should be added as compartments within a single population type</p></li>
+<li><p>Some nutrition models for maternal and child health model adult women and children completely independently, such that no children grow up and become adult women. In these types of models, children simply exit the model once they reach a certain age (e.g. 5 years old). For this type of model, it would be suitable to have separate population types for women and children. That way, stunting and wasting compartments would not need to be created for adults, only children. However, if it is possible for children to become adults within the model, then there should <em>not</em> be different population types - otherwise, it would be impossible to transfer people from the child populations to the adult population</p></li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The general rule is, population types are suitable if it is not possible to move from one population type to another, different species being the canonical example</p>
+<p class="admonition-title">Note</p>
+<p>The general rule is, population types are suitable if it is not possible to move from one population type to another, different species being the canonical example</p>
 </div>
 <p>Adding population types has effects on the Framework, databook, program book, and plotting. We now discuss each of these in detail. For a worked example, refer to the <code class="docutils literal notranslate"><span class="pre">combined_framework.xlsx</span></code> example in the Atomica model library, together with the associated databook and program book. The screenshots below are drawn from this example</p>
 <div class="section" id="framework-population-types">
@@ -216,8 +242,8 @@
 <a class="reference internal image-reference" href="../../_images/framework_2.png"><img alt="../../_images/framework_2.png" src="../../_images/framework_2.png" style="width: 650px;" /></a>
 <p>If you leave a cell blank, it will be automatically assigned to the first population type on the ‘Population types’ sheet.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">It is possible to define a population type without any compartments. Such a population type can be useful if you want a storage container for parameters, but don’t need to track any entities (e.g. people, mosquitos). For example, an environment population for water pollution would probably have a parameter representing water pollution, rather than a compartment.</p>
+<p class="admonition-title">Note</p>
+<p>It is possible to define a population type without any compartments. Such a population type can be useful if you want a storage container for parameters, but don’t need to track any entities (e.g. people, mosquitos). For example, an environment population for water pollution would probably have a parameter representing water pollution, rather than a compartment.</p>
 </div>
 <p>Next, do the same for Characteristics and Parameters.</p>
 <a class="reference internal image-reference" href="../../_images/framework_3.png"><img alt="../../_images/framework_3.png" src="../../_images/framework_3.png" style="width: 650px;" /></a>
@@ -227,21 +253,21 @@
 <p>Parameters are where population types become somewhat more complicated. Transfers cannot take place between different population types. Therefore, all interactions between population types take place via parameter functions. As a general rule, when you write a parameter function, all of the quantities you refer to inside the function (other parameters, compartments, characteristics) should be defined within the same population type. This is because standard parameter functions are always evaluated within a single population, so variables from other population types are simply not defined within the population when the parameter function is being evaluated.</p>
 <p>The exception is for cross-population interactions, which are computed via population aggregation functions. You can refer to quantities in other population types within the <code class="docutils literal notranslate"><span class="pre">SRC_POP_SUM</span></code> or <code class="docutils literal notranslate"><span class="pre">SRC_POP_AVG</span></code> special functions.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Cross-population aggregations cannot use <code class="docutils literal notranslate"><span class="pre">TGT_POP_SUM</span></code> or <code class="docutils literal notranslate"><span class="pre">TGT_POP_AVG</span></code> (because this affects the orientation of the interaction matrix). The simple rule to remember is that if your parameter refers to a variable in a different population type, you must use either <code class="docutils literal notranslate"><span class="pre">SRC_POP_SUM</span></code> or <code class="docutils literal notranslate"><span class="pre">SRC_POP_AVG</span></code>.</p>
+<p class="admonition-title">Warning</p>
+<p>Cross-population aggregations cannot use <code class="docutils literal notranslate"><span class="pre">TGT_POP_SUM</span></code> or <code class="docutils literal notranslate"><span class="pre">TGT_POP_AVG</span></code> (because this affects the orientation of the interaction matrix). The simple rule to remember is that if your parameter refers to a variable in a different population type, you must use either <code class="docutils literal notranslate"><span class="pre">SRC_POP_SUM</span></code> or <code class="docutils literal notranslate"><span class="pre">SRC_POP_AVG</span></code>.</p>
 </div>
 <p>The aggregation functions <code class="docutils literal notranslate"><span class="pre">SRC_POP_SUM</span></code> and <code class="docutils literal notranslate"><span class="pre">SRC_POP_AVG</span></code> support weighting the interaction in two ways</p>
 <ul class="simple">
-<li>You can optionally specify a weighting variable. When using population types, the weighting variable must belong to the same population type as the quantity being aggregated (not the population type of the parameter itself). For example, if an environment parameter depended on the number of people in several human populations, the weighting variable needs to be defined in the human populations, not in the environment population.</li>
-<li>The interaction can be weighted by an interaction matrix, defining pairwise interaction weights. This provides fine control over the interactions between specific populations</li>
+<li><p>You can optionally specify a weighting variable. When using population types, the weighting variable must belong to the same population type as the quantity being aggregated (not the population type of the parameter itself). For example, if an environment parameter depended on the number of people in several human populations, the weighting variable needs to be defined in the human populations, not in the environment population.</p></li>
+<li><p>The interaction can be weighted by an interaction matrix, defining pairwise interaction weights. This provides fine control over the interactions between specific populations</p></li>
 </ul>
 <p>The interaction matrix is declared on the ‘Interactions’ sheet in the Framework, in the same way as for standard Frameworks. However, with population types, you also need to specify the ‘From’ population type, and ‘To’ population type.</p>
 <a class="reference internal image-reference" href="../../_images/framework_5.png"><img alt="../../_images/framework_5.png" src="../../_images/framework_5.png" style="width: 500px;" /></a>
 <p>When the databook is generated, an interaction matrix will be defined specific to these population types. The population types need to be specified explicitly because in general, there will be a different number of populations of each type, and therefore the interaction matrix will not be square. This is also the reason for not supporting <code class="docutils literal notranslate"><span class="pre">TGT_POP_SUM</span></code> and <code class="docutils literal notranslate"><span class="pre">TGT_POP_AVG</span></code>, because end users are instructed to complete the databook interactions sheet as being interactions ‘from’ rows ‘to’ columns.</p>
 <p>If your parameter function refers to an interaction, then the quantity being aggregated must match the ‘From’ population type of the interaction, and the parameter itself must match the ‘To’ population type. In the example shown above, the parameter <code class="docutils literal notranslate"><span class="pre">sum_foi</span></code> has been declared in the <code class="docutils literal notranslate"><span class="pre">udt</span></code> population type. The quantity being aggregated is <code class="docutils literal notranslate"><span class="pre">foi</span></code>, which is declared as belong to the <code class="docutils literal notranslate"><span class="pre">sir</span></code> population type. The interaction is weighted using the <code class="docutils literal notranslate"><span class="pre">udt_ctc</span></code> interaction matrix. This interaction is defined as with ‘From population type’ <code class="docutils literal notranslate"><span class="pre">sir</span></code> and ‘To population type’ <code class="docutils literal notranslate"><span class="pre">udt</span></code>, which is consistent. It would not be possible to have the parameter function for <code class="docutils literal notranslate"><span class="pre">sum_foi</span></code> be <code class="docutils literal notranslate"><span class="pre">SRC_POP_SUM(foi,sir_ctc)</span></code> because the population types do not match.</p>
 <div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">If you want to have an interaction only between certain populations within a population type - for example, if only adults contribute to water pollution - then create an Interaction and set the weights to 0 in the databook for the populations that should be excluded.</p>
+<p class="admonition-title">Tip</p>
+<p>If you want to have an interaction only between certain populations within a population type - for example, if only adults contribute to water pollution - then create an Interaction and set the weights to 0 in the databook for the populations that should be excluded.</p>
 </div>
 <p>The final place population types appear in the Framework is in the transition matrix. Transitions are possible between compartments of the same population type. As a general rule, you should have as many transition matrices as you do population types with compartments. In the example above, there are three population types, but only the <code class="docutils literal notranslate"><span class="pre">sir</span></code> and <code class="docutils literal notranslate"><span class="pre">udt</span></code> population types have compartments within them. Therefore, we will have two transition matrices. These both appear on the ‘Transitions’ sheet. To define multiple transition matricies, simply insert them onto the transitions sheet stacked vertically, separated by an empty row. For example:</p>
 <a class="reference internal image-reference" href="../../_images/framework_6.png"><img alt="../../_images/framework_6.png" src="../../_images/framework_6.png" style="width: 500px;" /></a>
@@ -250,7 +276,7 @@
 <div class="section" id="databook-population-types">
 <h2>Databook population types<a class="headerlink" href="#databook-population-types" title="Permalink to this headline">¶</a></h2>
 <p>The next step in working with population types is creating and filling in a databook. When creating a databook, it is essential to specify the population type of each population being added. This is because the data entry tables will only contain rows for populations where a given variable is defined. For example, you might create a databook with the following population input:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pops</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pops</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;SIR_0-4&#39;</span><span class="p">:{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;SIR 0-4&#39;</span><span class="p">,</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;sir&#39;</span><span class="p">},</span>
     <span class="s1">&#39;SIR_5-14&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;SIR 5-14&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;sir&#39;</span><span class="p">},</span>
     <span class="s1">&#39;SIR_15-64&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;SIR 15-64&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;sir&#39;</span><span class="p">},</span>
@@ -262,14 +288,14 @@
 <p>Notice how every population has both a label and a type. The ‘Population Definitions’ sheet in the databook now contains an additional column for population type.</p>
 <a class="reference internal image-reference" href="../../_images/databook_1.png"><img alt="../../_images/databook_1.png" src="../../_images/databook_1.png" style="width: 400px;" /></a>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">The data entry rows are created when the databook is generated, and they take into account the population types. It is not possible to change the type of a population after it has been created. The population type cells are grey to reflect this. Changing the population type by overwriting those cells will likely result in an error (unless all of the data entry tables are also updated manually). Instead, you should load the databook into Atomica and programatically remove the old population, and make a new one with the desired type.</p>
+<p class="admonition-title">Warning</p>
+<p>The data entry rows are created when the databook is generated, and they take into account the population types. It is not possible to change the type of a population after it has been created. The population type cells are grey to reflect this. Changing the population type by overwriting those cells will likely result in an error (unless all of the data entry tables are also updated manually). Instead, you should load the databook into Atomica and programatically remove the old population, and make a new one with the desired type.</p>
 </div>
 <p>The data entry tables are essentially unchanged from normal databooks where there is only one population type. However, notice that the available populations under each quantity depend on the population type. For example, ‘All people with condition’ is defined in the ‘udt’ population type, so data entry is provided only for the UDT populations.</p>
 <a class="reference internal image-reference" href="../../_images/databook_2.png"><img alt="../../_images/databook_2.png" src="../../_images/databook_2.png" style="width: 650px;" /></a>
 <p>There are no restrictions on mixing quantities in different population types on the same databook worksheet. In the framework, the databook page and databook order are defined the same way across population types. You can mix and match quantities from different population types in the databook, or separate them out if you wish.</p>
 <p>Transfers can only take place within the same population type. Therefore, you need to specify the population type for the transfer in the same way you specify the population type for the populations. For example:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">transfers</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transfers</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;aging_sir&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Aging SIR&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;sir&#39;</span><span class="p">},</span>
     <span class="s1">&#39;aging_udt&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Aging UDT&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;udt&#39;</span><span class="p">},</span>
     <span class="p">}</span>
@@ -293,30 +319,30 @@
 <a class="reference internal image-reference" href="../../_images/progbook_2.png"><img alt="../../_images/progbook_2.png" src="../../_images/progbook_2.png" style="width: 650px;" /></a>
 <p>In the example above, ‘Death rate for susceptible people’ is a parameter in the ‘sir’ population type while ‘Diagnosis rate’ is a parameter in the ‘udt’ population type. Therefore, different populations appear under each parameter.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Programs themselves do not belong to a population type - they simply target compartments and parameters that exist within a model, regardless of whether multiple population types are present.</p>
+<p class="admonition-title">Note</p>
+<p>Programs themselves do not belong to a population type - they simply target compartments and parameters that exist within a model, regardless of whether multiple population types are present.</p>
 </div>
 <p>Any program can target any parameter in a population where that parameter exists. No constraints are imposed on the targeted populations vs targeted parameters, and the same is true for population types. It is possible for a program to target compartments in one population type, but have an outcome on a parameter in a different population type. Similarly, it is possible for a program to target people in multiple population types but only have an outcome in one population type. There are several cases where this behaviour can be useful:</p>
 <ul class="simple">
-<li>You could implement a screening program where multiple population types might be eligible for screening, but only one <em>population type</em> can be diagnose. For example, if your model had a separate population type for PLHIV, then an HIV screening program might target all population types, but it would only have an effect on HIV diagnosis rate in the PLHIV populations.</li>
-<li>You could implement a program that affect multiple population types with different cascades (e.g. children and pregnant women) but where there is conceptual overlap. For example, you could have an anaemia program that targets and treats anaemia in both children and pregnant women, even though their respective anaemia-related compartments and transition parameters would not actually match.</li>
-<li>You could implement a program that targets humans but has an effect on non-human populations. For example, a behavioural change program might decrease the rate at which water becomes polluted, or an insecticide spraying program might increase the death rate of mosquitos. In both of these cases, the program would need to be targeted at humans, but the effect takes place in a different species or in the environment.</li>
+<li><p>You could implement a screening program where multiple population types might be eligible for screening, but only one <em>population type</em> can be diagnose. For example, if your model had a separate population type for PLHIV, then an HIV screening program might target all population types, but it would only have an effect on HIV diagnosis rate in the PLHIV populations.</p></li>
+<li><p>You could implement a program that affect multiple population types with different cascades (e.g. children and pregnant women) but where there is conceptual overlap. For example, you could have an anaemia program that targets and treats anaemia in both children and pregnant women, even though their respective anaemia-related compartments and transition parameters would not actually match.</p></li>
+<li><p>You could implement a program that targets humans but has an effect on non-human populations. For example, a behavioural change program might decrease the rate at which water becomes polluted, or an insecticide spraying program might increase the death rate of mosquitos. In both of these cases, the program would need to be targeted at humans, but the effect takes place in a different species or in the environment.</p></li>
 </ul>
 </div>
 <div class="section" id="running-simulations">
 <h2>Running simulations<a class="headerlink" href="#running-simulations" title="Permalink to this headline">¶</a></h2>
 <p>Running the model is essentially unchanged. Note that</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> objects contain <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects, and those <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects will name populations that depend on the population type. So you cannot assume that all <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> instances within a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> have the same populations</li>
-<li>Similarly, <code class="docutils literal notranslate"><span class="pre">Model</span></code> objects contained within a <code class="docutils literal notranslate"><span class="pre">Result</span></code> can have different compartments, characteristics, parameters, and links in each population. Thus you cannot assume that a given quantity (e.g. compartment) exists in all populations</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> objects contain <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects, and those <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects will name populations that depend on the population type. So you cannot assume that all <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> instances within a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> have the same populations</p></li>
+<li><p>Similarly, <code class="docutils literal notranslate"><span class="pre">Model</span></code> objects contained within a <code class="docutils literal notranslate"><span class="pre">Result</span></code> can have different compartments, characteristics, parameters, and links in each population. Thus you cannot assume that a given quantity (e.g. compartment) exists in all populations</p></li>
 </ul>
 </div>
 <div class="section" id="plotting">
 <h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h2>
 <p>As with running simulations, the plotting routines are essentially unchanged. However, the fact that outputs do not exist in all populations adds an additional complication to aggregating outputs.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">When plotting models where more than one population type is present, you cannot use <code class="docutils literal notranslate"><span class="pre">'all'</span></code> or <code class="docutils literal notranslate"><span class="pre">'total'</span></code> as shortcuts to aggregate over all populations.</p>
+<p class="admonition-title">Warning</p>
+<p>When plotting models where more than one population type is present, you cannot use <code class="docutils literal notranslate"><span class="pre">'all'</span></code> or <code class="docutils literal notranslate"><span class="pre">'total'</span></code> as shortcuts to aggregate over all populations.</p>
 </div>
 <p>By definition, any given output can only exist in one population type. But also by definition, <code class="docutils literal notranslate"><span class="pre">'all'</span></code> or <code class="docutils literal notranslate"><span class="pre">'total'</span></code> will aggregate over more than one population type. Thus, at least some of the populations will fail to contain the output. In cases where there are no output aggregations, it is possible to infer which population an output belongs. However, it is possible to also aggregate outputs. In cases where there are multiple output aggregations, it is technically challenging to make reasonable assumptions about which plots to generate; more importantly though, it is exceptionally difficult for users to infer the plot output beforehand. Further, it is possible to specify multiple population aggregations. These could specify an aggregation over different population types. The resulting values could then be stacked in a bar graph. However, this would result in methodologically incorrect plots in many cases, particularly when population types are used to represent different species.</p>
 <p>Plot data generation is already very complex, with support for output aggregations, population aggregations, and time aggregations. Therefore, to improve consistency, predictability, and interface simplicity, we maintain the existing logic within <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> that all requested outputs exist in all requested populations. Although inconvenient, this makes it much easier to deal with the logic of aggregations and bar plot stacking. In particular, it prevents users from performing aggregations across population types. Although this prevents operations such as aggregating over children and adult women within the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> constructor, it also prevents things like aggregating over humans and mosquitos - the former is an inconvenience (and modifying the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instance after construction is a simple workaround), but the latter is simply wrong.</p>

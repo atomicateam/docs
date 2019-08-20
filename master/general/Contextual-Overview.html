@@ -26,6 +26,7 @@
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -94,6 +95,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
 </ul>
@@ -162,28 +164,49 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="contextual-overview">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="contextual-overview">
 <h1>Contextual overview<a class="headerlink" href="#contextual-overview" title="Permalink to this headline">¶</a></h1>
 <p>Atomica is a simulation engine developed to flexibly implement compartment-based models of disease, and to analyze the effect of fundable interventions. The general workflow for using Atomica is as follows:</p>
 <ol class="arabic">
-<li><p class="first">Define a framework for the disease, specifying the different states an individual may go through when experiencing a disease e.g. susceptible, infected, recovered. The framework also specifies the transitions that exist between states, which encodes diseases progression as well as factors like whether reinfection is possible. Each state (also referred to as a compartment) may have additional attributes such as whether it is a birth or death compartment. Effectively, the framework defines a Markov chain and can be thought of as a graph where disease states are nodes and the dynamics of the disease are represented as directed edges.</p>
+<li><p>Define a framework for the disease, specifying the different states an individual may go through when experiencing a disease e.g. susceptible, infected, recovered. The framework also specifies the transitions that exist between states, which encodes diseases progression as well as factors like whether reinfection is possible. Each state (also referred to as a compartment) may have additional attributes such as whether it is a birth or death compartment. Effectively, the framework defines a Markov chain and can be thought of as a graph where disease states are nodes and the dynamics of the disease are represented as directed edges.</p>
 <p>The framework is specified in <code class="docutils literal notranslate"><span class="pre">framework.xlsx</span></code>, which defines - Which disease states exist - Which transitions exist between them - How to compute the transition rates based on parameters that the user provides i.e., <code class="docutils literal notranslate"><span class="pre">framework.xlsx</span></code> contains the definitions for the parameters the user needs to provide in the next step</p>
 </li>
-<li><p class="first">The framework represents the progression of a disease (or more generally, the dynamics of transitions between states) for a single population e.g. ‘Age 15-64’. Typically, many populations are simulated. These populations correspond to different, mutually exclusive groups of people and an individual can only belong to one population. As individuals within each population go through the disease framework independently, on the backend one copy of the framework graph is generated for each population. Because the populations and the data values are separate to the framework and are different for each application, they are specified by the user in <code class="docutils literal notranslate"><span class="pre">databook.xlsx</span></code>. The databook is specific to both the framework (because it contains parameters that are specific to the framework) and the application (because the data values are unique to the application). The typical workflow is</p>
+<li><p>The framework represents the progression of a disease (or more generally, the dynamics of transitions between states) for a single population e.g. ‘Age 15-64’. Typically, many populations are simulated. These populations correspond to different, mutually exclusive groups of people and an individual can only belong to one population. As individuals within each population go through the disease framework independently, on the backend one copy of the framework graph is generated for each population. Because the populations and the data values are separate to the framework and are different for each application, they are specified by the user in <code class="docutils literal notranslate"><span class="pre">databook.xlsx</span></code>. The databook is specific to both the framework (because it contains parameters that are specific to the framework) and the application (because the data values are unique to the application). The typical workflow is</p>
 <blockquote>
 <div><ul class="simple">
-<li>Choose a framework and generate an empty databook corresponding to this framework</li>
-<li>Fill out the databook specifying the populations to be simulated, and the initial population sizes, and the values for parameters</li>
-<li>Load both the framework and databook, and run a simulation</li>
+<li><p>Choose a framework and generate an empty databook corresponding to this framework</p></li>
+<li><p>Fill out the databook specifying the populations to be simulated, and the initial population sizes, and the values for parameters</p></li>
+<li><p>Load both the framework and databook, and run a simulation</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first">In general, empirical data is not available to completely specify all of the model’s parameters. Assumptions need to be made for times when data is missing, or for parameters that were not measured. The outcome of the simulation depends on the selected values. Thus, the first step in performing an application is calibration where the parameters in the model are adjusted such that given the initial conditions (e.g., population sizes and parameter values in the first year that data was available), the simulation accurately replicates the data gathered over subsequent years. For example, the model parameters are fitted to data from 2000-2016 and these parameter values are subsequently used when computing projections from 2016-2030.</p>
-</li>
-<li><p class="first">Calibration is performed in the absence of any programs. A program is effectively a function that maps from spending to parameter value, which enables the amount of money allocated to a program to affect the progression rates of individuals through the disease (or movement between populations). In general, this mapping may not be known and therefore there are parameters associated with the program that also need to be fitted to available data. Aside from empirical data, reconciliation is often required when programs are added to the simulation. When programs are added, depending on the amount of spending and the program’s effect on parameters, there may be discontinuities introduced in the dynamics at the time when programs are first introduced into the simulation. This manifests itself as a sharp jump in the output time series from the simulation. The goal of reconciliation is to update the programs to reduce/eliminate this discontinuity.</p>
-</li>
-<li><p class="first">Finally, after both calibration and reconciliation, the model can be used for analysis via scenarios and optimizations</p>
-</li>
+<li><p>In general, empirical data is not available to completely specify all of the model’s parameters. Assumptions need to be made for times when data is missing, or for parameters that were not measured. The outcome of the simulation depends on the selected values. Thus, the first step in performing an application is calibration where the parameters in the model are adjusted such that given the initial conditions (e.g., population sizes and parameter values in the first year that data was available), the simulation accurately replicates the data gathered over subsequent years. For example, the model parameters are fitted to data from 2000-2016 and these parameter values are subsequently used when computing projections from 2016-2030.</p></li>
+<li><p>Calibration is performed in the absence of any programs. A program is effectively a function that maps from spending to parameter value, which enables the amount of money allocated to a program to affect the progression rates of individuals through the disease (or movement between populations). In general, this mapping may not be known and therefore there are parameters associated with the program that also need to be fitted to available data. Aside from empirical data, reconciliation is often required when programs are added to the simulation. When programs are added, depending on the amount of spending and the program’s effect on parameters, there may be discontinuities introduced in the dynamics at the time when programs are first introduced into the simulation. This manifests itself as a sharp jump in the output time series from the simulation. The goal of reconciliation is to update the programs to reduce/eliminate this discontinuity.</p></li>
+<li><p>Finally, after both calibration and reconciliation, the model can be used for analysis via scenarios and optimizations</p></li>
 </ol>
 </div>
 
