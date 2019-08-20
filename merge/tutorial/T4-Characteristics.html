@@ -387,7 +387,7 @@ div.rendered_html tbody tr:hover {
 <h1>T4 - Characteristics<a class="headerlink" href="#T4---Characteristics" title="Permalink to this headline">¶</a></h1>
 <p>Characteristics can be conceptually difficult to define, but are fairly simple in practice. They are essentially special parameters, that are specific to working with compartments and groups of compartments. We will motivate their design with a worked example that builds on the multi-population framework from T3, and then conclude by discussing other aspects of their design that differ from parameters.</p>
 <p>The key functionality provided by characteristics is this - the example in T3 had users initialize the compartment sizes by directly entering values for the number of people in the ‘Susceptible’ and ‘Infected’ compartments, both of which appeared on the ‘Stocks’ sheet in the databook.</p>
-<p><a href="#id1"><span class="problematic" id="id2">|t4\_framework1|</span></a></p>
+<p><img alt="t4-framework1" src="../_images/t4_framework1.png" /></p>
 <p>However, typically country data does not correspond directly to the compartments in the databook. For example, suppose we know</p>
 <ul class="simple">
 <li><p>The total number of people alive</p></li>
@@ -409,10 +409,10 @@ div.rendered_html tbody tr:hover {
 </ul>
 <p>and have these quantities appear in the databook instead of the compartments themselves. We could achieve the required data entry using parameters. However, we can’t use the parameters to initialize compartments. This is why there is a separate system, ‘characteristics’, that allows expressions of groups of compartments to be used for initialization.</p>
 <p>We can set up the three characteristics defined above in a fairly straightforward way on the ‘Characteristics’ sheet. Rather than writing the formulas above with ‘+’ and ‘/’ operations, we instead provide a comma separated list of compartments (or other characteristics) to sum (in the ‘components’ column) and we provide the denominator separately in the ‘denominator’ column. So the corresponding characteristics sheet is</p>
-<p><a href="#id3"><span class="problematic" id="id4">|t4\_framework2|</span></a></p>
+<p><img alt="t4-framework2" src="../_images/t4_framework2.png" /></p>
 <p>We will also remove the ‘Databook page’ for the compartments on the the compartments sheet, since we want to initialize the model using characteristics only.</p>
 <p>If we create a databook from the framework as usual, we will have updated data entry tables on the ‘Stocks’ sheet. We can then go ahead and fill them out with the initialization described above:</p>
-<p><a href="#id5"><span class="problematic" id="id6">|t4\_databook1|</span></a></p>
+<p><img alt="t4-databook1" src="tutorial/images/t4_databook1.png" /></p>
 <p>The framework and databook are available in the Atomica repository under <code class="docutils literal notranslate"><span class="pre">atomica/docs/tutorial/assets/t4_framework_1.xlsx</span></code> and <code class="docutils literal notranslate"><span class="pre">atomica/docs/tutorial/assets/t4_databook_1.xlsx</span></code>, respectively. We can now load these files in and run a simulation:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -431,8 +431,8 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Atomica 1.11.0 (2019-03-07) -- (c) the Atomica development team
-2019-08-20 03:36:34.698190
+Atomica 1.12.0 (2019-08-20) -- (c) the Atomica development team
+2019-08-20 05:20:02.502743
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -440,7 +440,7 @@ Atomica 1.11.0 (2019-03-07) -- (c) the Atomica development team
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0302s
+Elapsed time for running &#34;default&#34;: 0.0279s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -477,7 +477,7 @@ rec = 300.00
 <p>So we have successfully used characteristics to have Atomica automatically convert from the aggregated data values to the underlying compartment values.</p>
 <p>Under the hood, we are solving a system of simultaneous equations. What happens if there are more unknowns than there are equations? This corresponds to the system being ‘underdetermined’. An example would be, suppose we know that there are 1000 people in total, of whom 400 have ever been infected, but we don’t know the proportion of people whose infections have been resolved. How do we then decide whether we have 100 infected and 300 recovered, or 300 infected and 100 recovered? Atomica uses
 the ‘minimum norm’ solution which means that the inputs are distributed equally across groups of compartments that are nonzero, and is zero if no information is available. We will see this with two examples. First, consider the case above where we only know the total population size and number ever infected. This corresponds to the framework and databook containing</p>
-<p><a href="#id7"><span class="problematic" id="id8">|t4\_framework\_3|</span></a> <a href="#id9"><span class="problematic" id="id10">|t4\_databook\_2|</span></a></p>
+<p><img alt="t4-framework-3" src="../_images/t4_framework_3.png" /> <img alt="t4-databook-2" src="../_images/t4_databook_2.png" /></p>
 <p>The minimum norm solution would see the 400 people uniformly distributed across <code class="docutils literal notranslate"><span class="pre">inf</span></code> and <code class="docutils literal notranslate"><span class="pre">rec</span></code>, so there will be 200 people in each compartment. If we run the model with these spreadsheets, we obtain</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -506,7 +506,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0273s
+Elapsed time for running &#34;default&#34;: 0.0284s
 sus = 600.00
 inf = 200.00
 rec = 200.00
@@ -522,7 +522,7 @@ rec = 200.00
 </pre></div></div>
 </div>
 <p>We also now recieve a warning that ‘Initialization characteristics are underdetermined’ which reflects the fact that we had to rely on the minimum norm solution to infer the value of some of the compartments. For compartments that are missing entirely, we can remove the ‘alive’ characteristic entirely, leaving us with:</p>
-<p><a href="#id11"><span class="problematic" id="id12">|t4\_framework\_4|</span></a> <a href="#id13"><span class="problematic" id="id14">|t4\_databook\_3|</span></a></p>
+<p><img alt="t4-framework-4" src="../_images/t4_framework_4.png" /> <img alt="t4-databook-3" src="../_images/t4_databook_3.png" /></p>
 <p>Now, we expect that the 400 people will be assigned to <code class="docutils literal notranslate"><span class="pre">inf</span></code> and <code class="docutils literal notranslate"><span class="pre">rec</span></code> in equal proportions, but since we have no information at all about <code class="docutils literal notranslate"><span class="pre">sus</span></code>, it will be initialized with a value of zero:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -551,7 +551,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0288s
+Elapsed time for running &#34;default&#34;: 0.0279s
 sus = 0.00
 inf = 200.00
 rec = 200.00
@@ -574,9 +574,9 @@ Atomica.</p>
 <div class="alert alert-block alert-info"><p>Further reading: Compartment initialization is described in more detail in the Atomica code documentation</p>
 </div><p>Characterastic also differ from parameters in that normalized characteristics contain additional logic to deal with the numerator or denominator being zero. Previously we defined <code class="docutils literal notranslate"><span class="pre">foi_out</span> <span class="pre">=</span> <span class="pre">infx*inf/popsize</span></code>, but we had a ‘RuntimeWarning’ due to the prisoner population being zero at the first timestep. Instead of defining the population size and prevalence as parameters, we can instead define them as characteristics. We can reuse the <code class="docutils literal notranslate"><span class="pre">alive</span></code> characteristic, and define an additional
 characteristic for prevalence.</p>
-<p><a href="#id15"><span class="problematic" id="id16">|t4\_framework\_5|</span></a></p>
+<p><img alt="t4-framework-5" src="../_images/t4_framework_5.png" /></p>
 <p>Notice that we haven’t provided a databook page for the <code class="docutils literal notranslate"><span class="pre">prev</span></code> characteristic - this way, it won’t affect the initialization at all. Now we can use <code class="docutils literal notranslate"><span class="pre">alive</span></code> instead of <code class="docutils literal notranslate"><span class="pre">popsize</span></code> in the parameter functions, and we can use <code class="docutils literal notranslate"><span class="pre">prev</span></code> instead of <code class="docutils literal notranslate"><span class="pre">inf/popsize</span></code> for the prevalance. If the numerator and denominator of a characteristic are both zero, then the characteristic value will also be zero (whereas the parameter would be ‘NaN’). Our parameters sheet now reads:</p>
-<p><a href="#id17"><span class="problematic" id="id18">|t4\_framework\_6|</span></a></p>
+<p><img alt="t4-framework-6" src="../_images/t4_framework_6.png" /></p>
 <p>We can now go ahead and run this framework:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -594,7 +594,7 @@ characteristic for prevalence.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0249s
+Elapsed time for running &#34;default&#34;: 0.0266s
 </pre></div></div>
 </div>
 <p>and we can see now that the ‘RuntimeWarning’ has been resolved.</p>

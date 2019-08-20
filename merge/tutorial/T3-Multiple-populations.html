@@ -400,7 +400,7 @@ div.rendered_html tbody tr:hover {
 <h2>Transfers<a class="headerlink" href="#Transfers" title="Permalink to this headline">¶</a></h2>
 <p>A transfers involves moving people from one population to another. When this movement takes place, the compartments they are in are preserved. Effectively, a simulation with multiple populations can be considered a single, large network of compartments, with duplicate compartment names across populations, and transfers being links that connect those compartments. Defining a transfer in a databook then corresponds to setting a transfer rate between all corresponding compartments in the selected
 populations, as shown below.</p>
-<p><a href="#id1"><span class="problematic" id="id2">|transfer\_1|</span></a></p>
+<p><img alt="transfer-1" src="../_images/transfer_1.png" /></p>
 <p>In order to define a transfer, we need to create one in the databook. This can be done at the same time as creating the databook - for example:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -418,8 +418,8 @@ populations, as shown below.</p>
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Atomica 1.11.0 (2019-03-07) -- (c) the Atomica development team
-2019-08-20 03:36:28.440369
+Atomica 1.12.0 (2019-08-20) -- (c) the Atomica development team
+2019-08-20 05:19:55.932824
 Initialization characteristics are underdetermined - this may be intentional, but check the initial compartment sizes carefully
 </pre></div></div>
 </div>
@@ -445,21 +445,21 @@ Spreadsheet saved to /home/vsts/work/1/s/docs/tutorial/temp.xlsx.
 </pre></div></div>
 </div>
 <p>If we look at the ‘Flows’ sheet of the databook, we can see how the existing values in the ‘adults’ population have been preserved (including the extra value in 2018), and we can see that each table now has an extra row for the prisoner population. Notice however, that also that all of the extra content has been removed</p>
-<p><a href="#id3"><span class="problematic" id="id4">|transfer\_db\_1|</span></a></p>
+<p><img alt="transfer-db-1" src="../_images/transfer_db_1.png" /></p>
 <p>We will add in the same values for the prisoner population as the adult population, except</p>
 <ul class="simple">
 <li><p>The compartments will be initialized with 0 people, so that we can see the transfer clearly</p></li>
 <li><p>The birth rate in the prisoner population will be 0</p></li>
 </ul>
 <p>We focus now on the ‘Transfers’ sheet.</p>
-<p><a href="#id5"><span class="problematic" id="id6">|transfer\_db\_2|</span></a></p>
+<p><img alt="transfer-db-2" src="../_images/transfer_db_2.png" /></p>
 <p>In the databook, a transfer is defined by three tables. The top table specifies the name of the transfer (the population type can be ignored for now). The middle table defines which transfers exist. And then the bottom table specifies the values for those transfers.</p>
 <p>In this case, we want to have an ‘incarceration’ transfer that moves adults into the prisoner population. Therefore, we need to specify that a transfer from ‘adults’ to ‘pris’ exists. In the middle table, transfers go from row to column. So we set the value of cell C5 to ‘Y’ to indicate that we want to have this transfer.</p>
-<p><a href="#id7"><span class="problematic" id="id8">|transfer\_db\_3|</span></a></p>
+<p><img alt="transfer-db-3" src="../_images/transfer_db_3.png" /></p>
 <p>Upon changing the cell to ‘Y’, a data entry row in the bottom table becomes active. The row clearly indicates <code class="docutils literal notranslate"><span class="pre">adults</span> <span class="pre">---&gt;</span> <span class="pre">pris</span></code> to confirm the direction of the transfer. The values in the row can then be entered in exactly the same way as the values on the parameters table. Note that the units for the transfer can be ‘Probability (per year)’ or ‘Number (per year)’ and they can be set in the databook itself (whereas for parameters, the units are declared in the framework and they cannot be
 changed in the databook).</p>
 <p>For this transfer, we will enter that a total of 100 people per year are incarcerated.</p>
-<p><a href="#id9"><span class="problematic" id="id10">|databook\_4|</span></a></p>
+<p><img alt="databook-4" src="../_images/transfer_db_4.png" /></p>
 <p>Now we can create a project and run a simulation in exactly the same way as before. The databook for this example is available in the Atomica repository under <code class="docutils literal notranslate"><span class="pre">atomica/docs/tutorial/assets/databook_1a.xlsx</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -476,7 +476,7 @@ changed in the databook).</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0196s
+Elapsed time for running &#34;default&#34;: 0.0193s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -539,7 +539,7 @@ documentation.</p>
 to a force of infection within each population. However, we want to account for the fact that the total force of infection depends on the prevalance in other populations as well. The net force of infection can be expressed as a weighted average of the force of infection in all populations, with different weights in every population.</p>
 <p>To implement this, we will first set up the force of infection as an unweighted average, and then introduce weights. We start by splitting the <code class="docutils literal notranslate"><span class="pre">foi</span></code> parameter into two parameters - <code class="docutils literal notranslate"><span class="pre">foi_out</span></code> which is the force of infection computed within each population only, and <code class="docutils literal notranslate"><span class="pre">foi_in</span></code>, which is the force of infection taking into account cross-population interactions. This naming reflects the idea that <code class="docutils literal notranslate"><span class="pre">foi_out</span></code> reflects ‘outgoing’ disease from the population, while <code class="docutils literal notranslate"><span class="pre">foi_in</span></code> reflects the
 aggregation of infectiousness driving ‘incoming’ disease in the population.</p>
-<p><a href="#id11"><span class="problematic" id="id12">|interaction\_1|</span></a></p>
+<p><img alt="interaction-1" src="../_images/interaction_1.png" /></p>
 <p>We also need to change the ‘Transitions’ sheet to use <code class="docutils literal notranslate"><span class="pre">foi_in</span></code> instead of <code class="docutils literal notranslate"><span class="pre">foi</span></code> to drive the transition from <code class="docutils literal notranslate"><span class="pre">sus</span></code> to <code class="docutils literal notranslate"><span class="pre">inf</span></code>. We can go ahead and run a simulation with this framework. Note that we didn’t change anything in the framework that would result in changes to the databook compared to our previous example. Therefore, we can create a project using the new framework but with the databook from the previous example. The modified framework is available in the Atomica repository under
 <code class="docutils literal notranslate"><span class="pre">atomica/docs/tutorial/assets/framework_2.xlsx</span></code>.</p>
 <div class="nbinput docutils container">
@@ -565,7 +565,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0244s
+Elapsed time for running &#34;default&#34;: 0.0246s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -620,9 +620,9 @@ foi_in (pris): 0.1258
 </ul>
 <p>Weighting by the the number of people accounts for the second factor above, while an interaction-specific weight (representing the probability of interactions/contact between the populations) accounts for the third factor above.</p>
 <p>Interaction weights need to appear in the parameter function, so their existence must be declared in the framework file. But the interaction weights need to be entered in the databook, so they also need to be entered there. We can add the interaction to the framework by adding an entry on the ‘Interactions’ sheet, with a default value of <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
-<p><a href="#id13"><span class="problematic" id="id14">|interaction\_2|</span></a></p>
+<p><img alt="interaction-2" src="../_images/interaction_2.png" /></p>
 <p>We can then add this interaction as the second argument to <code class="docutils literal notranslate"><span class="pre">SRC_POP_AVG</span></code> on the ‘Parameters’ sheet</p>
-<p><a href="#id15"><span class="problematic" id="id16">|interaction\_3|</span></a></p>
+<p><img alt="interaction-3" src="../_images/interaction_3.png" /></p>
 <p>Finally, we need to add this interaction to the databook. If we create a new databook using the modified framework, this would happen automatically. However, here we will add the interaction to the existing databook from the previous example, to avoid having to re-enter all of the other data values. Note that when we do this, we need to make sure that the code name and full name of the interaction being added to the databook exactly matches the names that were entered in the framework.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -649,9 +649,9 @@ Spreadsheet saved to /home/vsts/work/1/s/docs/tutorial/temp.xlsx.
 <li><p>A matrix of interactions. Unlike transfers, entries may be placed on the diagonal as well</p></li>
 <li><p>Rows representing directional interactions the same as transfers, but with undefined units for the data</p></li>
 </ul>
-<p><a href="#id17"><span class="problematic" id="id18">|interaction\_4|</span></a></p>
+<p><img alt="interaction-4" src="../_images/interaction_4.png" /></p>
 <p>Ordinarily, with the default value of <code class="docutils literal notranslate"><span class="pre">1</span></code> specified in the framework, all of the interactions would be present (‘Y’ in each matrix entry) and pre-filled with a value of <code class="docutils literal notranslate"><span class="pre">1</span></code>. This didn’t happen because we added the interaction manually, so we can just make that change by hand.</p>
-<p><a href="#id19"><span class="problematic" id="id20">|interaction\_5|</span></a></p>
+<p><img alt="interaction-5" src="../_images/interaction_5.png" /></p>
 <p>Because all of the weights are <code class="docutils literal notranslate"><span class="pre">1</span></code>, this just corresponds to an unweighted average, and indeed if we use the same test case as before, we see the same results:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -685,7 +685,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0274s
+Elapsed time for running &#34;default&#34;: 0.0275s
 foi_out (adults): 0.1831
 foi_out (pris): 0.0685
 Expected value of foi_in = 0.1258
@@ -703,7 +703,7 @@ foi_in (pris): 0.1258
 </pre></div></div>
 </div>
 <p>However, now consider the case where the <code class="docutils literal notranslate"><span class="pre">prisoner-prisoner</span></code> interaction has a value of <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p>
-<p><a href="#id21"><span class="problematic" id="id22">|interaction\_6|</span></a></p>
+<p><img alt="interaction-6" src="../_images/interaction_6.png" /></p>
 <p>This is effectively saying that prisoners interact with each other twice as frequently as they interact with adults in the general population, and thus the force of infection in the prisoner population depends more on the prevalence within the prisoner population than the general population.</p>
 <div class="alert alert-block alert-info"><p>Interactions are normalized so that the interaction weights all add to 1.0. Thus only the relative values matter, whether the values were <code class="docutils literal notranslate"><span class="pre">1:2</span></code> or <code class="docutils literal notranslate"><span class="pre">2:4</span></code> would make no difference</p>
 </div><div class="nbinput docutils container">
@@ -737,7 +737,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0281s
+Elapsed time for running &#34;default&#34;: 0.0256s
 foi_out (adults): 0.1831
 foi_out (pris): 0.0685
 Expected value of foi_in for prisoners = 0.1067
@@ -756,7 +756,7 @@ foi_in (pris): 0.1067
 </div>
 <p>So we can see how the interaction weights fed into the weighted average done by <code class="docutils literal notranslate"><span class="pre">SRC_POP_AVG</span></code>. The final common weighting factor is by population size. In Atomica, this is generalized to any variable within the population, which could be the population size, or it could be the size of some target compartments, or simply an arbitrary weighting factor provided by the user or calculated using a parameter function. In this case, we will weight the interaction by the population size.</p>
 <p>In order to do this, we need to first define a quantity in the framework that represents the population size. We will make a parameter in this example, but normally this would be done using characteristics (discussed further in the next tutorial).</p>
-<p><a href="#id23"><span class="problematic" id="id24">|interaction\_7|</span></a></p>
+<p><img alt="interaction-7" src="../_images/interaction_7.png" /></p>
 <p>Then, we add the new <code class="docutils literal notranslate"><span class="pre">popsize</span></code> variable as the third argument to <code class="docutils literal notranslate"><span class="pre">SRC_POP_AVG</span></code>. As before, this framework change doesn’t need any change in the databook, so we can immediately run the model with the modified framework</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -781,7 +781,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0282s
+Elapsed time for running &#34;default&#34;: 0.0281s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
