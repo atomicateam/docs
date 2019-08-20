@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Models (implementation) &mdash; Atomica  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Results and Models" href="Model-user.html" />
+    <link rel="prev" title="Frameworks" href="Frameworks.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Basic-workflow.html">Basic workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Databooks.html">Data and Databooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Frameworks.html">Frameworks</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Models (implementation)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Model-object-structure">Model object structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Compartment">Compartment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Link">Link</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Characteristic">Characteristic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Parameter">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Population">Population</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Model">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Linking-and-unlinking">Linking and unlinking</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Model-user.html">Results and Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plotting.html">Atomica Plotting Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plot-Programs.html">Plotting programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plot-Units.html">Plot unit conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Probability-Rescaling.html">Probability rescaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Uncertainty.html">Uncertainty</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Examples</a> &raquo;</li>
+        
+      <li>Models (implementation)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/examples/Model-dev.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Models-(implementation)">
+<h1>Models (implementation)<a class="headerlink" href="#Models-(implementation)" title="Permalink to this headline">¶</a></h1>
+<p>This page provides an overview of <code class="docutils literal notranslate"><span class="pre">Model</span></code> objects oriented towards the internal structure and underlying objects. It thus documents ways of interacting directly with <code class="docutils literal notranslate"><span class="pre">Model</span></code> instances.</p>
+<div class="section" id="Model-object-structure">
+<h2>Model object structure<a class="headerlink" href="#Model-object-structure" title="Permalink to this headline">¶</a></h2>
+<p>At its core, models in Atomica are implemented as a computational graph. The nodes in this graph are ‘compartments’, which store numbers of people, and the edges are ‘links’, which move people from one compartment to another. However, there are additional complexities associated with computing the flows between compartments, and generating other model outputs, and we thus introduce additional types of nodes into the graph representing intermediate calculations and outputs.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Model</span></code> objects serve two purposes</p>
+<ol class="arabic simple">
+<li><p>They handle integration of the model, actually performing the calculations required to run a simulation</p></li>
+<li><p>They serve as the primary storage of model outputs</p></li>
+</ol>
+<p>The reason <code class="docutils literal notranslate"><span class="pre">Model</span></code> objects serve as primary storage is because the elements in the computational graph already store all of the values relevant to model output, and stores them in a manner that both facilitates their access as well as enables traversal of the relationship between quantities. The organization of the model object is as follows</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Model</span>
+    <span class="n">Population</span>
+        <span class="n">Compartment</span>
+        <span class="n">Link</span>
+        <span class="n">Characteristic</span>
+        <span class="n">Parameter</span>
+</pre></div>
+</div>
+<p>where ‘Compartments’, ‘Characteristics’, and ‘Parameters’ all correspond to items in the framework, ‘Links’ correspond to transitions in the framework, and ‘Populations’ correspond to the populations listed in the databook.</p>
+<p>We now go through each of these objects in turn.</p>
+<div class="section" id="Compartment">
+<h3>Compartment<a class="headerlink" href="#Compartment" title="Permalink to this headline">¶</a></h3>
+<p><img alt="modelcompartment" src="../_images/model_compartment.png" /></p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> represents one of the compartments specified in the ‘Compartments’ sheet of the framework. A compartment stores people in a particular state (e.g., susceptible, infected). For each population, there is one <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> for every entry in that sheet. <code class="docutils literal notranslate"><span class="pre">Compartments</span></code> have the following key features:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">vals</span></code> attribute for the compartment object represents the number of people in that compartment</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute matches the ‘Code Label’ in the framework</p></li>
+<li><p>Boolean flags for birth, death, and junction compartments (<code class="docutils literal notranslate"><span class="pre">tag_birth</span></code>,<code class="docutils literal notranslate"><span class="pre">tag_dead</span></code>, and <code class="docutils literal notranslate"><span class="pre">is_junction</span></code>, respectively)</p></li>
+<li><p>A list of Link objects, <code class="docutils literal notranslate"><span class="pre">inlinks</span></code>, that represents flows into the compartment</p></li>
+<li><p>A list of Link objects, <code class="docutils literal notranslate"><span class="pre">outlinks</span></code>, that represents flows out of the compartment</p></li>
+</ul>
+<p>A junction is a special type of compartment that is emptied at every time step, so the <code class="docutils literal notranslate"><span class="pre">vals</span></code> attribute should be 0 at all times.</p>
+<p>Compartments have a number of helper methods</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">outflow</span></code> which is the sum of all outgoing links at a given point in time. This can also be used as a proxy for the ‘value’ of a junction, because it corresponds to how many people had arrived in the junction at that time step.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expected_duration</span></code> this returns the time in years that an individual would be expected to remain in the compartment if the outflow probabilities and the compartment size remained the same going into the future (i.e. in a steady state approximation)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expected_outflow</span></code> this returns a dict showing where people in the compartment would be expected to be after 1 year, on the assumption that the outflows at each time step are probabilistic and constant</p></li>
+</ul>
+<p>The last two methods <code class="docutils literal notranslate"><span class="pre">expected_duration</span></code> and <code class="docutils literal notranslate"><span class="pre">expected_outflow</span></code> are mainly for application diagnostic purposes.</p>
+</div>
+<div class="section" id="Link">
+<h3>Link<a class="headerlink" href="#Link" title="Permalink to this headline">¶</a></h3>
+<p><img alt="modellink" src="../_images/model_link.png" /></p>
+<p>A link represents one of the transitions specified in the ‘Transitions’ sheet of the cascade workbook. For each population, there is one <code class="docutils literal notranslate"><span class="pre">Link</span></code> for every entry in the transition matrix - note that this means there are separate instances of a <code class="docutils literal notranslate"><span class="pre">Link</span></code> object for any repeated tags. There is also an instance of a <code class="docutils literal notranslate"><span class="pre">Link</span></code> object between corresponding pairs of compartments between any two populations that have transfers between them. The transfer links are stored in the source population. A
+<code class="docutils literal notranslate"><span class="pre">Link</span></code> draws its value from a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> object. A <code class="docutils literal notranslate"><span class="pre">Link</span></code> has the following key features:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">vals</span></code> attribute for the link represents how many people are being moved from one compartment to another at a given time. The rule is <code class="docutils literal notranslate"><span class="pre">popsize[ti+1]=popsize[t]+link_value[t]</span></code>. To apply a link, the link value is subtracted from the source compartment, and added to the destination compartment. These values correspond to the actual number of people moved at each time step (after incorporation of any constraints to prevent negative compartment sizes). Note that this means that the values
+are <em>not</em> annualized. This greatly improves consistency and usability when working with the raw matrices, generally output to a user goes via helper methods such as plotting or exporting, and these take care of annualization where required.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">Link</span></code> is the name of the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> object that the link obtains its value from, with <code class="docutils literal notranslate"><span class="pre">:flow</span></code> appended to it</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">source</span></code> attribute is an instance of a <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> object, corresponding to the source compartment</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">dest</span></code> attribute is an instance of a <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> object, corresponding to the destination compartment</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">parameter</span></code> attribute is an instance of a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> object, corresponding to the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> supplying values for the link</p></li>
+</ul>
+</div>
+<div class="section" id="Characteristic">
+<h3>Characteristic<a class="headerlink" href="#Characteristic" title="Permalink to this headline">¶</a></h3>
+<p><img alt="modelcharacteristic" src="../_images/model_characteristic.png" /></p>
+<p>A characteristic represents a grouping of compartments, with optional normalization. In each population, there is one <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> object for every entry in the ‘Characteristics’ sheet in the cascade workbook. A characteristic may be used within other characteristics and in parameter computation. A <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> has the following key features:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">vals</span></code> property attribute represents either a number of people, or a fraction of people (depending on whether the denominator is set or not)</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">includes</span></code> attribute is a list whose elements are either <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> or <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> objects. At each timepoint, the <code class="docutils literal notranslate"><span class="pre">vals</span></code> attribute of the objects in the <code class="docutils literal notranslate"><span class="pre">includes</span></code> list are summed together to calculate the value of the current <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code></p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">denominator</span></code> attribute is optionally provided as a <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> or <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> object. If provided, at each timepoint the sum of the <code class="docutils literal notranslate"><span class="pre">includes</span></code> objects will be divided by the <code class="docutils literal notranslate"><span class="pre">vals</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">denominator</span></code>. The most common usage scenario for this is to define a characteristic corresponding to a prevalance (e.g., where the <code class="docutils literal notranslate"><span class="pre">includes</span></code> list sums up the number of infector people, and the denominator is a characteristic including all people in the population). If a
+<code class="docutils literal notranslate"><span class="pre">denominator</span></code> is supplied, then the <code class="docutils literal notranslate"><span class="pre">is_fraction</span></code> flag is <code class="docutils literal notranslate"><span class="pre">True</span></code> for the <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code></p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">update(ti)</span></code> method is called during integration, and computes the <code class="docutils literal notranslate"><span class="pre">vals</span></code> attribute at time index <code class="docutils literal notranslate"><span class="pre">ti</span></code> based on the <code class="docutils literal notranslate"><span class="pre">includes</span></code> and <code class="docutils literal notranslate"><span class="pre">denominator</span></code> objects</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">dependency</span></code> flag indicates whether the value of the characteristic needs to be computed during integration or not. A <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> is dependent if it is used in a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> function. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, then the value of the characteristic will be computed at the end of integration using vectorized operations for efficiency.</p></li>
+</ul>
+<p>To save storage space after the simulation is complete, the values for characteristics are not generally stored. Instead, the <code class="docutils literal notranslate"><span class="pre">vals</span></code> property attribute dynamically computes the characteristic value based on the compartment sizes, which are retained. This is useful because there are often more characteristics than compartments, and all characteristics can be computed based on compartment values. However, to avoid the computational overhead during model integration, the characteristic contains a
+<code class="docutils literal notranslate"><span class="pre">_internal_vals</span></code> member variable that actually stores the characteristic value during integration. If this is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, then the <code class="docutils literal notranslate"><span class="pre">vals</span></code> method will simply return the <code class="docutils literal notranslate"><span class="pre">_internal_vals</span></code> array.</p>
+</div>
+<div class="section" id="Parameter">
+<h3>Parameter<a class="headerlink" href="#Parameter" title="Permalink to this headline">¶</a></h3>
+<p><img alt="modelparameter" src="../_images/model_parameter.png" /></p>
+<p>A parameter object provides a way to compute variables based on the value of other variables, either for use as simulation outputs, or to dynamically compute transition rates (i.e. <code class="docutils literal notranslate"><span class="pre">Link</span></code> values) during integration. There is one <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> object for every entry listed in the ‘Parameters’ sheet of the cascade workbook, plus an additional <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> for every pair of populations that has a transfer between them. Note that there is only one transfer <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> for every pair of
+populations, but there is a <code class="docutils literal notranslate"><span class="pre">Link</span></code> between every corresponding compartment within those populations - so for example, aging from <code class="docutils literal notranslate"><span class="pre">0-4</span></code> to <code class="docutils literal notranslate"><span class="pre">5-14</span></code> will have a single <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> representing the total number of people changing populations, and there would be links between <code class="docutils literal notranslate"><span class="pre">[0-4</span> <span class="pre">Sus]-&gt;[5-14</span> <span class="pre">Sus]</span></code> and <code class="docutils literal notranslate"><span class="pre">[0-4</span> <span class="pre">Vac]-&gt;[5-14</span> <span class="pre">Vac]</span></code>.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> has the following key features:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">links</span></code> attribute stores a list of <code class="docutils literal notranslate"><span class="pre">Links</span></code> that derive their value from the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> object. If this list is empty, then the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> is either a dependency for another <code class="docutils literal notranslate"><span class="pre">Parameter</span></code>, or an <code class="docutils literal notranslate"><span class="pre">Output</span></code> object.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">vals</span></code> attribute represents either a transition rate (in units of fraction/probability or number of people) or otherwise a quantity with unknown units. If a parameter represents a transition rate, its units are assumed to be annualized, and will be converted to timestep-based values during integration (the method for conversion depends on <code class="docutils literal notranslate"><span class="pre">units</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code>). At construction, the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> is loaded in with values supplied from the <code class="docutils literal notranslate"><span class="pre">parset</span></code> if values are
+available</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">fcn_str</span></code> optionally specifies a formula that is used to compute the value of the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> dynamically</p></li>
+<li><p>If an <code class="docutils literal notranslate"><span class="pre">fcn_str</span></code> is provided, the <code class="docutils literal notranslate"><span class="pre">deps</span></code> list contains a list of objects whose values are used in the <code class="docutils literal notranslate"><span class="pre">fcn_str</span></code> formula. Allowed objects are <code class="docutils literal notranslate"><span class="pre">Compartments</span></code>, <code class="docutils literal notranslate"><span class="pre">Characteristics</span></code>, <code class="docutils literal notranslate"><span class="pre">Parameters</span></code>, and <code class="docutils literal notranslate"><span class="pre">Links</span></code>. A <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> or <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> that appears in a <code class="docutils literal notranslate"><span class="pre">deps</span></code> list is considered a dependency and the value of that object needs to be computed during integration. If a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> is used to supply values for a transition, then it is considered a dependency, and it, together
+with all of the variables in the <code class="docutils literal notranslate"><span class="pre">deps</span></code> list, needs to be computed during integration. Otherwise, ths parameter is only used for output, and it is computed using vector operations at the end of the simulation. Because parameters are used to compute values for links, the inclusion of <code class="docutils literal notranslate"><span class="pre">Links</span></code> in parameter functions is only permitted if the parameter is not a dependency (i.e., if it is an output).</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">dependency</span></code> flag indicates whether the value of the parameter needs to be computed during integration or not. A <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> is dependent if it appears in the <code class="docutils literal notranslate"><span class="pre">deps</span></code> list of another <code class="docutils literal notranslate"><span class="pre">Parameter</span></code>, or if the <code class="docutils literal notranslate"><span class="pre">links</span></code> list is not empty (which indicates the parameter value is required during integration to supply the flow rates for the links).</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">scale_factor</span></code> rescales the parameter value - this is the calibration y-factor</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">limits</span></code> property optionally specifies lower and upper bounds for the parameter value. These are hard limits that are applied right before the <code class="docutils literal notranslate"><span class="pre">Link</span></code> values are computed, so they are implemented after any programs or special operations (i.e. interactions) are computed</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">pop_aggregation</span></code> flag specifies whether the parameter value will be computed in <code class="docutils literal notranslate"><span class="pre">Model.update_pars</span></code> or in <code class="docutils literal notranslate"><span class="pre">Parameter.update()</span></code>. Parameter aggregation across populations (e.g. for cross-population disease transmission) is governed by the special functions <code class="docutils literal notranslate"><span class="pre">SRC_POP_AVG</span></code> and <code class="docutils literal notranslate"><span class="pre">TGT_POP_AVG</span></code> and these calculations are implemented in <code class="docutils literal notranslate"><span class="pre">Model.update_pars</span></code> because they require multiple <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">update(ti)</span></code> method is called during integration, and computes the <code class="docutils literal notranslate"><span class="pre">vals</span></code> attribute at time index <code class="docutils literal notranslate"><span class="pre">ti</span></code> based on the <code class="docutils literal notranslate"><span class="pre">fcn_str</span></code> if it is not <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">source_popsize(ti)</span></code> method is used to compute the number of people reached by this <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> at time index <code class="docutils literal notranslate"><span class="pre">ti</span></code>, which is required when computing <code class="docutils literal notranslate"><span class="pre">Program</span></code> disaggregations if the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> is in number units. The <code class="docutils literal notranslate"><span class="pre">source_popsize</span></code> is defined as the sum of the source compartment sizes for every <code class="docutils literal notranslate"><span class="pre">Link</span></code> whose parameter is supplied by this <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> i.e., it is <code class="docutils literal notranslate"><span class="pre">sum([Link.source.vals[ti]</span> <span class="pre">for</span> <span class="pre">Link</span> <span class="pre">in</span> <span class="pre">Parameter.links])</span></code>. As this value may be accessed multiple times when
+computing programs, it is internally cached for efficiency.</p></li>
+<li><p>The Note that transfer parameters currently do not support having a function - instead, they only draw their values directly from interpolated data. This is because transfer parameters link populations, and as such they are specified in the databook rather than in the framework.</p></li>
+</ul>
+</div>
+<div class="section" id="Population">
+<h3>Population<a class="headerlink" href="#Population" title="Permalink to this headline">¶</a></h3>
+<p><img alt="modelpopulation" src="../_images/model_population.png" /></p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Population</span></code> stores lists the base objects listed above, all associated with a single population. It has the following key features:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">comps</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> objects</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">characs</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> objects</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">links</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">Link</span></code> objects</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pars</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">get_comp(name)</span></code>, <code class="docutils literal notranslate"><span class="pre">get_links(name)</span></code>, <code class="docutils literal notranslate"><span class="pre">get_charac(name)</span></code>, and <code class="docutils literal notranslate"><span class="pre">get_par(name)</span></code> methods return their respective objects based on the <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute, which allows objects to be located within a population based on their name. This is implemented as a dictionary lookup to improve performance</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">get_variable(name)</span></code> will return a list of variables with that name, regardless of their type. It also supports looking up links based on <code class="docutils literal notranslate"><span class="pre">source_name:dest_name:par_name</span></code> syntax where each of those quantities is optional. For example, <code class="docutils literal notranslate"><span class="pre">sus:vac</span></code> returns all links between compartments <code class="docutils literal notranslate"><span class="pre">sus</span></code> and <code class="docutils literal notranslate"><span class="pre">vac</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">popsize(ti)</span></code> method returns the number of people in all compartments (except birth and death) at timepoint <code class="docutils literal notranslate"><span class="pre">ti</span></code>. However, typically this value is accessed via a <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> which improves efficiency (such a <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> is typically defined anyway, so that it can be used as an output or in a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> function).</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">gen_cascade</span></code> function takes in a <code class="docutils literal notranslate"><span class="pre">settings</span></code> object, and constructs and wires together all of the compartments, characteristics, links, and parameters required. It is called automatically by the <code class="docutils literal notranslate"><span class="pre">Population</span></code> constructor.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">initialize_compartments</span></code> method assigns the initial compartment values based on the characteristics provided in the parset.</p></li>
+</ul>
+</div>
+<div class="section" id="Model">
+<h3>Model<a class="headerlink" href="#Model" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Model</span></code> object is a class that contains all of the <code class="docutils literal notranslate"><span class="pre">Populations</span></code> for a simulation, and has methods to perform integration. Its key attributes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pops</span></code> a list of population groups that this model subdivides into.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interactions</span></code> stores the data associated with inter-population interactions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">par_list</span></code> is a list of all parameters code names in the model for use during integration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">programs_active</span></code> is True or False depending on whether programs will be used or not</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">progset</span></code> is a copy of the progset (containing the program-related parameters) used for this run</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">program_instructions</span></code> is a copy of the program instructions used for this simulation run</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code> is the simulation time vector, shared by all variables within this model</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dt</span></code> is the simulation time step</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">framework</span></code> is a copy of the framework which stores metadata associated with all of the integration objects (these may be user-customized if the user has added extra columns to the framework file) as well as stores the cascades and plot information used by the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object for plotting and exporting</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_vars_by_pop</span></code> a cache to look up lists of variables by name across populations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_t_index</span></code> keeps track of array index for current timepoint data within all compartments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_program_cache</span></code> caches some program values for use during integration</p></li>
+</ul>
+<p>The key methods are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">build</span></code> which constructs required populations. As noted above, the <code class="docutils literal notranslate"><span class="pre">Population</span></code> constructor instantiates objects representing the cascade within a population. However, if transfers are present, then there are also <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> and <code class="docutils literal notranslate"><span class="pre">Links</span></code> representing cross-population interactions. These are stored in the source <code class="docutils literal notranslate"><span class="pre">Population</span></code> so that they can be treated the same as all other <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> and <code class="docutils literal notranslate"><span class="pre">Links</span></code> during integration, but they are instantiated by <code class="docutils literal notranslate"><span class="pre">model.build()</span></code> because they
+are intrinsically properties that intrinsically span populations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">process</span></code> which actually integrates the simulation</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">run_model</span></code> which wraps building, processing, and computing results. The input consists of settings, a <code class="docutils literal notranslate"><span class="pre">parset</span></code>, and optionally a <code class="docutils literal notranslate"><span class="pre">progset</span></code> and <code class="docutils literal notranslate"><span class="pre">ProgramInstructions</span></code>, and the output is a <code class="docutils literal notranslate"><span class="pre">Result</span></code></p></li>
+</ul>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">Model</span></code> forms the primary storage of the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object, and thus it is possible to retrieve detailed output from the model run by querying the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object. This also means that there is minimal post-processing time to reorganize the model outputs, because they are generally accessed in-place.</p>
+<div class="section" id="Building">
+<h4>Building<a class="headerlink" href="#Building" title="Permalink to this headline">¶</a></h4>
+<p>Building the model proceeds in the following stages</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Population</span></code> objects are instantiated</p></li>
+<li><p>Initial characteristic values used to compute the initial compartment sizes, which are loaded into the <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> objects</p></li>
+<li><p>Populate the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects with interpolated data values, for all data that is present</p></li>
+<li><p>Instantiate the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> and <code class="docutils literal notranslate"><span class="pre">Link</span></code> objects associated with transfers, and populate these <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects with the transfer data values</p></li>
+</ol>
+</div>
+<div class="section" id="Integrating">
+<h4>Integrating<a class="headerlink" href="#Integrating" title="Permalink to this headline">¶</a></h4>
+<p><img alt="modelintegrationworkflow" src="../_images/model_integration_workflow.png" /></p>
+<p>The integration workflow is an interative process, alternating between updating the compartment sizes, and updating the link values. The main integration loop is in <code class="docutils literal notranslate"><span class="pre">Model.process()</span></code>. The stages are as follows</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">update_comps</span><span class="p">()</span> <span class="c1"># This writes values to comp.vals[ti+1] so this will be out of bounds if self._t_index == self.t.size-1</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">_t_index</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># Step the simulation forward</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">update_pars</span><span class="p">()</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">update_links</span><span class="p">()</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">update_junctions</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul>
+<li><p>In the first stage, <code class="docutils literal notranslate"><span class="pre">Model.update_comps()</span></code> updates the compartment values using the values contained in the <code class="docutils literal notranslate"><span class="pre">Links</span></code>. The link values will have been set at the end of the previous time step. Junction compartment sizes are skipped because they are always zero and dealt with separately.</p></li>
+<li><p>In the second stage, <code class="docutils literal notranslate"><span class="pre">Model.update_pars()</span></code> updates the parameter values. The parameter update proceeds as follows:</p>
+<ol class="arabic simple">
+<li><p>First, if a program has a function, that function is evaluated</p></li>
+<li><p>If programs are active, the parameter value is overwritten using the program set</p></li>
+<li><p>If averaging over populations is required, this is performed now and the parameter values are again updated</p></li>
+<li><p>If the program has limits, the value is clipped to the allowed range</p></li>
+</ol>
+</li>
+<li><p>In the third stage, <code class="docutils literal notranslate"><span class="pre">Model.update_links()</span></code>, the parameter values are propagated into the link objects. This proceeds as follows:</p>
+<ol class="arabic simple">
+<li><p>The proposed link values are computed as a number of people. This involves rescaling the parameter value onto the simulation time step, and converting it to a number of people. This conversion depends on the units that the parameter is in, and is performed here. Note that if a parameter is in units of number of people, the outflow is disaggregated proportionately over all of the links at this step, depending on what fraction of the total number of people reached by the parameter are
+attributable to each link.</p></li>
+<li><p>If a compartment would become negative because the proposed link values flowing out of a compartment exceed the number of people in that compartment, all of the outgoing links for that compartment are rescaled such that the total number of people leaving matches the compartment’s size. Note that only people currently in the compartment are eligible to leave the compartment, so it is not possible for new inflows to contribute to outflows.</p></li>
+</ol>
+<p>This update is only performed for links that flow out of non-junction compartments. This is because outflows from junctions are resolved in the next step.</p>
+</li>
+<li><p>In the final stage, <code class="docutils literal notranslate"><span class="pre">Model.update_junctions()</span></code> computes the junction outflows. This is performed at this point in order to ensure that junction outflow links have a non-NaN value at the last timestep. To resolve the junction outflows:</p>
+<ol class="arabic simple">
+<li><p>The number of people in the junction is determined by adding up the value of all of the incoming links</p></li>
+<li><p>The outflow links are calculated based on the parameters governing transitions out of junctions - these must be in ‘proportion’ units so no timestep rescaling is necessary</p></li>
+<li><p>If the outflow is into a non-junction compartment, then nothing further needs to be done, because the downstream compartment will be updated by <code class="docutils literal notranslate"><span class="pre">Model.update_comps()</span></code> at the next timestep. However, if the outflow is into another junction, that junction’s value is updated, and the junction calculation is re-run to flush those people as well.</p></li>
+<li><p>The calculation proceeds until all people have left the junctions. An infinite loop can occur if there is a cycle between junctions, without any normal compartments between them. In that case, the loop will be aborted with an error.</p></li>
+</ol>
+<p>Note that the initialization might result in junctions having a nonzero number of people at the first time step. Therefore, the junctions need to be flushed prior to the simulation starting. This is performed by updating the parameters and junctions, and then updating the parameters, links, and junctions again. For the initial flush, a special flag is passed to <code class="docutils literal notranslate"><span class="pre">update_junctions</span></code> which tells it to use the junction’s current nonzero initial value, instead of summing over incoming links</p>
+</li>
+</ul>
+<p>At the end of integration, the values for non-dependent parameters need to be computed - this is also performed in <code class="docutils literal notranslate"><span class="pre">model.process()</span></code>.</p>
+</div>
+</div>
+<div class="section" id="Linking-and-unlinking">
+<h3>Linking and unlinking<a class="headerlink" href="#Linking-and-unlinking" title="Permalink to this headline">¶</a></h3>
+<p>The network of integration objects makes it easy to traverse the graph to trace back quantities. For example, <code class="docutils literal notranslate"><span class="pre">link.source.outlinks</span></code> would be a list of all of the outgoing links for the source compartment given an initial link. Because cyclical references are common (e.g, a <code class="docutils literal notranslate"><span class="pre">link</span></code> has a <code class="docutils literal notranslate"><span class="pre">source</span></code> which has that <code class="docutils literal notranslate"><span class="pre">link</span></code> in <code class="docutils literal notranslate"><span class="pre">source.outlinks</span></code>) an additional step is needed in order to be able to pickle and unpickle <code class="docutils literal notranslate"><span class="pre">Model</span></code> objects. This step recursively replaces all of the references with
+IDs. It proceeds as follows</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Model.unlink</span></code> replaces references with IDs in all of it’s properties. Then it calls <code class="docutils literal notranslate"><span class="pre">Population.unlink()</span></code> on every population. <code class="docutils literal notranslate"><span class="pre">Population.unlink()</span></code> replaces all of its references, and then calls <code class="docutils literal notranslate"><span class="pre">Variable.unlink()</span></code> on all of its variables. This allows variables to control how they unlink themselves, which is important because some variables have references that others do not (e.g., <code class="docutils literal notranslate"><span class="pre">Characteristics</span></code> have <code class="docutils literal notranslate"><span class="pre">includes</span></code> while <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> have <code class="docutils literal notranslate"><span class="pre">deps</span></code>). At the end of this process,
+the variables are only stored once in the <code class="docutils literal notranslate"><span class="pre">Population</span></code> lists e.g. <code class="docutils literal notranslate"><span class="pre">Population.comps()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Model.relink</span></code> reverses this. First it assembles a dict mapping ID to objects. Then it calls <code class="docutils literal notranslate"><span class="pre">relink</span></code> on all populations, passing in this dict of objects. In turn, <code class="docutils literal notranslate"><span class="pre">Variables</span></code> can <code class="docutils literal notranslate"><span class="pre">relink</span></code> themselves using this dict. The dict needs to be constructed at the <code class="docutils literal notranslate"><span class="pre">Model</span></code> level so that <code class="docutils literal notranslate"><span class="pre">Population</span></code> objects can <code class="docutils literal notranslate"><span class="pre">relink</span></code> transfers that span populations</p></li>
+</ul>
+<p>The whole process is transparent to the user, because it is controlled by the <code class="docutils literal notranslate"><span class="pre">__getstate__</span></code>, <code class="docutils literal notranslate"><span class="pre">__setstate__</span></code> and <code class="docutils literal notranslate"><span class="pre">__deepcopy__</span></code> methods, so users generally will never see a <code class="docutils literal notranslate"><span class="pre">Model</span></code> object in an unlinked state.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Atomica Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
