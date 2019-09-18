@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.calibration &mdash; Atomica  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_documentation.html">Code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>atomica.calibration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for atomica.calibration</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements automatic calibration</span>
+
+<span class="sd">This module defines the `perform_autofit` function, which is the entry-point for</span>
+<span class="sd">automatic calibration</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">from</span> <span class="nn">.model</span> <span class="k">import</span> <span class="n">BadInitialization</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">logger</span>
+
+<span class="c1"># TODO: Determine whether this is necessary.</span>
+<span class="n">calibration_settings</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="n">calibration_settings</span><span class="p">[</span><span class="s1">&#39;tolerance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+
+<div class="viewcode-block" id="_update_parset"><a class="viewcode-back" href="../../_autosummary/atomica.calibration.html#atomica.calibration._update_parset">[docs]</a><span class="k">def</span> <span class="nf">_update_parset</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span> <span class="n">y_factors</span><span class="p">,</span> <span class="n">pars_to_adjust</span><span class="p">):</span>
+    <span class="c1"># Insert updated y-values into the parset</span>
+    <span class="c1"># - parset : a ParameterSet object</span>
+    <span class="c1"># - y_factors : Array with as many elements as pars_to_adjust</span>
+    <span class="c1"># - pars_to_adjust : Array of tuples (par_name,pop_name,...) with special value pop=&#39;all&#39; supported to set meta factor</span>
+    <span class="c1">#                    Must have as many elements as y_factors. pop=None is not allowed - it must be converted</span>
+    <span class="c1">#                    to a full list of pops previously (in perform_autofit)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pars_to_adjust</span><span class="p">):</span>
+        <span class="n">par_name</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pop_name</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">par_name</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pop_name</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+                <span class="n">par</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span> <span class="o">=</span> <span class="n">y_factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">pop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Handle transfers here</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">par_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_from_&#39;</span><span class="p">)</span>
+            <span class="n">par</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">transfers</span><span class="p">[</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">pop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="_calculate_objective"><a class="viewcode-back" href="../../_autosummary/atomica.calibration.html#atomica.calibration._calculate_objective">[docs]</a><span class="k">def</span> <span class="nf">_calculate_objective</span><span class="p">(</span><span class="n">y_factors</span><span class="p">,</span> <span class="n">pars_to_adjust</span><span class="p">,</span> <span class="n">output_quantities</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+    <span class="c1"># y-factors, array of y-factors to apply to specified output_quantities</span>
+    <span class="c1"># pars_to_adjust - list of tuples (par_name,pop_name,...) recognized by parset.update()</span>
+    <span class="c1"># output_quantities - a tuple like (pop,var,weight,metric) understood by model.get_pop[pop].getVar</span>
+
+    <span class="n">_update_parset</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span> <span class="n">y_factors</span><span class="p">,</span> <span class="n">pars_to_adjust</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">parset</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">BadInitialization</span><span class="p">:</span>  <span class="c1"># If the proposed parameters lead to invalid initial compartment sizes</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="n">objective</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">for</span> <span class="n">var_label</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">output_quantities</span><span class="p">:</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get_ts</span><span class="p">(</span><span class="n">var_label</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)</span>  <span class="c1"># This is the TimeSeries with the data for the requested quantity</span>
+        <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">target</span><span class="o">.</span><span class="n">has_time_data</span><span class="p">:</span>     <span class="c1"># Only use this output quantity if the user entered time-specific data</span>
+            <span class="k">continue</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_pop</span><span class="p">(</span><span class="n">pop_name</span><span class="p">)</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">var_label</span><span class="p">)</span>
+        <span class="n">data_t</span><span class="p">,</span> <span class="n">data_v</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_arrays</span><span class="p">()</span>
+
+        <span class="c1"># Interpolate the model outputs onto the data times</span>
+        <span class="c1"># If there is data outside the range when the model was simulated, don&#39;t</span>
+        <span class="c1"># extrapolate the model outputs</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">data_v</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">data_t</span><span class="p">,</span> <span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y2</span><span class="p">)</span>
+        <span class="n">objective</span> <span class="o">+=</span> <span class="n">weight</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">_calculate_fitscore</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">y2</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">metric</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">objective</span></div>
+
+
+<div class="viewcode-block" id="_get_fitscore_func"><a class="viewcode-back" href="../../_autosummary/atomica.calibration.html#atomica.calibration._get_fitscore_func">[docs]</a><span class="k">def</span> <span class="nf">_get_fitscore_func</span><span class="p">(</span><span class="n">metric</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">availfns</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">availfns</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">availfns</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_calc_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">metric</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;No method associated with _calc_</span><span class="si">%s</span><span class="s2"> (calibration.py)&quot;</span> <span class="o">%</span> <span class="n">metric</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_calculate_fitscore"><a class="viewcode-back" href="../../_autosummary/atomica.calibration.html#atomica.calibration._calculate_fitscore">[docs]</a><span class="k">def</span> <span class="nf">_calculate_fitscore</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="n">y_fit</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;meansquare&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_get_fitscore_func</span><span class="p">(</span><span class="n">metric</span><span class="p">)(</span><span class="n">y_obs</span><span class="p">,</span> <span class="n">y_fit</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_calc_meansquare"><a class="viewcode-back" href="../../_autosummary/atomica.calibration.html#atomica.calibration._calc_meansquare">[docs]</a><span class="k">def</span> <span class="nf">_calc_meansquare</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="n">y_fit</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calcs the RMS error.</span>
+
+<span class="sd">    Note: could also use implementation from sklearn in future ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">y_fit</span> <span class="o">-</span> <span class="n">y_obs</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="_calc_fractional"><a class="viewcode-back" href="../../_autosummary/atomica.calibration.html#atomica.calibration._calc_fractional">[docs]</a><span class="k">def</span> <span class="nf">_calc_fractional</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="n">y_fit</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">y_fit</span> <span class="o">-</span> <span class="n">y_obs</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>  <span class="c1"># Use clipping to handle cases where data has value 0</span></div>
+
+
+<div class="viewcode-block" id="_calc_wape"><a class="viewcode-back" href="../../_autosummary/atomica.calibration.html#atomica.calibration._calc_wape">[docs]</a><span class="k">def</span> <span class="nf">_calc_wape</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="n">y_fit</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the weighted absolute percentage error</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y_fit</span> <span class="o">-</span> <span class="n">y_obs</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">y_obs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">+</span> <span class="n">calibration_settings</span><span class="p">[</span><span class="s1">&#39;tolerance&#39;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="perform_autofit"><a class="viewcode-back" href="../../_autosummary/atomica.calibration.html#atomica.calibration.perform_autofit">[docs]</a><span class="k">def</span> <span class="nf">perform_autofit</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">pars_to_adjust</span><span class="p">,</span> <span class="n">output_quantities</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run an autofit and save resulting parameterset</span>
+
+<span class="sd">    pars_to_adjust - list of tuples, (par_name,pop_name,lower_limit,upper_limit)</span>
+<span class="sd">                     the pop name can be None, which will be expanded to all populations</span>
+<span class="sd">                     relevant to the parameter independently, or &#39;all&#39; which will instead operate</span>
+<span class="sd">                     on the meta y factor.</span>
+<span class="sd">    output_quantities - list of tuples, (var_label,pop_name,weight,metric), for use in the objective</span>
+<span class="sd">                        function. pop_name=None will expand to all pops. pop_name=&#39;all&#39; is not supported</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Expand out pop=None in pars_to_adjust</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">par_tuple</span> <span class="ow">in</span> <span class="n">pars_to_adjust</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># If the pop name is None</span>
+            <span class="n">par</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="k">for</span> <span class="n">pop_name</span> <span class="ow">in</span> <span class="n">par</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
+                <span class="n">p2</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">par_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">par_tuple</span><span class="p">)</span>
+    <span class="n">pars_to_adjust</span> <span class="o">=</span> <span class="n">p2</span>
+
+    <span class="c1"># Expand out pop=None in output_quantities</span>
+    <span class="n">o2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">output_tuple</span> <span class="ow">in</span> <span class="n">output_quantities</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">output_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># If the pop name is None</span>
+            <span class="n">pops</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">pop_name</span> <span class="ow">in</span> <span class="n">pops</span><span class="p">:</span>
+                <span class="n">o2</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">output_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">output_tuple</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">output_tuple</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">o2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output_tuple</span><span class="p">)</span>
+    <span class="n">output_quantities</span> <span class="o">=</span> <span class="n">o2</span>
+
+    <span class="n">original_sim_end</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_end</span>
+    <span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tvec</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">original_sim_end</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">,</span>
+        <span class="s1">&#39;parset&#39;</span><span class="p">:</span> <span class="n">parset</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+        <span class="s1">&#39;pars_to_adjust&#39;</span><span class="p">:</span> <span class="n">pars_to_adjust</span><span class="p">,</span>
+        <span class="s1">&#39;output_quantities&#39;</span><span class="p">:</span> <span class="n">output_quantities</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">x0</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">xmin</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">xmax</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pars_to_adjust</span><span class="p">):</span>
+        <span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">scale_min</span><span class="p">,</span> <span class="n">scale_max</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">if</span> <span class="n">par_name</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+            <span class="n">par</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">pop_name</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+                <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">pop_name</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">par_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_from_&#39;</span><span class="p">)</span>
+            <span class="n">par</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">transfers</span><span class="p">[</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">pop_name</span><span class="p">])</span>
+        <span class="n">xmin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale_min</span><span class="p">)</span>
+        <span class="n">xmax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale_max</span><span class="p">)</span>
+
+    <span class="n">optim_args</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;stepsize&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s1">&#39;maxiters&#39;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
+        <span class="s1">&#39;sinc&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>
+        <span class="s1">&#39;sdec&#39;</span><span class="p">:</span> <span class="mf">2.</span><span class="p">,</span>
+        <span class="s1">&#39;fulloutput&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;reltol&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="s1">&#39;abstol&#39;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="s1">&#39;xmin&#39;</span><span class="p">:</span> <span class="n">xmin</span><span class="p">,</span>
+        <span class="s1">&#39;xmax&#39;</span><span class="p">:</span> <span class="n">xmax</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">max_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">optim_args</span><span class="p">[</span><span class="s1">&#39;maxtime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_time</span>
+
+    <span class="n">opt_result</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">asd</span><span class="p">(</span><span class="n">_calculate_objective</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">optim_args</span><span class="p">)</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">opt_result</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+
+    <span class="n">_update_parset</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;parset&#39;</span><span class="p">],</span> <span class="n">x1</span><span class="p">,</span> <span class="n">pars_to_adjust</span><span class="p">)</span>
+
+    <span class="c1"># Log out the commands required for equivalent manual calibration if desired</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pars_to_adjust</span><span class="p">):</span>
+        <span class="n">par_name</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pop_name</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">par_name</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+            <span class="n">par</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;parset&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">pop_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">pop_name</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;parset.get_par(&#39;</span><span class="si">{}</span><span class="s2">&#39;).meta_y_factor=</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;parset.get_par(&#39;</span><span class="si">{}</span><span class="s2">&#39;).y_factor[&#39;</span><span class="si">{}</span><span class="s2">&#39;]=</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">pop_name</span><span class="p">]))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tokens</span> <span class="o">=</span> <span class="n">par_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_from_&#39;</span><span class="p">)</span>
+            <span class="n">par</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;parset&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transfers</span><span class="p">[</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;parset.transfers[&#39;</span><span class="si">{}</span><span class="s2">&#39;][&#39;</span><span class="si">{}</span><span class="s2">&#39;].y_factor[&#39;</span><span class="si">{}</span><span class="s2">&#39;]=</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pop_name</span><span class="p">,</span>
+                                                                                     <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">pop_name</span><span class="p">]))</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>  <span class="c1"># Transfers might be handled differently in Atomica</span>
+
+    <span class="n">args</span><span class="p">[</span><span class="s1">&#39;parset&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;calibrated_&#39;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;parset&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">=</span> <span class="n">original_sim_end</span>  <span class="c1"># Restore the simulation end year</span>
+
+    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s1">&#39;parset&#39;</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Atomica Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
