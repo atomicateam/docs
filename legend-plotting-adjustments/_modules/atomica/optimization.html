@@ -352,7 +352,11 @@
 <span class="sd">        The initial values correspond to either</span>
 
 <span class="sd">        - The explicitly specified initial spend</span>
-<span class="sd">        - The initial spend from the program set/instructions, clipped to the lower/upper bounds (if provided)</span>
+<span class="sd">        - The initial spend from the program set/instructions</span>
+
+<span class="sd">        Note that the initial spend is NOT clipped to any bounds. This is because the initial spend is in turn used to compute</span>
+<span class="sd">        relative spending constraints. If the initial spend is not consistent then an error will be subsequently raised</span>
+<span class="sd">        at that point.</span>
 
 <span class="sd">        :param progset: The ``ProgramSet`` being used for the optimization</span>
 <span class="sd">        :param instructions: The initial instructions</span>
@@ -366,7 +370,7 @@
                 <span class="n">initialization</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">adjustable</span><span class="o">.</span><span class="n">initial_value</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">alloc</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">get_alloc</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">instructions</span><span class="p">)</span>
-                <span class="n">initialization</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">alloc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prog_name</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">adjustable</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">))</span>  <span class="c1"># The Adjustable&#39;s name corresponds to the name of the program being overwritten.</span>
+                <span class="n">initialization</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alloc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prog_name</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># The Adjustable&#39;s name corresponds to the name of the program being overwritten.</span>
         <span class="k">return</span> <span class="n">initialization</span></div></div>
 
 

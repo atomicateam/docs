@@ -167,8 +167,7 @@
 <span class="kn">from</span> <span class="nn">openpyxl.comments</span> <span class="k">import</span> <span class="n">Comment</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
-<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">logger</span>
-
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <div class="viewcode-block" id="standard_formats"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.standard_formats">[docs]</a><span class="k">def</span> <span class="nf">standard_formats</span><span class="p">(</span><span class="n">workbook</span><span class="p">):</span>
     <span class="c1"># Add standard formatting to a workbook and return the set of format objects</span>
@@ -286,7 +285,14 @@
     <span class="n">target</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="read_tables"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.read_tables">[docs]</a><span class="k">def</span> <span class="nf">read_tables</span><span class="p">(</span><span class="n">worksheet</span><span class="p">):</span>
+<div class="viewcode-block" id="read_tables"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.read_tables">[docs]</a><span class="k">def</span> <span class="nf">read_tables</span><span class="p">(</span><span class="n">worksheet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read tables from sheet</span>
+
+<span class="sd">    :param worksheet: An openpyxl worksheet</span>
+<span class="sd">    :return: A tuple containing - A list of tables (which is a list of rows, terminated by an empty row in the original spreadsheet),</span>
+<span class="sd">             and a list of start row indices for each table read in</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># This function takes in a openpyxl worksheet, and returns tables</span>
     <span class="c1"># A table consists of a block of rows with any #ignore rows skipped</span>
     <span class="c1"># This function will start at the top of the worksheet, read rows into a buffer</span>
@@ -324,6 +330,23 @@
         <span class="n">start_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">tables</span><span class="p">,</span> <span class="n">start_rows</span></div>
+
+<div class="viewcode-block" id="df_from_table"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.df_from_table">[docs]</a><span class="k">def</span> <span class="nf">df_from_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a table to a dataframe</span>
+
+<span class="sd">    If a column is completely empty, it will be skipped</span>
+<span class="sd">    :param table: A single table read in using `at.excel.read_tables()`</span>
+<span class="sd">    :param index: A list of column headings to use as indices</span>
+<span class="sd">    :return: A dataframe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># If a column is completely empty, including the header, ignore it. Helps avoid errors where blank cells are loaded by openpyxl due to extra non-value content</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1"># Remove duplicated first row</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
 
 
 <div class="viewcode-block" id="TimeDependentConnections"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.TimeDependentConnections">[docs]</a><span class="k">class</span> <span class="nc">TimeDependentConnections</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
