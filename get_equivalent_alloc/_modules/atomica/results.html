@@ -529,7 +529,11 @@
                     <span class="n">d</span><span class="p">[(</span><span class="s1">&#39;Parameters&#39;</span><span class="p">,</span> <span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">gl</span><span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="p">))]</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">vals</span>
             <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
                 <span class="c1"># Sum over duplicate links and annualize flow rate</span>
-                <span class="n">par_label</span> <span class="o">=</span> <span class="n">gl</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">parameter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">par_label</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">par_label</span> <span class="o">=</span> <span class="n">gl</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
                 <span class="k">if</span> <span class="n">par_label</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
                     <span class="n">link_label</span> <span class="o">=</span> <span class="n">par_label</span>
                 <span class="k">else</span><span class="p">:</span>
