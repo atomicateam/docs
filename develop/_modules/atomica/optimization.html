@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -159,18 +160,18 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
-<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">NotFoundError</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">NamedItem</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">NotFoundError</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">NamedItem</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">.model</span> <span class="k">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Link</span>
+<span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Link</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">scipy.optimize</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">TimeSeries</span>
-<span class="kn">from</span> <span class="nn">.results</span> <span class="k">import</span> <span class="n">Result</span>
-<span class="kn">from</span> <span class="nn">.cascade</span> <span class="k">import</span> <span class="n">get_cascade_vals</span>
-<span class="kn">from</span> <span class="nn">.programs</span> <span class="k">import</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">ProgramInstructions</span>
-<span class="kn">from</span> <span class="nn">.parameters</span> <span class="k">import</span> <span class="n">ParameterSet</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
+<span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
+<span class="kn">from</span> <span class="nn">.cascade</span> <span class="kn">import</span> <span class="n">get_cascade_vals</span>
+<span class="kn">from</span> <span class="nn">.programs</span> <span class="kn">import</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">ProgramInstructions</span>
+<span class="kn">from</span> <span class="nn">.parameters</span> <span class="kn">import</span> <span class="n">ParameterSet</span>
 
 <div class="viewcode-block" id="InvalidInitialConditions"><a class="viewcode-back" href="../../_autosummary/atomica.optimization.html#atomica.optimization.InvalidInitialConditions">[docs]</a><span class="k">class</span> <span class="nc">InvalidInitialConditions</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -216,7 +217,7 @@
 
 <div class="viewcode-block" id="Adjustable"><a class="viewcode-back" href="../../_autosummary/atomica.optimization.html#atomica.optimization.Adjustable">[docs]</a><span class="k">class</span> <span class="nc">Adjustable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">limit_type</span><span class="o">=</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span> <span class="n">lower_bound</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">initial_value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">limit_type</span><span class="o">=</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span> <span class="n">lower_bound</span><span class="o">=-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">initial_value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>  <span class="c1"># identify the adjustable</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">limit_type</span> <span class="o">=</span> <span class="n">limit_type</span>  <span class="c1"># &#39;abs&#39; or &#39;rel&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span> <span class="o">=</span> <span class="n">lower_bound</span>
@@ -233,7 +234,7 @@
 
 
 <div class="viewcode-block" id="Adjustment"><a class="viewcode-back" href="../../_autosummary/atomica.optimization.html#atomica.optimization.Adjustment">[docs]</a><span class="k">class</span> <span class="nc">Adjustment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">adjustables</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -264,7 +265,7 @@
 <span class="sd">                    the initial spend will be drawn from the program instructions, or the progset.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prog_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">limit_type</span><span class="o">=</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prog_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">limit_type</span><span class="o">=</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">Adjustment</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">prog_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prog_name</span> <span class="o">=</span> <span class="n">prog_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>  <span class="c1"># Time at which to apply the adjustment</span>
@@ -317,7 +318,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">initial</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">initial</span><span class="p">):</span>
         <span class="n">Adjustment</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">adjustables</span> <span class="o">=</span> <span class="p">[</span><span class="n">Adjustable</span><span class="p">(</span><span class="s1">&#39;start_year&#39;</span><span class="p">,</span> <span class="n">limit_type</span><span class="o">=</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="n">upper</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)]</span>
 
@@ -343,7 +344,7 @@
     <span class="c1"># Example of a parametric time-varying budget where multiple parameters</span>
     <span class="c1"># are mapped to spending via a function</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prog_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_0</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prog_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_0</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">):</span>
         <span class="n">Adjustment</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">prog_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prog_name</span> <span class="o">=</span> <span class="n">prog_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">t</span>  <span class="c1"># Vector of time values instructions are updated at</span>
@@ -372,7 +373,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prog_names</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prog_names</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="n">Adjustment</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">prog_names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;PairedLinearSpendingAdjustment needs exactly two program names&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prog_names</span> <span class="o">=</span> <span class="n">prog_names</span>
@@ -423,7 +424,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">measurable_name</span> <span class="o">=</span> <span class="n">measurable_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span><span class="o">&lt;=</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;Measurable time must either be a year, or the `[low,high)` values defining a period of time&#39;</span>
@@ -512,13 +513,13 @@
 
 <div class="viewcode-block" id="MinimizeMeasurable"><a class="viewcode-back" href="../../_autosummary/atomica.optimization.html#atomica.optimization.MinimizeMeasurable">[docs]</a><span class="k">class</span> <span class="nc">MinimizeMeasurable</span><span class="p">(</span><span class="n">Measurable</span><span class="p">):</span>
     <span class="c1"># Syntactic sugar for a measurable that minimizes its quantity</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">Measurable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="n">pop_names</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MaximizeMeasurable"><a class="viewcode-back" href="../../_autosummary/atomica.optimization.html#atomica.optimization.MaximizeMeasurable">[docs]</a><span class="k">class</span> <span class="nc">MaximizeMeasurable</span><span class="p">(</span><span class="n">Measurable</span><span class="p">):</span>
     <span class="c1"># Syntactic sugar for a measurable that maximizes its quantity</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">Measurable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">weight</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="n">pop_names</span><span class="p">)</span></div>
 
 
@@ -539,7 +540,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">Measurable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="n">pop_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
@@ -548,7 +549,7 @@
         <span class="n">val</span> <span class="o">=</span> <span class="n">Measurable</span><span class="o">.</span><span class="n">get_objective_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="n">baseline</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="k">else</span> <span class="mf">0.0</span></div>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;AtMostMeasurable(</span><span class="si">%s</span><span class="s1"> &lt; </span><span class="si">%f</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">measurable_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">)</span></div>
 
 
@@ -568,7 +569,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">Measurable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="n">pop_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
@@ -577,7 +578,7 @@
         <span class="n">val</span> <span class="o">=</span> <span class="n">Measurable</span><span class="o">.</span><span class="n">get_objective_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="n">baseline</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="k">else</span> <span class="mf">0.0</span></div>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;AtLeastMeasurable(</span><span class="si">%s</span><span class="s1"> &gt; </span><span class="si">%f</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">measurable_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="IncreaseByMeasurable"><a class="viewcode-back" href="../../_autosummary/atomica.optimization.html#atomica.optimization.IncreaseByMeasurable">[docs]</a><span class="k">class</span> <span class="nc">IncreaseByMeasurable</span><span class="p">(</span><span class="n">Measurable</span><span class="p">):</span>
@@ -604,7 +605,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">increase</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_type</span><span class="o">=</span><span class="s1">&#39;frac&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">increase</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_type</span><span class="o">=</span><span class="s1">&#39;frac&#39;</span><span class="p">):</span>
 
         <span class="n">Measurable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="n">pop_names</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">increase</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Cannot set negative increase&#39;</span>
@@ -648,7 +649,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">decrease</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_type</span><span class="o">=</span><span class="s1">&#39;frac&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">decrease</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_type</span><span class="o">=</span><span class="s1">&#39;frac&#39;</span><span class="p">):</span>
 
         <span class="n">Measurable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">measurable_name</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="n">pop_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -676,7 +677,7 @@
     <span class="c1"># If multiple years are provided, they will be summed over</span>
     <span class="c1"># Could add option to weight specific years later on, if desired</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cascade_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">cascade_stage</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cascade_name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">cascade_stage</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
         <span class="c1"># Instantiate thpop_names can be a single pop name (including all), or a list of pop names</span>
         <span class="c1"># aggregations are supported by setting pop_names to a dict e.g.</span>
         <span class="c1"># pop_names = {&#39;foo&#39;:[&#39;0-4&#39;,&#39;5-14&#39;]}</span>
@@ -722,7 +723,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cascade_name</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cascade_name</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span><span class="nb">float</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="n">Measurable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cascade_name</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">weight</span><span class="o">=-</span><span class="n">weight</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="n">pop_names</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pop_names</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pop_names</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pop_names</span><span class="p">]</span>
@@ -831,7 +832,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_spend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">budget_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total_spend</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">budget_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">total_spend</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">total_spend</span><span class="p">)</span> <span class="k">if</span> <span class="n">total_spend</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">budget_factor</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">budget_factor</span><span class="p">)</span>
@@ -1030,7 +1031,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjustments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">measurables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxtime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxiters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;asd&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjustments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">measurables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxtime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxiters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;asd&#39;</span><span class="p">):</span>
         <span class="c1"># Get the name</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
@@ -1054,7 +1055,7 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Must supply either a json or an adjustments+measurables&#39;</span><span class="p">)</span>
         <span class="k">return</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">prepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Optimization.get_initialization"><a class="viewcode-back" href="../../_autosummary/atomica.optimization.html#atomica.optimization.Optimization.get_initialization">[docs]</a>    <span class="k">def</span> <span class="nf">get_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progset</span><span class="p">:</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">instructions</span><span class="p">:</span> <span class="n">ProgramInstructions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>

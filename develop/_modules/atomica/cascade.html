@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -202,16 +203,16 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">.plotting</span> <span class="k">import</span> <span class="n">plot_legend</span>
+<span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">plot_legend</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">textwrap</span>
 <span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">NDict</span><span class="p">,</span> <span class="n">nested_loop</span>
-<span class="kn">from</span> <span class="nn">.results</span> <span class="k">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">Ensemble</span>
-<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">.data</span> <span class="k">import</span> <span class="n">ProjectData</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">NDict</span><span class="p">,</span> <span class="n">nested_loop</span>
+<span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">Ensemble</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">ProjectData</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="n">default_figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">default_ax_position</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]</span>
@@ -363,7 +364,7 @@
         <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">ptype</span> <span class="ow">in</span> <span class="n">available</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">ptype</span> <span class="o">!=</span> <span class="n">pop_type</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Requested population &quot;</span><span class="si">{x}</span><span class="s1">&quot; has type &quot;</span><span class="si">{ptype}</span><span class="s1">&quot; but requested cascade is for &quot;</span><span class="si">{pop_type}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Requested population &quot;</span><span class="si">{x}</span><span class="s1">&quot; has type &quot;</span><span class="si">{ptype}</span><span class="s1">&quot; but requested cascade is for &quot;</span><span class="si">{pop_type}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Name &quot;</span><span class="si">%s</span><span class="s1">&quot; not found&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">))</span>
 
@@ -476,7 +477,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">.plotting</span> <span class="k">import</span> <span class="n">PlotData</span><span class="p">,</span> <span class="n">plot_series</span>  <span class="c1"># Import here to avoid circular dependencies</span>
+    <span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">PlotData</span><span class="p">,</span> <span class="n">plot_series</span>  <span class="c1"># Import here to avoid circular dependencies</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">figs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -728,7 +729,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">.plotting</span> <span class="k">import</span> <span class="n">PlotData</span>  <span class="c1"># Import here to avoid circular dependencies</span>
+    <span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">PlotData</span>  <span class="c1"># Import here to avoid circular dependencies</span>
 
     <span class="c1"># Sanitize the cascade inputs</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pop_type</span> <span class="o">=</span> <span class="n">sanitize_cascade</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
@@ -920,7 +921,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseline_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseline_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">years</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">years</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>
@@ -1084,7 +1085,7 @@
     <span class="c1"># This mapping function returns PlotData for the cascade</span>
     <span class="c1"># It&#39;s a closure containing the cascade, years, and pops requested</span>
     <span class="c1"># It&#39;s a separate function so it can be pickled and parallelized</span>
-    <span class="kn">from</span> <span class="nn">.plotting</span> <span class="k">import</span> <span class="n">PlotData</span>
+    <span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">PlotData</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">results</span><span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="n">cascade_dict</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="n">pops</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">years</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">d</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>

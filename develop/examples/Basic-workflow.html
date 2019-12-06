@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -189,16 +190,16 @@
 /* CSS for nbsphinx extension */
 
 /* remove conflicting styling from Sphinx themes */
-div.nbinput,
-div.nbinput div.prompt,
-div.nbinput div.input_area,
-div.nbinput div[class*=highlight],
-div.nbinput div[class*=highlight] pre,
-div.nboutput,
-div.nbinput div.prompt,
-div.nbinput div.output_area,
-div.nboutput div[class*=highlight],
-div.nboutput div[class*=highlight] pre {
+div.nbinput.container,
+div.nbinput.container div.prompt,
+div.nbinput.container div.input_area,
+div.nbinput.container div[class*=highlight],
+div.nbinput.container div[class*=highlight] pre,
+div.nboutput.container,
+div.nboutput.container div.prompt,
+div.nboutput.container div.output_area,
+div.nboutput.container div[class*=highlight],
+div.nboutput.container div[class*=highlight] pre {
     background: none;
     border: none;
     padding: 0 0;
@@ -207,13 +208,13 @@ div.nboutput div[class*=highlight] pre {
 }
 
 /* avoid gaps between output lines */
-div.nboutput div[class*=highlight] pre {
+div.nboutput.container div[class*=highlight] pre {
     line-height: normal;
 }
 
 /* input/output containers */
-div.nbinput,
-div.nboutput {
+div.nbinput.container,
+div.nboutput.container {
     display: -webkit-flex;
     display: flex;
     align-items: flex-start;
@@ -221,35 +222,35 @@ div.nboutput {
     width: 100%;
 }
 @media (max-width: 540px) {
-    div.nbinput,
-    div.nboutput {
+    div.nbinput.container,
+    div.nboutput.container {
         flex-direction: column;
     }
 }
 
 /* input container */
-div.nbinput {
+div.nbinput.container {
     padding-top: 5px;
 }
 
 /* last container */
-div.nblast {
+div.nblast.container {
     padding-bottom: 5px;
 }
 
 /* input prompt */
-div.nbinput div.prompt pre {
+div.nbinput.container div.prompt pre {
     color: #307FC1;
 }
 
 /* output prompt */
-div.nboutput div.prompt pre {
+div.nboutput.container div.prompt pre {
     color: #BF5B3D;
 }
 
 /* all prompts */
-div.nbinput div.prompt,
-div.nboutput div.prompt {
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
     min-width: 5ex;
     padding-top: 0.4em;
     padding-right: 0.4em;
@@ -257,56 +258,56 @@ div.nboutput div.prompt {
     flex: 0;
 }
 @media (max-width: 540px) {
-    div.nbinput div.prompt,
-    div.nboutput div.prompt {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
         text-align: left;
         padding: 0.4em;
     }
-    div.nboutput div.prompt.empty {
+    div.nboutput.container div.prompt.empty {
         padding: 0;
     }
 }
 
 /* disable scrollbars on prompts */
-div.nbinput div.prompt pre,
-div.nboutput div.prompt pre {
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
     overflow: hidden;
 }
 
 /* input/output area */
-div.nbinput div.input_area,
-div.nboutput div.output_area {
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
     padding: 0.4em;
     -webkit-flex: 1;
     flex: 1;
     overflow: auto;
 }
 @media (max-width: 540px) {
-    div.nbinput div.input_area,
-    div.nboutput div.output_area {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
         width: 100%;
     }
 }
 
 /* input area */
-div.nbinput div.input_area {
+div.nbinput.container div.input_area {
     border: 1px solid #e0e0e0;
     border-radius: 2px;
     background: #f5f5f5;
 }
 
 /* override MathJax center alignment in output cells */
-div.nboutput div[class*=MathJax] {
+div.nboutput.container div[class*=MathJax] {
     text-align: left !important;
 }
 
 /* override sphinx.ext.imgmath center alignment in output cells */
-div.nboutput div.math p {
+div.nboutput.container div.math p {
     text-align: left;
 }
 
 /* standard error */
-div.nboutput div.output_area.stderr {
+div.nboutput.container div.output_area.stderr {
     background: #fdd;
 }
 
@@ -387,13 +388,13 @@ div.rendered_html tbody tr:hover {
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -440,7 +441,7 @@ div.rendered_html tbody tr:hover {
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 Atomica 1.12.1 (2019-08-20) -- (c) the Atomica development team
-2019-09-23 08:13:57.765127
+2019-12-06 03:08:14.925756
 </pre></div></div>
 </div>
 <div class="section" id="Starting-an-application">
@@ -532,7 +533,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.17s
+Elapsed time for running &#34;default&#34;: 1.34s
 </pre></div></div>
 </div>
 <p>When you create a project, a default simulation is automatically run. You can subsequently run simulations using <code class="docutils literal notranslate"><span class="pre">P.run_sim()</span></code></p>
@@ -551,17 +552,17 @@ Elapsed time for running &#34;default&#34;: 1.17s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.24s
+Elapsed time for running &#34;default&#34;: 1.28s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[&#39;parset_default&#39;]
-</pre></div>
-</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;parset_default&#39;]
+</pre></div></div>
 </div>
 <p>When you run a simulation, by default it is automatically copied into the project, as well as being returned. Specifying the result name is optional, but recommended because it helps to keep track of the simulations when comparing and plotting them. We can now plot the result to show the compartment sizes:</p>
 <div class="nbinput docutils container">
@@ -621,7 +622,7 @@ Elapsed time for running &#34;default&#34;: 1.24s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.18s
+Elapsed time for running &#34;default&#34;: 1.30s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -677,36 +678,32 @@ Elapsed time for running &#34;default&#34;: 1.18s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.736s
-Elapsed time for running &#34;default&#34;: 0.727s
-     step 1 (0.7 s) -- (orig: 10.136 | best:10.136 | new:10.136 | diff:0)
-Elapsed time for running &#34;default&#34;: 0.745s
-     step 2 (1.5 s) -- (orig: 10.136 | best:10.136 | new:10.140 | diff:0.0040739)
+Elapsed time for running &#34;default&#34;: 0.810s
+Elapsed time for running &#34;default&#34;: 0.837s
+     step 1 (0.8 s) ++ (orig: 10.136 | best:10.136 | new:9.8574 | diff:-0.27881)
+Elapsed time for running &#34;default&#34;: 0.915s
+     step 2 (1.8 s) -- (orig: 10.136 | best:9.8574 | new:10.088 | diff:0.23049)
 Elapsed time for running &#34;default&#34;: 0.821s
-     step 3 (2.3 s) -- (orig: 10.136 | best:10.136 | new:10.142 | diff:0.0056502)
-Elapsed time for running &#34;default&#34;: 0.750s
-     step 4 (3.1 s) ++ (orig: 10.136 | best:10.136 | new:10.030 | diff:-0.10578)
-Elapsed time for running &#34;default&#34;: 0.725s
-     step 5 (3.8 s) ++ (orig: 10.136 | best:10.030 | new:9.7515 | diff:-0.27884)
-Elapsed time for running &#34;default&#34;: 0.748s
-     step 6 (4.6 s) -- (orig: 10.136 | best:9.7515 | new:9.8017 | diff:0.050151)
-Elapsed time for running &#34;default&#34;: 0.813s
-     step 7 (5.4 s) ++ (orig: 10.136 | best:9.7515 | new:9.6822 | diff:-0.069306)
-Elapsed time for running &#34;default&#34;: 0.735s
-     step 8 (6.1 s) -- (orig: 10.136 | best:9.6822 | new:9.6822 | diff:0)
-Elapsed time for running &#34;default&#34;: 0.731s
-     step 9 (6.9 s) -- (orig: 10.136 | best:9.6822 | new:9.6822 | diff:0)
-Elapsed time for running &#34;default&#34;: 0.726s
-     step 10 (7.6 s) -- (orig: 10.136 | best:9.6822 | new:9.7902 | diff:0.10800)
-Elapsed time for running &#34;default&#34;: 0.818s
-     step 11 (8.4 s) ++ (orig: 10.136 | best:9.6822 | new:9.6800 | diff:-0.0022484)
-Elapsed time for running &#34;default&#34;: 0.738s
-     step 12 (9.2 s) ++ (orig: 10.136 | best:9.6800 | new:9.1067 | diff:-0.57324)
-Elapsed time for running &#34;default&#34;: 0.742s
-     step 13 (9.9 s) ++ (orig: 10.136 | best:9.1067 | new:9.1066 | diff:-0.00016888)
-Elapsed time for running &#34;default&#34;: 0.724s
-     step 14 (10.6 s) ++ (orig: 10.136 | best:9.1066 | new:8.9135 | diff:-0.19308)
-===  Time limit reached (10.638 &gt; 10.000) (14 steps, orig: 10.136 | best: 0 | ratio: 0) ===
+     step 3 (2.6 s) ++ (orig: 10.136 | best:9.8574 | new:9.8574 | diff:-0.000000039454)
+Elapsed time for running &#34;default&#34;: 0.822s
+     step 4 (3.4 s) ++ (orig: 10.136 | best:9.8574 | new:9.8571 | diff:-0.00028274)
+Elapsed time for running &#34;default&#34;: 0.824s
+     step 5 (4.3 s) -- (orig: 10.136 | best:9.8571 | new:9.8571 | diff:0)
+Elapsed time for running &#34;default&#34;: 0.952s
+     step 6 (5.2 s) ++ (orig: 10.136 | best:9.8571 | new:9.7268 | diff:-0.13029)
+Elapsed time for running &#34;default&#34;: 0.811s
+     step 7 (6.0 s) ++ (orig: 10.136 | best:9.7268 | new:9.3690 | diff:-0.35775)
+Elapsed time for running &#34;default&#34;: 0.814s
+     step 8 (6.9 s) ++ (orig: 10.136 | best:9.3690 | new:9.3690 | diff:-0.0000029166)
+Elapsed time for running &#34;default&#34;: 0.808s
+     step 9 (7.7 s) -- (orig: 10.136 | best:9.3690 | new:9.3706 | diff:0.0015932)
+Elapsed time for running &#34;default&#34;: 0.951s
+     step 10 (8.6 s) ++ (orig: 10.136 | best:9.3690 | new:9.3682 | diff:-0.00077640)
+Elapsed time for running &#34;default&#34;: 0.814s
+     step 11 (9.5 s) ++ (orig: 10.136 | best:9.3682 | new:9.1733 | diff:-0.19493)
+Elapsed time for running &#34;default&#34;: 0.806s
+     step 12 (10.3 s) ++ (orig: 10.136 | best:9.1733 | new:9.1464 | diff:-0.026919)
+===  Time limit reached (10.266 &gt; 10.000) (12 steps, orig: 10.136 | best: 0 | ratio: 0) ===
 </pre></div></div>
 </div>
 <p>You can then run a simulation with the calibrated parset by passing the name of the new parset to <code class="docutils literal notranslate"><span class="pre">run_sim</span></code></p>
@@ -724,7 +721,7 @@ Elapsed time for running &#34;default&#34;: 0.724s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.17s
+Elapsed time for running &#34;default&#34;: 1.28s
 </pre></div></div>
 </div>
 </div>
@@ -764,8 +761,9 @@ Spreadsheet saved to /home/vsts/work/1/s/docs/examples/example_progbook.xlsx.
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>&lt;atomica.programs.ProgramSet at 0x7ff3f9a1ef90&gt;
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;atomica.programs.ProgramSet at 0x7f02a751df10&gt;
 ============================================================
 Methods:
   _get_code_name()    add_par()           new()
@@ -782,33 +780,32 @@ Methods:
    _formats: None
  _pop_types: [&#39;default&#39;]
 _references: None
-      comps: #0: &quot;sus&quot;:  {&#39;label&#39;: &#39;Susceptible&#39;, &#39;type&#39;: &#39;default&#39;}
-             #1: &quot;vac&quot;:  { [...]
-    covouts: #0: &quot;(&#39;v_num&#39;, &#39;0-4&#39;)&quot;:
+      comps: #0: &#34;sus&#34;:  {&#39;label&#39;: &#39;Susceptible&#39;, &#39;type&#39;: &#39;default&#39;}
+             #1: &#34;vac&#34;:  { [...]
+    covouts: #0: &#34;(&#39;v_num&#39;, &#39;0-4&#39;)&#34;:
                 Parameter: v_num
                Population: 0-4
              Baselin [...]
-    created: datetime.datetime(2019, 9, 23, 8, 14, 20, 262693)
+    created: datetime.datetime(2019, 12, 6, 3, 8, 37, 583930)
    currency: $
-   modified: datetime.datetime(2019, 9, 23, 8, 14, 21, 525450)
+   modified: datetime.datetime(2019, 12, 6, 3, 8, 39, 140022)
        name: default
-       pars: #0: &quot;v_num&quot;:       {&#39;label&#39;: &#39;Number of vaccinations
+       pars: #0: &#34;v_num&#34;:       {&#39;label&#39;: &#39;Number of vaccinations
              administered&#39;, &#39; [...]
-       pops: #0: &quot;0-4&quot;:       {&#39;label&#39;: &#39;Children 0-4&#39;, &#39;type&#39;:
+       pops: #0: &#34;0-4&#34;:       {&#39;label&#39;: &#39;Children 0-4&#39;, &#39;type&#39;:
              &#39;default&#39;}
-             #1: &quot;5- [...]
-   programs: #0: &quot;BCG&quot;:
-             &lt;atomica.programs.Program at 0x7ff3f86af410&gt;
+             #1: &#34;5- [...]
+   programs: #0: &#34;BCG&#34;:
+             &lt;atomica.programs.Program at 0x7f02a6f5a4d0&gt;
              ============= [...]
        tvec: array([2015., 2016., 2017.])
 ============================================================
     Program set name: default
             Programs: [&#39;BCG&#39;, &#39;PCF&#39;, &#39;ACF&#39;, &#39;ACF-p&#39;, &#39;HospDS&#39;, &#39;HospMDR&#39;, &#39;HospXDR&#39;, &#39;AmbDS&#39;, &#39;AmbMDR&#39;, &#39;XDRnew&#39;, &#39;PrisDS&#39;, &#39;PrisDR&#39;]
-        Date created: 2019-Sep-23 08:14:20
-       Date modified: 2019-Sep-23 08:14:21
+        Date created: 2019-Dec-06 03:08:37
+       Date modified: 2019-Dec-06 03:08:39
 ============================================================
-</pre></div>
-</div>
+</pre></div></div>
 </div>
 <p>This progbook has been added to the list of available progsets:</p>
 <div class="nbinput docutils container">
@@ -824,10 +821,10 @@ _references: None
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[&#39;default&#39;]
-</pre></div>
-</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;default&#39;]
+</pre></div></div>
 </div>
 <p>Running a simulation with programs requires one additional piece of information - a <code class="docutils literal notranslate"><span class="pre">ProgramInstructions</span></code> instance that specifies</p>
 <ul class="simple">
@@ -850,7 +847,7 @@ _references: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.59s
+Elapsed time for running &#34;default&#34;: 1.66s
 </pre></div></div>
 </div>
 </div>
@@ -887,143 +884,173 @@ Reconcilation when parameter is in number units not fully tested
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Program set &#39;default&#39; will be ignored while running project &#39;default&#39; due to the absence of program set instructions
-Elapsed time for running &#34;default&#34;: 1.30s
+Elapsed time for running &#34;default&#34;: 1.39s
 Reconciling in 2018.00, evaluating from 2018.00 up to 2018.25
-     step 1 (0.0 s) ++ (orig: 61.584 | best:61.584 | new:61.584 | diff:-0.000026114)
-     step 2 (0.0 s) -- (orig: 61.584 | best:61.584 | new:61.584 | diff:0)
-     step 3 (0.0 s) -- (orig: 61.584 | best:61.584 | new:61.588 | diff:0.0041710)
-     step 4 (0.0 s) ++ (orig: 61.584 | best:61.584 | new:61.502 | diff:-0.081486)
-     step 5 (0.0 s) ++ (orig: 61.584 | best:61.502 | new:61.489 | diff:-0.013637)
-     step 6 (0.0 s) -- (orig: 61.584 | best:61.489 | new:61.489 | diff:0)
-     step 7 (0.0 s) -- (orig: 61.584 | best:61.489 | new:61.489 | diff:0.000045531)
-     step 8 (0.0 s) -- (orig: 61.584 | best:61.489 | new:61.489 | diff:0)
-     step 9 (0.0 s) -- (orig: 61.584 | best:61.489 | new:61.516 | diff:0.027437)
-     step 10 (0.0 s) -- (orig: 61.584 | best:61.489 | new:61.669 | diff:0.18026)
-     step 11 (0.0 s) ++ (orig: 61.584 | best:61.489 | new:61.484 | diff:-0.0046723)
-     step 12 (0.0 s) -- (orig: 61.584 | best:61.484 | new:61.484 | diff:0.000045531)
-     step 13 (0.0 s) -- (orig: 61.584 | best:61.484 | new:61.484 | diff:0)
-     step 14 (0.0 s) ++ (orig: 61.584 | best:61.484 | new:61.415 | diff:-0.069429)
-     step 15 (0.0 s) -- (orig: 61.584 | best:61.415 | new:61.415 | diff:0)
-     step 16 (0.0 s) -- (orig: 61.584 | best:61.415 | new:61.415 | diff:0)
-     step 17 (0.1 s) -- (orig: 61.584 | best:61.415 | new:61.418 | diff:0.0033592)
-     step 18 (0.1 s) -- (orig: 61.584 | best:61.415 | new:61.415 | diff:0.000047383)
-     step 19 (0.1 s) ++ (orig: 61.584 | best:61.415 | new:61.415 | diff:-0.000027551)
-     step 20 (0.1 s) -- (orig: 61.584 | best:61.415 | new:61.415 | diff:0)
-     step 21 (0.1 s) -- (orig: 61.584 | best:61.415 | new:61.415 | diff:0)
-     step 22 (0.1 s) -- (orig: 61.584 | best:61.415 | new:61.562 | diff:0.14758)
-     step 23 (0.1 s) ++ (orig: 61.584 | best:61.415 | new:61.385 | diff:-0.029454)
-     step 24 (0.1 s) -- (orig: 61.584 | best:61.385 | new:61.410 | diff:0.025377)
-     step 25 (0.1 s) ++ (orig: 61.584 | best:61.385 | new:61.379 | diff:-0.0059511)
-     step 26 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.382 | diff:0.0033592)
-     step 27 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000024873)
-     step 28 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 29 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.388 | diff:0.0091026)
-     step 30 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.383 | diff:0.0041710)
-     step 31 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 32 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000011142)
-     step 33 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.390 | diff:0.011336)
-     step 34 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.461 | diff:0.081486)
-     step 35 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 36 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.409 | diff:0.029454)
-     step 37 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.392 | diff:0.013245)
-     step 38 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.0010942)
-     step 39 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 40 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.449 | diff:0.069429)
-     step 41 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 42 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 43 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.385 | diff:0.0059511)
-     step 44 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 45 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.384 | diff:0.0046723)
-     step 46 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 47 (0.1 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 48 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.382 | diff:0.0030518)
-     step 49 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.381 | diff:0.0015457)
+     step 1 (0.0 s) -- (orig: 61.584 | best:61.584 | new:61.584 | diff:0)
+     step 2 (0.0 s) ++ (orig: 61.584 | best:61.584 | new:61.502 | diff:-0.081486)
+     step 3 (0.0 s) ++ (orig: 61.584 | best:61.502 | new:61.498 | diff:-0.0046735)
+     step 4 (0.0 s) -- (orig: 61.584 | best:61.498 | new:61.510 | diff:0.012486)
+     step 5 (0.0 s) ++ (orig: 61.584 | best:61.498 | new:61.498 | diff:-0.000027551)
+     step 6 (0.0 s) -- (orig: 61.584 | best:61.498 | new:61.678 | diff:0.18026)
+     step 7 (0.0 s) -- (orig: 61.584 | best:61.498 | new:61.507 | diff:0.0091050)
+     step 8 (0.0 s) ++ (orig: 61.584 | best:61.498 | new:61.492 | diff:-0.0059511)
+     step 9 (0.0 s) -- (orig: 61.584 | best:61.492 | new:61.492 | diff:0)
+     step 10 (0.0 s) -- (orig: 61.584 | best:61.492 | new:61.492 | diff:0)
+     step 11 (0.0 s) -- (orig: 61.584 | best:61.492 | new:61.492 | diff:0)
+     step 12 (0.0 s) -- (orig: 61.584 | best:61.492 | new:61.495 | diff:0.0033592)
+     step 13 (0.0 s) -- (orig: 61.584 | best:61.492 | new:61.492 | diff:0.000073082)
+     step 14 (0.0 s) -- (orig: 61.584 | best:61.492 | new:61.492 | diff:0)
+     step 15 (0.0 s) -- (orig: 61.584 | best:61.492 | new:61.492 | diff:0.000022510)
+     step 16 (0.1 s) -- (orig: 61.584 | best:61.492 | new:61.492 | diff:0)
+     step 17 (0.1 s) ++ (orig: 61.584 | best:61.492 | new:61.492 | diff:-0.000024873)
+     step 18 (0.1 s) ++ (orig: 61.584 | best:61.492 | new:61.478 | diff:-0.013637)
+     step 19 (0.1 s) -- (orig: 61.584 | best:61.478 | new:61.556 | diff:0.078146)
+     step 20 (0.1 s) -- (orig: 61.584 | best:61.478 | new:61.481 | diff:0.0033592)
+     step 21 (0.1 s) ++ (orig: 61.584 | best:61.478 | new:61.449 | diff:-0.029454)
+     step 22 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.453 | diff:0.0041710)
+     step 23 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.530 | diff:0.081486)
+     step 24 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.505 | diff:0.056891)
+     step 25 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.453 | diff:0.0041710)
+     step 26 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.527 | diff:0.078146)
+     step 27 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.450 | diff:0.0010942)
+     step 28 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.449 | diff:0)
+     step 29 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.449 | diff:0.000024873)
+     step 30 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.462 | diff:0.013245)
+     step 31 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.449 | diff:0)
+     step 32 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.449 | diff:0)
+     step 33 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.449 | diff:0)
+     step 34 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.478 | diff:0.029454)
+     step 35 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.487 | diff:0.038156)
+     step 36 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.449 | diff:0)
+     step 37 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.453 | diff:0.0046723)
+     step 38 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.464 | diff:0.014990)
+     step 39 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.487 | diff:0.038207)
+     step 40 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.455 | diff:0.0067711)
+     step 41 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.460 | diff:0.011336)
+     step 42 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.449 | diff:0)
+     step 43 (0.1 s) -- (orig: 61.584 | best:61.449 | new:61.449 | diff:0)
+     step 44 (0.1 s) ++ (orig: 61.584 | best:61.449 | new:61.379 | diff:-0.069429)
+     step 45 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000027551)
+     step 46 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.382 | diff:0.0023666)
+     step 47 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 48 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.395 | diff:0.016323)
+     step 49 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.0012094)
      step 50 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 51 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.386 | diff:0.0067711)
-     step 52 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.417 | diff:0.038156)
-     step 53 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000048572)
-     step 54 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000012755)
-     step 55 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.413 | diff:0.033382)
-     step 56 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.383 | diff:0.0034239)
-     step 57 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 58 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.398 | diff:0.018370)
-     step 59 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00028036)
-     step 60 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00077788)
-     step 61 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.382 | diff:0.0023666)
-     step 62 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 63 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000022428)
-     step 64 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.394 | diff:0.014990)
+     step 51 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.385 | diff:0.0059511)
+     step 52 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.383 | diff:0.0034239)
+     step 53 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 54 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00028036)
+     step 55 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000012755)
+     step 56 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.398 | diff:0.018370)
+     step 57 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.388 | diff:0.0090000)
+     step 58 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 59 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000070963)
+     step 60 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.387 | diff:0.0075625)
+     step 61 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 62 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.382 | diff:0.0030518)
+     step 63 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.0011910)
+     step 64 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
      step 65 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 66 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000064599)
-     step 67 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000010740)
-     step 68 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000070963)
-     step 69 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.0011910)
-     step 70 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.0012094)
-     step 71 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.388 | diff:0.0090000)
-     step 72 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.387 | diff:0.0075625)
-     step 73 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 74 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00029473)
-     step 75 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00059739)
-     step 76 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00029917)
-     step 77 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.381 | diff:0.0017217)
-     step 78 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 79 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 66 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 67 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 68 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.381 | diff:0.0015457)
+     step 69 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 70 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 71 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.384 | diff:0.0044527)
+     step 72 (0.2 s) -- (orig: 61.584 | best:61.379 | new:61.383 | diff:0.0037982)
+     step 73 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00029473)
+     step 74 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 75 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000011142)
+     step 76 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 77 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000064599)
+     step 78 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.387 | diff:0.0080649)
+     step 79 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00077788)
      step 80 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 81 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 82 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 83 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000072759)
+     step 81 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00059739)
+     step 82 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000072759)
+     step 83 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
      step 84 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 85 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.383 | diff:0.0037982)
-     step 86 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.395 | diff:0.016323)
-     step 87 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000018076)
+     step 85 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 86 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000017851)
+     step 87 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
      step 88 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 89 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.381 | diff:0.0019034)
-     step 90 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 91 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.387 | diff:0.0080649)
-     step 92 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000045049)
-     step 93 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000032510)
+     step 89 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 90 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.383 | diff:0.0040077)
+     step 91 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00039022)
+     step 92 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000018076)
+     step 93 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
      step 94 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 95 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 96 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.383 | diff:0.0040077)
-     step 97 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000017851)
-     step 98 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 95 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000048572)
+     step 96 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.381 | diff:0.0017217)
+     step 97 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.381 | diff:0.0019034)
+     step 98 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000032510)
      step 99 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 100 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00039022)
-     step 101 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.381 | diff:0.0019976)
-     step 102 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 103 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00000052504)
-     step 104 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 105 (0.3 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 106 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 107 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.384 | diff:0.0044527)
-     step 108 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00099720)
+     step 100 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.381 | diff:0.0019976)
+     step 101 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.381 | diff:0.0022144)
+     step 102 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000044768)
+     step 103 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00019543)
+     step 104 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 105 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00086330)
+     step 106 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00029917)
+     step 107 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000022428)
+     step 108 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000016308)
      step 109 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 110 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000016308)
-     step 111 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 112 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000044768)
-     step 113 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 114 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00014971)
-     step 115 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 110 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000010740)
+     step 111 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.0011042)
+     step 112 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 113 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00095277)
+     step 114 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000097794)
+     step 115 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00099720)
      step 116 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
      step 117 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 118 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00000025951)
-     step 119 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.381 | diff:0.0022144)
+     step 118 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00043227)
+     step 119 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00000052504)
      step 120 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
      step 121 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
      step 122 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 123 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00086330)
-     step 124 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 125 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00000081674)
-     step 126 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00043227)
-     step 127 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00019543)
-     step 128 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 129 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000097794)
-     step 130 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.0011042)
-     step 131 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 132 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
-     step 133 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00095277)
-     step 134 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000011209)
-===  Relative improvement too small (0.0000048102 &lt; 0.0010000) (134 steps, orig: 61.584 | best: 0 | ratio: 0) ===
+     step 123 (0.4 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00021629)
+     step 124 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 125 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 126 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000045049)
+     step 127 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000011245)
+     step 128 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00000081674)
+     step 129 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000011209)
+     step 130 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 131 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00000028046)
+     step 132 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00000040871)
+     step 133 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00014971)
+     step 134 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00049820)
+     step 135 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000074883)
+     step 136 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 137 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 138 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00000028089)
+     step 139 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00000025951)
+     step 140 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 141 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 142 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000000070196)
+     step 143 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 144 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.380 | diff:0.00047665)
+     step 145 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00000020444)
+     step 146 (0.5 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000037449)
+     step 147 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 148 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000000070141)
+     step 149 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 150 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 151 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 152 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 153 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 154 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.00010818)
+     step 155 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000000017546)
+     step 156 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 157 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 158 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.000018726)
+     step 159 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 160 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 161 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 162 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+     step 163 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0.0000000043860)
+     step 164 (0.6 s) -- (orig: 61.584 | best:61.379 | new:61.379 | diff:0)
+===  Absolute improvement too small (0 &lt; 0.0000010000) (164 steps, orig: 61.584 | best: 0 | ratio: 0) ===
 </pre></div></div>
 </div>
 <p>You can then run simulations with the modified program set. You can also save the new programset to a progbook if you wish to edit it further in Excel:</p>
@@ -1081,17 +1108,17 @@ Spreadsheet saved to /home/vsts/work/1/s/docs/examples/reconciled_progset.xlsx.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.16s
+Elapsed time for running &#34;default&#34;: 1.29s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>&lt;matplotlib.collections.PathCollection at 0x7ff3fa772590&gt;
-</pre></div>
-</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.collections.PathCollection at 0x7f02a7dde410&gt;
+</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -1125,8 +1152,8 @@ Elapsed time for running &#34;default&#34;: 1.16s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.50s
-Elapsed time for running &#34;default&#34;: 1.49s
+Elapsed time for running &#34;default&#34;: 1.57s
+Elapsed time for running &#34;default&#34;: 1.68s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1155,7 +1182,7 @@ Elapsed time for running &#34;default&#34;: 1.49s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.47s
+Elapsed time for running &#34;default&#34;: 1.59s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1186,7 +1213,7 @@ Elapsed time for running &#34;default&#34;: 1.47s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.58s
+Elapsed time for running &#34;default&#34;: 1.56s
 </pre></div></div>
 </div>
 </div>
@@ -1225,15 +1252,14 @@ Elapsed time for running &#34;default&#34;: 1.58s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-     step 1 (1.4 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
-     step 2 (2.8 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
-     step 3 (4.1 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
-     step 4 (5.4 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
-     step 5 (6.8 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
-     step 6 (8.3 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
-     step 7 (9.6 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
-     step 8 (10.9 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
-===  Time limit reached (10.883 &gt; 10.000) (8 steps, orig: -11729 | best: 0 | ratio: 0) ===
+     step 1 (1.5 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
+     step 2 (2.9 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
+     step 3 (4.5 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
+     step 4 (6.1 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
+     step 5 (7.6 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
+     step 6 (9.1 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
+     step 7 (10.6 s) -- (orig: -11729 | best:-11729 | new:-11729 | diff:0)
+===  Time limit reached (10.585 &gt; 10.000) (7 steps, orig: -11729 | best: 0 | ratio: 0) ===
 </pre></div></div>
 </div>
 <p>The function returns a set of optimized instructions, that can then be used to run a simulation</p>
@@ -1251,7 +1277,7 @@ Elapsed time for running &#34;default&#34;: 1.58s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.63s
+Elapsed time for running &#34;default&#34;: 1.81s
 </pre></div></div>
 </div>
 <p>For more details on the optimization system, see the <a class="reference external" href="https://atomica.readthedocs.io/en/latest/general/index.html">general documentation</a> on optimization.</p>

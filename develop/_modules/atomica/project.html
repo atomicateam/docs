@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -169,36 +170,36 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">.version</span> <span class="k">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
-<span class="kn">from</span> <span class="nn">.calibration</span> <span class="k">import</span> <span class="n">perform_autofit</span>
-<span class="kn">from</span> <span class="nn">.data</span> <span class="k">import</span> <span class="n">ProjectData</span>
-<span class="kn">from</span> <span class="nn">.framework</span> <span class="k">import</span> <span class="n">ProjectFramework</span>
-<span class="kn">from</span> <span class="nn">.model</span> <span class="k">import</span> <span class="n">run_model</span>
-<span class="kn">from</span> <span class="nn">.parameters</span> <span class="k">import</span> <span class="n">ParameterSet</span>
+<span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
+<span class="kn">from</span> <span class="nn">.calibration</span> <span class="kn">import</span> <span class="n">perform_autofit</span>
+<span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">ProjectData</span>
+<span class="kn">from</span> <span class="nn">.framework</span> <span class="kn">import</span> <span class="n">ProjectFramework</span>
+<span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">run_model</span>
+<span class="kn">from</span> <span class="nn">.parameters</span> <span class="kn">import</span> <span class="n">ParameterSet</span>
 
-<span class="kn">from</span> <span class="nn">.programs</span> <span class="k">import</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">ProgramInstructions</span>
-<span class="kn">from</span> <span class="nn">.scenarios</span> <span class="k">import</span> <span class="n">Scenario</span><span class="p">,</span> <span class="n">ParameterScenario</span><span class="p">,</span> <span class="n">CombinedScenario</span><span class="p">,</span> <span class="n">BudgetScenario</span><span class="p">,</span> <span class="n">CoverageScenario</span>
-<span class="kn">from</span> <span class="nn">.optimization</span> <span class="k">import</span> <span class="n">Optimization</span><span class="p">,</span> <span class="n">optimize</span><span class="p">,</span> <span class="n">InvalidInitialConditions</span>
-<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">.cascade</span> <span class="k">import</span> <span class="n">sanitize_cascade</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">NDict</span><span class="p">,</span> <span class="n">evaluate_plot_string</span><span class="p">,</span> <span class="n">NamedItem</span><span class="p">,</span> <span class="n">TimeSeries</span>
-<span class="kn">from</span> <span class="nn">.plotting</span> <span class="k">import</span> <span class="n">PlotData</span><span class="p">,</span> <span class="n">plot_series</span>
-<span class="kn">from</span> <span class="nn">.results</span> <span class="k">import</span> <span class="n">Result</span>
-<span class="kn">from</span> <span class="nn">.migration</span> <span class="k">import</span> <span class="n">migrate</span>
+<span class="kn">from</span> <span class="nn">.programs</span> <span class="kn">import</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">ProgramInstructions</span>
+<span class="kn">from</span> <span class="nn">.scenarios</span> <span class="kn">import</span> <span class="n">Scenario</span><span class="p">,</span> <span class="n">ParameterScenario</span><span class="p">,</span> <span class="n">CombinedScenario</span><span class="p">,</span> <span class="n">BudgetScenario</span><span class="p">,</span> <span class="n">CoverageScenario</span>
+<span class="kn">from</span> <span class="nn">.optimization</span> <span class="kn">import</span> <span class="n">Optimization</span><span class="p">,</span> <span class="n">optimize</span><span class="p">,</span> <span class="n">InvalidInitialConditions</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">.cascade</span> <span class="kn">import</span> <span class="n">sanitize_cascade</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">NDict</span><span class="p">,</span> <span class="n">evaluate_plot_string</span><span class="p">,</span> <span class="n">NamedItem</span><span class="p">,</span> <span class="n">TimeSeries</span>
+<span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">PlotData</span><span class="p">,</span> <span class="n">plot_series</span>
+<span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
+<span class="kn">from</span> <span class="nn">.migration</span> <span class="kn">import</span> <span class="n">migrate</span>
 <span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tqdm</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <div class="viewcode-block" id="ProjectSettings"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.ProjectSettings">[docs]</a><span class="k">class</span> <span class="nc">ProjectSettings</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_dt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_dt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_start</span> <span class="o">=</span> <span class="n">sim_start</span> <span class="k">if</span> <span class="n">sim_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">2000.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">=</span> <span class="n">sim_end</span> <span class="k">if</span> <span class="n">sim_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">2035.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sim_dt</span> <span class="o">=</span> <span class="n">sim_dt</span> <span class="k">if</span> <span class="n">sim_dt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.25</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Initialized project settings.&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Print object &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">prepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">output</span>
@@ -246,7 +247,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">databook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">databook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">NamedItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">framework</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">):</span>
@@ -286,7 +287,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">databook</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># This will contain an sc.Spreadsheet when the user loads one</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Print out useful information when called &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">objrepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;      Project name: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
@@ -821,7 +822,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">.model</span> <span class="k">import</span> <span class="n">BadInitialization</span>  <span class="c1"># avoid circular import</span>
+    <span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">BadInitialization</span>  <span class="c1"># avoid circular import</span>
 
     <span class="k">if</span> <span class="n">max_attempts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">max_attempts</span> <span class="o">=</span> <span class="mi">50</span>

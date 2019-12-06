@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -159,18 +160,18 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">TimeSeries</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
 <span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
-<span class="kn">from</span> <span class="nn">xlsxwriter.utility</span> <span class="k">import</span> <span class="n">xl_rowcol_to_cell</span> <span class="k">as</span> <span class="n">xlrc</span>
+<span class="kn">from</span> <span class="nn">xlsxwriter.utility</span> <span class="kn">import</span> <span class="n">xl_rowcol_to_cell</span> <span class="k">as</span> <span class="n">xlrc</span>
 <span class="kn">import</span> <span class="nn">openpyxl</span>
-<span class="kn">from</span> <span class="nn">.excel</span> <span class="k">import</span> <span class="n">cell_require_string</span><span class="p">,</span> <span class="n">standard_formats</span><span class="p">,</span> <span class="n">read_tables</span><span class="p">,</span> <span class="n">TimeDependentValuesEntry</span><span class="p">,</span> <span class="n">TimeDependentConnections</span><span class="p">,</span> <span class="n">apply_widths</span><span class="p">,</span> <span class="n">update_widths</span><span class="p">,</span> <span class="n">validate_category</span>
+<span class="kn">from</span> <span class="nn">.excel</span> <span class="kn">import</span> <span class="n">cell_require_string</span><span class="p">,</span> <span class="n">standard_formats</span><span class="p">,</span> <span class="n">read_tables</span><span class="p">,</span> <span class="n">TimeDependentValuesEntry</span><span class="p">,</span> <span class="n">TimeDependentConnections</span><span class="p">,</span> <span class="n">apply_widths</span><span class="p">,</span> <span class="n">update_widths</span><span class="p">,</span> <span class="n">validate_category</span>
 <span class="kn">import</span> <span class="nn">xlsxwriter</span> <span class="k">as</span> <span class="nn">xw</span>
 <span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">NotFoundError</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">NotFoundError</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
 
 <div class="viewcode-block" id="ProjectData"><a class="viewcode-back" href="../../_autosummary/atomica.data.html#atomica.data.ProjectData">[docs]</a><span class="k">class</span> <span class="nc">ProjectData</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">prettyobj</span><span class="p">):</span>
@@ -193,7 +194,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framework</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framework</span><span class="p">):</span>
         <span class="c1"># This is just an overview of the structure of ProjectData</span>
         <span class="c1"># There are two pathways to a ProjectData</span>
         <span class="c1"># - Could load an existing one, with ProjectData.from_spreadsheet()</span>

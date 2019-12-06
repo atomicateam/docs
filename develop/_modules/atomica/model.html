@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -160,17 +161,17 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">NotFoundError</span>
-<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
-<span class="kn">from</span> <span class="nn">.results</span> <span class="k">import</span> <span class="n">Result</span>
-<span class="kn">from</span> <span class="nn">.function_parser</span> <span class="k">import</span> <span class="n">parse_function</span>
-<span class="kn">from</span> <span class="nn">.version</span> <span class="k">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">NotFoundError</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
+<span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
+<span class="kn">from</span> <span class="nn">.function_parser</span> <span class="kn">import</span> <span class="n">parse_function</span>
+<span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">.programs</span> <span class="k">import</span> <span class="n">ProgramSet</span>
+<span class="kn">from</span> <span class="nn">.programs</span> <span class="kn">import</span> <span class="n">ProgramSet</span>
 
 <span class="n">model_settings</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 <span class="n">model_settings</span><span class="p">[</span><span class="s1">&#39;tolerance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span>
@@ -209,7 +210,7 @@
 <span class="sd">                    (but in the case of links, there are additional terms)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>  <span class="c1">#: Unique identifier for the integration object</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#: Array of time values. This should be a reference to the base array stored in a :class:`model` object</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1">#: Time step size</span>
@@ -308,14 +309,14 @@
 <div class="viewcode-block" id="Variable.relink"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Variable.relink">[docs]</a>    <span class="k">def</span> <span class="nf">relink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pop</span> <span class="o">=</span> <span class="n">objs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> &quot;</span><span class="si">%s</span><span class="s1">&quot; </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Compartment"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Compartment">[docs]</a><span class="k">class</span> <span class="nc">Compartment</span><span class="p">(</span><span class="n">Variable</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A class to wrap up data for one compartment within a cascade network. &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="n">Variable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="o">=</span><span class="n">pop</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;Number of people&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tag_birth</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Tag for whether this compartment contains unborn people.</span>
@@ -452,7 +453,7 @@
 
 
 <div class="viewcode-block" id="TimedCompartment"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.TimedCompartment">[docs]</a><span class="k">class</span> <span class="nc">TimedCompartment</span><span class="p">(</span><span class="n">Compartment</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
         <span class="n">Variable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="o">=</span><span class="n">pop</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;Number of people&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tag_birth</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Tag for whether this compartment contains unborn people.</span>
@@ -473,7 +474,7 @@
 <div class="viewcode-block" id="Characteristic"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Characteristic">[docs]</a><span class="k">class</span> <span class="nc">Characteristic</span><span class="p">(</span><span class="n">Variable</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A characteristic represents a grouping of compartments. &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="c1"># includes is a list of Compartments, whose values are summed</span>
         <span class="c1"># the denominator is another Characteristic that normalizes this one</span>
         <span class="c1"># All passed by reference so minimal performance impact</span>
@@ -578,7 +579,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 
         <span class="n">Variable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="o">=</span><span class="n">pop</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">limits</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Can be a two element vector [min,max]</span>
@@ -819,7 +820,7 @@
 
     <span class="c1">#</span>
     <span class="c1"># *** Link values are always dt-based ***</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="c1"># Note that the Link&#39;s name is the transition tag</span>
         <span class="n">Variable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="o">=</span><span class="n">pop</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dest</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>  <span class="c1"># A Link is only uniquely identified by (Pop,Source,Dest,Par)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="kc">None</span>
@@ -849,7 +850,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">objs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dest</span> <span class="o">=</span> <span class="n">objs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;Link </span><span class="si">%s</span><span class="s2"> (parameter </span><span class="si">%s</span><span class="s2">) - </span><span class="si">%s</span><span class="s2"> to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Link.plot"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Link.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -863,7 +864,7 @@
 <span class="sd">    Each model population must contain a set of compartments with equivalent names.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">progset</span><span class="p">:</span><span class="n">ProgramSet</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">progset</span><span class="p">:</span><span class="n">ProgramSet</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct a Population</span>
 
@@ -899,7 +900,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">is_linked</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Flag to manage double unlinking/relinking</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Population.unlink"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Population.unlink">[docs]</a>    <span class="k">def</span> <span class="nf">unlink</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -996,14 +997,14 @@
 
             <span class="k">return</span> <span class="n">links</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NotFoundError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Object &#39;</span><span class="si">{name}</span><span class="s2">&#39; not found in population &#39;</span><span class="si">{self.name}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">NotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Object &#39;</span><span class="si">{name}</span><span class="s2">&#39; not found in population &#39;</span><span class="si">{self.name}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Population.get_comp"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Population.get_comp">[docs]</a>    <span class="k">def</span> <span class="nf">get_comp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Allow compartments to be retrieved by name rather than index. Returns a Compartment. &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">comp_lookup</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NotFoundError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Compartment </span><span class="si">{comp_name}</span><span class="s1"> not found&#39;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">NotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Compartment </span><span class="si">{comp_name}</span><span class="s1"> not found&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Population.get_links"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Population.get_links">[docs]</a>    <span class="k">def</span> <span class="nf">get_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; Retrieve Links. &quot;&quot;&quot;</span>
@@ -1022,14 +1023,14 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">charac_lookup</span><span class="p">[</span><span class="n">charac_name</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NotFoundError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Characteristic </span><span class="si">{charac_name}</span><span class="s1"> not found&#39;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">NotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Characteristic </span><span class="si">{charac_name}</span><span class="s1"> not found&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Population.get_par"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Population.get_par">[docs]</a>    <span class="k">def</span> <span class="nf">get_par</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">par_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Allow dependencies to be retrieved by name rather than index. Returns a Variable. &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">par_lookup</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NotFoundError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Parameter </span><span class="si">{par_name}</span><span class="s1"> not found&#39;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">NotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parameter </span><span class="si">{par_name}</span><span class="s1"> not found&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Population.gen_cascade"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Population.gen_cascade">[docs]</a>    <span class="k">def</span> <span class="nf">gen_cascade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">progset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1232,7 +1233,7 @@
 <div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A class to wrap up multiple populations within model and handle cross-population transitions. &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">program_instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">program_instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="c1">#</span>
         <span class="c1"># Note that if a progset is provided and program instructions are not, then programs will not be</span>
         <span class="c1"># turned on. However, the progset is still available so that the coverage can still be probed</span>
