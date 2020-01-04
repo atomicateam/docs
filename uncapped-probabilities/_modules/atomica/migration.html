@@ -826,28 +826,29 @@
 
     <span class="k">return</span> <span class="n">proj</span>
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.11.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.12.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Timed compartment updates&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_add_project_timed_attribute</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">fw</span> <span class="ow">in</span> <span class="n">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-        <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
-        <span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s1">&#39;duration group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;ProjectFramework&#39;</span><span class="p">,</span><span class="s1">&#39;1.12.2&#39;</span><span class="p">,</span> <span class="s1">&#39;1.13.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Timed compartment updates to framework&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_add_framework_timed_comps</span><span class="p">(</span><span class="n">fw</span><span class="p">):</span>
+    <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+    <span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s1">&#39;duration group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">fw</span>
 
-    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">comps</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_birth</span><span class="p">:</span>
-                    <span class="n">comp</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">SourceCompartment</span>
-                <span class="k">elif</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_dead</span><span class="p">:</span>
-                    <span class="n">comp</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">SinkCompartment</span>
-                <span class="k">elif</span> <span class="n">comp</span><span class="o">.</span><span class="n">is_junction</span><span class="p">:</span>
-                    <span class="n">comp</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">JunctionCompartment</span>
-                    <span class="n">comp</span><span class="o">.</span><span class="n">duration_group</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">del</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_birth</span>
-                <span class="k">del</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_dead</span>
-                <span class="k">del</span> <span class="n">comp</span><span class="o">.</span><span class="n">is_junction</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">relink</span><span class="p">()</span>  <span class="c1"># Make sure all of the references are updated to the new compartment instance - it has the same ID so it should be fine</span>
-    <span class="k">return</span> <span class="n">proj</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span><span class="s1">&#39;1.12.2&#39;</span><span class="p">,</span> <span class="s1">&#39;1.13.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Timed compartment updates to result&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_add_result_timed_attribute</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">comps</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_birth</span><span class="p">:</span>
+                <span class="n">comp</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">SourceCompartment</span>
+            <span class="k">elif</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_dead</span><span class="p">:</span>
+                <span class="n">comp</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">SinkCompartment</span>
+            <span class="k">elif</span> <span class="n">comp</span><span class="o">.</span><span class="n">is_junction</span><span class="p">:</span>
+                <span class="n">comp</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">JunctionCompartment</span>
+                <span class="n">comp</span><span class="o">.</span><span class="n">duration_group</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">del</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_birth</span>
+            <span class="k">del</span> <span class="n">comp</span><span class="o">.</span><span class="n">tag_dead</span>
+            <span class="k">del</span> <span class="n">comp</span><span class="o">.</span><span class="n">is_junction</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">relink</span><span class="p">()</span>  <span class="c1"># Make sure all of the references are updated to the new compartment instance - it has the same ID so it should be fine</span>
+    <span class="k">return</span> <span class="n">result</span>
 
 <span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.14.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.15.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Refactor migration update flag&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_rename_update_field</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
