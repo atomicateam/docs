@@ -1,0 +1,1751 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Uncertainty &mdash; Atomica  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorials" href="../tutorial/index.html" />
+    <link rel="prev" title="Probability rescaling" href="Probability-Rescaling.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Basic-workflow.html">Basic workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Databooks.html">Data and Databooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Frameworks.html">Frameworks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Model-dev.html">Models (implementation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Model-user.html">Results and Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plotting.html">Atomica Plotting Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plot-Programs.html">Plotting programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plot-Units.html">Plot unit conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Probability-Rescaling.html">Probability rescaling</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Uncertainty</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Specifying-uncertainty">Specifying uncertainty</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Sampling-inputs">Sampling inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Analysis">Analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Basic-plotting">Basic plotting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Comparing-sampled-results">Comparing sampled results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Distributions-of-differences-between-results">Distributions of differences between results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Cascade-ensembles">Cascade ensembles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Virtual-stages">Virtual stages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Memory-limited-environments">Memory-limited environments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Parallization">Parallization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Experimental-plots">Experimental plots</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Examples</a> &raquo;</li>
+        
+      <li>Uncertainty</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/examples/Uncertainty.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container,
+div.nbinput.container div.prompt,
+div.nbinput.container div.input_area,
+div.nbinput.container div[class*=highlight],
+div.nbinput.container div[class*=highlight] pre,
+div.nboutput.container,
+div.nboutput.container div.prompt,
+div.nboutput.container div.output_area,
+div.nboutput.container div[class*=highlight],
+div.nboutput.container div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    min-width: 5ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Uncertainty">
+<h1>Uncertainty<a class="headerlink" href="#Uncertainty" title="Permalink to this headline">¶</a></h1>
+<p>This notebook examines uncertainty in Atomica, going through</p>
+<ul class="simple">
+<li><p>How uncertainty in model inputs is entered</p></li>
+<li><p>How to perform simulations that are sampled from the distribution of parameters with uncertainty</p></li>
+<li><p>How to perform analyses that incorporate uncertainty</p></li>
+</ul>
+<div class="section" id="Specifying-uncertainty">
+<h2>Specifying uncertainty<a class="headerlink" href="#Specifying-uncertainty" title="Permalink to this headline">¶</a></h2>
+<p>Fundmentally, uncertainty enters Atomica via the data entry spreadsheets. Both the databook and program book have columns that can be used to enter uncertainty.</p>
+<p>In the databook, uncertainty can be added to any TDVE table - that is, any of the sub-tables within the databook for each quantity. By default, those columns are not produced when the databook is written e.g. with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;databook.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you want to include those columns, use the <code class="docutils literal notranslate"><span class="pre">write_uncertainty</span></code> options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;databook.xlsx&#39;</span><span class="p">,</span><span class="n">write_uncertainty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will add an ‘uncertainty’ column to all tables in the databook. If you only want to add uncertainty to a small number of quantities, you can simply insert an extra column for the tables that you want to add uncertainty to, by selecting the other cells and moving them over. The example below shows how an uncertainty column has been added to the ‘Screened people’ table and not to the ‘All people with condition’ table:</p>
+<p><img alt="image1" src="../_images/databook_uncertainty.png" /></p>
+<div class="admonition note">
+<p>Uncertainty should be entered as a standard deviation, with the same units as the quantity itself</p>
+</div>
+<p>In the example above, it would be accurate to state that the 2016 value for the number of screened people in the male rural population is <span class="math notranslate nohighlight">\(214 \pm 20\)</span>. Mathematically, the entry above corresponds to specifying that the distribution of screened people in the male rural population has a mean of 214 and a standard deviation of 20.</p>
+<p>For the program book, uncertainty appears in two places - in the spending/coverage sheet, and in the outcome sheet, as shown below. These columns are always present in the program book.</p>
+<p><img alt="image2" src="../_images/progbook_spending_uncertainty.png" /> <img alt="image3" src="../_images/progbook_outcome_uncertainty.png" /></p>
+<p>To limit complexity in data entry, only a single uncertainty value can be entered for each quantity. That is, in the databook and spending/coverage sheet, uncertainty cannot vary over time, and in the outcome sheet, the uncertainty is specified at the parameter-population level, and applies to all programs reaching that parameter.</p>
+</div>
+<div class="section" id="Sampling-inputs">
+<h2>Sampling inputs<a class="headerlink" href="#Sampling-inputs" title="Permalink to this headline">¶</a></h2>
+<p>We have seen above how to enter uncertainty in the databook and program book. These uncertainties are loaded into the corresponding <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> and <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> objects in Atomica.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">testdir</span> <span class="o">=</span> <span class="s1">&#39;../../tests/&#39;</span>
+
+<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="n">testdir</span> <span class="o">+</span> <span class="s1">&#39;test_uncertainty_framework.xlsx&#39;</span><span class="p">,</span> <span class="n">databook</span><span class="o">=</span><span class="n">testdir</span> <span class="o">+</span> <span class="s1">&#39;test_uncertainty_databook.xlsx&#39;</span><span class="p">)</span>
+<span class="n">P</span><span class="o">.</span><span class="n">load_progbook</span><span class="p">(</span><span class="n">testdir</span> <span class="o">+</span> <span class="s1">&#39;test_uncertainty_high_progbook.xlsx&#39;</span><span class="p">)</span>
+
+<span class="n">low_uncertainty_progset</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProgramSet</span><span class="o">.</span><span class="n">from_spreadsheet</span><span class="p">(</span><span class="n">testdir</span> <span class="o">+</span> <span class="s1">&#39;test_uncertainty_low_progbook.xlsx&#39;</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">high_uncertainty_progset</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProgramSet</span><span class="o">.</span><span class="n">from_spreadsheet</span><span class="p">(</span><span class="n">testdir</span> <span class="o">+</span> <span class="s1">&#39;test_uncertainty_high_progbook.xlsx&#39;</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">default_budget</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProgramInstructions</span><span class="p">(</span><span class="n">start_year</span><span class="o">=</span><span class="mi">2018</span><span class="p">,</span> <span class="n">alloc</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">progsets</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">doubled_budget</span> <span class="o">=</span> <span class="n">default_budget</span><span class="o">.</span><span class="n">scale_alloc</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Atomica 1.12.1 (2019-08-20) -- (c) the Atomica development team
+2020-01-07 00:59:41.547424
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0387s
+</pre></div></div>
+</div>
+<p>Above, we have loaded in a databook with uncertainty values, and also loaded in two different program books, one with low uncertainty, and one with high uncertainty. We can inspect the objects to see how the uncertainty entered in the spreadsheets is reflected in code.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="s1">&#39;all_screened&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;atomica.utils.TimeSeries at 0x7fce693f6810&gt;
+============================================================
+Methods:
+  copy()              interpolate()       remove_between()
+  get()               remove()            sample()
+  get_arrays()        remove_after()      insert()
+  remove_before()
+============================================================
+  _sampled: False
+assumption: None
+     sigma: 20.0
+         t: [2016.0]
+     units: Number
+      vals: [214.0]
+============================================================
+</pre></div></div>
+</div>
+<p>The uncertainty value is attached to the underlying <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> objects, and stored in the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> property. When running a simulation, we specify a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> and optionally a <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">parset</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="s1">&#39;all_screened&#39;</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_rural&#39;</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0348s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_11_1.png" src="../_images/examples_Uncertainty_11_1.png" />
+</div>
+</div>
+<p>If there is uncertainty, we can obtain a sampled epidemiological prediction by sampling from all of the quantities containing uncertinty. For example, replacing the value of <code class="docutils literal notranslate"><span class="pre">214</span></code> above with a sample from the distribution <span class="math notranslate nohighlight">\(\ \mathcal{N}(214,20)\)</span> - along with all of the other quantities. The input to the model is effectively a parameter set derived from the original set of parameters, but with values replaced by sampled values where appropriate. You can obtain a sampled parameter set
+simply by calling the <code class="docutils literal notranslate"><span class="pre">ParameterSet.sample()</span></code> method:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sampled_parset</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Now compare the values for the screening parameter in the original parset and the sampled parset:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Original parameters: </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;all_screened&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;m_rural&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sampled parameters: </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sampled_parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;all_screened&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;m_rural&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Original parameters: 214.00
+Sampled parameters: 249.77
+</pre></div></div>
+</div>
+<p>The original parameters contain the values entered in the databook, while the sampled parameters have the values perturbed by the sampling. Although the sampled parameters retain the original uncertainty values, you can only perform sampling once:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">sampled_parset</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Sampling has already been performed - can only sample once
+</pre></div></div>
+</div>
+<p>To run a sampled simulation, it is thus only necessary to pass the sampled <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> into <code class="docutils literal notranslate"><span class="pre">Project.run_sim</span></code> instead of the original parameters:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sampled_res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">sampled_parset</span><span class="p">,</span><span class="n">result_name</span><span class="o">=</span><span class="s1">&#39;Sampled&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">res</span><span class="p">,</span><span class="n">sampled_res</span><span class="p">],</span><span class="s1">&#39;all_screened&#39;</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_rural&#39;</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0409s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_19_1.png" src="../_images/examples_Uncertainty_19_1.png" />
+</div>
+</div>
+<p>Exactly the same procedure is used for programs - the <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> has a <code class="docutils literal notranslate"><span class="pre">sample()</span></code> method which returns a sampled <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> that can be used instead of the original <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> to perform a sampled simulation:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sampled_progset</span> <span class="o">=</span> <span class="n">high_uncertainty_progset</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span><span class="n">high_uncertainty_progset</span><span class="p">,</span><span class="n">progset_instructions</span><span class="o">=</span><span class="n">default_budget</span><span class="p">,</span><span class="n">result_name</span><span class="o">=</span><span class="s1">&#39;Original&#39;</span><span class="p">)</span>
+<span class="n">sampled_res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span><span class="n">sampled_progset</span><span class="p">,</span><span class="n">progset_instructions</span><span class="o">=</span><span class="n">default_budget</span><span class="p">,</span><span class="n">result_name</span><span class="o">=</span><span class="s1">&#39;Sampled&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">res</span><span class="p">,</span><span class="n">sampled_res</span><span class="p">],</span><span class="s1">&#39;all_screened&#39;</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_rural&#39;</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0418s
+Elapsed time for running &#34;default&#34;: 0.0450s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_21_1.png" src="../_images/examples_Uncertainty_21_1.png" />
+</div>
+</div>
+<p>Of course, we can combine the sampled parset and the sampled progset in a single simulation to sample from both sources of uncertainty simultaneously:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sampled_res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">sampled_parset</span><span class="p">,</span><span class="n">sampled_progset</span><span class="p">,</span><span class="n">progset_instructions</span><span class="o">=</span><span class="n">default_budget</span><span class="p">,</span><span class="n">result_name</span><span class="o">=</span><span class="s1">&#39;Sampled&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">res</span><span class="p">,</span><span class="n">sampled_res</span><span class="p">],</span><span class="s1">&#39;all_screened&#39;</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_rural&#39;</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0401s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_23_1.png" src="../_images/examples_Uncertainty_23_1.png" />
+</div>
+</div>
+<p>One issue when sampling is that of satisfying initial conditions. Databooks often require some work to ensure that none of the initial compartment sizes are negative. If uncertainties are specified for characteristics that are used for initialization, it is possible that the independently-sampled characteristic values yield a bad initialization (where some of the compartment sizes are negative, or the characteristic values are otherwise inconsistent). If this happens, a <code class="docutils literal notranslate"><span class="pre">BadInitialization</span></code>
+error is raised. Therefore, to write reliable sampling code, it is essential to catch this exception:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># This seed provides a BadInitialization at the next iteration</span>
+<span class="n">sampled_parset</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">sampled_res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">sampled_parset</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">at</span><span class="o">.</span><span class="n">BadInitialization</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Negative initial popsizes:
+Compartment f_rural scr - Calculated -11.235128
+Characteristic &#39;all_people&#39;: Target value = [1101.]
+        Compartment undx: Computed value = 630.235128
+        Compartment scr: Computed value = -11.235128
+        Compartment dx: Computed value = 100.000000
+        Compartment tx: Computed value = 234.000000
+        Compartment con: Computed value = 148.000000
+Characteristic &#39;all_screened&#39;: Target value = [470.76487173]
+        Compartment scr: Computed value = -11.235128
+        Compartment dx: Computed value = 100.000000
+        Compartment tx: Computed value = 234.000000
+        Compartment con: Computed value = 148.000000
+
+</pre></div></div>
+</div>
+<p>When this error occurs, the correct thing to do is usually to just sample again on the assumption that other samples may satisfy the initial conditions. Thus, sampling would be carried out within a <code class="docutils literal notranslate"><span class="pre">while</span></code> loop that continues until a simulation is successfully run. To automate this, we can use <code class="docutils literal notranslate"><span class="pre">Project.run_sampled_sims</span></code> which functions similarly to <code class="docutils literal notranslate"><span class="pre">Project.run_sim()</span></code> except that it incorporates a sampling step together with automated resampling if the initial conditions are unsatisfactory</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sampled_res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sampled_sims</span><span class="p">(</span><span class="n">parset</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[&lt;atomica.results.Result at 0x7fce693506d0&gt;
+============================================================
+Methods:
+  budget()            export_raw()        link_names()
+  charac_names()      get_alloc()         par_names()
+  comp_names()        get_coverage()      plot()
+  copy()              get_variable()
+============================================================
+    created: datetime.datetime(2020, 1, 7, 0, 59, 44, 122612,
+             tzinfo=tzutc())
+      model: &lt;atomica.model.Model object at 0x7fce6947e510&gt;
+   modified: datetime.datetime(2020, 1, 7, 0, 59, 44, 122632,
+             tzinfo=tzutc())
+       name: default
+parset_name: default
+  pop_names: [&#39;m_rural&#39;, &#39;f_rural&#39;, &#39;m_urban&#39;, &#39;f_urban&#39;]
+        uid: UUID(&#39;7137d7f8-3dde-4fdb-b674-603271cf4fb7&#39;)
+============================================================
+]]
+</pre></div></div>
+</div>
+<p>Note that the return value is a list of results, rather than just a <code class="docutils literal notranslate"><span class="pre">Result</span></code> like with <code class="docutils literal notranslate"><span class="pre">Project.run_sim()</span></code>. Typically, uncertainties require working with multiple samples. Thus, you can also pass in a number of samples, and <code class="docutils literal notranslate"><span class="pre">Project.run_sampled_sims()</span></code> will return the required number of sampled results:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sampled_res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sampled_sims</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 5/5 [00:00&lt;00:00, 23.92it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+5
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<p>When running multiple sampled simulations, a progress bar with estimated time remaining will be displayed.</p>
+</div>
+<div class="section" id="Analysis">
+<h2>Analysis<a class="headerlink" href="#Analysis" title="Permalink to this headline">¶</a></h2>
+<p>Now that we are able to run simulations with sampled parameters, the next question is how to produce analysis outputs such as plots that have error bars or otherwise visually represent uncertainty. The first step to doing this is to obtain a collection of results. The number of samples required loosely depends on the number of quantities with uncertainty - a general rule of thumb though is that the number of samples required would generally be on the order of 50-200.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sampled_res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sampled_sims</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 100/100 [00:05&lt;00:00, 19.18it/s]
+</pre></div></div>
+</div>
+<p>For comparison, we will also run a ‘baseline’ simulation with no sampling. A plot of the baseline results looks like this:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">baseline</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">baseline</span><span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;screen&#39;</span><span class="p">,</span><span class="s1">&#39;diag&#39;</span><span class="p">,</span><span class="s1">&#39;initiate&#39;</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_rural&#39;</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0347s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_34_1.png" src="../_images/examples_Uncertainty_34_1.png" />
+</div>
+</div>
+<div class="section" id="Basic-plotting">
+<h3>Basic plotting<a class="headerlink" href="#Basic-plotting" title="Permalink to this headline">¶</a></h3>
+<p>The normal sequence for plotting is that we would</p>
+<ol class="arabic simple">
+<li><p>Instantiate a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object with the quantities to plot. Effectively, this operation is mapping a <code class="docutils literal notranslate"><span class="pre">Result</span></code> to a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code></p></li>
+<li><p>Call a plotting library function to generate the plot</p></li>
+</ol>
+<p>Plots generated with the plotting library compare multiple results (e.g. different scenarios) rather than showing uncertainty computed over an ensemble of results. Further, they only take in a single <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instance where the results to compare have been included in the same <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object.</p>
+<p>To work with uncertainty, instead of plotting a single <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object, we instead plot a collection of <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> objects. And plots are generated using a different set of plotting functions that take in multiple <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instances and use them to compute and display uncertainties (e.g. as error bars or as shaded areas).</p>
+<p>This functionality is accessed via the <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> class. The <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> class is designed to store and plot ensembles of results. Internally, it stores a list of <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> objects - one for each sample. It also contains a ‘mapping function’ that takes in results and returns a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instance. To use an Ensemble, first we need to define a mapping function. In the simplest case, this looks just like a normal call to <code class="docutils literal notranslate"><span class="pre">PlotData()</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">mapping_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;screen&#39;</span><span class="p">,</span><span class="s1">&#39;diag&#39;</span><span class="p">,</span><span class="s1">&#39;initiate&#39;</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_rural&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Then, we create an <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="n">mapping_function</span><span class="o">=</span><span class="n">mapping_function</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We then need to load all of the results into the mapping function. Similar to Python’s built-in <code class="docutils literal notranslate"><span class="pre">set</span></code> class, there are two ways of inserting the results</p>
+<ul class="simple">
+<li><p>One by one, using <code class="docutils literal notranslate"><span class="pre">Ensemble.add(result)</span></code></p></li>
+<li><p>All at once, using <code class="docutils literal notranslate"><span class="pre">Ensemble.update(list_of_results)</span></code></p></li>
+</ul>
+<p>In our case, we already have a list of results generated by <code class="docutils literal notranslate"><span class="pre">P.run_sampled_sims</span></code>, so we can go ahead and use <code class="docutils literal notranslate"><span class="pre">Ensemble.update()</span></code> to insert them</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Finally, we can make some plots. To start with, let’s make a plot of the time series like the one shown above for the baseline results, but with uncertainty this time:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">plot_series</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_42_0.png" src="../_images/examples_Uncertainty_42_0.png" />
+</div>
+</div>
+<p>As we have only loaded in the sampled results, the dashed line corresponds to the median of the samples. The shaded areas show the area between the first and third quartiles for the samples. To start with, instead of showing the median of the samples, it is generally more appropriate to show the actual baseline results. To do this, we can load the baseline results into the Ensemble and then regenerate the plot.</p>
+<div class="admonition warning">
+<p>The baseline results need to have the same names as the sampled results. If you do not explicitly specify names, <code class="docutils literal notranslate"><span class="pre">Project.run_sampled_sims</span></code> produces default names that avoid collisions between multiple instructions. However, <code class="docutils literal notranslate"><span class="pre">Project.run_sim</span></code> produces default names that avoid collisions with other results stored in the project. Therefore, it may be necessary to explicitly set or change the result names if the names were set differently.</p>
+</div>
+<p>In this case, the baseline results need to have their name changed to <code class="docutils literal notranslate"><span class="pre">'default'</span></code> to match the sampled results:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">baseline</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">set_baseline</span><span class="p">(</span><span class="n">baseline</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">plot_series</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_44_0.png" src="../_images/examples_Uncertainty_44_0.png" />
+</div>
+</div>
+<p>As with the rest of the plotting library, the legend is ‘maximally informative’ in that it contains as much information as possible. This is because the most appropriate labelling for the figure (whether the axis labels, titles, or legend entries) varies greatly with context, and it is often necessary to relabel the figure on a plot-by-plot basis. This relabelling is facilitating by having all of the necessary content on the figure, rather than having to keep track of it separately. Thus, it is
+expected that the labels may need to be edited afterwards depending on usage.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">'&lt;unnamed'&gt;</span></code> string corresponds to the name of the ensemble. We hadn’t given the ensemble a name, but naming the ensemble can be useful if you want to superimpose multiple ensembles on the same plot. The ensemble can be named at construction, or at any point subsequently:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Example&#39;</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">plot_series</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_46_0.png" src="../_images/examples_Uncertainty_46_0.png" />
+</div>
+</div>
+<p>Now, the baseline results are displayed as solid lines. Other types of plots can be generated too.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">2018</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_48_0.png" src="../_images/examples_Uncertainty_48_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_48_1.png" src="../_images/examples_Uncertainty_48_1.png" />
+</div>
+</div>
+<p>Because the <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> stores <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> objects, you can perform any aggregation operations in the same way as normal. For example, we can plot the years lost to disability by integrating the number of people in the disease compartments.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">yld</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;disease&#39;</span><span class="p">:[</span><span class="s1">&#39;undx&#39;</span><span class="p">,</span><span class="s1">&#39;scr&#39;</span><span class="p">,</span><span class="s1">&#39;dx&#39;</span><span class="p">,</span><span class="s1">&#39;tx&#39;</span><span class="p">]},</span><span class="n">t_bins</span><span class="o">=</span><span class="p">[</span><span class="mi">2018</span><span class="p">,</span><span class="mi">2023</span><span class="p">],</span><span class="n">time_aggregation</span><span class="o">=</span><span class="s1">&#39;integrate&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>This is the usual way that this plot would be generated for a single <code class="docutils literal notranslate"><span class="pre">Result</span></code> without uncertainty, and indeed we can go ahead and generate that plot now</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="n">yld</span><span class="p">(</span><span class="n">baseline</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_52_0.png" src="../_images/examples_Uncertainty_52_0.png" />
+</div>
+</div>
+<p>With uncertainty, we simply make the plot via an <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> instead</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Example&#39;</span><span class="p">,</span><span class="n">mapping_function</span><span class="o">=</span><span class="n">yld</span><span class="p">,</span><span class="n">baseline_results</span><span class="o">=</span><span class="n">baseline</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_54_0.png" src="../_images/examples_Uncertainty_54_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_54_1.png" src="../_images/examples_Uncertainty_54_1.png" />
+</div>
+</div>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">Ensemble.summary_statistics()</span></code> method to get a dataframe with summary statistics</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">summary_statistics</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>value</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th>result</th>
+      <th>output</th>
+      <th>pop</th>
+      <th>quantity</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="28" valign="top">NaN</th>
+      <th rowspan="28" valign="top">default</th>
+      <th rowspan="28" valign="top">disease</th>
+      <th rowspan="7" valign="top">m_rural</th>
+      <th>baseline</th>
+      <td>3366.594472</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>3366.261632</td>
+    </tr>
+    <tr>
+      <th>median</th>
+      <td>3365.778345</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>3388.291508</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>3350.692511</td>
+    </tr>
+    <tr>
+      <th>Q1</th>
+      <td>3360.907660</td>
+    </tr>
+    <tr>
+      <th>Q3</th>
+      <td>3370.853660</td>
+    </tr>
+    <tr>
+      <th rowspan="7" valign="top">f_rural</th>
+      <th>baseline</th>
+      <td>4183.379175</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>4182.609299</td>
+    </tr>
+    <tr>
+      <th>median</th>
+      <td>4181.635962</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>4228.480503</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>4137.139551</td>
+    </tr>
+    <tr>
+      <th>Q1</th>
+      <td>4173.438393</td>
+    </tr>
+    <tr>
+      <th>Q3</th>
+      <td>4194.230398</td>
+    </tr>
+    <tr>
+      <th rowspan="7" valign="top">m_urban</th>
+      <th>baseline</th>
+      <td>3402.226801</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>3402.928054</td>
+    </tr>
+    <tr>
+      <th>median</th>
+      <td>3403.553929</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>3426.910567</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>3375.834308</td>
+    </tr>
+    <tr>
+      <th>Q1</th>
+      <td>3397.346195</td>
+    </tr>
+    <tr>
+      <th>Q3</th>
+      <td>3410.822920</td>
+    </tr>
+    <tr>
+      <th rowspan="7" valign="top">f_urban</th>
+      <th>baseline</th>
+      <td>4979.381653</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>4979.400349</td>
+    </tr>
+    <tr>
+      <th>median</th>
+      <td>4977.238172</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>5029.776727</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>4917.878037</td>
+    </tr>
+    <tr>
+      <th>Q1</th>
+      <td>4964.519258</td>
+    </tr>
+    <tr>
+      <th>Q3</th>
+      <td>4994.814020</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="Comparing-sampled-results">
+<h3>Comparing sampled results<a class="headerlink" href="#Comparing-sampled-results" title="Permalink to this headline">¶</a></h3>
+<p>Moving up in complexity, a common analysis task is comparing results across scenarios. At the beginning, we instantiated two sets of instructions - one with default spending, and one with doubled spending. We will now produce samples from both of these instructions. There are two ways to approach this problem</p>
+<ul class="simple">
+<li><p>Storing the results in separate Ensembles</p></li>
+<li><p>Putting multiple results into a single Ensemble</p></li>
+</ul>
+<p>To perform the analysis most validly, it is important to run the budget scenario in each of the instructions for the same parset and progset samples. That is, to generate a single result, it is necessary to first sample, and then use the same samples for all instructions. Written out explicitly, this would be</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">sampled_parset</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="n">sampled_progset</span> <span class="o">=</span> <span class="n">high_uncertainty_progset</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="n">result_default_spend</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">sampled_parset</span><span class="p">,</span><span class="n">sampled_progset</span><span class="p">,</span><span class="n">default_budget</span><span class="p">,</span><span class="n">result_name</span><span class="o">=</span><span class="s1">&#39;Baseline&#39;</span><span class="p">)</span>
+<span class="n">result_doubled_spend</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">sampled_parset</span><span class="p">,</span><span class="n">sampled_progset</span><span class="p">,</span><span class="n">doubled_budget</span><span class="p">,</span><span class="n">result_name</span><span class="o">=</span><span class="s1">&#39;Doubled budget&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0417s
+Elapsed time for running &#34;default&#34;: 0.0407s
+</pre></div></div>
+</div>
+<p>Comparing results across budget scenarios is extremely common, so Atomica has built-in functionality to facilitate this. You can pass multiple instructions and result names to <code class="docutils literal notranslate"><span class="pre">Project.run_sampled_sims()</span></code> to generate results as shown above</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sampled_res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sampled_sims</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span><span class="n">high_uncertainty_progset</span><span class="p">,</span><span class="n">progset_instructions</span><span class="o">=</span><span class="p">[</span><span class="n">default_budget</span><span class="p">,</span><span class="n">doubled_budget</span><span class="p">],</span><span class="n">result_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Baseline&#39;</span><span class="p">,</span><span class="s1">&#39;Doubled budget&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[&lt;atomica.results.Result at 0x7fce6167d590&gt;
+============================================================
+Methods:
+  budget()            export_raw()        link_names()
+  charac_names()      get_alloc()         par_names()
+  comp_names()        get_coverage()      plot()
+  copy()              get_variable()
+============================================================
+    created: datetime.datetime(2020, 1, 7, 0, 59, 52, 311608,
+             tzinfo=tzutc())
+      model: &lt;atomica.model.Model object at 0x7fce61649c50&gt;
+   modified: datetime.datetime(2020, 1, 7, 0, 59, 52, 311625,
+             tzinfo=tzutc())
+       name: Baseline
+parset_name: default
+  pop_names: [&#39;m_rural&#39;, &#39;f_rural&#39;, &#39;m_urban&#39;, &#39;f_urban&#39;]
+        uid: UUID(&#39;9011886e-f858-4c8c-9001-9e7f6c6bbfad&#39;)
+============================================================
+, &lt;atomica.results.Result at 0x7fce6162e650&gt;
+============================================================
+Methods:
+  budget()            export_raw()        link_names()
+  charac_names()      get_alloc()         par_names()
+  comp_names()        get_coverage()      plot()
+  copy()              get_variable()
+============================================================
+    created: datetime.datetime(2020, 1, 7, 0, 59, 52, 352996,
+             tzinfo=tzutc())
+      model: &lt;atomica.model.Model object at 0x7fce6167d750&gt;
+   modified: datetime.datetime(2020, 1, 7, 0, 59, 52, 353030,
+             tzinfo=tzutc())
+       name: Doubled budget
+parset_name: default
+  pop_names: [&#39;m_rural&#39;, &#39;f_rural&#39;, &#39;m_urban&#39;, &#39;f_urban&#39;]
+        uid: UUID(&#39;b61d92ed-e683-472b-81cf-39d8b92ea5e9&#39;)
+============================================================
+]]
+</pre></div></div>
+</div>
+<p>The output is now a list of lists, where the inner list contains a set of results that has been generated with different instructions but the same sampled inputs. This is the input that would go to an <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> mapping function, to produce a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instance that mixes results. Now, we can generate a plot comparing YLD in each population</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sampled_res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sampled_sims</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span><span class="n">high_uncertainty_progset</span><span class="p">,</span><span class="n">progset_instructions</span><span class="o">=</span><span class="p">[</span><span class="n">default_budget</span><span class="p">,</span><span class="n">doubled_budget</span><span class="p">],</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">result_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Baseline&#39;</span><span class="p">,</span><span class="s1">&#39;Doubled budget&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 100/100 [00:11&lt;00:00,  8.82it/s]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Example&#39;</span><span class="p">,</span><span class="n">mapping_function</span><span class="o">=</span><span class="n">yld</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_63_0.png" src="../_images/examples_Uncertainty_63_0.png" />
+</div>
+</div>
+<p>To aid comparison, it may be clearer to plot individual populations at a time. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_urban&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_65_0.png" src="../_images/examples_Uncertainty_65_0.png" />
+</div>
+</div>
+<p>In this case, there isn’t much difference because as shown in the time series, most of the variability is encountered in the initial simulation years. We can see this if we plot a quantity with more variability - for example, the number of undiagnosed people in the first simulation year</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">undx</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="s1">&#39;undx&#39;</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_urban&#39;</span><span class="p">)</span>
+<span class="n">ensemble</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Example&#39;</span><span class="p">,</span><span class="n">mapping_function</span><span class="o">=</span><span class="n">undx</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">2017</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_67_0.png" src="../_images/examples_Uncertainty_67_0.png" />
+</div>
+</div>
+<p>If you pass in a figure to <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_bars()</span></code>, it will attempt to append new bars into the existing figure. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">ensemble</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">2017</span><span class="p">);</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">2018</span><span class="p">,</span><span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_69_0.png" src="../_images/examples_Uncertainty_69_0.png" />
+</div>
+</div>
+<p>In this case, it was not essential to do this because multiple <code class="docutils literal notranslate"><span class="pre">years</span></code> can be plotted in a single <code class="docutils literal notranslate"><span class="pre">plot_bars</span></code> call. However, you could superimpose bars from entirely separate Ensemble objects, if you wanted to compare quantities computed using different mapping functions.</p>
+<p>Another important type of plot is the sampled distribution of a quantity. Effectively, the entire Atomica model is a function that maps probabilitity distributions for model inputs into distributions of model outputs. These distributions can be plotted directly. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">plot_distribution</span><span class="p">(</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_urban&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_71_0.png" src="../_images/examples_Uncertainty_71_0.png" />
+</div>
+</div>
+<p>The distributions that are plotted are effectively vertical cross-sections of the time series plots. They can be important to inspect to check for multi-modal distributions, or asymmetric distributions, which have implications for the validity of reporting summary statistics.</p>
+<p>There are two ways to compare distributions</p>
+<ul class="simple">
+<li><p>Within an Ensemble</p>
+<ul>
+<li><p>Comparing multiple outputs/pops</p></li>
+<li><p>Comparing multiple results</p></li>
+</ul>
+</li>
+<li><p>Across Ensembles</p></li>
+<li><p>Typically would be comparing corresponding outputs/pops</p></li>
+</ul>
+<p>To cater for the former, if a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instance contains multiple years, results, outputs, or pops, they will all be shown on the distribution figure unless filtered using arguments to <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_distribution</span></code>. For the latter, subsequent calls to <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_distribution</span></code> can pass in a Figure, which will superimpose the distributions onto the existing figure. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1"># All compartments</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">plot_distribution</span><span class="p">(</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_rural&#39;</span><span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="s1">&#39;undx&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_73_0.png" src="../_images/examples_Uncertainty_73_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Distributions-of-differences-between-results">
+<h3>Distributions of differences between results<a class="headerlink" href="#Distributions-of-differences-between-results" title="Permalink to this headline">¶</a></h3>
+<p>One of the most important analyses is quantifying the difference between one budget scenario and another - for example, the improvement from optimizing the budget. In the presence of uncertainty, this difference becomes a distribution. However, samples from this distribution must be computed pairwise - from the same sampled inputs, test both budgets, compute the difference between them, and then store the difference. This can be computed by defining a mapping function that return a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code>
+containing differences rather than raw values. For example</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">get_differences</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;disease&#39;</span><span class="p">:[</span><span class="s1">&#39;undx&#39;</span><span class="p">,</span><span class="s1">&#39;scr&#39;</span><span class="p">,</span><span class="s1">&#39;dx&#39;</span><span class="p">,</span><span class="s1">&#39;tx&#39;</span><span class="p">]},</span><span class="n">t_bins</span><span class="o">=</span><span class="p">[</span><span class="mi">2018</span><span class="p">,</span><span class="mi">2023</span><span class="p">],</span><span class="n">time_aggregation</span><span class="o">=</span><span class="s1">&#39;integrate&#39;</span><span class="p">)</span>
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;disease&#39;</span><span class="p">:[</span><span class="s1">&#39;undx&#39;</span><span class="p">,</span><span class="s1">&#39;scr&#39;</span><span class="p">,</span><span class="s1">&#39;dx&#39;</span><span class="p">,</span><span class="s1">&#39;tx&#39;</span><span class="p">]},</span><span class="n">t_bins</span><span class="o">=</span><span class="p">[</span><span class="mi">2018</span><span class="p">,</span><span class="mi">2023</span><span class="p">],</span><span class="n">time_aggregation</span><span class="o">=</span><span class="s1">&#39;integrate&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d2</span><span class="o">-</span><span class="n">d1</span>
+</pre></div>
+</div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> class implements operators for subtraction and division, to facilitate comparing derived/aggregated quantities. We can now create an <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> with this mapping function, add the results, and plot the distribution of differences:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="n">get_differences</span><span class="p">,</span><span class="s1">&#39;difference&#39;</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">plot_distribution</span><span class="p">(</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_rural&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_77_0.png" src="../_images/examples_Uncertainty_77_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Cascade-ensembles">
+<h2>Cascade ensembles<a class="headerlink" href="#Cascade-ensembles" title="Permalink to this headline">¶</a></h2>
+<p>Plotting uncertainty on cascades is a common task. However, the cascade plotting functions normally operate directly on <code class="docutils literal notranslate"><span class="pre">Result</span></code> objects, rather than <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> which forms the basis of data storage in Ensembles. For normal analysis without uncertainty, this facilitates ease of use by not requiring an intermediate <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> step when producing standard cascade plots. For uncertainty, the simplest option is to construct a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object containing the required cascade values, and to
+generate the plot via <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_bars</span></code> (the key difference between <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_bars</span></code> and <code class="docutils literal notranslate"><span class="pre">plotting.plot_bars</span></code> is that <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_bars</span></code> doesn’t support any stacking - which would be potentially misleading with uncertainty - and therefore supports arbitrary ordering of the bars, whereas <code class="docutils literal notranslate"><span class="pre">plotting.plot_bars</span></code> requires that the inner group consist of outputs or pops only, as these are the only valid stacking targets).</p>
+<p>To facilitate generation of the appropriate mapping function and arguments to <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_bars</span></code>, this functionality is built into the <code class="docutils literal notranslate"><span class="pre">CascadeEnsemble</span></code> class, which inherits from <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code>. The constructor for <code class="docutils literal notranslate"><span class="pre">CascadeEnsemble</span></code> takes in the name of the cascade to plot. It also requires a <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> to be passed in, which provides the definition of the cascade being requested:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cascade_ensemble</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">CascadeEnsemble</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="s1">&#39;main&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Results can be loaded into the cascade ensemble as normal</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cascade_ensemble</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>A cascade plot can then be plotted using <code class="docutils literal notranslate"><span class="pre">CascadeEnsemble.plot_multi_cascade()</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cascade_ensemble</span><span class="o">.</span><span class="n">plot_multi_cascade</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">2018</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_83_0.png" src="../_images/examples_Uncertainty_83_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_83_1.png" src="../_images/examples_Uncertainty_83_1.png" />
+</div>
+</div>
+<p>Notice how the bars are automatically grouped by cascade stage and labelled appropriately. It’s also possible to call standard plotting functions that are inherited from the <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> class. For example, we could plot the time series of cascade stages using <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_series</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cascade_ensemble</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">results</span><span class="o">=</span><span class="s1">&#39;Baseline&#39;</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_rural&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_85_0.png" src="../_images/examples_Uncertainty_85_0.png" />
+</div>
+</div>
+<div class="section" id="Virtual-stages">
+<h3>Virtual stages<a class="headerlink" href="#Virtual-stages" title="Permalink to this headline">¶</a></h3>
+<p>Normal cascades must be formed from compartments and characteristics only, and these stages are automatically validated to ensure proper nesting. However, because <code class="docutils literal notranslate"><span class="pre">CascadeEnsemble.plot_multi_cascade</span></code> is based around <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> it is possible to display a cascade-like plot where stages are defined using arbitary <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> operations. That is, the <code class="docutils literal notranslate"><span class="pre">CascadeEnsemble</span></code> does not require that the cascade is actually valid. This opens up the possibility of generating cascade-like plots with
+‘virtual stages’ that don’t actually otherwise exist. An example from an actual application is the introduction of a ‘Pre-diagnosed’ stage where application data has (separately) indicated that about 80% of screened individual would be in this pre-diagnosed stage. The cascade could be defined as:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cascade</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Prevalent&#39;</span><span class="p">:</span><span class="s1">&#39;all_people&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Screened&#39;</span><span class="p">:</span><span class="s1">&#39;all_screened&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Pre-diagnosed&#39;</span><span class="p">:</span><span class="s1">&#39;0.8*all_screened&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Diagnosed&#39;</span><span class="p">:</span><span class="s1">&#39;all_dx&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Treated&#39;</span><span class="p">:</span><span class="s1">&#39;all_tx&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Controlled&#39;</span><span class="p">:</span><span class="s1">&#39;all_con&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>noting that the ‘pre-diagnosed’ stage is the result of a calculation and is thus not a compartment or characteristic at all. The cascade specification here is simply any <code class="docutils literal notranslate"><span class="pre">output</span></code> dict supported by <code class="docutils literal notranslate"><span class="pre">PlotData</span></code>. We can then create a <code class="docutils literal notranslate"><span class="pre">CascadeEnsemble</span></code> using this cascade, and plot it</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cascade_ensemble</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">CascadeEnsemble</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
+<span class="n">cascade_ensemble</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sampled_res</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">cascade_ensemble</span><span class="o">.</span><span class="n">plot_multi_cascade</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">2018</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_89_0.png" src="../_images/examples_Uncertainty_89_0.png" />
+</div>
+</div>
+<div class="alert alert-success"><p>Notice that because the model outputs are converted to <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> on a per-sample basis, uncertainty is automatically propagated to the derived quantity (i.e. ‘pre-diagnosed’ has uncertainty even though it was defined on the fly). This would be the case for any <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> operation.</p>
+</div></div>
+</div>
+<div class="section" id="Memory-limited-environments">
+<h2>Memory-limited environments<a class="headerlink" href="#Memory-limited-environments" title="Permalink to this headline">¶</a></h2>
+<p>A common issue that may occur when sampling large models is that there may be insufficient RAM to store all of the <code class="docutils literal notranslate"><span class="pre">Result</span></code> objects in memory prior to adding them to an <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code>. The <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> stored within an <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> is typically orders of magnitude smaller than the raw results - in the first instance, it only contains a small subset of the model outputs. A large model might have on the order of 150 parameters, 50 compartments, and 150 links. A typical <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> may have track
+5-10 quantities, which represents a ~50x reduction in size. Further, the raw output has values at every timestep, which could be on the order of 100 values (e.g. a 25 year simulation with quarterly timesteps) but it may only be desired to compare simulations for a few time points - which could provide another ~20x reduction in size.</p>
+<p>In sum, the strategy for dealing with this situation is</p>
+<ol class="arabic simple">
+<li><p>Define a mapping function that leads to a sufficient reduction in size of the outputs</p></li>
+<li><p>Add results to the Ensemble as they are generated, rather than keeping them</p></li>
+</ol>
+<p>For reducing the size of the mapping function, we have already seen examples of mapping functions that select only a subset of the outputs or populations. For time, an additional call to <code class="docutils literal notranslate"><span class="pre">PlotData.interpolate()</span></code> can be added to retain the values only at times of interest. For example:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">store_minimal</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;screen&#39;</span><span class="p">,</span><span class="s1">&#39;diag&#39;</span><span class="p">,</span><span class="s1">&#39;initiate&#39;</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="s1">&#39;m_rural&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="mi">2020</span><span class="p">)</span>
+<span class="n">ensemble</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="n">store_minimal</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Then, to perform the sampling, we simply have to generate results one at a time, rather than all at once</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sampled_sims</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span><span class="n">high_uncertainty_progset</span><span class="p">,</span><span class="n">default_budget</span><span class="p">,</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ensemble</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<p>Now, the peak amount of memory required is only that of 1 simulation. We can then plot the ensemble as usual:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_96_0.png" src="../_images/examples_Uncertainty_96_0.png" />
+</div>
+</div>
+<p>To perform this procedure seamlessly, instead of calling <code class="docutils literal notranslate"><span class="pre">P.run_sampled_sims</span></code>, you can instead call <code class="docutils literal notranslate"><span class="pre">Ensemble.run_sims</span></code>. The idea is that <code class="docutils literal notranslate"><span class="pre">Ensemble.run_sims</span></code> runs simulations specifically for that Ensemble - instead of returning results, it adds them to the Ensemble. Under the hood, it adds the results as they are generated without storing them internally.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Ensemble</span><span class="p">(</span><span class="n">store_minimal</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">run_sims</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="n">P</span><span class="p">,</span><span class="n">parset</span><span class="o">=</span><span class="n">parset</span><span class="p">,</span><span class="n">progset</span><span class="o">=</span><span class="n">high_uncertainty_progset</span><span class="p">,</span><span class="n">progset_instructions</span><span class="o">=</span><span class="n">default_budget</span><span class="p">,</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 100/100 [00:06&lt;00:00, 15.24it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_98_1.png" src="../_images/examples_Uncertainty_98_1.png" />
+</div>
+</div>
+<p>Note that if you use <code class="docutils literal notranslate"><span class="pre">Ensemble.run_sims</span></code> is that a baseline simulation without sampling will automatically be performed and stored in the Ensemble.</p>
+<div class="alert alert-success"><ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">P.run_sampled_sims</span></code> if you can store all of the results in memory, which allows you to generate new Ensembles and plots without re-running the simulations</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">Ensemble.run_sims</span></code> if you don’t have enough memory to hold all of the results</p></li>
+</ul>
+</div></div>
+<div class="section" id="Parallization">
+<h2>Parallization<a class="headerlink" href="#Parallization" title="Permalink to this headline">¶</a></h2>
+<p>Sampling is a trivially parallizable problem, and Atomica supports parallization of sampling. To run samples in parallel, simply set <code class="docutils literal notranslate"><span class="pre">parallel=True</span></code> when calling <code class="docutils literal notranslate"><span class="pre">Project.run_sampled_sims()</span></code> or <code class="docutils literal notranslate"><span class="pre">Ensemble.run_sims()</span></code>. See <code class="docutils literal notranslate"><span class="pre">test_ensemble_parallel.py</span></code> in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> folder for an executable example. Note that on Windows, the calling code must be wrapped in <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">'__main__'</span></code>.</p>
+</div>
+<div class="section" id="Experimental-plots">
+<h2>Experimental plots<a class="headerlink" href="#Experimental-plots" title="Permalink to this headline">¶</a></h2>
+<p>The plots below are not fully developed but serve as examples to show possibilities that can be built upon as applications of Atomica progress.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">pairplot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_104_0.png" src="../_images/examples_Uncertainty_104_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensemble</span><span class="o">.</span><span class="n">boxplot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_105_0.png" src="../_images/examples_Uncertainty_105_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Uncertainty_105_1.png" src="../_images/examples_Uncertainty_105_1.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Atomica Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
