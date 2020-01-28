@@ -1,0 +1,1145 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.cascade &mdash; Atomica  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code_documentation.html">Code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>atomica.cascade</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for atomica.cascade</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Utility functions for working with cascades</span>
+
+<span class="sd">Cascades are defined in a :class:`ProjectFramework` object. This module</span>
+<span class="sd">implements functions that are useful for working with the cascades, including</span>
+
+<span class="sd">- Validation</span>
+<span class="sd">- Plotting</span>
+<span class="sd">- Value extraction</span>
+
+<span class="sd">On the plotting side, the two key functions are</span>
+
+<span class="sd">- :func:`plot_single_cascade` which makes a single cascade plot complete with</span>
+<span class="sd">  shaded regions between bars, and conversion arrows</span>
+<span class="sd">- :func:`plot_multi_cascade` which makes a scenario comparison type cascade</span>
+<span class="sd">  plot with bars grouped by cascade stage (not possible with normal</span>
+<span class="sd">  :func:`plotting.plot_bars`)</span>
+
+<span class="sd">The plot takes in as arguments the cascade and populations. Users can specify</span>
+<span class="sd">cascades as</span>
+
+<span class="sd">- The name of a cascade in the Framework</span>
+<span class="sd">- The index of a cascade in the Framework</span>
+<span class="sd">- A list of comps/characs in stage order, with stage names matching the</span>
+<span class="sd">  comps/characs</span>
+<span class="sd">- A ordered dict with ``{stage:comps/characs}``, with a customized stage name.</span>
+<span class="sd">  This is referred to in code as a **cascade dict**</span>
+
+<span class="sd">The first two representations map to cascades defined in the framework, while</span>
+<span class="sd">the last two representations relate to defining custom cascades on the fly.</span>
+<span class="sd">They are therefore sanitized in two stages</span>
+
+<span class="sd">- :func:`sanitize_cascade_inputs` turns cascade indices into names, and</span>
+<span class="sd">  cascade lists into dicts. Returning string names for predefined cascades</span>
+<span class="sd">  allows the name to be used in the title of plots</span>
+<span class="sd">- :func:`get_cascade_outputs` turns cascade names into cascade dicts</span>
+
+<span class="sd">The dictionary representation is always required when retrieving the values of</span>
+<span class="sd">cascades. There are two types of value retrieval:</span>
+
+<span class="sd">- :func:`get_cascade_vals` which returns values for each cascade stage from a</span>
+<span class="sd">  model result</span>
+<span class="sd">- :func:`get_cascade_data` which attempts to compute values for each cascade</span>
+<span class="sd">  stage from a :class:`ProjectData` instance. This is used when plotting data</span>
+<span class="sd">  points on the cascade plot. Compartments and characteristics are</span>
+<span class="sd">  automatically summed as required. Data points will only be displayed if the</span>
+<span class="sd">  data has values for all of the included quantities in the year being</span>
+<span class="sd">  plotted.</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">plot_legend</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">NDict</span><span class="p">,</span> <span class="n">nested_loop</span>
+<span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span><span class="p">,</span> <span class="n">Ensemble</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">ProjectData</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="n">default_figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">default_ax_position</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="InvalidCascade"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.InvalidCascade">[docs]</a><span class="k">class</span> <span class="nc">InvalidCascade</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Error if cascade is not valid</span>
+
+<span class="sd">    This error gets thrown if a cascade failed validation - for example, because the</span>
+<span class="sd">    requested stages were not correctly nested</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="plot_cascade"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.plot_cascade">[docs]</a><span class="k">def</span> <span class="nf">plot_cascade</span><span class="p">(</span><span class="n">results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cascade</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_table</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot single or multiple cascade plot</span>
+
+<span class="sd">    :func:`plot_single_cascade` generates a plot where multiple results each have their</span>
+<span class="sd">    own figure. A common requirement (used on the FE) is to decide between calling</span>
+<span class="sd">    :func:`plot_single_cascade` or calling :func:`plot_multi_cascade` based on whether</span>
+<span class="sd">    there are multiple :class:`Result` instances or not.</span>
+
+<span class="sd">    A multi-cascade plot will be displayed if there are multiple years or if there are multiple</span>
+<span class="sd">    results. Thus this function is always guaranteed to return a single figure.</span>
+
+<span class="sd">    :param results: A single :class:`Result` instance, or list of instances</span>
+<span class="sd">    :param cascade: A cascade specification supported by :func:`sanitize_cascade`</span>
+<span class="sd">    :param pops: A population specification supported by :func:`sanitize_pops` - must correspond to a single aggregation</span>
+<span class="sd">    :param year: A single year, or multiple years (can be a scalar, list, or array)</span>
+<span class="sd">    :param data: A :class:`ProjectData` instance</span>
+<span class="sd">    :param show_table: If ``True`` and a multi-cascade plot is generated, then the loss table will also be shown</span>
+<span class="sd">    :return: Figure object containing the plot that was produced</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetolist</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetolist</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">plot_multi_cascade</span><span class="p">(</span><span class="n">results</span><span class="o">=</span><span class="n">results</span><span class="p">,</span> <span class="n">cascade</span><span class="o">=</span><span class="n">cascade</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="n">pops</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">show_table</span><span class="o">=</span><span class="n">show_table</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_single_cascade</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cascade</span><span class="o">=</span><span class="n">cascade</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="n">pops</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span>  <span class="c1"># Either fig or (fig,table)</span></div>
+
+
+<div class="viewcode-block" id="sanitize_cascade"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.sanitize_cascade">[docs]</a><span class="k">def</span> <span class="nf">sanitize_cascade</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">fallback_used</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Normalize cascade inputs</span>
+
+<span class="sd">    For convenience, users can specify cascades in one of several</span>
+<span class="sd">    representations. To facilitate working with these representations on the</span>
+<span class="sd">    backend, this function turns any valid representation into a dictionary</span>
+<span class="sd">    mapping cascade stage names to a list of compartments/characs. It also</span>
+<span class="sd">    returns the name of the cascade (if one is present) for use in plot</span>
+<span class="sd">    titles.</span>
+
+<span class="sd">    As an example of the cascade dictionary, suppose the spreadsheet had</span>
+<span class="sd">    stages</span>
+
+<span class="sd">    - Stage 1 - ``sus,vac,inf``</span>
+<span class="sd">    - Stage 2 - ``vac,inf``</span>
+
+<span class="sd">    Then example usage would be:</span>
+
+<span class="sd">    &gt;&gt;&gt; sanitize_cascade(framework,&#39;main&#39;)[1]</span>
+<span class="sd">    {&#39;Stage 1&#39;:[&#39;sus&#39;,&#39;vac&#39;,&#39;inf&#39;],&#39;Stage 2&#39;:[&#39;vac&#39;,&#39;inf&#39;]</span>
+
+<span class="sd">    This function also validates the cascade, so it is not necessary to call :func:`validate_cascade` separately.</span>
+
+<span class="sd">    :param framework: A :class:`ProjectFramework` instance</span>
+<span class="sd">    :param cascade: Supported cascade representation. Could be</span>
+<span class="sd">        - A string cascade name</span>
+<span class="sd">        - An integer specifying the index of the cascade</span>
+<span class="sd">        - ``None``, which maps to the first cascade in the framework</span>
+<span class="sd">        - A ``list`` of cascade stages</span>
+<span class="sd">        - A ``dict`` defining the cascade The first three input formats will</span>
+<span class="sd">          result in the cascade name also being returned (otherwise it will be</span>
+<span class="sd">          assigned ``None``</span>
+<span class="sd">    :return: A tuple with ``(cascade_name,cascade_dict)`` - the cascade name</span>
+<span class="sd">        is ``None`` if the cascade was specified as a ``list`` or ``dict``</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">cascade</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cascade</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Use the first cascade</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cascade</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="c1"># Assemble cascade from comp/charac names using the display name as the stage name</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">cascade</span><span class="p">:</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="n">framework</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">outputs</span><span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s1">&#39;display name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="n">cascade</span> <span class="o">=</span> <span class="n">outputs</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cascade</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="c1"># Retrieve the cascade name based on index</span>
+        <span class="n">cascade</span> <span class="o">=</span> <span class="n">framework</span><span class="o">.</span><span class="n">cascades</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="n">cascade</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">cascade</span><span class="p">):</span>
+        <span class="n">cascade_name</span> <span class="o">=</span> <span class="n">cascade</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">framework</span><span class="o">.</span><span class="n">cascades</span><span class="p">[</span><span class="n">cascade_name</span><span class="p">]</span>
+        <span class="n">cascade_dict</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">stage</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">cascade_dict</span><span class="p">[</span><span class="n">stage</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stage</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>  <span class="c1"># Split the name of the stage and the constituents</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cascade_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">cascade_dict</span> <span class="o">=</span> <span class="n">cascade</span>
+
+    <span class="n">pop_type</span> <span class="o">=</span> <span class="n">validate_cascade</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">fallback_used</span><span class="o">=</span><span class="n">fallback_used</span><span class="p">)</span>  <span class="c1"># Check that the requested cascade dictionary is valid</span>
+
+    <span class="k">return</span> <span class="n">cascade_name</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pop_type</span></div>
+
+
+<div class="viewcode-block" id="sanitize_pops"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.sanitize_pops">[docs]</a><span class="k">def</span> <span class="nf">sanitize_pops</span><span class="p">(</span><span class="n">pops</span><span class="p">,</span> <span class="n">pop_source</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sanitize input populations</span>
+
+<span class="sd">    The input populations could be specified as</span>
+
+<span class="sd">    - A list or dict (with single key) containing either population code names. List inputs can contain full names (e.g. from the FE)</span>
+<span class="sd">    - A string like &#39;all&#39; or &#39;total&#39;</span>
+<span class="sd">    - None, which is shorthand for all populations</span>
+
+<span class="sd">    For cascade purposes, the specified populations must evaluate to a single</span>
+<span class="sd">    aggregation. That is, a cascade plot can only be made for a single group</span>
+<span class="sd">    of people at a time.</span>
+
+<span class="sd">    :param pops: The population representation to sanitize (list, dict,</span>
+<span class="sd">        string)</span>
+<span class="sd">    :param pop_source: Object to draw available populations from (a</span>
+<span class="sd">        :class:`Result` or :class:`PlotData`)</span>
+<span class="sd">    :param pop_type: Population type to select. All returned populations will match this type</span>
+<span class="sd">    :return: A dict with a single key that can be used by :class:`PlotData` to</span>
+<span class="sd">        specify populations</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Retrieve a list mapping result names to labels</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pop_source</span><span class="p">,</span> <span class="n">Result</span><span class="p">):</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pop_source</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pop_source</span><span class="p">,</span> <span class="n">ProjectData</span><span class="p">):</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">pop_source</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unrecognized source for pop names - must be a Result or a ProjectData instance&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">sanitize_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ptype</span> <span class="ow">in</span> <span class="n">available</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ptype</span> <span class="o">!=</span> <span class="n">pop_type</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Requested population &quot;</span><span class="si">{x}</span><span class="s1">&quot; has type &quot;</span><span class="si">{ptype}</span><span class="s1">&quot; but requested cascade is for &quot;</span><span class="si">{pop_type}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Name &quot;</span><span class="si">%s</span><span class="s1">&quot; not found&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">pops</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;All&#39;</span><span class="p">,</span> <span class="s1">&#39;aggregate&#39;</span><span class="p">,</span> <span class="s1">&#39;total&#39;</span><span class="p">]:</span>
+        <span class="c1"># If populations are an aggregation for all pops, then set the dict appropriately</span>
+        <span class="n">pops</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Entire population&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">available</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">pop_type</span><span class="p">]}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pops</span><span class="p">[</span><span class="s1">&#39;Entire population&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;No populations with the requested type were found&#39;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pops</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">pops</span><span class="p">):</span>
+        <span class="c1"># If it&#39;s a list or string, convert it to a dict</span>
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">pops</span><span class="p">):</span>
+            <span class="n">pops</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetolist</span><span class="p">(</span><span class="n">pops</span><span class="p">)</span>
+
+        <span class="n">code_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">sanitize_name</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pops</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">code_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">pops</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Selected populations&#39;</span><span class="p">:</span> <span class="n">code_names</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pops</span> <span class="o">=</span> <span class="p">{</span><span class="n">sanitize_name</span><span class="p">(</span><span class="n">code_names</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">]:</span> <span class="p">[</span><span class="n">code_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]}</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pops</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>  <span class="c1"># At this point, it should be a dictionary</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">pops</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Aggregation must evaluate to only one output population&#39;</span>
+
+    <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">(</span><span class="n">pops</span><span class="p">)</span>  <span class="c1"># Make sure an odict gets returned rather than a dict</span></div>
+
+
+<div class="viewcode-block" id="validate_cascade"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.validate_cascade">[docs]</a><span class="k">def</span> <span class="nf">validate_cascade</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">cascade_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fallback_used</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a cascade is valid</span>
+
+<span class="sd">    A cascade is invalid if any stage does not contain a compartment that appears in subsequent stages i.e.</span>
+<span class="sd">    if the stages are not all nested. Also, all compartments referred to must exist in the same population type,</span>
+<span class="sd">    otherwise it is not possible to define a population-specific cascade as it would intrinsically span populations.</span>
+
+<span class="sd">    :param framework: A :class:`ProjectFramework` instance</span>
+<span class="sd">    :param cascade: A cascade representation supported by :func:`sanitize_cascade`</span>
+<span class="sd">    :param cascade_name: Name of cascade to be printed in error messages</span>
+<span class="sd">    :param fallback_used: If ``True``, then in the event that the cascade is not valid, the error message will reflect the fact that it was not a user-defined cascade</span>
+<span class="sd">    :return: The population type if the cascade is valid</span>
+<span class="sd">    :raises: ``InvalidCascade`` if the cascade is not valid</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cascade</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">sanitize_cascade</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">fallback_used</span><span class="o">=</span><span class="n">fallback_used</span><span class="p">)</span>  <span class="c1"># This will result in a call to validate_cascade()</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cascade_dict</span> <span class="o">=</span> <span class="n">cascade</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cascade_dict</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># A &#39;cascade&#39; with 0 or 1 stages is by definition valid, although it would not be sensible!</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">expanded</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">stage</span><span class="p">,</span> <span class="n">includes</span> <span class="ow">in</span> <span class="n">cascade_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">expanded</span><span class="p">[</span><span class="n">stage</span><span class="p">]</span> <span class="o">=</span> <span class="n">framework</span><span class="o">.</span><span class="n">get_charac_includes</span><span class="p">(</span><span class="n">includes</span><span class="p">)</span>
+
+    <span class="n">pop_types</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">comps</span> <span class="o">=</span> <span class="n">framework</span><span class="o">.</span><span class="n">comps</span>
+    <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="n">expanded</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">stage</span><span class="p">:</span>
+            <span class="n">pop_types</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">comps</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">comp</span><span class="p">,</span> <span class="s1">&#39;population type&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pop_types</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fallback_used</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The framework defines multiple population types and has characteristics spanning population types. Therefore, a default fallback cascade cannot be automatically constructed. You will need to explicitly define a cascade in the framework file&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cascade &quot;</span><span class="si">%s</span><span class="s1">&quot; includes compartments from more than one population type&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cascade_name</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">expanded</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">expanded</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="nb">set</span><span class="p">(</span><span class="n">expanded</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">if</span> <span class="n">fallback_used</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;The fallback cascade is not properly nested</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+            <span class="k">elif</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">cascade_name</span><span class="p">):</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;The cascade &quot;</span><span class="si">%s</span><span class="s1">&quot; is not properly nested</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cascade_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;The requested cascade is not properly nested</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+
+            <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;Stage &quot;</span><span class="si">%s</span><span class="s1">&quot; appears after stage &quot;</span><span class="si">%s</span><span class="s1">&quot; so it must contain a subset of the compartments in &quot;</span><span class="si">%s</span><span class="s1">&quot;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expanded</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expanded</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="n">i</span><span class="p">],</span> <span class="n">expanded</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;After expansion of any characteristics, the compartments comprising these stages are:</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot; = </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expanded</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="n">i</span><span class="p">],</span> <span class="n">expanded</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot; = </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expanded</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">expanded</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">To be valid, stage &quot;</span><span class="si">%s</span><span class="s1">&quot; would need the following compartments added to it: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expanded</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="n">i</span><span class="p">],</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">expanded</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">expanded</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span>
+            <span class="k">if</span> <span class="n">fallback_used</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">framework</span><span class="o">.</span><span class="n">cascades</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">Note that the framework did not contain a cascade - in many cases, the characteristics do not form a valid cascade. You will likely need to explicitly define a cascade in the framework file&#39;</span>
+            <span class="k">if</span> <span class="n">fallback_used</span> <span class="ow">and</span> <span class="n">framework</span><span class="o">.</span><span class="n">cascades</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">Although the framework fallback cascade was not valid, user-specified cascades do exist. The fallback cascade should only be used if user cascades are not present.&#39;</span>
+            <span class="k">elif</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">cascade</span><span class="p">):</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">To fix this error, please modify the definition of the cascade in the framework file&#39;</span>
+
+            <span class="k">raise</span> <span class="n">InvalidCascade</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">pop_types</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Return the population type</span></div>
+
+
+<div class="viewcode-block" id="plot_single_cascade_series"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.plot_single_cascade_series">[docs]</a><span class="k">def</span> <span class="nf">plot_single_cascade_series</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cascade</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot stacked timeseries</span>
+
+<span class="sd">    Plot a stacked timeseries of the cascade. Unlike a normal stacked plot, the shaded areas show losses</span>
+<span class="sd">    so for example the overall height of the plot corresponds to the number of people in the first cascade stage.</span>
+<span class="sd">    Thus instead of the cascade progressing from left to right, the cascade progresses from top to bottom.</span>
+<span class="sd">    This way, the left-right axis can be used to show the change in cascade flow over time.</span>
+
+
+<span class="sd">    :param results: A single result, or list of results. One figure will be generated for each result</span>
+<span class="sd">    :param cascade: A cascade specification supported by :func:`sanitize_cascade`</span>
+<span class="sd">    :param pops: A population specification supported by :func:`sanitize_pops` - must correspond to a single aggregation</span>
+<span class="sd">    :param data: A :class:`ProjectData` instance</span>
+<span class="sd">    :return: List of Figure objects for all figures that were generated</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">PlotData</span><span class="p">,</span> <span class="n">plot_series</span>  <span class="c1"># Import here to avoid circular dependencies</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">figs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">figs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_single_cascade</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">pops</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">figs</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Result</span><span class="p">),</span> <span class="s1">&#39;Input must be a single Result object&#39;</span>
+
+    <span class="n">cascade_name</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pop_type</span> <span class="o">=</span> <span class="n">sanitize_cascade</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
+    <span class="n">pops</span> <span class="o">=</span> <span class="n">sanitize_pops</span><span class="p">(</span><span class="n">pops</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="n">pops</span><span class="p">)</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">set_colors</span><span class="p">(</span><span class="n">outputs</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
+
+    <span class="n">figs</span> <span class="o">=</span> <span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;outputs&#39;</span><span class="p">)</span>  <span class="c1"># 1 result, 1 pop, axis=outputs guarantees 1 plot</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">figs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">tvals</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">cascade_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_cascade_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pops</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">stage</span><span class="p">,</span> <span class="n">vals</span> <span class="ow">in</span> <span class="n">cascade_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">d</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stage</span><span class="p">]</span><span class="o">.</span><span class="n">color</span>  <span class="c1"># Get the colour of this quantity</span>
+            <span class="n">flt</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">flt</span><span class="p">):</span>  <span class="c1"># Need to only plot real values, because NaNs show up in mpld3 even though they don&#39;t appear in the normal figure</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">flt</span><span class="p">],</span> <span class="n">vals</span><span class="p">[</span><span class="n">flt</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolors</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">figs</span></div>
+
+
+<div class="viewcode-block" id="plot_single_cascade"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.plot_single_cascade">[docs]</a><span class="k">def</span> <span class="nf">plot_single_cascade</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cascade</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot cascade for a single result</span>
+
+<span class="sd">    This is the fancy cascade plot, which only applies to a single result at a single time</span>
+
+<span class="sd">    :param results: A single result, or list of results. One figure will be generated for each result</span>
+<span class="sd">    :param cascade: A cascade specification supported by :func:`sanitize_cascade`</span>
+<span class="sd">    :param pops: A population specification supported by :func:`sanitize_pops` - must correspond to a single aggregation</span>
+<span class="sd">    :param year: A single year, can be a scalar or an iterable of length 1</span>
+<span class="sd">    :param data: A :class:`ProjectData` instance</span>
+<span class="sd">    :param title: Optionally override the title of the plot</span>
+<span class="sd">    :return: Figure object containing the plot, or list of figures if multiple figures were produced</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">barcolor</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">)</span>  <span class="c1"># Cascade color -- array([0,38,122])/255.</span>
+    <span class="n">diffcolor</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.89</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">)</span>  <span class="c1"># (0.74, 0.82, 1.00) # Original: (0.93,0.93,0.93)</span>
+    <span class="n">losscolor</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># (0.8,0.2,0.2)</span>
+
+    <span class="n">cascade_name</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pop_type</span> <span class="o">=</span> <span class="n">sanitize_cascade</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
+    <span class="n">pops</span> <span class="o">=</span> <span class="n">sanitize_pops</span><span class="p">(</span><span class="n">pops</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">year</span><span class="p">:</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Draw cascade for last year</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">figs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">figs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_single_cascade</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">pops</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">figs</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Result</span><span class="p">),</span> <span class="s1">&#39;Input must be a single Result object&#39;</span>
+    <span class="n">cascade_vals</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">get_cascade_vals</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">pops</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cascade_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_cascade_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">pops</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+        <span class="n">cascade_data_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">cascade_data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Plot cascade requires time aggregation&#39;</span>
+    <span class="n">cascade_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">cascade_vals</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">default_figsize</span><span class="p">)</span>
+<span class="c1">#    fig.set_figwidth(fig.get_figwidth()*1.5)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+    <span class="n">bar_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cascade_vals</span><span class="p">))</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bar_x</span><span class="p">,</span> <span class="n">cascade_array</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">barcolor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">non_nan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">cascade_data_array</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">non_nan</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">bar_x</span><span class="p">[</span><span class="n">non_nan</span><span class="p">],</span> <span class="n">cascade_data_array</span><span class="p">[</span><span class="n">non_nan</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;#ff9900&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cascade_vals</span><span class="p">)))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cascade_vals</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+
+    <span class="n">ylim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+    <span class="n">yticks</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yticks</span><span class="p">()</span>
+    <span class="n">data_yrange</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">data_yrange</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">data_yrange</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">yticks</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cascade_array</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="o">*</span> <span class="mf">1.01</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keepints</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+    <span class="n">bars</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">get_children</span><span class="p">()</span>
+    <span class="n">conversion</span> <span class="o">=</span> <span class="n">cascade_array</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">/</span> <span class="n">cascade_array</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Fraction not lost</span>
+    <span class="n">conversion_text_height</span> <span class="o">=</span> <span class="n">cascade_array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bars</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">left_bar</span> <span class="o">=</span> <span class="n">bars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">right_bar</span> <span class="o">=</span> <span class="n">bars</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+            <span class="p">(</span><span class="n">left_bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">left_bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># Bottom left corner</span>
+            <span class="p">(</span><span class="n">left_bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">left_bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span> <span class="n">left_bar</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">left_bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()),</span>  <span class="c1"># Top left corner</span>
+            <span class="p">(</span><span class="n">right_bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">(),</span> <span class="n">right_bar</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">right_bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()),</span>  <span class="c1"># Top right corner</span>
+            <span class="p">(</span><span class="n">right_bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">(),</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># Bottom right corner</span>
+        <span class="p">])</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">patches</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">diffcolor</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="n">bbox_props</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s2">&quot;rarrow&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">conversion_text_height</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s%%</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="n">conversion</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="n">bbox_props</span><span class="p">)</span>
+
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">cascade_array</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loss</span><span class="p">):</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="n">data_yrange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">&#39;Loss: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="o">-</span><span class="n">val</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">losscolor</span><span class="p">)</span>
+
+    <span class="n">pop_label</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of people&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">cascade</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cascade</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;cascade&#39;</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> cascade for </span><span class="si">%s</span><span class="s1"> in </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cascade</span><span class="p">,</span> <span class="n">pop_label</span><span class="p">,</span> <span class="n">year</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cascade for </span><span class="si">%s</span><span class="s1"> in </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pop_label</span><span class="p">,</span> <span class="n">year</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">fig</span></div>
+
+
+<div class="viewcode-block" id="plot_multi_cascade"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.plot_multi_cascade">[docs]</a><span class="k">def</span> <span class="nf">plot_multi_cascade</span><span class="p">(</span><span class="n">results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cascade</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_table</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;</span>
+<span class="sd">    Plot cascade for multiple results</span>
+
+<span class="sd">    This is a cascade plot that handles multiple results and times</span>
+<span class="sd">    Results are grouped by stage/output, which is not possible to do with plot_bars()</span>
+
+<span class="sd">    :param results: A single result, or list of results. A single figure will be generated</span>
+<span class="sd">    :param cascade: A cascade specification supported by :func:`sanitize_cascade`</span>
+<span class="sd">    :param pops: A population specification supported by :func:`sanitize_pops` - must correspond to a single aggregation</span>
+<span class="sd">    :param year: A scalar, or array of time points. Bars will be plotted for every time point</span>
+<span class="sd">    :param data: A :class:`ProjectData` instance (currently not used)</span>
+<span class="sd">    :param show_table: If ``True`` then a table with loss values will be rendered in the figure</span>
+<span class="sd">    :return: Figure object containing the plot</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">show_table</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">show_table</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># First, process the cascade into an odict of outputs for PlotData</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">):</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">Result</span><span class="p">):</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">results</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">NDict</span><span class="p">):</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+    <span class="n">cascade_name</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pop_type</span> <span class="o">=</span> <span class="n">sanitize_cascade</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
+    <span class="n">pops</span> <span class="o">=</span> <span class="n">sanitize_pops</span><span class="p">(</span><span class="n">pops</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pop_type</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">year</span><span class="p">:</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Draw cascade for last year</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">label_fcn</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">label_fcn</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">label_fcn</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># Gather all of the cascade outputs and years</span>
+    <span class="n">cascade_vals</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">year</span><span class="p">:</span>
+            <span class="n">cascade_vals</span><span class="p">[</span><span class="n">label_fcn</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">t</span><span class="p">)]</span> <span class="o">=</span> <span class="n">get_cascade_vals</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="n">pops</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">t</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Determine the number of bars, per stage - based either on result or time point</span>
+    <span class="n">n_bars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cascade_vals</span><span class="p">)</span>
+    <span class="n">bar_width</span> <span class="o">=</span> <span class="mf">1.</span>  <span class="c1"># This is the width of the bars</span>
+    <span class="n">bar_gap</span> <span class="o">=</span> <span class="mf">0.15</span>  <span class="c1"># This is the width of the bars</span>
+    <span class="n">block_gap</span> <span class="o">=</span> <span class="mf">1.</span>  <span class="c1"># This is the gap between blocks</span>
+    <span class="n">block_size</span> <span class="o">=</span> <span class="n">n_bars</span> <span class="o">*</span> <span class="p">(</span><span class="n">bar_width</span> <span class="o">+</span> <span class="n">bar_gap</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cascade_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="o">*</span> <span class="p">(</span><span class="n">block_size</span> <span class="o">+</span> <span class="n">block_gap</span><span class="p">)</span>  <span class="c1"># One block for each cascade stage</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">gridcolors</span><span class="p">(</span><span class="n">n_bars</span><span class="p">)</span>  <span class="c1"># Default colors</span>
+    <span class="n">legend_entries</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">default_figsize</span><span class="p">)</span>
+<span class="c1">#    fig.set_figwidth(fig.get_figwidth()*1.5)</span>
+
+    <span class="k">for</span> <span class="n">offset</span><span class="p">,</span> <span class="p">(</span><span class="n">bar_label</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cascade_vals</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">legend_entries</span><span class="p">[</span><span class="n">bar_label</span><span class="p">]</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">offset</span> <span class="o">*</span> <span class="p">(</span><span class="n">bar_width</span> <span class="o">+</span> <span class="n">bar_gap</span><span class="p">),</span> <span class="n">vals</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">offset</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="n">bar_width</span><span class="p">)</span>
+
+    <span class="n">plot_legend</span><span class="p">(</span><span class="n">legend_entries</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">block_size</span> <span class="o">-</span> <span class="n">bar_gap</span> <span class="o">-</span> <span class="n">bar_width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">cascade_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+    <span class="k">if</span> <span class="n">show_table</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">get_xaxis</span><span class="p">()</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Make the loss table</span>
+    <span class="n">cell_text</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">cascade_vals</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">cascade_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">cascade_array</span><span class="p">)</span>
+        <span class="n">loss_str</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="o">-</span><span class="n">val</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">loss</span><span class="p">]</span>
+        <span class="n">loss_str</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>  <span class="c1"># No loss for final stage</span>
+        <span class="n">cell_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_str</span><span class="p">)</span>
+
+    <span class="c1"># Clean up formatting</span>
+    <span class="n">yticks</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yticks</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">yticks</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>  <span class="c1"># Remove the first tick at 0 so it doesn&#39;t clash with table - TODO: improve table spacing so this isn&#39;t needed</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of people&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show_table</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+
+    <span class="c1"># Reset axes</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+    <span class="c1"># Add a table at the bottom of the axes</span>
+    <span class="n">row_labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cascade_vals</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">show_table</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">cellText</span><span class="o">=</span><span class="n">cell_text</span><span class="p">,</span> <span class="n">rowLabels</span><span class="o">=</span><span class="n">row_labels</span><span class="p">,</span> <span class="n">rowColours</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colLabels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">cellLoc</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">col_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">cascade_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">cell_text</span><span class="p">,</span> <span class="s1">&#39;rowlabels&#39;</span><span class="p">:</span> <span class="n">row_labels</span><span class="p">,</span> <span class="s1">&#39;collabels&#39;</span><span class="p">:</span> <span class="n">col_labels</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">table</span></div>
+
+
+<div class="viewcode-block" id="get_cascade_vals"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.get_cascade_vals">[docs]</a><span class="k">def</span> <span class="nf">get_cascade_vals</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get values for a cascade</span>
+
+<span class="sd">    If the population list</span>
+<span class="sd">    :param result: A single :class:`Result` instance</span>
+<span class="sd">    :param cascade: A cascade representation supported by :func:`sanitize_cascade`</span>
+<span class="sd">    :param pops: A population representation supported by :func:`sanitize_pops`</span>
+<span class="sd">    :param year: Optionally specify a subset of years to retrieve values for.</span>
+<span class="sd">        Can be a scalar, list, or array. If ``None``, all time points in the</span>
+<span class="sd">        result will be used</span>
+<span class="sd">    :return: A tuple with ``(cascade_vals,t)`` where ``cascade_vals`` is the</span>
+<span class="sd">        form ``{stage_name:np.array}`` and ``t`` is a ``np.array`` with the</span>
+<span class="sd">        year values</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">PlotData</span>  <span class="c1"># Import here to avoid circular dependencies</span>
+
+    <span class="c1"># Sanitize the cascade inputs</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pop_type</span> <span class="o">=</span> <span class="n">sanitize_cascade</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
+    <span class="n">pops</span> <span class="o">=</span> <span class="n">sanitize_pops</span><span class="p">(</span><span class="n">pops</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">)</span>  <span class="c1"># Get list representation since we don&#39;t care about the name of the aggregated pop</span>
+
+    <span class="k">if</span> <span class="n">year</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="n">pops</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="n">pops</span><span class="p">)</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">pops</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;get_cascade_vals() cannot get results for multiple populations or population aggregations, only a single pop or single aggregation&#39;</span>
+    <span class="n">cascade_vals</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+                <span class="n">cascade_vals</span><span class="p">[</span><span class="n">output</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[(</span><span class="n">result</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">output</span><span class="p">)]</span><span class="o">.</span><span class="n">vals</span>  <span class="c1"># NB. Might want to return the Series here to retain formatting, units etc.</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">tvals</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># nb. first entry in d.tvals() is time values, second entry is time labels</span>
+
+    <span class="k">return</span> <span class="n">cascade_vals</span><span class="p">,</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="cascade_summary"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.cascade_summary">[docs]</a><span class="k">def</span> <span class="nf">cascade_summary</span><span class="p">(</span><span class="n">source_data</span><span class="p">,</span> <span class="n">year</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cascade</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print summary of cascade</span>
+
+<span class="sd">    This function takes in results, either as a Result or list of Results, or as a CascadeEnsemble.</span>
+
+<span class="sd">    :param source_data: A :class:`Result` or a :class:`CascadeEnsemble`</span>
+<span class="sd">    :param year: A scalar year to print results in</span>
+<span class="sd">    :param pops: If a :class:`Result` was passed in, this can be any valid population aggregation. If a :class:`CascadeEnsemble`</span>
+<span class="sd">            was passed in, then this must match the name of one of the population aggregations stored in the Ensemble (i.e.</span>
+<span class="sd">            it must be an item contained in `CascadeEnsemble.pops`)</span>
+<span class="sd">    :param cascade: If a :class:`Result` was passed in, this argument specifies which cascade to use. If a :class:`CascadeEnsemble`</span>
+<span class="sd">        was passed in, then this argument is ignored because the :class:`CascadeEnsemble` already uniquely specifies the cascade</span>
+<span class="sd">    :param pretty: If ``True``, absolute values will be rounded to integers and percentages to 2 sig figs</span>
+<span class="sd">    :return:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># If we want to support uncertainty, then we need to be able to pass in a CascadeEnsemble</span>
+    <span class="c1"># A CascadeEnsemble might contain more than one Result, which this function needs to deal with. Since there is a</span>
+    <span class="c1"># one-to-one mapping between a cascade and a PlotData, a CascadeEnsemble can only ever store one cascade at a time</span>
+    <span class="c1"># A Result may also contain more than one cascade, hence we take in the &#39;cascade&#39; argument to select which one</span>
+
+    <span class="c1"># CascadeEnsemble cannot specify which cascade (pre-defined in the Ensemble)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_data</span><span class="p">,</span> <span class="n">CascadeEnsemble</span><span class="p">):</span>
+        <span class="n">vals</span><span class="p">,</span> <span class="n">uncertainty</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">source_data</span><span class="o">.</span><span class="n">get_vals</span><span class="p">(</span><span class="n">pop</span><span class="o">=</span><span class="n">pops</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="n">year</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">vals</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result: </span><span class="si">%s</span><span class="s1"> - </span><span class="si">%g</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">year</span><span class="p">))</span>
+            <span class="n">baseline</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">result</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">[</span><span class="n">result</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">result</span><span class="p">][</span><span class="n">stage</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">u</span> <span class="o">=</span> <span class="n">uncertainty</span><span class="p">[</span><span class="n">result</span><span class="p">][</span><span class="n">stage</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> - </span><span class="si">%s</span><span class="s1"> ± </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s%%</span><span class="s1"> ± </span><span class="si">%s%%</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stage</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">v</span> <span class="o">/</span> <span class="n">baseline</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">u</span> <span class="o">/</span> <span class="n">baseline</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Convert to list of results, check all names are unique</span>
+        <span class="n">source_data</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetolist</span><span class="p">(</span><span class="n">source_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">source_data</span><span class="p">]))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">source_data</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;If passing in multiple Results, they must have different names&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">source_data</span><span class="p">:</span>
+
+            <span class="n">cascade_name</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pop_type</span> <span class="o">=</span> <span class="n">sanitize_cascade</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
+            <span class="n">absolute</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_cascade_vals</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="n">pops</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">)</span>
+            <span class="n">percentage</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">absolute</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">percentage</span><span class="p">))):</span>
+                <span class="n">percentage</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">percentage</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result: </span><span class="si">%s</span><span class="s1"> - </span><span class="si">%g</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">year</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">absolute</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> - </span><span class="si">%.0f</span><span class="s1"> (</span><span class="si">%s%%</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">absolute</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="n">percentage</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="get_cascade_data"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.get_cascade_data">[docs]</a><span class="k">def</span> <span class="nf">get_cascade_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get data values for a cascade</span>
+
+<span class="sd">    This function is the counterpart to :func:`get_cascade_vals` but it</span>
+<span class="sd">    returns values from data rather than values from a :class:`Result`. Note</span>
+<span class="sd">    that the inputs and outputs are slightly different - this function still</span>
+<span class="sd">    needs the framework so that it can sanitize the requested cascade. If</span>
+<span class="sd">    ``year`` is specified, the output is guaranteed to be the same size as the</span>
+<span class="sd">    input year array, the same as :func:`get_cascade_vals`. However, the</span>
+<span class="sd">    :func:`get_cascade_vals` defaults to all time points in the simulation</span>
+<span class="sd">    output, whereas this function defaults to all data years. Thus, if the</span>
+<span class="sd">    year is omitted, the returned time points may be different between the two</span>
+<span class="sd">    functions. To make a plot superimposing data and model output, the year</span>
+<span class="sd">    should be specified explicitly to ensure that the years match up.</span>
+
+
+<span class="sd">    NB - In general, data probably will NOT exist</span>
+<span class="sd">    Set the logging level to &#39;DEBUG&#39; to have messages regarding this printed out</span>
+
+<span class="sd">    :param data: A :class:`ProjectData` instance</span>
+<span class="sd">    :param framework: A :class:`ProjectFramework` instance</span>
+<span class="sd">    :param cascade: A cascade representation supported by</span>
+<span class="sd">        :func:`sanitize_cascade`</span>
+<span class="sd">    :param pops: Supported population representation. Can be &#39;all&#39;, or a pop</span>
+<span class="sd">        name, or a list of pop names, or a dict with one key</span>
+<span class="sd">    :param year: Optionally specify a subset of years to retrieve values for.</span>
+<span class="sd">        Can be a scalar, list, or array. If ``None``, all time points in the</span>
+<span class="sd">        :class:`ProjectData` instance will be used</span>
+<span class="sd">    :return: A tuple with ``(cascade_vals,t)`` where ``cascade_vals`` is the</span>
+<span class="sd">        form ``{stage_name:np.array}`` and ``t`` is a ``np.array`` with the</span>
+<span class="sd">        year values</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pop_type</span> <span class="o">=</span> <span class="n">sanitize_cascade</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
+    <span class="n">pops</span> <span class="o">=</span> <span class="n">sanitize_pops</span><span class="p">(</span><span class="n">pops</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Get list representation since we don&#39;t care about the name of the aggregated pop</span>
+
+    <span class="k">if</span> <span class="n">year</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>  <span class="c1"># Output times are guaranteed to be</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">tvec</span>  <span class="c1"># Defaults to data&#39;s time vector</span>
+
+    <span class="c1"># Now, get the outputs in the given years</span>
+    <span class="n">data_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">stage_constituents</span> <span class="ow">in</span> <span class="n">cascade_dict</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">stage_constituents</span><span class="p">):</span>
+            <span class="n">stage_constituents</span> <span class="o">=</span> <span class="p">[</span><span class="n">stage_constituents</span><span class="p">]</span>  <span class="c1"># Make it a list - this is going to be a common source of errors otherwise</span>
+        <span class="k">for</span> <span class="n">code_name</span> <span class="ow">in</span> <span class="n">stage_constituents</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">code_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data_values</span><span class="p">:</span>
+                <span class="n">data_values</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>  <span class="c1"># data values start out as NaN - this is a fallback in case for some reason pops is empty (the data will be all NaNs then)</span>
+
+                <span class="k">for</span> <span class="n">pop_idx</span><span class="p">,</span> <span class="n">pop</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pops</span><span class="p">):</span>
+                    <span class="n">ts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_ts</span><span class="p">(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">pop</span><span class="p">)</span>  <span class="c1"># The TimeSeries data for the required variable and population</span>
+                    <span class="n">vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>  <span class="c1"># preallocate output values coming from this TimeSeries object</span>
+
+                    <span class="c1"># Now populate this array</span>
+                    <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tval</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">t</span><span class="p">):</span>
+                            <span class="n">match</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">t</span> <span class="o">==</span> <span class="n">tval</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>  <span class="c1"># If a time point in the TimeSeries matches the requested time - then match[0] is the index in t</span>
+                                <span class="n">vals</span><span class="p">[</span><span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)):</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Data for </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">) did not contain values for some of the requested years&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">pop</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Data not present for </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">pop</span><span class="p">))</span>
+
+                    <span class="k">if</span> <span class="n">pop_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">data_values</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>  <span class="c1"># If at least one TimeSeries was found, use the first one as the data values (it could still be NaN if no times match)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">data_values</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">vals</span>
+
+    <span class="c1"># Now, data values contains all of the required quantities in all of the required years. Last step is to aggregate them</span>
+    <span class="n">cascade_data</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">stage_name</span><span class="p">,</span> <span class="n">stage_constituents</span> <span class="ow">in</span> <span class="n">cascade_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">code_name</span> <span class="ow">in</span> <span class="n">stage_constituents</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stage_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cascade_data</span><span class="p">:</span>
+                <span class="n">cascade_data</span><span class="p">[</span><span class="n">stage_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_values</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cascade_data</span><span class="p">[</span><span class="n">stage_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">data_values</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">cascade_data</span><span class="p">,</span> <span class="n">t</span></div>
+
+
+<div class="viewcode-block" id="CascadeEnsemble"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.CascadeEnsemble">[docs]</a><span class="k">class</span> <span class="nc">CascadeEnsemble</span><span class="p">(</span><span class="n">Ensemble</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensemble for cascade plots</span>
+
+<span class="sd">    This specialized Ensemble type is oriented to working with cascades. It has pre-defined mapping</span>
+<span class="sd">    functions for retrieving cascade values and wrappers to plot cascade data.</span>
+
+<span class="sd">    Conceptually, the idea is that using cascades with ensembles requires doing two things</span>
+
+<span class="sd">    - Having a mapping function that generates PlotData instances where the outputs are</span>
+<span class="sd">      cascade stages</span>
+<span class="sd">    - Having a plotting function that makes bar plots where all of the bars for the same year/result</span>
+<span class="sd">      are the same color (which rules out `Ensemble.plot_bars()`) where the bars are grouped by</span>
+<span class="sd">      output (which rules out `plotting.plot_bars()`) and where the plot data is stored in `PlotData`</span>
+<span class="sd">      instances rather than in `Result` object (which rules out `cascade.plot_multi_cascade`)</span>
+
+<span class="sd">    This specialized Ensemble class implements both of the above steps</span>
+
+<span class="sd">    - The constructor takes in the name of the cascade (or a cascade dict) and internally generates</span>
+<span class="sd">      a suitable mapping function</span>
+<span class="sd">    - `CascadeEnsemble.plot_multi_cascade` handles plotting multi-bar plots with error bars for cascades</span>
+
+<span class="sd">    :param framework: A :class:`ProjectFramework` instance</span>
+<span class="sd">    :param cascade: A cascade representation supported by :func:`sanitize_cascade`. However, if the cascade is a dict, then</span>
+<span class="sd">                    it will not be sanitized. This allows advanced aggregations to be used. A CascadeEnsemble can only</span>
+<span class="sd">                    store results for one cascade - to record multiple cascades, create further CascadeEnsemble instances</span>
+<span class="sd">                    as required.</span>
+<span class="sd">    :param years: Optionally interpolate results onto these years, to reduce storage requirements</span>
+<span class="sd">    :param baseline_results: Optionally store baseline result obtained without uncertainty</span>
+<span class="sd">    :param pops: A population aggregation dict. Can evaluate to more than one aggregated population</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseline_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">years</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">years</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cascade</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">cascade_name</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">cascade_dict</span> <span class="o">=</span> <span class="n">cascade</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cascade_name</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pop_type</span> <span class="o">=</span> <span class="n">sanitize_cascade</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">cascade</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cascade_name</span><span class="p">:</span>
+            <span class="n">cascade_name</span> <span class="o">=</span> <span class="s1">&#39;Cascade&#39;</span>
+
+        <span class="n">mapfun</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">_cascade_ensemble_mapping</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="o">=</span><span class="n">cascade_dict</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="n">years</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="n">pops</span><span class="p">)</span>
+
+        <span class="c1"># Perform normal Ensemble initialization using the cascade mapping function defined above</span>
+        <span class="c1"># (with the closure for the requested cascade, pops, and years)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">cascade_name</span><span class="p">,</span> <span class="n">mapping_function</span><span class="o">=</span><span class="n">mapfun</span><span class="p">,</span> <span class="n">baseline_results</span><span class="o">=</span><span class="n">baseline_results</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CascadeEnsemble.get_vals"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.CascadeEnsemble.get_vals">[docs]</a>    <span class="k">def</span> <span class="nf">get_vals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return cascade values and uncertainty</span>
+
+<span class="sd">        This method returns arrays of cascade values and uncertainties. Unlike :func:`get_cascade_vals`</span>
+<span class="sd">        this method returns uncertainties and works for multiple Results (which can be stored in a single</span>
+<span class="sd">        PlotData instance).</span>
+
+<span class="sd">        This is implemented in `CascadeEnsemble` and not `Ensemble` for now because we make certain</span>
+<span class="sd">        assumptions in `CascadeEnsemble` that are not valid more generally - specifically, that the outputs</span>
+<span class="sd">        all correspond to a single set of cascade stages, and the</span>
+
+<span class="sd">        The year must match a year contained in the CascadeEnsemble - the match is made by finding the</span>
+<span class="sd">        year, rather than interpolation. This is because interpolation may have occurred when the</span>
+<span class="sd">        Result was initially stored as a PlotData in the CascadeEnsemble - in that case, double interpolation</span>
+<span class="sd">        may occur and provide incorrect results (e.g. if the simulation is interpolated onto two years, and then</span>
+<span class="sd">        interpolated again as part of getting the values). To prevent this from happening, interpolation is not</span>
+<span class="sd">        performed again here</span>
+
+<span class="sd">        :param pop: Any population aggregations should have been completed when the results were loaded into</span>
+<span class="sd">                     the Ensemble. Thus, we only prompt for a single population name here</span>
+<span class="sd">        :param years: Select subset of years from the Ensemble. Must match items in ``self.tvec``</span>
+<span class="sd">        :return: Tuple of ``(vals,uncertainty,t)`` where vals and uncertainty are doubly-nested dictionaries</span>
+<span class="sd">            of the form ``vals[result_name][stage_name]=np.array`` with arrays the same sie as ``t`` (which matches</span>
+<span class="sd">            the input argument ``years`` if provided)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">pop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">years</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">years_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">years</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>
+            <span class="n">years_idx</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">years</span><span class="p">]</span>
+
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+        <span class="n">uncertainty</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+        <span class="n">series_lookup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_series</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+
+            <span class="n">vals</span><span class="p">[</span><span class="n">result</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+            <span class="n">uncertainty</span><span class="p">[</span><span class="n">result</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+
+                <span class="n">stage_vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">years_idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">series_lookup</span><span class="p">[</span><span class="n">result</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">stage</span><span class="p">]]</span>
+                <span class="n">uncertainty</span><span class="p">[</span><span class="n">result</span><span class="p">][</span><span class="n">stage</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">stage_vals</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+                <span class="c1"># Populate the baseline values</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseline</span><span class="p">:</span>
+                    <span class="n">vals</span><span class="p">[</span><span class="n">result</span><span class="p">][</span><span class="n">stage</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseline</span><span class="p">[</span><span class="n">result</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">stage</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">years_idx</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">vals</span><span class="p">[</span><span class="n">result</span><span class="p">][</span><span class="n">stage</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">stage_vals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">uncertainty</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">[</span><span class="n">years_idx</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="CascadeEnsemble.plot_multi_cascade"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade.CascadeEnsemble.plot_multi_cascade">[docs]</a>    <span class="k">def</span> <span class="nf">plot_multi_cascade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot multi-cascade with uncertainties</span>
+
+<span class="sd">        The multi-cascade with uncertainties differs from the</span>
+<span class="sd">        normal plot_multi_cascade primarily in the fact that this plot is based around</span>
+<span class="sd">        PlotData instances while plot_multi_cascade is a simplified routine that</span>
+<span class="sd">        takes in results and calls get_cascade_vals. Thus, while this method assumes</span>
+<span class="sd">        that the PlotData contains a properly nested cascade, it&#39;s not actually valided</span>
+<span class="sd">        which allows more flexibility in terms of defining arbitrary quantities to</span>
+<span class="sd">        include on the plot (like &#39;virtual&#39; stages that are functions of cascade stages)</span>
+
+<span class="sd">        Intended usage is for</span>
+
+<span class="sd">        - One population/population aggregation</span>
+<span class="sd">        - Multiple years OR multiple results, but not both</span>
+
+<span class="sd">        Thus, the legend will either show result names for a single year, or years for a single result</span>
+
+<span class="sd">        Population aggregation here is assumed to have been done at the time the Result was loaded</span>
+<span class="sd">        into the Ensemble, so the pop argument here simply specifies which one of the already</span>
+<span class="sd">        aggregated population groups should be used.</span>
+
+<span class="sd">        Could be generalized further once applications are clearer</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">years</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">years</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">years</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span>
+        <span class="n">years</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;If multiple results are present, can only plot one year at a time&quot;</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">pop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Use first population</span>
+
+        <span class="c1"># Iterate over bar groups</span>
+        <span class="c1"># A bar group is for a single year-result combination but contains multiple outputs</span>
+        <span class="n">n_colors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">)</span>  <span class="c1"># Offset to apply to each bar</span>
+        <span class="n">n_stages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>  <span class="c1"># Number of stages being plotted</span>
+        <span class="n">series_lookup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_series</span><span class="p">()</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># bar width</span>
+        <span class="n">g1</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># gap between bars</span>
+        <span class="n">g2</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># gap between stages</span>
+        <span class="n">stage_width</span> <span class="o">=</span> <span class="n">n_colors</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span> <span class="o">+</span> <span class="n">g1</span><span class="p">)</span> <span class="o">+</span> <span class="n">w</span> <span class="o">+</span> <span class="n">g2</span>
+
+        <span class="n">base_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_stages</span><span class="p">)</span> <span class="o">*</span> <span class="n">stage_width</span>
+        <span class="n">n_rendered</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Track the offset for bars rendered</span>
+
+        <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+            <span class="n">year_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
+
+                <span class="c1"># Assemble the results for the bar group to render</span>
+                <span class="c1"># This is an array with an entry for every bar</span>
+                <span class="c1"># The outputs are ordered as the dict is ordered so can use them directly</span>
+                <span class="n">stage_vals</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+                    <span class="n">stage_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">year_idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">series_lookup</span><span class="p">[</span><span class="n">result</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">output</span><span class="p">]]))</span>
+                <span class="n">stage_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">stage_vals</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseline</span><span class="p">:</span>
+                    <span class="n">baseline_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">baseline</span><span class="p">[</span><span class="n">result</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">year_idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">baseline_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">stage_vals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+                <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> - </span><span class="si">%g</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">base_positions</span> <span class="o">+</span> <span class="n">n_rendered</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span> <span class="o">+</span> <span class="n">g1</span><span class="p">),</span> <span class="n">baseline_vals</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">stage_vals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
+                <span class="n">n_rendered</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">base_positions</span> <span class="o">+</span> <span class="p">(</span><span class="n">n_colors</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span> <span class="o">+</span> <span class="n">g1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span></div></div>
+
+
+<div class="viewcode-block" id="_cascade_ensemble_mapping"><a class="viewcode-back" href="../../_autosummary/atomica.cascade.html#atomica.cascade._cascade_ensemble_mapping">[docs]</a><span class="k">def</span> <span class="nf">_cascade_ensemble_mapping</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">cascade_dict</span><span class="p">,</span> <span class="n">years</span><span class="p">,</span> <span class="n">pops</span><span class="p">):</span>
+    <span class="c1"># This mapping function returns PlotData for the cascade</span>
+    <span class="c1"># It&#39;s a closure containing the cascade, years, and pops requested</span>
+    <span class="c1"># It&#39;s a separate function so it can be pickled and parallelized</span>
+    <span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">PlotData</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">cascade_dict</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="n">pops</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">years</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Atomica Team
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
