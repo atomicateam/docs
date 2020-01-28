@@ -88,6 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="T1-Defining-a-model.html">T1 - Defining a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T1-Defining-a-model.html#Division-by-zero">Division by zero</a></li>
 <li class="toctree-l2"><a class="reference internal" href="T2-Calibration.html">T2 - Calibration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="T3-Multiple-populations.html">T3 - Multiple populations</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">T4 - Characteristics</a></li>
@@ -388,7 +389,7 @@ div.rendered_html tbody tr:hover {
 <h1>T4 - Characteristics<a class="headerlink" href="#T4---Characteristics" title="Permalink to this headline">¶</a></h1>
 <p>Characteristics can be conceptually difficult to define, but are fairly simple in practice. They are essentially special parameters, that are specific to working with compartments and groups of compartments. We will motivate their design with a worked example that builds on the multi-population framework from T3, and then conclude by discussing other aspects of their design that differ from parameters.</p>
 <p>The key functionality provided by characteristics is this - the example in T3 had users initialize the compartment sizes by directly entering values for the number of people in the ‘Susceptible’ and ‘Infected’ compartments, both of which appeared on the ‘Stocks’ sheet in the databook.</p>
-<p><img alt="t4-framework1" src="../_images/t4_framework1.png" /></p>
+<p><img alt="t4-framework1" src="../_images/t4_framework_1.png" /></p>
 <p>However, typically country data does not correspond directly to the compartments in the databook. For example, suppose we know</p>
 <ul class="simple">
 <li><p>The total number of people alive</p></li>
@@ -410,10 +411,10 @@ div.rendered_html tbody tr:hover {
 </ul>
 <p>and have these quantities appear in the databook instead of the compartments themselves. We could achieve the required data entry using parameters. However, we can’t use the parameters to initialize compartments. This is why there is a separate system, ‘characteristics’, that allows expressions of groups of compartments to be used for initialization.</p>
 <p>We can set up the three characteristics defined above in a fairly straightforward way on the ‘Characteristics’ sheet. Rather than writing the formulas above with ‘+’ and ‘/’ operations, we instead provide a comma separated list of compartments (or other characteristics) to sum (in the ‘components’ column) and we provide the denominator separately in the ‘denominator’ column. So the corresponding characteristics sheet is</p>
-<p><img alt="t4-framework2" src="../_images/t4_framework2.png" /></p>
+<p><img alt="t4-framework2" src="../_images/t4_framework_2.png" /></p>
 <p>We will also remove the ‘Databook page’ for the compartments on the the compartments sheet, since we want to initialize the model using characteristics only.</p>
 <p>If we create a databook from the framework as usual, we will have updated data entry tables on the ‘Stocks’ sheet. We can then go ahead and fill them out with the initialization described above:</p>
-<p><img alt="t4-databook1" src="tutorial/images/t4_databook1.png" /></p>
+<p><img alt="t4-databook1" src="../_images/t4_databook_1.png" /></p>
 <p>The framework and databook are available in the Atomica repository under <code class="docutils literal notranslate"><span class="pre">atomica/docs/tutorial/assets/t4_framework_1.xlsx</span></code> and <code class="docutils literal notranslate"><span class="pre">atomica/docs/tutorial/assets/t4_databook_1.xlsx</span></code>, respectively. We can now load these files in and run a simulation:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -423,7 +424,6 @@ div.rendered_html tbody tr:hover {
 <span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
 <span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/t4_framework_1.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/t4_databook_1.xlsx&#39;</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
 </pre></div>
 </div>
 </div>
@@ -432,25 +432,17 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Atomica 1.12.1 (2019-08-20) -- (c) the Atomica development team
-2019-12-06 03:14:55.265347
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0300s
+Atomica 1.17.0 (2019-08-01) -- (c) the Atomica development team
+git branch: Git branch N/A (Git hash)
+2020-01-28 02:40:03.528081
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;string&gt;:1: RuntimeWarning: invalid value encountered in double_scalars
-&lt;string&gt;:1: RuntimeWarning: invalid value encountered in double_scalars
+Elapsed time for running &#34;default&#34;: 0.0295s
 </pre></div></div>
 </div>
 <p>We now want to check that the initialization has been performed correctly. In the <code class="docutils literal notranslate"><span class="pre">result</span></code> we can retrieve the variables for the compartment sizes and inspect their values at the first timestep</p>
@@ -502,7 +494,7 @@ the ‘minimum norm’ solution which means that the inputs are distributed equa
 Initialization characteristics are underdetermined - this may be intentional, but check the initial compartment sizes carefully
 </pre></div></div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -511,15 +503,6 @@ Elapsed time for running &#34;default&#34;: 0.0287s
 sus = 600.00
 inf = 200.00
 rec = 200.00
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-&lt;string&gt;:1: RuntimeWarning: invalid value encountered in double_scalars
-&lt;string&gt;:1: RuntimeWarning: invalid value encountered in double_scalars
 </pre></div></div>
 </div>
 <p>We also now recieve a warning that ‘Initialization characteristics are underdetermined’ which reflects the fact that we had to rely on the minimum norm solution to infer the value of some of the compartments. For compartments that are missing entirely, we can remove the ‘alive’ characteristic entirely, leaving us with:</p>
@@ -547,24 +530,15 @@ rec = 200.00
 Initialization characteristics are underdetermined - this may be intentional, but check the initial compartment sizes carefully
 </pre></div></div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0293s
+Elapsed time for running &#34;default&#34;: 0.0290s
 sus = 0.00
 inf = 200.00
 rec = 200.00
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-&lt;string&gt;:1: RuntimeWarning: invalid value encountered in double_scalars
-&lt;string&gt;:1: RuntimeWarning: invalid value encountered in double_scalars
 </pre></div></div>
 </div>
 <p>It’s possible to freely mix compartments and characteristics for initialization. For example, we could set a databook page for ‘susceptible’ on the compartments sheet, and have the databook explicitly contain data entry for the ‘susceptible’ compartment as well as the number ever infected.</p>
@@ -573,12 +547,12 @@ Atomica.</p>
 <div class="alert alert-block alert-danger"><p>Errors relating to negative compartment sizes mean that inconsistent information about the system has been entered</p>
 </div><p>It’s also possible for a system to be overdetermined. For example, if you specify data values for <code class="docutils literal notranslate"><span class="pre">inf</span></code>, <code class="docutils literal notranslate"><span class="pre">rec</span></code>, and <code class="docutils literal notranslate"><span class="pre">inf+rec</span></code>. If you specify inconsistent initial values, then a warning will be displayed and ‘best fit’ values will be used.</p>
 <div class="alert alert-block alert-info"><p>Further reading: Compartment initialization is described in more detail in the Atomica code documentation</p>
-</div><p>Characterastic also differ from parameters in that normalized characteristics contain additional logic to deal with the numerator or denominator being zero. Previously we defined <code class="docutils literal notranslate"><span class="pre">foi_out</span> <span class="pre">=</span> <span class="pre">infx*inf/popsize</span></code>, but we had a ‘RuntimeWarning’ due to the prisoner population being zero at the first timestep. Instead of defining the population size and prevalence as parameters, we can instead define them as characteristics. We can reuse the <code class="docutils literal notranslate"><span class="pre">alive</span></code> characteristic, and define an additional
-characteristic for prevalence.</p>
+</div><p>Characterastic also differ from parameters in that normalized characteristics contain additional logic to deal with the numerator or denominator being zero. Previously we defined <code class="docutils literal notranslate"><span class="pre">foi_out</span> <span class="pre">=</span> <span class="pre">infx*inf/popsize</span></code> but this gave rise to a ‘RuntimeWarning’ due to the prisoner population being zero at the first timestep, which was resolved by entering <code class="docutils literal notranslate"><span class="pre">infx*sdiv(inf,popsize)</span></code> instead. For division by zero occuring due to compartments being empty, we can generally instead construct a characteristic
+containing this division. So instead of defining the population size and prevalence as parameters and using them in the calculation for <code class="docutils literal notranslate"><span class="pre">foi_out</span></code>, we can instead define a characteristics for the prevalance <code class="docutils literal notranslate"><span class="pre">inf/popsize</span></code>. We can reuse the <code class="docutils literal notranslate"><span class="pre">alive</span></code> characteristic, and define an additional characteristic for the prevalence.</p>
 <p><img alt="t4-framework-5" src="../_images/t4_framework_5.png" /></p>
-<p>Notice that we haven’t provided a databook page for the <code class="docutils literal notranslate"><span class="pre">prev</span></code> characteristic - this way, it won’t affect the initialization at all. Now we can use <code class="docutils literal notranslate"><span class="pre">alive</span></code> instead of <code class="docutils literal notranslate"><span class="pre">popsize</span></code> in the parameter functions, and we can use <code class="docutils literal notranslate"><span class="pre">prev</span></code> instead of <code class="docutils literal notranslate"><span class="pre">inf/popsize</span></code> for the prevalance. If the numerator and denominator of a characteristic are both zero, then the characteristic value will also be zero (whereas the parameter would be ‘NaN’). Our parameters sheet now reads:</p>
+<p>Notice that we haven’t provided a databook page for the <code class="docutils literal notranslate"><span class="pre">prev</span></code> characteristic - this way, it won’t affect the initialization at all. Now we can use <code class="docutils literal notranslate"><span class="pre">alive</span></code> instead of <code class="docutils literal notranslate"><span class="pre">popsize</span></code> in the parameter functions, and we can use <code class="docutils literal notranslate"><span class="pre">prev</span></code> instead of <code class="docutils literal notranslate"><span class="pre">inf/popsize</span></code> for the prevalance. Importantly, if the numerator and denominator of a characteristic are both zero, then the characteristic value will also be zero. Our parameters sheet now reads:</p>
 <p><img alt="t4-framework-6" src="../_images/t4_framework_6.png" /></p>
-<p>We can now go ahead and run this framework:</p>
+<p>We can now go ahead and run this framework, confirming that no <code class="docutils literal notranslate"><span class="pre">RuntimeWarning</span></code> occurs:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -595,10 +569,9 @@ characteristic for prevalence.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0292s
+Elapsed time for running &#34;default&#34;: 0.0247s
 </pre></div></div>
 </div>
-<p>and we can see now that the ‘RuntimeWarning’ has been resolved.</p>
 <p>The final difference between characteristics and parameters is that characteristics take up no storage space, because they get dynamically evaluated in the results. Thus, using characteristics instead of parameters leads to smaller file sizes.</p>
 </div>
 

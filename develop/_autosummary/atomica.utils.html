@@ -212,13 +212,16 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.evaluate_plot_string" title="atomica.utils.evaluate_plot_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate_plot_string</span></code></a>(plot_string)</p></td>
 <td><p>Evaluate a plotting output specification</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.format_duration" title="atomica.utils.format_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format_duration</span></code></a>(t[, pluralize])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.fast_gitinfo" title="atomica.utils.fast_gitinfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fast_gitinfo</span></code></a>(path)</p></td>
+<td><p>Retrieve git info</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.format_duration" title="atomica.utils.format_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format_duration</span></code></a>(t[, pluralize])</p></td>
 <td><p>User-friendly string format of a duration</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.nested_loop" title="atomica.utils.nested_loop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nested_loop</span></code></a>(inputs, loop_order)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.nested_loop" title="atomica.utils.nested_loop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nested_loop</span></code></a>(inputs, loop_order)</p></td>
 <td><p>Zip list of lists in order</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.parent_dir" title="atomica.utils.parent_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent_dir</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.parent_dir" title="atomica.utils.parent_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent_dir</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -401,7 +404,7 @@ the TimeSeries only has an assumption) and the second item is values</p>
 <dl class="method">
 <dt id="atomica.utils.TimeSeries.insert">
 <code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="sig-param">t</em>, <em class="sig-param">v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.insert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert a value at a particular time</p>
+<dd><p>Insert a value or list of at a particular time</p>
 <p>If the value already exists in the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code>, it will be overwritten/updated.
 The arrays are internally sorted by time value, and this order will be maintained.</p>
 <dl class="field-list simple">
@@ -435,7 +438,7 @@ according to a given interpolation method. There are 4 possibilities for the met
 return c(t2)</p>
 </div></blockquote>
 <p>so for example, if you wanted to use the base Scipy pchip method with no extrapolation, then could pass in</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TimeSeries</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="o">...</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">PchipInterpolator</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TimeSeries</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="o">...</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">PchipInterpolator</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Note that the following special behaviours apply:</p>
@@ -456,7 +459,7 @@ return c(t2)</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>t2</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>) – float, list, or array, with times</p></li>
-<li><p><strong>method</strong> – A string ‘linear’, ‘pchip’ or ‘stepped’ OR a callable item that returns an Interpolator</p></li>
+<li><p><strong>method</strong> – A string ‘linear’, ‘pchip’ or ‘previous’ OR a callable item that returns an Interpolator</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -573,17 +576,17 @@ an different perturbation will be applied to each time specific value independen
 <code class="sig-prename descclassname">atomica.utils.</code><code class="sig-name descname">evaluate_plot_string</code><span class="sig-paren">(</span><em class="sig-param">plot_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#evaluate_plot_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.evaluate_plot_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate a plotting output specification</p>
 <p>The plots in the framework are specified as strings - for example,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_string</span> <span class="o">=</span> <span class="s2">&quot;{&#39;New active DS-TB&#39;:[&#39;pd_div:flow&#39;,&#39;nd_div:flow&#39;]}&quot;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_string</span> <span class="o">=</span> <span class="s2">&quot;{&#39;New active DS-TB&#39;:[&#39;pd_div:flow&#39;,&#39;nd_div:flow&#39;]}&quot;</span>
 </pre></div>
 </div>
 <p>This needs to be (safely) evaluated so that the actual dict can be
 used. This function evaluates a string like this and returns a
 variable accordingly. For example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">evaluate_plot_string</span><span class="p">(</span><span class="s2">&quot;{&#39;New active DS-TB&#39;:[&#39;pd_div:flow&#39;,&#39;nd_div:flow&#39;]}&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">evaluate_plot_string</span><span class="p">(</span><span class="s2">&quot;{&#39;New active DS-TB&#39;:[&#39;pd_div:flow&#39;,&#39;nd_div:flow&#39;]}&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>is the same as</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;New active DS-TB&#39;</span><span class="p">:[</span><span class="s1">&#39;pd_div:flow&#39;</span><span class="p">,</span><span class="s1">&#39;nd_div:flow&#39;</span><span class="p">]}</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;New active DS-TB&#39;</span><span class="p">:[</span><span class="s1">&#39;pd_div:flow&#39;</span><span class="p">,</span><span class="s1">&#39;nd_div:flow&#39;</span><span class="p">]}</span>
 </pre></div>
 </div>
 <p>This will only happen if tokens associated with dicts and lists are present -
@@ -594,6 +597,21 @@ otherwise the original string will just be returned directly</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Evaluated expression, the same as if it has originally been entered in a .py file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="atomica.utils.fast_gitinfo">
+<code class="sig-prename descclassname">atomica.utils.</code><code class="sig-name descname">fast_gitinfo</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#fast_gitinfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.fast_gitinfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve git info</p>
+<p>This function reads git branch and commit information from a .git directory.
+Given a path, it will check for a <cite>.git</cite> directory. If the path doesn’t contain
+that directory, it will search parent directories for <cite>.git</cite> until it finds one.
+Then, the current information will be parsed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – A folder either containing a <code class="docutils literal notranslate"><span class="pre">.git</span></code> directory, or with a parent that contains a <code class="docutils literal notranslate"><span class="pre">.git</span></code> directory</p>
 </dd>
 </dl>
 </dd></dl>
@@ -621,7 +639,7 @@ e.g., going from ‘probability’ and ‘1/365’ to ‘probability/day’</p>
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">format_duration</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">format_duration</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="go">&#39;year&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">format_duration</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">pluralize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="go">&#39;years&#39;</span>
@@ -660,14 +678,14 @@ supports an arbitrary number of items.</p>
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">nested_loop</span><span class="p">([[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">nested_loop</span><span class="p">([[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
 <span class="go">[[&#39;a&#39;, 1], [&#39;a&#39;, 2], [&#39;b&#39;, 1], [&#39;b&#39;, 2]]</span>
 </pre></div>
 </div>
 <p>Notice how the first two items have the same value for the first list
 while the items from the second list vary. If the <cite>loop_order</cite> is
 reversed, then:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">nested_loop</span><span class="p">([[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">nested_loop</span><span class="p">([[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
 <span class="go">[[&#39;a&#39;, 1], [&#39;b&#39;, 1], [&#39;a&#39;, 2], [&#39;b&#39;, 2]]</span>
 </pre></div>
 </div>

@@ -289,12 +289,6 @@ in advance with the appropriate options, if the interpolation matters.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="atomica.parameters.Parameter.meta_y_factor">
-<code class="sig-name descname">meta_y_factor</code><em class="property"> = None</em><a class="headerlink" href="#atomica.parameters.Parameter.meta_y_factor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calibration scale factor for all populations</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="atomica.parameters.Parameter.pops">
 <em class="property">property </em><code class="sig-name descname">pops</code><a class="headerlink" href="#atomica.parameters.Parameter.pops" title="Permalink to this definition">¶</a></dt>
@@ -323,12 +317,6 @@ an different perturbation will be applied to each time specific value independen
 </dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="atomica.parameters.Parameter.skip_function">
-<code class="sig-name descname">skip_function</code><em class="property"> = None</em><a class="headerlink" href="#atomica.parameters.Parameter.skip_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>This can be a range of years [start,stop] between which the parameter function will not be evaluated</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="atomica.parameters.Parameter.smooth">
 <code class="sig-name descname">smooth</code><span class="sig-paren">(</span><em class="sig-param">tvec</em>, <em class="sig-param">method='smoothinterp'</em>, <em class="sig-param">pop_names=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#Parameter.smooth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.parameters.Parameter.smooth" title="Permalink to this definition">¶</a></dt>
@@ -346,7 +334,7 @@ in-place. The operation is</p>
 <li><p>The time values generated in this function are inserted</p></li>
 </ul>
 <p>For example, to apply pchip interpolation to generate intermediate values</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Parameter</span><span class="o">.</span><span class="n">smooth</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">tvec</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pchip&#39;</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Parameter</span><span class="o">.</span><span class="n">smooth</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">tvec</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pchip&#39;</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>As this goes through <cite>TimeSeries.interpolate</cite> the same rules apply for the conditions under which
@@ -365,18 +353,6 @@ finite time values present, otherwise, the assumption or single value will be us
 <dd class="field-even"><p></p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.parameters.Parameter.ts">
-<code class="sig-name descname">ts</code><em class="property"> = None</em><a class="headerlink" href="#atomica.parameters.Parameter.ts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Population-specific data is stored in TimeSeries within this dict, keyed by population name</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.parameters.Parameter.y_factor">
-<code class="sig-name descname">y_factor</code><em class="property"> = None</em><a class="headerlink" href="#atomica.parameters.Parameter.y_factor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calibration scale factors for the parameter in each population</p>
 </dd></dl>
 
 </dd></dl>
@@ -420,36 +396,6 @@ nested dictionaries, so it’s not trivial to iterate over all of them.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="atomica.parameters.ParameterSet.interactions">
-<code class="sig-name descname">interactions</code><em class="property"> = None</em><a class="headerlink" href="#atomica.parameters.ParameterSet.interactions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores the Parameter instances contained by this ParameterSet associated with framework interactions, keyed by source population</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.parameters.ParameterSet.pars">
-<code class="sig-name descname">pars</code><em class="property"> = None</em><a class="headerlink" href="#atomica.parameters.ParameterSet.pars" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores the Parameter instances contained by this ParameterSet associated with framework comps, characs, and parameters</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.parameters.ParameterSet.pop_labels">
-<code class="sig-name descname">pop_labels</code><em class="property"> = None</em><a class="headerlink" href="#atomica.parameters.ParameterSet.pop_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of corresponding full names for populations</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.parameters.ParameterSet.pop_names">
-<code class="sig-name descname">pop_names</code><em class="property"> = None</em><a class="headerlink" href="#atomica.parameters.ParameterSet.pop_names" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of all population code names contained in the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code></p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.parameters.ParameterSet.pop_types">
-<code class="sig-name descname">pop_types</code><em class="property"> = None</em><a class="headerlink" href="#atomica.parameters.ParameterSet.pop_types" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of corresponding population types</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="atomica.parameters.ParameterSet.sample">
 <code class="sig-name descname">sample</code><span class="sig-paren">(</span><em class="sig-param">constant=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.sample" title="Permalink to this definition">¶</a></dt>
@@ -463,12 +409,6 @@ an different perturbation will be applied to each time specific value independen
 <dd class="field-even"><p>A new <a class="reference internal" href="#atomica.parameters.ParameterSet" title="atomica.parameters.ParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code></a> with perturbed values</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.parameters.ParameterSet.transfers">
-<code class="sig-name descname">transfers</code><em class="property"> = None</em><a class="headerlink" href="#atomica.parameters.ParameterSet.transfers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores the Parameter instances contained by this ParameterSet associated with databook transfers, keyed by source population</p>
 </dd></dl>
 
 </dd></dl>
