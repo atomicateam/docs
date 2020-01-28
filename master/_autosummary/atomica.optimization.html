@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -180,13 +181,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -225,10 +226,10 @@ effectively serves as a mapping from one set of program instructions to another.
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.optimization.Adjustable" title="atomica.optimization.Adjustable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjustable</span></code></a>(name[, limit_type, lower_bound, …])</p></td>
-<td><p></p></td>
+<td><p>Class to store single optimizable parameter</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#atomica.optimization.Adjustment" title="atomica.optimization.Adjustment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adjustment</span></code></a>(name)</p></td>
-<td><p></p></td>
+<td><p>Class to represent changes to instructions</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.optimization.AtLeastMeasurable" title="atomica.optimization.AtLeastMeasurable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AtLeastMeasurable</span></code></a>(measurable_name, t, threshold)</p></td>
 <td><p>Enforce quantity exceeds a value</p></td>
@@ -272,10 +273,13 @@ effectively serves as a mapping from one set of program instructions to another.
 <tr class="row-even"><td><p><a class="reference internal" href="#atomica.optimization.SpendingAdjustment" title="atomica.optimization.SpendingAdjustment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpendingAdjustment</span></code></a>(prog_name, t[, …])</p></td>
 <td><p>Adjust program spending</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.optimization.StartTimeAdjustment" title="atomica.optimization.StartTimeAdjustment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StartTimeAdjustment</span></code></a>(name, lower, upper, initial)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.optimization.SpendingPackageAdjustment" title="atomica.optimization.SpendingPackageAdjustment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpendingPackageAdjustment</span></code></a>(package_name, t, …)</p></td>
+<td><p>Adjustment package example which would modify e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.optimization.StartTimeAdjustment" title="atomica.optimization.StartTimeAdjustment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StartTimeAdjustment</span></code></a>(name, lower, upper, initial)</p></td>
 <td><p>Optimize program start year</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.optimization.TotalSpendConstraint" title="atomica.optimization.TotalSpendConstraint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TotalSpendConstraint</span></code></a>([total_spend, t, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.optimization.TotalSpendConstraint" title="atomica.optimization.TotalSpendConstraint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TotalSpendConstraint</span></code></a>([total_spend, t, …])</p></td>
 <td><p>Fix total spending</p></td>
 </tr>
 </tbody>
@@ -301,20 +305,80 @@ effectively serves as a mapping from one set of program instructions to another.
 <dl class="class">
 <dt id="atomica.optimization.Adjustable">
 <em class="property">class </em><code class="sig-prename descclassname">atomica.optimization.</code><code class="sig-name descname">Adjustable</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">limit_type='abs'</em>, <em class="sig-param">lower_bound=-inf</em>, <em class="sig-param">upper_bound=inf</em>, <em class="sig-param">initial_value=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Adjustable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.optimization.Adjustable" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Class to store single optimizable parameter</p>
+<p>An <code class="docutils literal notranslate"><span class="pre">Adjustable</span></code> represents a single entry in the ASD matrix. An <code class="docutils literal notranslate"><span class="pre">Adjustment</span></code> uses one or more
+<code class="docutils literal notranslate"><span class="pre">Adjustables</span></code> to make changes to the program instructions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The name of the adjustable</p></li>
+<li><p><strong>limit_type</strong> – If bounds are provided, are they relative or absolute (<code class="docutils literal notranslate"><span class="pre">'abs'</span></code> or <code class="docutils literal notranslate"><span class="pre">'rel'</span></code>)</p></li>
+<li><p><strong>lower_bound</strong> – Optionally specify minimum value</p></li>
+<li><p><strong>upper_bound</strong> – Optionally specify maximum value</p></li>
+<li><p><strong>initial_value</strong> – Optionally specify initial value. Most commonly, the initial value would be set by the <code class="docutils literal notranslate"><span class="pre">Adjustment</span></code> containing the <code class="docutils literal notranslate"><span class="pre">Adjustable</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
 <dt id="atomica.optimization.Adjustable.get_hard_bounds">
 <code class="sig-name descname">get_hard_bounds</code><span class="sig-paren">(</span><em class="sig-param">x0=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Adjustable.get_hard_bounds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.optimization.Adjustable.get_hard_bounds" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return hard bounds for the adjustable</p>
+<p>The hard bounds could be relative or absolute. If they are relative, then they are treated
+as being relative to the initial value for this adjustable. This is because not all adjustables
+can be directly drawn from the program instructions (e.g. parametric overwrites) in which case
+it would not be possible to extract initial values from the instructions alone. For consistency,
+all adjustables behave the same way with constraints relative to their initialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x0</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]) – The reference value for relative constraints - only required if the limit type is not absolute</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple with <code class="docutils literal notranslate"><span class="pre">(min,max)</span></code> limits</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="atomica.optimization.Adjustment">
 <em class="property">class </em><code class="sig-prename descclassname">atomica.optimization.</code><code class="sig-name descname">Adjustment</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Adjustment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.optimization.Adjustment" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Class to represent changes to instructions</p>
+<p>An <code class="docutils literal notranslate"><span class="pre">Adjustment</span></code> represents a change to program instructions, governed by one or more <code class="docutils literal notranslate"><span class="pre">Adjustables</span></code>.
+This base class specifies the interface for all <code class="docutils literal notranslate"><span class="pre">Adjustments</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – The name of the adjustment</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="atomica.optimization.Adjustment.adjustables">
+<code class="sig-name descname">adjustables</code><em class="property"> = None</em><a class="headerlink" href="#atomica.optimization.Adjustment.adjustables" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of <code class="docutils literal notranslate"><span class="pre">Adjustables</span></code></p>
+</dd></dl>
+
+<dl class="method">
 <dt id="atomica.optimization.Adjustment.get_initialization">
 <code class="sig-name descname">get_initialization</code><span class="sig-paren">(</span><em class="sig-param">progset</em>, <em class="sig-param">instructions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Adjustment.get_initialization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.optimization.Adjustment.get_initialization" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return initial values for ASD</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>progset</strong> (<a class="reference internal" href="atomica.programs.html#atomica.programs.ProgramSet" title="atomica.programs.ProgramSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code></a>) – The <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> being used for the optimization</p></li>
+<li><p><strong>instructions</strong> (<a class="reference internal" href="atomica.programs.html#atomica.programs.ProgramInstructions" title="atomica.programs.ProgramInstructions"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramInstructions</span></code></a>) – The initial instructions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of initial values, one for each adjustable</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="atomica.optimization.Adjustment.update_instructions">
@@ -416,7 +480,10 @@ the requested spend and the constrained spend, so it is desirable to minimize it
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A numeric penalty value. Return <cite>np.inf</cite> if constraint could not be satisfied</p>
+<dd class="field-odd"><p>A numeric penalty value. Return <cite>np.inf</cite> if constraint penalty could not be computed</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#atomica.optimization.FailedConstraint" title="atomica.optimization.FailedConstraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">FailedConstraint</span></code></a> if the instructions could not be constrained</p>
 </dd>
 </dl>
 </dd></dl>
@@ -461,7 +528,7 @@ to be paired to <code class="docutils literal notranslate"><span class="pre">con
 <p>This Measurable stores the value of a quantity using the original instructions.
 It then requires that there is a minimum increase in the value of the quantity
 during optimization. For example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DecreaseByMeasurable</span><span class="p">(</span><span class="s1">&#39;deaths&#39;</span><span class="p">,</span><span class="mi">2030</span><span class="p">,</span><span class="mf">0.05</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DecreaseByMeasurable</span><span class="p">(</span><span class="s1">&#39;deaths&#39;</span><span class="p">,</span><span class="mi">2030</span><span class="p">,</span><span class="mf">0.05</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This Measurable would correspond to an decrease of 5% in the number of deaths in 2030.</p>
@@ -551,7 +618,7 @@ that the algorithm should proceed immediately to the next iteration.</p>
 <p>This Measurable stores the value of a quantity using the original instructions.
 It then requires that there is a minimum increase in the value of the quantity
 during optimization. For example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">IncreaseByMeasurable</span><span class="p">(</span><span class="s1">&#39;alive&#39;</span><span class="p">,</span><span class="mi">2030</span><span class="p">,</span><span class="mf">0.05</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">IncreaseByMeasurable</span><span class="p">(</span><span class="s1">&#39;alive&#39;</span><span class="p">,</span><span class="mi">2030</span><span class="p">,</span><span class="mf">0.05</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This Measurable would correspond to an increase of 5% in the number of people
@@ -988,11 +1055,45 @@ the initial spend will be drawn from the program instructions, or the progset.</
 <dl class="method">
 <dt id="atomica.optimization.SpendingAdjustment.get_initialization">
 <code class="sig-name descname">get_initialization</code><span class="sig-paren">(</span><em class="sig-param">progset</em>, <em class="sig-param">instructions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#SpendingAdjustment.get_initialization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.optimization.SpendingAdjustment.get_initialization" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return initial values for ASD</p>
+<p>The initial values correspond to either</p>
+<ul class="simple">
+<li><p>The explicitly specified initial spend</p></li>
+<li><p>The initial spend from the program set/instructions</p></li>
+</ul>
+<p>Note that the initial spend is NOT clipped to any bounds. This is because the initial spend is in turn used to compute
+relative spending constraints. If the initial spend is not consistent then an error will be subsequently raised
+at that point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>progset</strong> (<a class="reference internal" href="atomica.programs.html#atomica.programs.ProgramSet" title="atomica.programs.ProgramSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code></a>) – The <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> being used for the optimization</p></li>
+<li><p><strong>instructions</strong> (<a class="reference internal" href="atomica.programs.html#atomica.programs.ProgramInstructions" title="atomica.programs.ProgramInstructions"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramInstructions</span></code></a>) – The initial instructions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of initial values, one for each adjustable</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="atomica.optimization.SpendingAdjustment.update_instructions">
 <code class="sig-name descname">update_instructions</code><span class="sig-paren">(</span><em class="sig-param">adjustable_values</em>, <em class="sig-param">instructions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#SpendingAdjustment.update_instructions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.optimization.SpendingAdjustment.update_instructions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="atomica.optimization.SpendingPackageAdjustment">
+<em class="property">class </em><code class="sig-prename descclassname">atomica.optimization.</code><code class="sig-name descname">SpendingPackageAdjustment</code><span class="sig-paren">(</span><em class="sig-param">package_name</em>, <em class="sig-param">t</em>, <em class="sig-param">prog_names</em>, <em class="sig-param">initial_spends</em>, <em class="sig-param">min_props=None</em>, <em class="sig-param">max_props=None</em>, <em class="sig-param">min_total_spend=0.0</em>, <em class="sig-param">max_total_spend=inf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#SpendingPackageAdjustment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.optimization.SpendingPackageAdjustment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjustment package example which would modify e.g. MDR short and MDR standard with a total spending and then a fraction to be spend on each of them</p>
+<dl class="method">
+<dt id="atomica.optimization.SpendingPackageAdjustment.update_instructions">
+<code class="sig-name descname">update_instructions</code><span class="sig-paren">(</span><em class="sig-param">adjustable_values</em>, <em class="sig-param">instructions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#SpendingPackageAdjustment.update_instructions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.optimization.SpendingPackageAdjustment.update_instructions" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1005,7 +1106,19 @@ the initial spend will be drawn from the program instructions, or the progset.</
 <dl class="method">
 <dt id="atomica.optimization.StartTimeAdjustment.get_initialization">
 <code class="sig-name descname">get_initialization</code><span class="sig-paren">(</span><em class="sig-param">progset</em>, <em class="sig-param">instructions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#StartTimeAdjustment.get_initialization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.optimization.StartTimeAdjustment.get_initialization" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return initial values for ASD</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>progset</strong> – The <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> being used for the optimization</p></li>
+<li><p><strong>instructions</strong> (<a class="reference internal" href="atomica.programs.html#atomica.programs.ProgramInstructions" title="atomica.programs.ProgramInstructions"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramInstructions</span></code></a>) – The initial instructions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of initial values, one for each adjustable</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="atomica.optimization.StartTimeAdjustment.update_instructions">
@@ -1024,23 +1137,31 @@ at the specified time. Spending is constrained independently at all times when a
 is adjustable.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">total_spend</span></code> argument allows the total spending in a particular year to be explicitly specified
 rather than drawn from the initial allocation. This can be useful when using parametric programs where
-the adjustables do not directly correspond to spending value.</p>
-<p>This constraint can also be set to only apply in certain years.
-The <code class="docutils literal notranslate"><span class="pre">budget_factor</span></code> multiplies the total spend at the time the <code class="docutils literal notranslate"><span class="pre">hard_constraint</span></code> is assigned
+the adjustables do not directly correspond to spending value. If the total spend is not provided, it will
+automatically be computed from the first ASD step. Note that it is computed based on the initial instructions
+<em>after</em> the initial ASD values have been applied. This is because relative constraints on all adjustables are
+interpreted relative to the initial value of the adjustable, since not all adjustables map directly to values
+in the instructions. Since the adjustable hard upper and lower bounds are used as part of the constraint, for
+consistency, the total spend constraint itself is drawn from the same set of instructions (i.e. after the initial
+value has been applied). In cases where this is not the desired behaviour, the cause would likely be that the
+default value does not agree with a known desired total spend value. In that case, the desired total spend should
+simply be specified here explicitly as an absolute value.</p>
+<p>This constraint can also be set to only apply in certain years.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">budget_factor</span></code> multiplies the total spend at the time the <code class="docutils literal notranslate"><span class="pre">hard_constraint</span></code> is assigned
 Typically this is to scale up the available spending when that spending is being drawn from
 the instructions/progset (otherwise the budget_factor could already be part of the specified total spend)</p>
 <p>Note that if no times are specified, the budget factor should be a scalar but no explicit
 spending values can be specified. This is because in the case where different programs are
 optimized in different years, an explicit total spending constraint applying to all
-times is unlikely to be a sensible choice (so we just ask the user to specify the time as well)</p>
+times is unlikely to be a sensible choice (so we just ask the user to specify the time as well).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>total_spend</strong> – A list of spending amounts the same size as t (can contain Nones), or None.
-For times in which the total spend is None, it will be automatically set to the sum of
+<li><p><strong>total_spend</strong> – A list of spending amounts the same size as <code class="docutils literal notranslate"><span class="pre">t</span></code> (can contain Nones), or <code class="docutils literal notranslate"><span class="pre">None</span></code>.
+For times in which the total spend is <code class="docutils literal notranslate"><span class="pre">None</span></code>, it will be automatically set to the sum of
 spending on optimizable programs in the corresponding year</p></li>
 <li><p><strong>t</strong> – A time, or list of times, at which to apply the total spending constraint. If None, it will automatically be set to all years in which spending adjustments are being made</p></li>
-<li><p><strong>budget_factor</strong> – The budget factor multiplies whatever the total_spend is. This can either be a single value, or a year specific value</p></li>
+<li><p><strong>budget_factor</strong> – The budget factor multiplies whatever the <code class="docutils literal notranslate"><span class="pre">total_spend</span></code> is. This can either be a single value, or a year specific value</p></li>
 </ul>
 </dd>
 </dl>

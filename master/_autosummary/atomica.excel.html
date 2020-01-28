@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -180,13 +181,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -218,22 +219,25 @@ For example, Excel formatting, and time-varying data entry tables, are implement
 <tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.cell_get_number" title="atomica.excel.cell_get_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_get_number</span></code></a>(cell[, dtype])</p></td>
 <td><p>Return numeric value from cell</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.cell_require_string" title="atomica.excel.cell_require_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_require_string</span></code></a>(cell)</p></td>
-<td><p>Check that a cell contains a string</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.cell_get_string" title="atomica.excel.cell_get_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_get_string</span></code></a>(cell[, allow_empty])</p></td>
+<td><p>Return string value from cell</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.read_tables" title="atomica.excel.read_tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_tables</span></code></a>(worksheet)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.df_from_table" title="atomica.excel.df_from_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">df_from_table</span></code></a>(table[, index])</p></td>
+<td><p>Convert a table to a dataframe</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.standard_formats" title="atomica.excel.standard_formats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">standard_formats</span></code></a>(workbook)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.read_tables" title="atomica.excel.read_tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_tables</span></code></a>(worksheet)</p></td>
+<td><p>Read tables from sheet</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.standard_formats" title="atomica.excel.standard_formats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">standard_formats</span></code></a>(workbook)</p></td>
 <td><p>the formats used in the spreadsheet</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.transfer_comments" title="atomica.excel.transfer_comments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transfer_comments</span></code></a>(target, comment_source)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.transfer_comments" title="atomica.excel.transfer_comments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transfer_comments</span></code></a>(target, comment_source)</p></td>
 <td><p>Copy comments between spreadsheets</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.update_widths" title="atomica.excel.update_widths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_widths</span></code></a>(width_dict, column_index, contents)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.update_widths" title="atomica.excel.update_widths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_widths</span></code></a>(width_dict, column_index, contents)</p></td>
 <td><p>Keep track of required width for a column</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.validate_category" title="atomica.excel.validate_category"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_category</span></code></a>(workbook, expected_category)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.validate_category" title="atomica.excel.validate_category"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_category</span></code></a>(workbook, expected_category)</p></td>
 <td><p>Check Atomica workbook type</p></td>
 </tr>
 </tbody>
@@ -465,12 +469,6 @@ if they are present in the spreadsheet.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="atomica.excel.TimeDependentValuesEntry.ts">
-<code class="sig-name descname">ts</code><em class="property"> = None</em><a class="headerlink" href="#atomica.excel.TimeDependentValuesEntry.ts" title="Permalink to this definition">¶</a></dt>
-<dd><p>dict of <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code> objects</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="atomica.excel.TimeDependentValuesEntry.tvec">
 <code class="sig-name descname">tvec</code><em class="property"> = None</em><a class="headerlink" href="#atomica.excel.TimeDependentValuesEntry.tvec" title="Permalink to this definition">¶</a></dt>
 <dd><p>time axis (e.g. np.arange(2000,2019)) - all TimeSeries time values must exactly match one of the values here</p>
@@ -554,26 +552,54 @@ can use this input to guarantee that the resulting number is of the correct type
 </dd></dl>
 
 <dl class="function">
-<dt id="atomica.excel.cell_require_string">
-<code class="sig-prename descclassname">atomica.excel.</code><code class="sig-name descname">cell_require_string</code><span class="sig-paren">(</span><em class="sig-param">cell</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#cell_require_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.cell_require_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that a cell contains a string</p>
+<dt id="atomica.excel.cell_get_string">
+<code class="sig-prename descclassname">atomica.excel.</code><code class="sig-name descname">cell_get_string</code><span class="sig-paren">(</span><em class="sig-param">cell</em>, <em class="sig-param">allow_empty=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#cell_get_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.cell_get_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return string value from cell</p>
+<p>This function checks if a cell contains a string. If it does, the stripped value
+will be returned. Otherwise, an informative error will be raised</p>
+<p>Note that the string type is determined from the cell’s value rather than
+the openpyxl cell data type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>cell</strong> – An openpyxl cell</p>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code> with informative message if the cell value is not a string</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A string with the contents of the cell</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
+<dt id="atomica.excel.df_from_table">
+<code class="sig-prename descclassname">atomica.excel.</code><code class="sig-name descname">df_from_table</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">index=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#df_from_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.df_from_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a table to a dataframe</p>
+<p>If a column is completely empty, it will be skipped
+:param table: A single table read in using <cite>at.excel.read_tables()</cite>
+:param index: A list of column headings to use as indices
+:rtype: <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>
+:return: A dataframe</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="atomica.excel.read_tables">
 <code class="sig-prename descclassname">atomica.excel.</code><code class="sig-name descname">read_tables</code><span class="sig-paren">(</span><em class="sig-param">worksheet</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#read_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.read_tables" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Read tables from sheet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>worksheet</strong> – An openpyxl worksheet</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple containing - A list of tables (which is a list of rows, terminated by an empty row in the original spreadsheet),
+and a list of start row indices for each table read in</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="function">
 <dt id="atomica.excel.standard_formats">

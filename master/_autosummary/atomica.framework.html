@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -180,13 +181,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -214,9 +215,6 @@ class, which provides a Python representation of a Framework file.</p>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.generate_framework_doc" title="atomica.framework.generate_framework_doc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_framework_doc</span></code></a>(framework, fname[, …])</p></td>
 <td><p>Generate a framework documentation template file</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.sanitize_dataframe" title="atomica.framework.sanitize_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sanitize_dataframe</span></code></a>(df, required_columns, …)</p></td>
-<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -379,7 +377,7 @@ It then goes through all of the code names, and recursively replaces any charact
 the compartments contained in the characteristic.</p>
 <p>The final return value is then a list of all of the compartment names that are included in the original
 <code class="docutils literal notranslate"><span class="pre">includes</span></code>. Typical usage of this function is to pass in a single characteristic name e.g.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Framework</span><span class="o">.</span><span class="n">get_charac_includes</span><span class="p">(</span><span class="s1">&#39;alive&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Framework</span><span class="o">.</span><span class="n">get_charac_includes</span><span class="p">(</span><span class="s1">&#39;alive&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -472,7 +470,7 @@ return ‘probability (per day)’ for use in the databook.</p>
 then it will be returned unchanged. Thus this function can be used to normalize inputs
 and guarantee full names.</p>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Framework</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s1">&#39;b_rate&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Framework</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s1">&#39;b_rate&#39;</span><span class="p">)</span>
 <span class="go">&#39;Number of births&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Framework</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s1">&#39;Number of births&#39;</span><span class="p">)</span>
 <span class="go">&#39;Number of births&#39;</span>
@@ -628,6 +626,23 @@ with all of the attributes (columns) in the dataframe.</p>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="atomica.framework.ProjectFramework.save_new">
+<code class="sig-name descname">save_new</code><span class="sig-paren">(</span><em class="sig-param">fname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.save_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.save_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save regenerated framework to disk</p>
+<p>Rather that saving the originally provided spreadsheet, this function writes a spreadsheet
+based on the actual dataframes present. This allows programmatic modifications to
+frameworks to be viewed in Excel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> – File name to write on disk</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="atomica.framework.ProjectFramework.sheets">
 <code class="sig-name descname">sheets</code><em class="property"> = None</em><a class="headerlink" href="#atomica.framework.ProjectFramework.sheets" title="Permalink to this definition">¶</a></dt>
@@ -638,6 +653,15 @@ with all of the attributes (columns) in the dataframe.</p>
 <dt id="atomica.framework.ProjectFramework.spreadsheet">
 <code class="sig-name descname">spreadsheet</code><em class="property"> = None</em><a class="headerlink" href="#atomica.framework.ProjectFramework.spreadsheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <code class="docutils literal notranslate"><span class="pre">sc.Spreadsheet</span></code> object containing the original Excel file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="atomica.framework.ProjectFramework.to_spreadsheet">
+<code class="sig-name descname">to_spreadsheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.to_spreadsheet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.to_spreadsheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return content as a Sciris Spreadsheet</p>
+<p>This
+:rtype: <code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code>
+:return: A <code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.Spreadsheet</span></code> instance</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -652,6 +676,33 @@ with all of the attributes (columns) in the dataframe.</p>
 <dd><p>Current Atomica version</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="atomica.framework._sanitize_dataframe">
+<code class="sig-prename descclassname">atomica.framework.</code><code class="sig-name descname">_sanitize_dataframe</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">required_columns</em>, <em class="sig-param">defaults</em>, <em class="sig-param">valid_content</em>, <em class="sig-param">set_index=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#_sanitize_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.framework._sanitize_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take in a DataFrame and sanitize it</p>
+<p>This function gets called for most/all of the dataframes in the framework. It checks that
+required columns are present, adds default values, and checks that content is valid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>) – The DataFrame to sanitize</p></li>
+<li><p><strong>required_columns</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>) – A list of column names that must be present</p></li>
+<li><p><strong>defaults</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – A dict/odict mapping column names to default values. If a column is not present, it will be initialized with this value. If entries in this column are None, they will be assigned this value
+The default value can be a lambda function</p></li>
+<li><p><strong>valid_content</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – A dict mapping column names to valid content. If specified, all elements of the column must be members of the iterable (normally this would be a set)
+If ‘valid_content’ is None, then instead it will be checked that all of the values are NOT null i.e. use valid_content=None to specify it cannot be empty</p></li>
+<li><p><strong>set_index</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Optional, if provided, sets the dataframe’s index to this column. This column should <em>not</em> be in the list of <code class="docutils literal notranslate"><span class="pre">required_columns</span></code> as it will not be present after the index is changed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Sanitized dataframe</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -673,11 +724,6 @@ Markdown template file for the framework</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="function">
-<dt id="atomica.framework.sanitize_dataframe">
-<code class="sig-prename descclassname">atomica.framework.</code><code class="sig-name descname">sanitize_dataframe</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">required_columns</em>, <em class="sig-param">defaults</em>, <em class="sig-param">valid_content</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#sanitize_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.framework.sanitize_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </div>
 

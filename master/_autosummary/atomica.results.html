@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -180,13 +181,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -428,7 +429,7 @@ so it probably wouldn’t matter.</p>
 
 <dl class="method">
 <dt id="atomica.results.Ensemble.plot_series">
-<code class="sig-name descname">plot_series</code><span class="sig-paren">(</span><em class="sig-param">fig=None</em>, <em class="sig-param">style='quartile'</em>, <em class="sig-param">results=None</em>, <em class="sig-param">outputs=None</em>, <em class="sig-param">pops=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/results.html#Ensemble.plot_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.results.Ensemble.plot_series" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_series</code><span class="sig-paren">(</span><em class="sig-param">fig=None</em>, <em class="sig-param">style='quartile'</em>, <em class="sig-param">results=None</em>, <em class="sig-param">outputs=None</em>, <em class="sig-param">pops=None</em>, <em class="sig-param">legend=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/results.html#Ensemble.plot_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.results.Ensemble.plot_series" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a time series with uncertainty</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -557,7 +558,7 @@ example, as a vertical line on density estimates, or a solid line on a time seri
 if no samples are present yet, or an empty list if no samples present.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>&lt;built-in function array&gt;</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A time array from one of the stores <code class="xref py py-class docutils literal notranslate"><span class="pre">PlotData</span></code> instances</p>
@@ -616,22 +617,6 @@ class are oriented at plotting and exporting.</p>
 </dd>
 </dl>
 <dl class="method">
-<dt id="atomica.results.Result.budget">
-<code class="sig-name descname">budget</code><span class="sig-paren">(</span><em class="sig-param">year=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/results.html#Result.budget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.results.Result.budget" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return budget at a given year</p>
-<p>This will return the per-year spending rate taking into account
-any budget scenarios that are present.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>year</strong> – Optionally specify a time or array of times. Otherwise, use all times</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">dict</span></code> keyed by program name containing arrays of spending values</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="atomica.results.Result.charac_names">
 <code class="sig-name descname">charac_names</code><span class="sig-paren">(</span><em class="sig-param">pop_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/results.html#Result.charac_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.results.Result.charac_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return list of characteristic names</p>
@@ -646,6 +631,23 @@ population</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>List of characteristic code names</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="atomica.results.Result.check_for_nans">
+<code class="sig-name descname">check_for_nans</code><span class="sig-paren">(</span><em class="sig-param">verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/results.html#Result.check_for_nans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.results.Result.check_for_nans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if any NaNs/Infs are present</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – Print NaN/Inf quantities</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if any quantities contain NaNs/Infs</p>
 </dd>
 </dl>
 </dd></dl>
@@ -714,18 +716,19 @@ values, and then optionally saves it to an Excel file.</p>
 <dl class="method">
 <dt id="atomica.results.Result.get_alloc">
 <code class="sig-name descname">get_alloc</code><span class="sig-paren">(</span><em class="sig-param">year=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/results.html#Result.get_alloc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.results.Result.get_alloc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return spending allocation
-If the result was generated using programs, this method
-:param year: Optionally specify a scalar or list/array of years to return budget values</p>
-<blockquote>
-<div><p>for. Otherwise, uses all simulation times</p>
-</div></blockquote>
+<dd><p>Return spending allocation</p>
+<p>If the result was generated using programs, this method will return the spending
+on all programs in the requested years.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>year</strong> – Optionally specify a scalar or list/array of years to return budget values
+for. Otherwise, uses all simulation times</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dictionary keyed by program name with arrays of spending values</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary keyed by program name with arrays of spending values</p>
 </dd>
 </dl>
 </dd></dl>
@@ -737,6 +740,8 @@ If the result was generated using programs, this method
 <p>This function is the primary function to use when wanting to query coverage
 values. All coverage quantities are accessible via the <a class="reference internal" href="#atomica.results.Result" title="atomica.results.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code></a> object
 because the compartment sizes and thus eligible people are known.</p>
+<p><strong>Caution</strong> - capacity and number covered are returned in units of ‘people/year’. They need to be
+accumulated by integration rather than summation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -754,6 +759,26 @@ for. Otherwise, uses all simulation times</p></li>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Requested values in dictionary <code class="docutils literal notranslate"><span class="pre">{prog_name:value}</span></code> in requested years</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="atomica.results.Result.get_equivalent_alloc">
+<code class="sig-name descname">get_equivalent_alloc</code><span class="sig-paren">(</span><em class="sig-param">year=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/results.html#Result.get_equivalent_alloc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.results.Result.get_equivalent_alloc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return minimal spending allocation for a given year based on the coverage</p>
+<p>If the result was generated using programs, this method will return the spending
+on all programs in the requested years.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>year</strong> – Optionally specify a scalar or list/array of years to return budget values
+for. Otherwise, uses all simulation times</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary keyed by program name with arrays of spending values</p>
 </dd>
 </dl>
 </dd></dl>
@@ -801,12 +826,6 @@ once in the list of names)</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="atomica.results.Result.model">
-<code class="sig-name descname">model</code><em class="property"> = None</em><a class="headerlink" href="#atomica.results.Result.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>A completed model run that serves as primary storage for the underlying values</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="atomica.results.Result.par_names">
 <code class="sig-name descname">par_names</code><span class="sig-paren">(</span><em class="sig-param">pop_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/results.html#Result.par_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.results.Result.par_names" title="Permalink to this definition">¶</a></dt>
@@ -824,12 +843,6 @@ population</p>
 <dd class="field-odd"><p>List of parameter code names</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.results.Result.parset_name">
-<code class="sig-name descname">parset_name</code><em class="property"> = None</em><a class="headerlink" href="#atomica.results.Result.parset_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>The name of the ParameterSet that was used for the simulation</p>
 </dd></dl>
 
 <dl class="method">
@@ -867,19 +880,13 @@ in <code class="docutils literal notranslate"><span class="pre">Result.pop_names
 </dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="atomica.results.Result.pop_names">
-<code class="sig-name descname">pop_names</code><em class="property"> = None</em><a class="headerlink" href="#atomica.results.Result.pop_names" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of the population names present. This gets frequently used, so it is saved as an actual output</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="atomica.results.Result.t">
 <em class="property">property </em><code class="sig-name descname">t</code><a class="headerlink" href="#atomica.results.Result.t" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return simulation time vector</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>&lt;built-in function array&gt;</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Array of all time points available in the result</p>
@@ -1033,7 +1040,7 @@ plotted are probabilities. Selecting the annualized value at a particular year a
 data being exported will match up with whatever plots are generated from within Atomica.</p>
 <p>Optionally can specify a list/set of names of the plots/cascades to include in the export
 Set to an empty list to omit that category e.g.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_names</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># export all plots in framework</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_names</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># export all plots in framework</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="c1"># export only plots &#39;a&#39; and &#39;b&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_names</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># don&#39;t export any plots e.g. to only export cascades</span>
 </pre></div>

@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -169,53 +170,100 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">.version</span> <span class="k">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
-<span class="kn">from</span> <span class="nn">.calibration</span> <span class="k">import</span> <span class="n">perform_autofit</span>
-<span class="kn">from</span> <span class="nn">.data</span> <span class="k">import</span> <span class="n">ProjectData</span>
-<span class="kn">from</span> <span class="nn">.framework</span> <span class="k">import</span> <span class="n">ProjectFramework</span>
-<span class="kn">from</span> <span class="nn">.model</span> <span class="k">import</span> <span class="n">run_model</span>
-<span class="kn">from</span> <span class="nn">.parameters</span> <span class="k">import</span> <span class="n">ParameterSet</span>
+<span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
+<span class="kn">from</span> <span class="nn">.calibration</span> <span class="kn">import</span> <span class="n">perform_autofit</span>
+<span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">ProjectData</span>
+<span class="kn">from</span> <span class="nn">.framework</span> <span class="kn">import</span> <span class="n">ProjectFramework</span>
+<span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">run_model</span>
+<span class="kn">from</span> <span class="nn">.parameters</span> <span class="kn">import</span> <span class="n">ParameterSet</span>
 
-<span class="kn">from</span> <span class="nn">.programs</span> <span class="k">import</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">ProgramInstructions</span>
-<span class="kn">from</span> <span class="nn">.scenarios</span> <span class="k">import</span> <span class="n">Scenario</span><span class="p">,</span> <span class="n">ParameterScenario</span><span class="p">,</span> <span class="n">CombinedScenario</span><span class="p">,</span> <span class="n">BudgetScenario</span><span class="p">,</span> <span class="n">CoverageScenario</span>
-<span class="kn">from</span> <span class="nn">.optimization</span> <span class="k">import</span> <span class="n">Optimization</span><span class="p">,</span> <span class="n">optimize</span><span class="p">,</span> <span class="n">InvalidInitialConditions</span>
-<span class="kn">from</span> <span class="nn">.system</span> <span class="k">import</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">.cascade</span> <span class="k">import</span> <span class="n">sanitize_cascade</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">NDict</span><span class="p">,</span> <span class="n">evaluate_plot_string</span><span class="p">,</span> <span class="n">NamedItem</span><span class="p">,</span> <span class="n">TimeSeries</span>
-<span class="kn">from</span> <span class="nn">.plotting</span> <span class="k">import</span> <span class="n">PlotData</span><span class="p">,</span> <span class="n">plot_series</span>
-<span class="kn">from</span> <span class="nn">.results</span> <span class="k">import</span> <span class="n">Result</span>
-<span class="kn">from</span> <span class="nn">.migration</span> <span class="k">import</span> <span class="n">migrate</span>
+<span class="kn">from</span> <span class="nn">.programs</span> <span class="kn">import</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">ProgramInstructions</span>
+<span class="kn">from</span> <span class="nn">.scenarios</span> <span class="kn">import</span> <span class="n">Scenario</span><span class="p">,</span> <span class="n">ParameterScenario</span><span class="p">,</span> <span class="n">CombinedScenario</span><span class="p">,</span> <span class="n">BudgetScenario</span><span class="p">,</span> <span class="n">CoverageScenario</span>
+<span class="kn">from</span> <span class="nn">.optimization</span> <span class="kn">import</span> <span class="n">Optimization</span><span class="p">,</span> <span class="n">optimize</span><span class="p">,</span> <span class="n">InvalidInitialConditions</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">.cascade</span> <span class="kn">import</span> <span class="n">sanitize_cascade</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">NDict</span><span class="p">,</span> <span class="n">evaluate_plot_string</span><span class="p">,</span> <span class="n">NamedItem</span><span class="p">,</span> <span class="n">TimeSeries</span>
+<span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">PlotData</span><span class="p">,</span> <span class="n">plot_series</span>
+<span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
+<span class="kn">from</span> <span class="nn">.migration</span> <span class="kn">import</span> <span class="n">migrate</span>
 <span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tqdm</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timezone</span>
+
 
 <div class="viewcode-block" id="ProjectSettings"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.ProjectSettings">[docs]</a><span class="k">class</span> <span class="nc">ProjectSettings</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_dt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_start</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">sim_end</span><span class="o">=</span><span class="mi">2035</span><span class="p">,</span> <span class="n">sim_dt</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sim_start</span> <span class="o">=</span> <span class="n">sim_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sim_dt</span> <span class="o">=</span> <span class="n">sim_dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sim_end</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_time_vector</span><span class="p">(</span><span class="n">end</span><span class="o">=</span><span class="n">sim_end</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">sim_start</span> <span class="o">=</span> <span class="n">sim_start</span> <span class="k">if</span> <span class="n">sim_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">2000.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">=</span> <span class="n">sim_end</span> <span class="k">if</span> <span class="n">sim_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">2035.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sim_dt</span> <span class="o">=</span> <span class="n">sim_dt</span> <span class="k">if</span> <span class="n">sim_dt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">0.25</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Initialized project settings.&quot;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Print object &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">prepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">output</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">tvec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_dt</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_dt</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">sim_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sim_start</span>
 
-<div class="viewcode-block" id="ProjectSettings.update_time_vector"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.ProjectSettings.update_time_vector">[docs]</a>    <span class="k">def</span> <span class="nf">update_time_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Calculate time vector. &quot;&quot;&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sim_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sim_end</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sim_dt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sim_dt</span>
+
+    <span class="nd">@sim_start</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">sim_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_start</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sim_start</span> <span class="o">=</span> <span class="n">sim_start</span>
+
+    <span class="nd">@sim_end</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">sim_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_end</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sim_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_start</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">sim_end</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_start</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_dt</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_dt</span>
+        <span class="k">if</span> <span class="n">sim_end</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sim_end</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Changing sim end from </span><span class="si">{sim_end}</span><span class="s1"> to </span><span class="si">{self._sim_end}</span><span class="s1"> ({(self._sim_end-self._sim_start)/self._sim_dt:.0f} timesteps)&#39;</span><span class="p">)</span>
+
+    <span class="nd">@sim_dt</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">sim_dt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_dt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sim_dt</span> <span class="o">=</span> <span class="n">sim_dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span> <span class="c1"># Call the setter function to change sim_end if it is no longer valid</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tvec</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return simulation time vector</span>
+
+<span class="sd">        This method uses `linspace` rather than `arange` to avoid accumulating numerical errors that prevent</span>
+<span class="sd">        integer years aligning exactly.</span>
+
+<span class="sd">        :return: Array of simulation times</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_start</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_dt</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ProjectSettings.update_time_vector"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.ProjectSettings.update_time_vector">[docs]</a>    <span class="k">def</span> <span class="nf">update_time_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the project simulation times</span>
+
+<span class="sd">        :param start: Optionally provide new start year (e.g. &#39;2018&#39;)</span>
+<span class="sd">        :param end: Optionally provide new end year (e.g. &#39;2035&#39;)</span>
+<span class="sd">        :param dt: Optionally provide new step size, in years (e.g. &#39;0.25&#39; for quarterly steps</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sim_start</span> <span class="o">=</span> <span class="n">start</span>
+
         <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">=</span> <span class="n">end</span>
+
         <span class="k">if</span> <span class="n">dt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sim_dt</span> <span class="o">=</span> <span class="n">dt</span>
-        <span class="k">return</span> <span class="kc">None</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sim_dt</span> <span class="o">=</span> <span class="n">dt</span></div></div>
 
 
 <div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
@@ -246,7 +294,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">databook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">databook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">NamedItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">framework</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">):</span>
@@ -273,7 +321,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">progbook</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># This will contain an sc.Spreadsheet when the user loads one</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">ProjectSettings</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># Global settings</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_result_update_required</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># This flag is set to True by migration is the result objects contained in this Project are out of date due to a migration change</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># This flag is set to True by migration is the result objects contained in this Project are out of date due to a migration change</span>
 
         <span class="c1"># Load project data, if available</span>
         <span class="k">if</span> <span class="n">framework</span> <span class="ow">and</span> <span class="n">databook</span><span class="p">:</span>
@@ -286,7 +334,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">databook</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># This will contain an sc.Spreadsheet when the user loads one</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Print out useful information when called &quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">objrepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;      Project name: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
@@ -299,8 +347,8 @@
         <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;      Results sets: </span><span class="si">%i</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">)</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;   Atomica version: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
-        <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;      Date created: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sc</span><span class="o">.</span><span class="n">getdate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">created</span><span class="p">)</span>
-        <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;     Date modified: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sc</span><span class="o">.</span><span class="n">getdate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modified</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;      Date created: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sc</span><span class="o">.</span><span class="n">getdate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">created</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span><span class="n">dateformat</span> <span class="o">=</span> <span class="s1">&#39;%Y-%b-</span><span class="si">%d</span><span class="s1"> %H:%M:%S %Z&#39;</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;     Date modified: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sc</span><span class="o">.</span><span class="n">getdate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modified</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span><span class="n">dateformat</span> <span class="o">=</span> <span class="s1">&#39;%Y-%b-</span><span class="si">%d</span><span class="s1"> %H:%M:%S %Z&#39;</span><span class="p">)</span>
 <span class="c1">#        output += &#39;  Datasheet loaded: %s\n&#39; % sc.getdate(self.databookloaddate)</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;        Git branch: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">gitinfo</span><span class="p">[</span><span class="s1">&#39;branch&#39;</span><span class="p">]</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="s1">&#39;          Git hash: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">gitinfo</span><span class="p">[</span><span class="s1">&#39;hash&#39;</span><span class="p">]</span>
@@ -355,14 +403,14 @@
 
         <span class="c1"># If there are existing progsets, make sure the new data is consistent with them</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">progsets</span><span class="p">:</span>
-            <span class="n">data_pops</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            <span class="n">data_pops</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
             <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">progsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="k">assert</span> <span class="n">data_pops</span> <span class="o">==</span> <span class="nb">set</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span> <span class="s1">&#39;Existing progsets exist with populations that do not match the new databook&#39;</span>
+                <span class="k">assert</span> <span class="n">data_pops</span> <span class="o">==</span> <span class="nb">set</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span> <span class="s1">&#39;Existing progsets exist with populations that do not match the new databook&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">framework</span><span class="p">)</span>  <span class="c1"># Make sure the data is suitable for use in the Project (as opposed to just manipulating the databook)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">databook</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">databook_spreadsheet</span><span class="p">)</span>  <span class="c1"># Actually a shallow copy is fine here because sc.Spreadsheet contains no mutable properties</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">modified</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modified</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update_time_vector</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">start_year</span><span class="p">)</span>  <span class="c1"># Align sim start year with data start year.</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s1">&#39;is source&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
@@ -431,7 +479,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;parameter&#39;</span><span class="p">:</span> <span class="n">ParameterScenario</span><span class="p">,</span><span class="s1">&#39;budget&#39;</span><span class="p">:</span> <span class="n">BudgetScenario</span><span class="p">,</span><span class="s1">&#39;coverage&#39;</span><span class="p">:</span> <span class="n">CoverageScenario</span><span class="p">,</span><span class="s1">&#39;combined&#39;</span><span class="p">:</span> <span class="n">CombinedScenario</span><span class="p">}</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;parameter&#39;</span><span class="p">:</span> <span class="n">ParameterScenario</span><span class="p">,</span> <span class="s1">&#39;budget&#39;</span><span class="p">:</span> <span class="n">BudgetScenario</span><span class="p">,</span> <span class="s1">&#39;coverage&#39;</span><span class="p">:</span> <span class="n">CoverageScenario</span><span class="p">,</span> <span class="s1">&#39;combined&#39;</span><span class="p">:</span> <span class="n">CombinedScenario</span><span class="p">}</span>
         <span class="n">scenario</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">which</span><span class="p">](</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">scenario</span></div>
@@ -449,7 +497,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">except</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, parset &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -462,7 +510,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">progsets</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">except</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, progset &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -475,7 +523,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">except</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, scenario &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -488,7 +536,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">optims</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">except</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, scenario &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -503,7 +551,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">except</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, scenario &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
 
@@ -511,7 +559,7 @@
             <span class="n">key</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-        <span class="k">except</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, results &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>  <span class="c1"># Returns None</span></div>
 
     <span class="c1">#######################################################################################################</span>
@@ -549,7 +597,7 @@
         <span class="sd">&quot;&quot;&quot; Modify the project settings, e.g. the simulation time vector. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update_time_vector</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">sim_start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">sim_end</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">sim_dt</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.run_sim"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.run_sim">[docs]</a>    <span class="k">def</span> <span class="nf">run_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">result_name</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.run_sim"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.run_sim">[docs]</a>    <span class="k">def</span> <span class="nf">run_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">result_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run a single simulation</span>
 
@@ -585,13 +633,13 @@
         <span class="n">tm</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">run_model</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="n">progset</span><span class="p">,</span>
                            <span class="n">program_instructions</span><span class="o">=</span><span class="n">progset_instructions</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">result_name</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Elapsed time for running &quot;</span><span class="si">%s</span><span class="s1">&quot;: </span><span class="si">%s</span><span class="s1">s&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">toc</span><span class="p">(</span><span class="n">tm</span><span class="p">,</span><span class="n">output</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Elapsed time for running &quot;</span><span class="si">%s</span><span class="s1">&quot;: </span><span class="si">%s</span><span class="s1">s&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">toc</span><span class="p">(</span><span class="n">tm</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">store_results</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="Project.run_sampled_sims"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.run_sampled_sims">[docs]</a>    <span class="k">def</span> <span class="nf">run_sampled_sims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">parset</span><span class="p">,</span><span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">progset_instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">result_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.run_sampled_sims"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.run_sampled_sims">[docs]</a>    <span class="k">def</span> <span class="nf">run_sampled_sims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">result_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run sampled simulations</span>
 
@@ -640,13 +688,13 @@
             <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result_names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">progset</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">progset_instructions</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">result_names</span><span class="p">)),</span> <span class="s2">&quot;Number of result names must match number of instructions&quot;</span>
 
         <span class="n">original_level</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">()</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span> <span class="c1"># Never print debug messages inside the sampling loop - note that depending on the platform, this may apply within `sc.parallelize`</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>  <span class="c1"># Never print debug messages inside the sampling loop - note that depending on the platform, this may apply within `sc.parallelize`</span>
 
         <span class="k">if</span> <span class="n">n_samples</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">_run_sampled_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="p">,</span> <span class="n">result_names</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="n">max_attempts</span><span class="p">)]</span>
         <span class="k">elif</span> <span class="n">parallel</span><span class="p">:</span>
             <span class="c1"># NB. The calling code must be wrapped in a &#39;if __name__ == &#39;__main__&#39; if on Windows</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="n">_run_sampled_sim</span><span class="p">,</span> <span class="n">iterarg</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;proj&#39;</span><span class="p">:</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;parset&#39;</span><span class="p">:</span><span class="n">parset</span><span class="p">,</span> <span class="s1">&#39;progset&#39;</span><span class="p">:</span><span class="n">progset</span><span class="p">,</span> <span class="s1">&#39;progset_instructions&#39;</span><span class="p">:</span><span class="n">progset_instructions</span><span class="p">,</span> <span class="s1">&#39;result_names&#39;</span><span class="p">:</span><span class="n">result_names</span><span class="p">,</span> <span class="s1">&#39;max_attempts&#39;</span><span class="p">:</span><span class="n">max_attempts</span><span class="p">})</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="n">_run_sampled_sim</span><span class="p">,</span> <span class="n">iterarg</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;proj&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;parset&#39;</span><span class="p">:</span> <span class="n">parset</span><span class="p">,</span> <span class="s1">&#39;progset&#39;</span><span class="p">:</span> <span class="n">progset</span><span class="p">,</span> <span class="s1">&#39;progset_instructions&#39;</span><span class="p">:</span> <span class="n">progset_instructions</span><span class="p">,</span> <span class="s1">&#39;result_names&#39;</span><span class="p">:</span> <span class="n">result_names</span><span class="p">,</span> <span class="s1">&#39;max_attempts&#39;</span><span class="p">:</span> <span class="n">max_attempts</span><span class="p">})</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">original_level</span> <span class="o">&lt;=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">:</span>
                 <span class="c1"># Print the progress bar if the logging level was INFO or lower</span>
@@ -654,7 +702,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">_run_sampled_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="p">,</span> <span class="n">result_names</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="n">max_attempts</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)]</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">original_level</span><span class="p">)</span> <span class="c1"># Reset the logger</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">original_level</span><span class="p">)</span>  <span class="c1"># Reset the logger</span>
 
         <span class="k">return</span> <span class="n">results</span></div>
 
@@ -713,7 +761,7 @@
 
         <span class="k">return</span> <span class="n">new_parset</span></div>
 
-<div class="viewcode-block" id="Project.run_scenarios"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.run_scenarios">[docs]</a>    <span class="k">def</span> <span class="nf">run_scenarios</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_results</span><span class="p">:</span><span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.run_scenarios"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.run_scenarios">[docs]</a>    <span class="k">def</span> <span class="nf">run_scenarios</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_results</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run all active scenarios</span>
 
@@ -755,7 +803,7 @@
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">unoptimized_result</span><span class="p">,</span> <span class="n">optimized_result</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">results</span></div>
 
-<div class="viewcode-block" id="Project.save"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="Project.save"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save binary project file</span>
 
@@ -786,7 +834,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">P</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">loadobj</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">loadobj</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">die</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Project</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">P</span></div>
 
@@ -796,7 +844,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="vm">__dict__</span></div>
 
 
-<div class="viewcode-block" id="_run_sampled_sim"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project._run_sampled_sim">[docs]</a><span class="k">def</span> <span class="nf">_run_sampled_sim</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">result_names</span><span class="p">:</span><span class="nb">list</span><span class="p">,</span> <span class="n">max_attempts</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="_run_sampled_sim"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project._run_sampled_sim">[docs]</a><span class="k">def</span> <span class="nf">_run_sampled_sim</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">result_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Internal function to run simulation with sampling</span>
 
@@ -821,7 +869,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">.model</span> <span class="k">import</span> <span class="n">BadInitialization</span>  <span class="c1"># avoid circular import</span>
+    <span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">BadInitialization</span>  <span class="c1"># avoid circular import</span>
 
     <span class="k">if</span> <span class="n">max_attempts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">max_attempts</span> <span class="o">=</span> <span class="mi">50</span>

@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -180,13 +181,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -214,7 +215,7 @@ generate various plots from model outputs.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.plotting.plot_bars" title="atomica.plotting.plot_bars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_bars</span></code></a>(plotdata[, stack_pops, …])</p></td>
 <td><p>Produce a bar plot</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.plotting.plot_legend" title="atomica.plotting.plot_legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_legend</span></code></a>(entries[, plot_type, fig])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.plotting.plot_legend" title="atomica.plotting.plot_legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_legend</span></code></a>(entries[, plot_type, fig, …])</p></td>
 <td><p>Render a new legend</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.plotting.plot_series" title="atomica.plotting.plot_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_series</span></code></a>(plotdata[, plot_type, axis, …])</p></td>
@@ -324,7 +325,7 @@ by <cite>dt</cite> and the units are multiplied by <cite>years</cite></p></li>
 <p>The <a class="reference internal" href="#atomica.plotting.Series" title="atomica.plotting.Series"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></a> objects stored within <a class="reference internal" href="#atomica.plotting.PlotData" title="atomica.plotting.PlotData"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotData</span></code></a> are each bound to a single
 result, population, and output. This operator makes it possible to easily retrieve
 a particular <a class="reference internal" href="#atomica.plotting.Series" title="atomica.plotting.Series"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></a> instance. For example,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 <span class="gp">... </span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">,</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;sus&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -339,14 +340,14 @@ a particular <a class="reference internal" href="#atomica.plotting.Series" title
 </dd></dl>
 
 <dl class="method">
-<dt id="atomica.plotting.PlotData._accumulate">
-<code class="sig-name descname">_accumulate</code><span class="sig-paren">(</span><em class="sig-param">accumulation_method</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#PlotData._accumulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.PlotData._accumulate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Internal method to accumulate values over time</p>
+<dt id="atomica.plotting.PlotData.accumulate">
+<code class="sig-name descname">accumulate</code><span class="sig-paren">(</span><em class="sig-param">accumulation_method</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#PlotData.accumulate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.PlotData.accumulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accumulate values over time</p>
 <p>Accumulation methods are</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>accumulation_method</strong> – <p>Select whether to add or integrate. Supported methods are:
-- ‘sum’ : runs <cite>cumsum</cite> on all quantities - should not be used if units are flow rates (so will check for ‘/year’).</p>
+- ‘sum’ : runs <cite>cumsum</cite> on all quantities - should not be used if units are flow rates (so will check for a timescale).</p>
 <blockquote>
 <div><p>Summation should be used for compartment-based quantities, such as DALYs</p>
 </div></blockquote>
@@ -367,39 +368,18 @@ Therefore, we need to use the time vector actually contained in the Series objec
 </dd></dl>
 
 <dl class="method">
-<dt id="atomica.plotting.PlotData._time_aggregate">
-<code class="sig-name descname">_time_aggregate</code><span class="sig-paren">(</span><em class="sig-param">t_bins</em>, <em class="sig-param">time_aggregation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#PlotData._time_aggregate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.PlotData._time_aggregate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Internal method for time aggregation</p>
-<p>Note that <em>accumulation</em> is a running total, whereas <em>aggregation</em> refers to binning. The two can be
-both be applied (with aggregation occuring prior to accumulation).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>t_bins</strong> – Vector of bin edges OR a scalar bin size, which will be automatically expanded to a vector of bin edges</p></li>
-<li><p><strong>time_aggregation</strong> – can be ‘sum’ or ‘average’. Note that for quantities that have a timescale, ‘sum’ behaves like integration
-so flow parameters in number units will be adjusted accordingly (e.g. a parameter in units of ‘people/day’
-aggregated over a 1 year period will display as the equivalent number of people that year)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="atomica.plotting.PlotData.interpolate">
 <code class="sig-name descname">interpolate</code><span class="sig-paren">(</span><em class="sig-param">new_tvec</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#PlotData.interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.PlotData.interpolate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate all <code class="docutils literal notranslate"><span class="pre">Series</span></code> onto new time values</p>
 <p>This will modify all of the contained <code class="docutils literal notranslate"><span class="pre">Series</span></code> objects in-place.
 The modified <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instance is also returned, so that interpolation and
 construction can be performed in one line. i.e. both</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 <span class="gp">... </span><span class="n">d</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">tvals</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>and</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vals</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">tvals</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vals</span> <span class="o">=</span> <span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">tvals</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>will work as intended.</p>
@@ -470,6 +450,34 @@ Then, the colors argument is applied to that list.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="atomica.plotting.PlotData.time_aggregate">
+<code class="sig-name descname">time_aggregate</code><span class="sig-paren">(</span><em class="sig-param">t_bins</em>, <em class="sig-param">time_aggregation=None</em>, <em class="sig-param">interpolation_method=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#PlotData.time_aggregate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.PlotData.time_aggregate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aggregate values over time</p>
+<p>Note that <em>accumulation</em> is a running total, whereas <em>aggregation</em> refers to binning. The two can be
+both be applied (aggregation should be performed prior to accumulation).</p>
+<p>Normally, aggregation is performed when constructing a <cite>PlotData</cite> instance and this method does not need
+to be manually called. However, in rare cases, it may be necessary to explicitly set the interpolation method.
+Specifically, the interpolation method needs to match the underlying assumption for parameter values. For
+parameter scenarios, this may require that the ‘previous’ method is used (to match the assumption in the parameter overwrite)
+rather than relying on the standard assumption that databook quantities can be interpolated directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t_bins</strong> – Vector of bin edges OR a scalar bin size, which will be automatically expanded to a vector of bin edges</p></li>
+<li><p><strong>time_aggregation</strong> – can be ‘sum’ or ‘average’. Note that for quantities that have a timescale, ‘sum’ behaves like integration
+so flow parameters in number units will be adjusted accordingly (e.g. a parameter in units of ‘people/day’
+aggregated over a 1 year period will display as the equivalent number of people that year)</p></li>
+<li><p><strong>interpolation_method</strong> – Assumption on how the quantity behaves in between timesteps - in general, ‘linear’ should be suitable for
+most dynamic quantities, while ‘previous’ should be used for spending and other program-related quantities.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="atomica.plotting.PlotData.tvals">
 <code class="sig-name descname">tvals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#PlotData.tvals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.PlotData.tvals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return vector of time values</p>
@@ -507,12 +515,6 @@ additional information only used for plotting, such as color.</p>
 </dd>
 </dl>
 <dl class="attribute">
-<dt id="atomica.plotting.Series.color">
-<code class="sig-name descname">color</code><em class="property"> = None</em><a class="headerlink" href="#atomica.plotting.Series.color" title="Permalink to this definition">¶</a></dt>
-<dd><p>the color to render the <cite>Series</cite> with</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="atomica.plotting.Series.data_label">
 <code class="sig-name descname">data_label</code><em class="property"> = None</em><a class="headerlink" href="#atomica.plotting.Series.data_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used to identify data for plotting - should match the name of a data TDVE</p>
@@ -546,42 +548,12 @@ the sophisticated aggregations within <cite>PlotData</cite>).</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="atomica.plotting.Series.output">
-<code class="sig-name descname">output</code><em class="property"> = None</em><a class="headerlink" href="#atomica.plotting.Series.output" title="Permalink to this definition">¶</a></dt>
-<dd><p>name of the output associated with the data</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.plotting.Series.pop">
-<code class="sig-name descname">pop</code><em class="property"> = None</em><a class="headerlink" href="#atomica.plotting.Series.pop" title="Permalink to this definition">¶</a></dt>
-<dd><p>name of the pop associated with the data</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.plotting.Series.result">
-<code class="sig-name descname">result</code><em class="property"> = None</em><a class="headerlink" href="#atomica.plotting.Series.result" title="Permalink to this definition">¶</a></dt>
-<dd><p>name of the result associated with ths data</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.plotting.Series.t_labels">
-<code class="sig-name descname">t_labels</code><em class="property"> = None</em><a class="headerlink" href="#atomica.plotting.Series.t_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterable array of time labels - could be set to strings like [2010-2014]</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="atomica.plotting.Series.timescale">
 <code class="sig-name descname">timescale</code><em class="property"> = None</em><a class="headerlink" href="#atomica.plotting.Series.timescale" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the quantity has a time-like denominator (e.g. number/year, probability/day) then the denominator is stored here (in units of years)
 This enables quantities to be time-aggregated correctly (e.g. number/day must be converted to number/timestep prior to summation or integration)
 For links, the timescale is normally just <code class="docutils literal notranslate"><span class="pre">dt</span></code>. This also enables more rigorous checking for quantities with time denominators than checking
 for a string like <code class="docutils literal notranslate"><span class="pre">'/year'</span></code> because users may not set this specifically.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.plotting.Series.tvec">
-<code class="sig-name descname">tvec</code><em class="property"> = None</em><a class="headerlink" href="#atomica.plotting.Series.tvec" title="Permalink to this definition">¶</a></dt>
-<dd><p>array of time values</p>
 </dd></dl>
 
 <dl class="method">
@@ -605,12 +577,6 @@ Compartments have units of ‘number’, while Links have units of ‘number/tim
 <dt id="atomica.plotting.Series.units">
 <code class="sig-name descname">units</code><em class="property"> = None</em><a class="headerlink" href="#atomica.plotting.Series.units" title="Permalink to this definition">¶</a></dt>
 <dd><p>The units for the quantity to display on the plot</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.plotting.Series.vals">
-<code class="sig-name descname">vals</code><em class="property"> = None</em><a class="headerlink" href="#atomica.plotting.Series.vals" title="Permalink to this definition">¶</a></dt>
-<dd><p>array of values</p>
 </dd></dl>
 
 </dd></dl>
@@ -652,7 +618,7 @@ by PlotData.</p>
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_expand_dict</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">}])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_expand_dict</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">}])</span>
 <span class="go">[&#39;a&#39;, {&#39;b&#39;: 1}, {&#39;c&#39;: 2}]</span>
 </pre></div>
 </div>
@@ -677,7 +643,7 @@ in the <cite>Model</cite> object that are required to compute the requested aggr
 </dd>
 </dl>
 <p>Example usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_extract_labels</span><span class="p">([</span><span class="s1">&#39;vac&#39;</span><span class="p">,{</span><span class="s1">&#39;a&#39;</span><span class="p">:[</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;sus&#39;</span><span class="p">]}])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_extract_labels</span><span class="p">([</span><span class="s1">&#39;vac&#39;</span><span class="p">,{</span><span class="s1">&#39;a&#39;</span><span class="p">:[</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;sus&#39;</span><span class="p">]}])</span>
 <span class="go">set([&#39;vac&#39;,&#39;sus&#39;])</span>
 </pre></div>
 </div>
@@ -811,14 +777,15 @@ will be rendered unstacked.</p></li>
 
 <dl class="function">
 <dt id="atomica.plotting.plot_legend">
-<code class="sig-prename descclassname">atomica.plotting.</code><code class="sig-name descname">plot_legend</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">plot_type='patch'</em>, <em class="sig-param">fig=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#plot_legend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.plot_legend" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">atomica.plotting.</code><code class="sig-name descname">plot_legend</code><span class="sig-paren">(</span><em class="sig-param">entries</em>, <em class="sig-param">plot_type=None</em>, <em class="sig-param">fig=None</em>, <em class="sig-param">legendsettings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#plot_legend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.plot_legend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Render a new legend</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>entries</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Dict where key is the label and value is the colour e.g. <cite>{‘sus’:’blue’,’vac’:’red’}</cite></p></li>
-<li><p><strong>plot_type</strong> – can be ‘patch’ or ‘line’</p></li>
+<li><p><strong>plot_type</strong> – Optionally specify ‘patch’, ‘line’, ‘circle’, or a list the same length as param_entries containing these values</p></li>
 <li><p><strong>fig</strong> – Optionally takes in the figure to render the legend in. If not provided, a new figure will be created</p></li>
+<li><p><strong>legendsettings</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]) – settings for the layout of the legend. If not provided will default to appropriate values depending on whether the legend is separate or together with a plot</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

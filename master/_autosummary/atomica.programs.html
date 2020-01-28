@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -180,13 +181,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -253,7 +254,7 @@ This function retrieves the appropriate delta given a boolean array flagging whi
 programs are active</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>progs</strong> (<em>&lt;built-in function array&gt;</em>) – A numpy boolean array, with length equal to the number of programs</p>
+<dd class="field-odd"><p><strong>progs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>) – A numpy boolean array, with length equal to the number of programs</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
@@ -418,7 +419,8 @@ and thus the array sizes should match the size of the time array.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>tvec</strong> – An array of times</p></li>
 <li><p><strong>capacity</strong> – An array of number of people covered (e.g. the output of <code class="docutils literal notranslate"><span class="pre">Program.get_capacity()</span></code>)
-This should be in units of ‘people’, rather than ‘people/year’</p></li>
+This should be in units of ‘people’, rather than ‘people/year’ although it may be a
+timestep-sensitive value if the capacity follows from a timestep-adjusted spend.</p></li>
 <li><p><strong>eligible</strong> – The number of people eligible for the program (computed from a model object or a Result)</p></li>
 </ul>
 </dd>
@@ -440,10 +442,32 @@ This should be in units of ‘people’, rather than ‘people/year’</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>&lt;built-in function array&gt;</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code></p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Array of spending values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="atomica.programs.Program.is_one_off">
+<em class="property">property </em><code class="sig-name descname">is_one_off</code><a class="headerlink" href="#atomica.programs.Program.is_one_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag for one-off programs</p>
+<p>A one-off program is a program where the cost is incurred once, per person impacted. For example, a treatment
+program where after treatment the person is no longer eligible for treatment. In contrast, a non-one-off program
+(a continuous program) is one where a person reached by the program remains eligible - for example, ART. In addition,
+one-off programs are typically linked to transition parameters, while continuous programs are typically linked to
+non-transition parameters.</p>
+<p>Whether a program is one-off or not depends on whether the unit cost is specified as
+- Cost per person (one-off)
+- Cost per person per year (continuous)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if program is a one-off program</p>
 </dd>
 </dl>
 </dd></dl>
@@ -691,7 +715,7 @@ having these values missing is be allowed</p></li>
 
 <dl class="method">
 <dt id="atomica.programs.ProgramSet._read_targeting">
-<code class="sig-name descname">_read_targeting</code><span class="sig-paren">(</span><em class="sig-param">sheet</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet._read_targeting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.programs.ProgramSet._read_targeting" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_read_targeting</code><span class="sig-paren">(</span><em class="sig-param">sheet</em>, <em class="sig-param">framework</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet._read_targeting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.programs.ProgramSet._read_targeting" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
@@ -896,7 +920,7 @@ by <code class="xref py py-meth docutils literal notranslate"><span class="pre">
 
 <dl class="method">
 <dt id="atomica.programs.ProgramSet.get_prop_coverage">
-<code class="sig-name descname">get_prop_coverage</code><span class="sig-paren">(</span><em class="sig-param">tvec</em>, <em class="sig-param">capacities</em>, <em class="sig-param">num_eligible</em>, <em class="sig-param">instructions=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.get_prop_coverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.programs.ProgramSet.get_prop_coverage" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_prop_coverage</code><span class="sig-paren">(</span><em class="sig-param">tvec</em>, <em class="sig-param">capacities</em>, <em class="sig-param">num_eligible</em>, <em class="sig-param">dt</em>, <em class="sig-param">instructions=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.get_prop_coverage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.programs.ProgramSet.get_prop_coverage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return fractional coverage</p>
 <p>Note that this function is primarily for internal usage (i.e. during
 model integration or reconciliation). Since the proportion covered depends
@@ -912,11 +936,12 @@ during integration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tvec</strong> – array of times (in years) - this is required to interpolate time-varying saturation values</p></li>
-<li><p><strong>capacities</strong> – dict of program coverages, should match the available programs (typically the output of <code class="docutils literal notranslate"><span class="pre">ProgramSet.get_capacities()</span></code>)
+<li><p><strong>tvec</strong> – scalar year, or array of years - this is required to interpolate time-varying saturation values</p></li>
+<li><p><strong>capacities</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – dict of program coverages, should match the available programs (typically the output of <code class="docutils literal notranslate"><span class="pre">ProgramSet.get_capacities()</span></code>)
 Note that since the capacity and eligible compartment sizes are being compared here,
 the capacity needs to be in units of ‘people’ (not ‘people/year’) at this point</p></li>
-<li><p><strong>num_eligible</strong> – dict of number of people covered by each program, computed externally and with one entry for each program</p></li>
+<li><p><strong>num_eligible</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – dict of number of people covered by each program, computed externally and with one entry for each program</p></li>
+<li><p><strong>dt</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – simulation timestep</p></li>
 <li><p><strong>instructions</strong> – optionally specify instructions, which can supply a coverage overwrite</p></li>
 </ul>
 </dd>

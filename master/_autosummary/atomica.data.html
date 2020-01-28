@@ -25,6 +25,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
@@ -180,13 +181,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -246,12 +247,6 @@ the static methods</p>
 <dt id="atomica.data.ProjectData._formats">
 <code class="sig-name descname">_formats</code><em class="property"> = None</em><a class="headerlink" href="#atomica.data.ProjectData._formats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Temporary storage for the Excel formatting while writing a databook</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="atomica.data.ProjectData._pop_types">
-<code class="sig-name descname">_pop_types</code><em class="property"> = None</em><a class="headerlink" href="#atomica.data.ProjectData._pop_types" title="Permalink to this definition">¶</a></dt>
-<dd><p>Store set of valid population types from framework</p>
 </dd></dl>
 
 <dl class="method">
@@ -422,7 +417,7 @@ Therefore, changing the time array won’t modify any of the data - it will only
 a databook is written (so typically this method would be called as part of preparing a modified databook).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tvec</strong> (<em>&lt;built-in function array&gt;</em>) – A float, list, or array containing time values (in years) for the databook</p>
+<dd class="field-odd"><p><strong>tvec</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>) – A float, list, or array containing time values (in years) for the databook</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
@@ -681,10 +676,13 @@ start year, if using all of the data in the databook is desired.</p>
 <dl class="method">
 <dt id="atomica.data.ProjectData.to_spreadsheet">
 <code class="sig-name descname">to_spreadsheet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/data.html#ProjectData.to_spreadsheet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.data.ProjectData.to_spreadsheet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return content as an <code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicaSpreadsheet</span></code></p>
+<dd><p>Return content as a Sciris Spreadsheet</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>An <code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicaSpreadsheet</span></code> instance</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.Spreadsheet</span></code> instance</p>
 </dd>
 </dl>
 </dd></dl>
