@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -918,10 +918,13 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ti</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:,</span> <span class="n">tr</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
 
         <span class="c1"># Advance the keyring</span>
-        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ti</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Now, the final subcompartment should be empty - can disable this check if it&#39;s slow</span>
+        <span class="c1"># If this TimedCompartment has only one row, then anyone coming in via TimedLinks will be placed directly</span>
+        <span class="c1"># in the final subcompartment (which is also the initial subcompartment). We are assuming that the cached</span>
+        <span class="c1"># outflow correctly emptied everyone in the flush compartment so don&#39;t check that the final subcompartment</span>
+        <span class="c1"># is empty because people could have been added to it in this timestep</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="n">ti</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># Zero out the inflow (otherwise, it just replicates previous value)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># Zero out the inflow (otherwise, it just replicates previous value)</span>
 
         <span class="c1"># Now, resolve other inputs for which durations are not preserved</span>
         <span class="c1"># Regardless of whether they are TimedLinks or not, they should go into the initial subcompartment</span>
@@ -988,8 +991,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">tvec</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">tvec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_dynamic</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">tvec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Characteristic.get_included_comps"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Characteristic.get_included_comps">[docs]</a>    <span class="k">def</span> <span class="nf">get_included_comps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">includes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1983,7 +1987,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_program_cache</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exec_order</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-
 <div class="viewcode-block" id="Model.relink"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Model.relink">[docs]</a>    <span class="k">def</span> <span class="nf">relink</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Replace IDs with references</span>
@@ -2253,7 +2256,7 @@
         <span class="c1"># dynamic programs or to program overwrites.</span>
         <span class="n">par_derivative</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;is derivative&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>  <span class="c1"># Store all parameter names in framework, as well as whether they are a derivative or not</span>
         <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
-        <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">par_derivative</span><span class="p">,</span><span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">par_derivative</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">dep</span><span class="p">,</span> <span class="n">dep_var</span> <span class="ow">in</span> <span class="n">par</span><span class="o">.</span><span class="n">deps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2279,7 +2282,6 @@
         <span class="n">exec_order</span><span class="p">[</span><span class="s1">&#39;all_pars&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">dag</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vars_by_pop</span><span class="p">]</span>  <span class="c1"># Not all parameters may exist depending on populations, so filter out only the ones that are actually instantiated in this Model</span>
         <span class="n">exec_order</span><span class="p">[</span><span class="s1">&#39;dynamic_pars&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">exec_order</span><span class="p">[</span><span class="s1">&#39;all_pars&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="s1">&#39;keep&#39;</span><span class="p">]]</span>
 
-
         <span class="c1"># Set the parameter execution order - this is a list of only transition parameters, used when updating links</span>
         <span class="c1"># This is a flat list of parameters, but the order actually should not matter since all parameters should be</span>
         <span class="c1"># resolved at this point</span>
@@ -2293,6 +2295,7 @@
         <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">charac</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">characs</span><span class="p">:</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">charac</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">include</span> <span class="ow">in</span> <span class="n">charac</span><span class="o">.</span><span class="n">includes</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">include</span><span class="p">,</span> <span class="n">Characteristic</span><span class="p">):</span>
                         <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">include</span><span class="p">,</span> <span class="n">charac</span><span class="p">)</span>  <span class="c1"># Note directionality - the included characteristic needs to be added first</span>

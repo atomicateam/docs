@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -169,6 +169,7 @@
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
+
 <div class="viewcode-block" id="standard_formats"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.standard_formats">[docs]</a><span class="k">def</span> <span class="nf">standard_formats</span><span class="p">(</span><span class="n">workbook</span><span class="p">):</span>
     <span class="c1"># Add standard formatting to a workbook and return the set of format objects</span>
     <span class="c1"># for use when writing within the workbook</span>
@@ -308,7 +309,7 @@
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">rows</span><span class="p">):</span>
 
         <span class="c1"># Skip any rows starting with &#39;#ignore&#39;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#ignore&#39;</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#ignore&#39;</span><span class="p">):</span>
             <span class="k">continue</span>  <span class="c1"># Move on to the next row if row skipping is marked True</span>
 
         <span class="c1"># Find out whether we need to add the row to the buffer</span>
@@ -331,22 +332,97 @@
 
     <span class="k">return</span> <span class="n">tables</span><span class="p">,</span> <span class="n">start_rows</span></div>
 
-<div class="viewcode-block" id="df_from_table"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.df_from_table">[docs]</a><span class="k">def</span> <span class="nf">df_from_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert a table to a dataframe</span>
 
-<span class="sd">    If a column is completely empty, it will be skipped</span>
-<span class="sd">    :param table: A single table read in using `at.excel.read_tables()`</span>
-<span class="sd">    :param index: A list of column headings to use as indices</span>
-<span class="sd">    :return: A dataframe</span>
+<div class="viewcode-block" id="read_dataframes"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.read_dataframes">[docs]</a><span class="k">def</span> <span class="nf">read_dataframes</span><span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read dataframes from sheet</span>
+
+<span class="sd">    This function operates similarly to ``read_tables`` except it returns Dataframes instead of</span>
+<span class="sd">    cells. This enables the dataframes to be constructed more quickly, at the expense of being</span>
+<span class="sd">    able to track the cell references and row numbers. These are shown for databooks (via ``read_tables``)</span>
+<span class="sd">    but not for frameworks (which go via ``read_dataframes``)</span>
+
+
+<span class="sd">    :param worksheet: An openpyxl worksheet</span>
+<span class="sd">    :param merge: If False (default) then blank rows will be used to split the dataframes. If True, only one</span>
+<span class="sd">                  DataFrame will be returned</span>
+<span class="sd">    :return: A list of DataFrames</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span> <span class="k">else</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># If a column is completely empty, including the header, ignore it. Helps avoid errors where blank cells are loaded by openpyxl due to extra non-value content</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1"># Remove duplicated first row</span>
-    <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">df</span></div>
+    <span class="c1"># This function takes in a openpyxl worksheet, and returns tables</span>
+    <span class="c1"># A table consists of a block of rows with any #ignore rows skipped</span>
+    <span class="c1"># This function will start at the top of the worksheet, read rows into a buffer</span>
+    <span class="c1"># until it gets to the first entirely empty row</span>
+    <span class="c1"># And then returns the contents of that buffer as a table. So a table is a list of openpyxl rows</span>
+    <span class="c1"># This function continues until it has exhausted all of the rows in the sheet</span>
+
+    <span class="n">content</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">worksheet</span><span class="o">.</span><span class="n">max_row</span><span class="p">,</span> <span class="n">worksheet</span><span class="o">.</span><span class="n">max_column</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="n">ignore</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">worksheet</span><span class="o">.</span><span class="n">max_row</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">empty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">worksheet</span><span class="o">.</span><span class="n">max_row</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>  <span class="c1"># True for index where a new table begins</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">rows</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;s&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#ignore&#39;</span><span class="p">)):</span>
+            <span class="n">ignore</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">continue</span>
+
+        <span class="n">any_values</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">data_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">}:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">any_values</span> <span class="ow">and</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">any_values</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">content</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">any_values</span><span class="p">:</span>
+            <span class="n">empty</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">tables</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">merge</span><span class="p">:</span>
+        <span class="n">ignore</span><span class="p">[</span><span class="n">empty</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">ignore</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">tables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="o">~</span><span class="n">ignore</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># A change from False to True means that we need to start a new table</span>
+        <span class="c1"># A True followed by a True doesn&#39;t start a new table but instead gets ignored</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="p">[</span><span class="o">~</span><span class="n">ignore</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">empty</span> <span class="o">=</span> <span class="n">empty</span><span class="p">[</span><span class="o">~</span><span class="n">ignore</span><span class="p">]</span>
+
+        <span class="c1"># If there is no content at all, return immediately</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">empty</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">empty</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">idx</span><span class="p">:</span>
+                <span class="c1"># Write the first line. This could be followed by an empty row, so need to a separate block for this</span>
+                <span class="n">idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">empty</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+                <span class="c1"># row i is the last row in the table (so need to include it in the range, hence +1)</span>
+                <span class="n">idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">empty</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+                <span class="c1"># Row i+1 marks the start of a table</span>
+                <span class="n">idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1"># If the last row has content, then make sure that the last table goes all the way up</span>
+            <span class="n">idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">empty</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;Error in table parsing routine, did not correctly identify table breaks&#39;</span>
+
+        <span class="n">tables</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">tables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">idx</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+    <span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dfs</span></div>
 
 
 <div class="viewcode-block" id="TimeDependentConnections"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.TimeDependentConnections">[docs]</a><span class="k">class</span> <span class="nc">TimeDependentConnections</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -381,7 +457,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">from_pops</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">to_pops</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">interpop_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ts</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">from_pop_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">to_pop_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tvec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">from_pops</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">to_pops</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">interpop_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ts</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">from_pop_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">to_pop_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code_name</span> <span class="o">=</span> <span class="n">code_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span> <span class="o">=</span> <span class="n">full_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">interpop_type</span>
@@ -392,6 +468,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="n">tvec</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span> <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1">#: Attributes associated with the table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts_attributes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1">#: Attributes associated with each TimeSeries row</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>  <span class="c1">#: Heading to use for assumption column</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have units)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have uncertainty)</span>
@@ -431,21 +509,37 @@
 
         <span class="k">assert</span> <span class="n">interaction_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;transfer&#39;</span><span class="p">,</span> <span class="s1">&#39;interaction&#39;</span><span class="p">},</span> <span class="s1">&#39;Unknown interaction type&#39;</span>
 
-        <span class="c1"># Read the name table</span>
-        <span class="n">code_name</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">full_name</span> <span class="o">=</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;from population type&#39;</span> <span class="ow">and</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">from_pop_type</span> <span class="o">=</span> <span class="n">cell_get_string</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">from_pop_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Read the TDC definition table (including attributes)</span>
+        <span class="n">code_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">full_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">from_pop_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">to_pop_type</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;to population type&#39;</span> <span class="ow">and</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">to_pop_type</span> <span class="o">=</span> <span class="n">cell_get_string</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">to_pop_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">header_cell</span><span class="p">,</span> <span class="n">value_cell</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">header_cell</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">cell_get_string</span><span class="p">(</span><span class="n">header_cell</span><span class="p">)</span>
+            <span class="n">lowered_header</span> <span class="o">=</span> <span class="n">header</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">lowered_header</span> <span class="o">==</span> <span class="s1">&#39;abbreviation&#39;</span><span class="p">:</span>
+                <span class="n">code_name</span> <span class="o">=</span> <span class="n">cell_get_string</span><span class="p">(</span><span class="n">value_cell</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">lowered_header</span> <span class="o">==</span> <span class="s1">&#39;full name&#39;</span><span class="p">:</span>
+                <span class="n">full_name</span> <span class="o">=</span> <span class="n">cell_get_string</span><span class="p">(</span><span class="n">value_cell</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">lowered_header</span> <span class="o">==</span> <span class="s1">&#39;from population type&#39;</span><span class="p">:</span>
+                <span class="n">from_pop_type</span> <span class="o">=</span> <span class="n">cell_get_string</span><span class="p">(</span><span class="n">value_cell</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">lowered_header</span> <span class="o">==</span> <span class="s1">&#39;to population type&#39;</span><span class="p">:</span>
+                <span class="n">to_pop_type</span> <span class="o">=</span> <span class="n">cell_get_string</span><span class="p">(</span><span class="n">value_cell</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">attributes</span><span class="p">[</span><span class="n">header</span><span class="p">]</span> <span class="o">=</span> <span class="n">value_cell</span><span class="o">.</span><span class="n">value</span>
 
         <span class="k">if</span> <span class="n">interaction_type</span> <span class="o">==</span> <span class="s1">&#39;transfer&#39;</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">from_pop_type</span> <span class="o">==</span> <span class="n">to_pop_type</span><span class="p">,</span> <span class="s1">&#39;Transfers can only occur between populations of the same type&#39;</span>
+
+        <span class="k">if</span> <span class="n">code_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Code name/abbreviation missing&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">full_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Full name missing&#39;</span><span class="p">)</span>
 
         <span class="c1"># Read the pops from the Y/N table. The Y/N content of the table depends on the timeseries objects that</span>
         <span class="c1"># are present. That is, if the Y/N matrix contains a Y then a TimeSeries must be read in, and vice versa.</span>
@@ -456,50 +550,47 @@
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:]:</span>
             <span class="n">from_pops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
-        <span class="c1"># Now read any TimeSeries entries that are present. First we need to work out which columns are which, and</span>
-        <span class="c1"># what times are present</span>
-        <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
-        <span class="n">lowered_headings</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
-        <span class="n">offset</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># The column where time values normally start</span>
+        <span class="c1"># Instantiate it</span>
+        <span class="n">tdc</span> <span class="o">=</span> <span class="n">TimeDependentConnections</span><span class="p">(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">from_pops</span><span class="o">=</span><span class="n">from_pops</span><span class="p">,</span> <span class="n">to_pops</span><span class="o">=</span><span class="n">to_pops</span><span class="p">,</span> <span class="n">interpop_type</span><span class="o">=</span><span class="n">interaction_type</span><span class="p">,</span> <span class="n">from_pop_type</span><span class="o">=</span><span class="n">from_pop_type</span><span class="p">,</span> <span class="n">to_pop_type</span><span class="o">=</span><span class="n">to_pop_type</span><span class="p">)</span>
+        <span class="n">tdc</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">attributes</span>
 
-        <span class="k">if</span> <span class="s1">&#39;units&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
-            <span class="n">units_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">)</span>
-            <span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">units_index</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">write_units</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># If the Units column is missing, don&#39;t automatically suppress it if the user later adds some units</span>
+        <span class="c1"># Read the time series table</span>
+        <span class="n">headings</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">known_headings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;from population&#39;</span><span class="p">,</span> <span class="s1">&#39;to population&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;uncertainty&#39;</span><span class="p">,</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="s1">&#39;assumption&#39;</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tables</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">data_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">}:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">known_headings</span><span class="p">:</span>
+                    <span class="n">headings</span><span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">headings</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span>
+                <span class="n">times</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unknown data type in cell </span><span class="si">%s</span><span class="s1"> of the spreadsheet - quantity must be a string or a number&#39;</span> <span class="o">%</span> <span class="n">cell</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span>
+        <span class="n">tdc</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="s1">&#39;uncertainty&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
-            <span class="n">uncertainty_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;uncertainty&#39;</span><span class="p">)</span>
-            <span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">uncertainty_index</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Validate and process headings</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">times</span> <span class="ow">and</span> <span class="s1">&#39;constant&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Could not find an assumption or time-specific value - all tables must contain at least one of these values&#39;</span><span class="p">)</span>
+        <span class="n">tdc</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="s1">&#39;units&#39;</span> <span class="ow">in</span> <span class="n">headings</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">tdc</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="s1">&#39;uncertainty&#39;</span> <span class="ow">in</span> <span class="n">headings</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">tdc</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="s1">&#39;constant&#39;</span> <span class="ow">in</span> <span class="n">headings</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s1">&#39;assumption&#39;</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+            <span class="n">tdc</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">tdc</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Assumption&#39;</span>
+        <span class="k">for</span> <span class="n">heading</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">heading</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">known_headings</span><span class="p">:</span>
+                <span class="c1"># If it&#39;s not a known heading and it&#39;s a string, then it must be an attribute</span>
+                <span class="c1"># Note that the way `headings` is populated by skipping i=0 ensures that the table name</span>
+                <span class="c1"># is not interpreted as a heading</span>
+                <span class="n">tdc</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">[</span><span class="n">heading</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="s1">&#39;constant&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
-            <span class="n">constant_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;constant&#39;</span><span class="p">)</span>
-            <span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>
-            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">2</span>
-        <span class="k">elif</span> <span class="s1">&#39;assumption&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
-            <span class="n">constant_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;assumption&#39;</span><span class="p">)</span>
-            <span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Assumption&#39;</span>
-            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">2</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">constant_index</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">assumption_heading</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:]:</span>  <span class="c1"># This handles the case where an empty column is followed by comments</span>
-            <span class="n">t_end</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">t_end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
-        <span class="n">tvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">t_end</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-        <span class="n">ts_entries</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
-
+        <span class="n">tdc</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tables</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">:]:</span>
             <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;...&#39;</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="n">from_pops</span><span class="p">,</span> <span class="s1">&#39;Population &quot;</span><span class="si">%s</span><span class="s1">&quot; not found - should be contained in </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">from_pops</span><span class="p">)</span>
@@ -508,42 +599,34 @@
                 <span class="n">from_pop</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">to_pop</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="n">units_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]:</span>
-                    <span class="k">assert</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]),</span> <span class="s2">&quot;The &#39;units&#39; quantity needs to be specified as text e.g. &#39;probability&#39;&quot;</span>
-                    <span class="n">units</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s1">&#39;units&#39;</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+                    <span class="n">units</span> <span class="o">=</span> <span class="n">cell_get_string</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">headings</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]],</span> <span class="n">allow_empty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="n">FS</span><span class="o">.</span><span class="n">STANDARD_UNITS</span><span class="p">:</span>
                         <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># Only lower and strip units if they are standard units</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">units</span> <span class="o">=</span> <span class="kc">None</span>
-
                 <span class="n">ts</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="n">uncertainty_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">uncertainty_index</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s1">&#39;uncertainty&#39;</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">headings</span><span class="p">[</span><span class="s1">&#39;uncertainty&#39;</span><span class="p">]])</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="kc">None</span>
 
-                <span class="k">if</span> <span class="n">constant_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">constant_index</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s1">&#39;constant&#39;</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">headings</span><span class="p">[</span><span class="s1">&#39;constant&#39;</span><span class="p">]])</span>
+                <span class="k">elif</span> <span class="s1">&#39;assumption&#39;</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">headings</span><span class="p">[</span><span class="s1">&#39;assumption&#39;</span><span class="p">]])</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="kc">None</span>
 
-                <span class="k">if</span> <span class="n">constant_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">assert</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;Error with validating row in TDC table &quot;</span><span class="si">%s</span><span class="s1">&quot; (did not find the text &quot;OR&quot; in the expected place)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code_name</span><span class="p">)</span>  <span class="c1"># Check row is as expected</span>
+                <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">tdc</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">:</span>
+                    <span class="n">tdc</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">][(</span><span class="n">from_pop</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">)]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">headings</span><span class="p">[</span><span class="n">attribute</span><span class="p">]]</span><span class="o">.</span><span class="n">value</span>
 
-                <span class="n">data_cells</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">t_end</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">times</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>  <span class="c1"># If cell_get_number returns None, this gets handled accordingly by ts.insert()</span>
 
-                <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">data_cells</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>  <span class="c1"># Ignore any times that are NaN - this happens if the cell was empty and casted to a float</span>
-                        <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">cell</span><span class="p">))</span>  <span class="c1"># If cell_get_number returns None, this gets handled accordingly by ts.insert()</span>
-                <span class="n">ts_entries</span><span class="p">[(</span><span class="n">from_pop</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ts</span>
+                <span class="n">tdc</span><span class="o">.</span><span class="n">ts</span><span class="p">[(</span><span class="n">from_pop</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ts</span>
 
-        <span class="n">tdc</span> <span class="o">=</span> <span class="n">TimeDependentConnections</span><span class="p">(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">from_pops</span><span class="o">=</span><span class="n">from_pops</span><span class="p">,</span> <span class="n">to_pops</span><span class="o">=</span><span class="n">to_pops</span><span class="p">,</span> <span class="n">interpop_type</span><span class="o">=</span><span class="n">interaction_type</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="n">ts_entries</span><span class="p">,</span> <span class="n">from_pop_type</span><span class="o">=</span><span class="n">from_pop_type</span><span class="p">,</span> <span class="n">to_pop_type</span><span class="o">=</span><span class="n">to_pop_type</span><span class="p">)</span>
-        <span class="n">tdc</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="n">write_assumption</span>
-        <span class="n">tdc</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="n">write_uncertainty</span>
-        <span class="n">tdc</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="n">write_units</span>
-        <span class="k">if</span> <span class="n">assumption_heading</span><span class="p">:</span>
-            <span class="n">tdc</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="n">assumption_heading</span>
         <span class="k">return</span> <span class="n">tdc</span></div>
 
 <div class="viewcode-block" id="TimeDependentConnections.write"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.TimeDependentConnections.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">,</span> <span class="n">start_row</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">widths</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -569,30 +652,43 @@
 
         <span class="c1"># First, write the name entry table</span>
         <span class="n">current_row</span> <span class="o">=</span> <span class="n">start_row</span>
-        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Abbreviation&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
-        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Abbreviation&#39;</span><span class="p">)</span>
-        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Full Name&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
-        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Full Name&#39;</span><span class="p">)</span>
-        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;From population type&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
-        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;From population type&#39;</span><span class="p">)</span>
-        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;To population type&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
-        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;To population type&#39;</span><span class="p">)</span>
 
-        <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name</span><span class="p">)</span>
-        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name</span><span class="p">)</span>
-        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
-        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
-        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pop_type</span><span class="p">)</span>
-        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pop_type</span><span class="p">)</span>
-        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pop_type</span><span class="p">)</span>
-        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pop_type</span><span class="p">)</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="s1">&#39;Abbreviation&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="s1">&#39;Abbreviation&#39;</span><span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name</span><span class="p">)</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name</span><span class="p">)</span>
+
+        <span class="n">column</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="s1">&#39;Full Name&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="s1">&#39;Full Name&#39;</span><span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
+
+        <span class="n">column</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="s1">&#39;From population type&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="s1">&#39;From population type&#39;</span><span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pop_type</span><span class="p">)</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_pop_type</span><span class="p">)</span>
+
+        <span class="n">column</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="s1">&#39;To population type&#39;</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="s1">&#39;To population type&#39;</span><span class="p">)</span>
+        <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pop_type</span><span class="p">)</span>
+        <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pop_type</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">column</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;center_bold&quot;</span><span class="p">])</span>
+            <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
+            <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
         <span class="n">references</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;=&#39;</span><span class="si">%s</span><span class="s2">&#39;!</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
         <span class="n">references</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;=&#39;</span><span class="si">%s</span><span class="s2">&#39;!</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>  <span class="c1"># Reference to the full name</span>
 
         <span class="c1"># Then, write the Y/N matrix</span>
-        <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">2</span>  <span class="c1"># Leave a blank row below the matrix</span>
+        <span class="n">current_row</span> <span class="o">+=</span> <span class="mi">3</span>  <span class="c1"># Leave a blank row below the matrix</span>
         <span class="c1"># Note - table_references are local to this TimeDependentConnections instance</span>
         <span class="c1"># For example, there could be two transfers, and each of them could potentially transfer between 0-4 and 5-14</span>
         <span class="c1"># so the worksheet might contain two references from 0-4 to 5-14 but they would be for different transfers and thus</span>
@@ -601,10 +697,16 @@
 
         <span class="c1"># Finally, write the time dependent part</span>
         <span class="n">headings</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># From</span>
+        <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;From population&#39;</span><span class="p">)</span>
         <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># ---&gt;</span>
-        <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># To</span>
+        <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;To population&#39;</span><span class="p">)</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">headings</span><span class="p">)</span>
+
+        <span class="n">attribute_index</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">:</span>
+            <span class="n">attribute_index</span><span class="p">[</span><span class="n">attribute</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
+            <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="k">if</span> <span class="n">write_units</span><span class="p">:</span>
             <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Units&#39;</span><span class="p">)</span>
@@ -624,7 +726,10 @@
 
         <span class="n">headings</span> <span class="o">+=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">headings</span><span class="p">):</span>
-            <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">references</span><span class="p">:</span>
+                <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">references</span><span class="p">[</span><span class="n">entry</span><span class="p">],</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">entry</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">])</span>
             <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
 
         <span class="c1"># Now, we will write a wrapper that gates the content</span>
@@ -643,6 +748,11 @@
                 <span class="n">entry_tuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">from_pop</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">)</span>
                 <span class="n">entry_cell</span> <span class="o">=</span> <span class="n">table_references</span><span class="p">[</span><span class="n">entry_tuple</span><span class="p">]</span>
 
+                <span class="c1"># Write hyperlink</span>
+                <span class="k">if</span> <span class="n">values_written</span><span class="p">[</span><span class="n">entry_cell</span><span class="p">]</span> <span class="o">!=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_SYMBOL_INAPPLICABLE</span><span class="p">:</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write_url</span><span class="p">(</span><span class="n">entry_cell</span><span class="p">,</span> <span class="s1">&#39;internal:</span><span class="si">%s</span><span class="s1">!</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">cell_format</span><span class="o">=</span><span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_unlocked&#39;</span><span class="p">],</span> <span class="n">string</span><span class="o">=</span><span class="n">values_written</span><span class="p">[</span><span class="n">entry_cell</span><span class="p">])</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write_url</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;internal:</span><span class="si">%s</span><span class="s1">!</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">cell_format</span><span class="o">=</span><span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_unlocked&#39;</span><span class="p">])</span>
+
                 <span class="k">if</span> <span class="n">entry_tuple</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
                     <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">entry_tuple</span><span class="p">]</span>
                     <span class="nb">format</span> <span class="o">=</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;not_required&#39;</span><span class="p">]</span>
@@ -656,6 +766,20 @@
                     <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="s1">&#39;---&gt;&#39;</span><span class="p">,</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;---&gt;&#39;</span><span class="p">)</span>
                     <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="n">references</span><span class="p">[</span><span class="n">to_pop</span><span class="p">],</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="n">to_pop</span><span class="p">)</span>
                     <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">)</span>
+
+                    <span class="c1"># Write the attributes</span>
+                    <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">entry_tuple</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">]:</span>
+                                <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">][</span><span class="n">entry_tuple</span><span class="p">]</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">val</span> <span class="o">=</span> <span class="kc">None</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">]</span>
+
+                        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">attribute_index</span><span class="p">[</span><span class="n">attribute</span><span class="p">],</span> <span class="n">val</span><span class="p">)</span>
+                            <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">attribute_index</span><span class="p">[</span><span class="n">attribute</span><span class="p">],</span> <span class="n">val</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span><span class="p">:</span>
                         <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">units_index</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span> <span class="nb">format</span><span class="p">)</span>
@@ -689,11 +813,6 @@
                         <span class="n">worksheet</span><span class="o">.</span><span class="n">write_blank</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
                         <span class="n">worksheet</span><span class="o">.</span><span class="n">write_formula</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">gate_content</span><span class="p">(</span><span class="s1">&#39;OR&#39;</span><span class="p">,</span> <span class="n">entry_cell</span><span class="p">),</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center&#39;</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
                         <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">constant_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;...&#39;</span><span class="p">)</span>
-
-                <span class="c1"># Write hyperlink - it&#39;s a bit convoluted because we can&#39;t read back the contents of the original cell to know</span>
-                <span class="c1"># whether it was originally Y or N</span>
-                <span class="k">if</span> <span class="n">values_written</span><span class="p">[</span><span class="n">entry_cell</span><span class="p">]</span> <span class="o">!=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_SYMBOL_INAPPLICABLE</span><span class="p">:</span>
-                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write_url</span><span class="p">(</span><span class="n">entry_cell</span><span class="p">,</span> <span class="s1">&#39;internal:</span><span class="si">%s</span><span class="s1">!</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">worksheet</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">cell_format</span><span class="o">=</span><span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_unlocked&#39;</span><span class="p">],</span> <span class="n">string</span><span class="o">=</span><span class="n">values_written</span><span class="p">[</span><span class="n">entry_cell</span><span class="p">])</span>
 
                 <span class="n">content</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span>
 
@@ -825,7 +944,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tvec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allowed_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tvec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allowed_units</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">ts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ts</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
@@ -836,7 +955,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span>  <span class="c1"># : dict of :class:`TimeSeries` objects</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">allowed_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">FS</span><span class="o">.</span><span class="n">STANDARD_UNITS</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">allowed_units</span><span class="p">]</span> <span class="k">if</span> <span class="n">allowed_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># Otherwise, can be an odict with keys corresponding to ts - leave as None for no restriction</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1">#: Dictionary containing extra attributes to write along with each TimeSeries object.</span>
+        <span class="c1">#  Keys are attribute name, values can be either a scalar or a dict keyed by the same keys as self.ts. Compared to units, uncertainty etc.</span>
+        <span class="c1">#  attributes are store in the TDVE rather than in the TimeSeries</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>  <span class="c1">#: Heading to use for assumption column</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have units)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have uncertainty)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Write a column for units (if None, units will be written if any of the TimeSeries have an assumption)</span>
@@ -875,98 +998,85 @@
 
         <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">TimeSeries</span>  <span class="c1"># Import here to avoid circular reference</span>
 
-        <span class="c1"># First, read the headings</span>
-        <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-
-        <span class="k">if</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Retrieve the name</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The name of the table is missing. This can also happen if extra rows have been added without a &quot;#ignore&quot; entry in the first column&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;In cell </span><span class="si">%s</span><span class="s1"> of the spreadsheet, the name of the quantity assigned to this table needs to be a string&#39;</span> <span class="o">%</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># The name needs to be written back in a case sensitive form</span>
 
         <span class="n">tdve</span> <span class="o">=</span> <span class="n">TimeDependentValuesEntry</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">lowered_headings</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+        <span class="c1"># Read the headings</span>
+        <span class="n">headings</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">known_headings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;uncertainty&#39;</span><span class="p">,</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="s1">&#39;assumption&#39;</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">data_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">}:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">known_headings</span><span class="p">:</span>
+                    <span class="n">headings</span><span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">headings</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span>
+                <span class="n">times</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unknown data type in cell </span><span class="si">%s</span><span class="s1"> of the spreadsheet - quantity must be a string or a number&#39;</span> <span class="o">%</span> <span class="n">cell</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span>
+        <span class="n">tdve</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-        <span class="c1"># We can optionally have units, uncertainty, and constant</span>
-        <span class="c1"># nb. finding the index means this is robust to extra empty</span>
-        <span class="c1"># columns, a user adding one of the these fields to a single table on a page</span>
-        <span class="c1"># might introduce a blank column to all of the other TDVE elements on the page too</span>
-        <span class="c1"># so the code below should be able to deal with this</span>
-        <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># This is the column where the time values start</span>
-
-        <span class="k">if</span> <span class="s1">&#39;units&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
-            <span class="n">units_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">)</span>
-            <span class="n">tdve</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">units_index</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="s1">&#39;uncertainty&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
-            <span class="n">uncertainty_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;uncertainty&#39;</span><span class="p">)</span>
-            <span class="n">tdve</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">uncertainty_index</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="s1">&#39;constant&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
-            <span class="n">constant_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;constant&#39;</span><span class="p">)</span>
-            <span class="n">tdve</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">tdve</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>
-            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">2</span>
-        <span class="k">elif</span> <span class="s1">&#39;assumption&#39;</span> <span class="ow">in</span> <span class="n">lowered_headings</span><span class="p">:</span>
-            <span class="n">constant_index</span> <span class="o">=</span> <span class="n">lowered_headings</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;assumption&#39;</span><span class="p">)</span>
+        <span class="c1"># Validate and process headings</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">times</span> <span class="ow">and</span> <span class="s1">&#39;constant&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Could not find an assumption or time-specific value - all tables must contain at least one of these values&#39;</span><span class="p">)</span>
+        <span class="n">tdve</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="s1">&#39;units&#39;</span> <span class="ow">in</span> <span class="n">headings</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">tdve</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="s1">&#39;uncertainty&#39;</span> <span class="ow">in</span> <span class="n">headings</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">tdve</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="s1">&#39;constant&#39;</span> <span class="ow">in</span> <span class="n">headings</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="s1">&#39;assumption&#39;</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
             <span class="n">tdve</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">tdve</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Assumption&#39;</span>
-            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">2</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">constant_index</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:]:</span>
-            <span class="n">t_end</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">t_end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
-        <span class="n">tvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">t_end</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">heading</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">heading</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">known_headings</span><span class="p">:</span>
+                <span class="c1"># If it&#39;s not a known heading and it&#39;s a string, then it must be an attribute</span>
+                <span class="c1"># Note that the way `headings` is populated by skipping i=0 ensures that the table name</span>
+                <span class="c1"># is not interpreted as a heading</span>
+                <span class="n">tdve</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">heading</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">ts_entries</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
 
-        <span class="c1"># For each TimeSeries that we will instantiate</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-            <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">}:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;In cell </span><span class="si">%s</span><span class="s1"> of the spreadsheet, the name of the entry was expected to be a string, but it was not. The left-most column is expected to be a name. If you are certain the value is correct, add an single quote character at the start of the cell to ensure it remains as text&#39;</span> <span class="o">%</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span>
-            <span class="n">series_name</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">series_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-            <span class="k">if</span> <span class="n">units_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]:</span>
-                <span class="k">assert</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]),</span> <span class="s2">&quot;The &#39;units&#39; quantity needs to be specified as text e.g. &#39;probability&#39;&quot;</span>
-                <span class="n">units</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">units_index</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;units&#39;</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="n">cell_get_string</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">headings</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]],</span> <span class="n">allow_empty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="n">FS</span><span class="o">.</span><span class="n">STANDARD_UNITS</span><span class="p">:</span>
                     <span class="n">units</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># Only lower and strip units if they are standard units</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">units</span> <span class="o">=</span> <span class="kc">None</span>
-
             <span class="n">ts</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">uncertainty_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">uncertainty_index</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s1">&#39;uncertainty&#39;</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">headings</span><span class="p">[</span><span class="s1">&#39;uncertainty&#39;</span><span class="p">]])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="k">if</span> <span class="n">constant_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">constant_index</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s1">&#39;constant&#39;</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">headings</span><span class="p">[</span><span class="s1">&#39;constant&#39;</span><span class="p">]])</span>
+            <span class="k">elif</span> <span class="s1">&#39;assumption&#39;</span> <span class="ow">in</span> <span class="n">headings</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">headings</span><span class="p">[</span><span class="s1">&#39;assumption&#39;</span><span class="p">]])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="k">if</span> <span class="n">constant_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tvec</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="n">vals</span><span class="p">[</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;Error with validating row in TDVE table &quot;</span><span class="si">%s</span><span class="s1">&quot; (did not find the text &quot;OR&quot; in the expected place)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># Check row is as expected</span>
+            <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">tdve</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+                <span class="n">tdve</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">][</span><span class="n">series_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">headings</span><span class="p">[</span><span class="n">attribute</span><span class="p">]]</span><span class="o">.</span><span class="n">value</span>
 
-            <span class="n">data_cells</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">t_end</span><span class="p">]</span>
-
-            <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">data_cells</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>  <span class="c1"># Ignore any times that are NaN - this happens if the cell was empty and casted to a float</span>
-                    <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">cell</span><span class="p">))</span>  <span class="c1"># If cell_get_number returns None, this gets handled accordingly by ts.insert()</span>
+            <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">times</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">cell_get_number</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>  <span class="c1"># If cell_get_number returns None, this gets handled accordingly by ts.insert()</span>
             <span class="n">ts_entries</span><span class="p">[</span><span class="n">series_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span>
 
-        <span class="n">tdve</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="n">tvec</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">tvec</span><span class="p">)]</span>  <span class="c1"># Remove empty entries from the array</span>
         <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">ts_entries</span>
         <span class="k">return</span> <span class="n">tdve</span></div>
 
@@ -1001,6 +1111,13 @@
         <span class="n">headings</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># This is the column where the time values start (after the &#39;or&#39;)</span>
+
+        <span class="c1"># Next allocate attributes</span>
+        <span class="n">attribute_index</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="n">attribute_index</span><span class="p">[</span><span class="n">attribute</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
+            <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+            <span class="n">offset</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="k">if</span> <span class="n">write_units</span><span class="p">:</span>
             <span class="n">headings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Units&#39;</span><span class="p">)</span>
@@ -1041,9 +1158,22 @@
                 <span class="n">worksheet</span><span class="o">.</span><span class="n">write_string</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">row_name</span><span class="p">,</span> <span class="n">formats</span><span class="p">[</span><span class="s1">&#39;center_bold&#39;</span><span class="p">])</span>
                 <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">row_name</span><span class="p">)</span>
 
+            <span class="c1"># Write the attributes</span>
+            <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">row_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">]:</span>
+                        <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">][</span><span class="n">row_name</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">val</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">attribute</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">attribute_index</span><span class="p">[</span><span class="n">attribute</span><span class="p">],</span> <span class="n">val</span><span class="p">)</span>
+                    <span class="n">update_widths</span><span class="p">(</span><span class="n">widths</span><span class="p">,</span> <span class="n">attribute_index</span><span class="p">[</span><span class="n">attribute</span><span class="p">],</span> <span class="n">val</span><span class="p">)</span>
+
             <span class="c1"># Write the units</span>
             <span class="k">if</span> <span class="n">write_units</span><span class="p">:</span>
-
                 <span class="k">if</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">units</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="n">FS</span><span class="o">.</span><span class="n">STANDARD_UNITS</span><span class="p">:</span>  <span class="c1"># Preserve case if nonstandard unit</span>
                         <span class="n">unit</span> <span class="o">=</span> <span class="n">row_ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -1108,6 +1238,7 @@
 
         <span class="k">return</span> <span class="n">current_row</span> <span class="o">+</span> <span class="mi">2</span>  <span class="c1"># Add two so there is a blank line after this table</span></div></div>
 
+
 <div class="viewcode-block" id="cell_get_string"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.cell_get_string">[docs]</a><span class="k">def</span> <span class="nf">cell_get_string</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">allow_empty</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return string value from cell</span>
@@ -1127,6 +1258,7 @@
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cell </span><span class="si">%s</span><span class="s1"> needs to contain a string (i.e. not a number, date, or other cell type)&#39;</span> <span class="o">%</span> <span class="n">cell</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
 
 <div class="viewcode-block" id="cell_get_number"><a class="viewcode-back" href="../../_autosummary/atomica.excel.html#atomica.excel.cell_get_number">[docs]</a><span class="k">def</span> <span class="nf">cell_get_number</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>

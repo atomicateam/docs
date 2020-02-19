@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -178,12 +178,14 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;migration&#39;</span><span class="p">,</span> <span class="s1">&#39;migrate&#39;</span><span class="p">,</span> <span class="s1">&#39;register_migration&#39;</span><span class="p">]</span>
 
-<span class="n">SKIP_MIGRATION</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># Global migration flag to disable migration</span>
+<span class="n">SKIP_MIGRATION</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Global migration flag to disable migration</span>
 
 <span class="c1"># MODULE MIGRATIONS</span>
 <span class="c1">#</span>
 <span class="c1"># In this section, make changes to the Atomica module structure to enable pickle files</span>
 <span class="c1"># to be loaded at all</span>
+
+
 <span class="k">class</span> <span class="nc">_Placeholder</span><span class="p">():</span>
     <span class="k">pass</span>
 
@@ -209,6 +211,7 @@
 <span class="c1"># This dict stores the migrations associated with each versioned class</span>
 <span class="c1"># We migrate projects and results separately because they might be stored</span>
 <span class="c1"># separately e.g. in a database</span>
+
 
 <span class="k">class</span> <span class="nc">Migration</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; Class representation of a migration</span>
@@ -287,11 +290,14 @@
         <span class="k">return</span> <span class="n">f</span>
     <span class="k">return</span> <span class="n">register</span></div>
 
-<span class="n">migrations</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span> <span class="c1"># Registry of migrations in Atomica</span>
+
+<span class="n">migrations</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>  <span class="c1"># Registry of migrations in Atomica</span>
+
 
 <div class="viewcode-block" id="migration"><a class="viewcode-back" href="../../_autosummary/atomica.migration.html#atomica.migration.migration">[docs]</a><span class="k">def</span> <span class="nf">migration</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="c1"># Wrapper decorator to bind register_migration to the migration registry in this module</span>
     <span class="k">return</span> <span class="n">register_migration</span><span class="p">(</span><span class="n">migrations</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="migrate"><a class="viewcode-back" href="../../_autosummary/atomica.migration.html#atomica.migration.migrate">[docs]</a><span class="k">def</span> <span class="nf">migrate</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">registry</span><span class="o">=</span><span class="n">migrations</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span><span class="o">=</span><span class="n">gitinfo</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Update a object to the latest version</span>
@@ -318,7 +324,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">registry</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">obj</span> <span class="c1"># If there are no migrations for the object, then return immediately</span>
+        <span class="k">return</span> <span class="n">obj</span>  <span class="c1"># If there are no migrations for the object, then return immediately</span>
 
     <span class="k">elif</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">):</span>
         <span class="c1"># If the object has no version attribute, then add one with version 0. This is presumably</span>
@@ -331,13 +337,13 @@
 
     <span class="k">if</span> <span class="n">SKIP_MIGRATION</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Skipping migration&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span> <span class="c1"># If migration is disabled then don&#39;t make any changes EXCEPT to add in version and gitinfo which may otherwise be hard to catch</span>
+        <span class="k">return</span> <span class="n">obj</span>  <span class="c1"># If migration is disabled then don&#39;t make any changes EXCEPT to add in version and gitinfo which may otherwise be hard to catch</span>
 
     <span class="n">migrations_to_run</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">registry</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">original_version</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">compareversions</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">obj</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Migrating </span><span class="si">%s</span><span class="s1"> &quot;</span><span class="si">%s</span><span class="s1">&quot; from </span><span class="si">%s</span><span class="s1">-&gt;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Migrating </span><span class="si">%s</span><span class="s1"> from </span><span class="si">%s</span><span class="s1">-&gt;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
@@ -437,7 +443,7 @@
             <span class="k">yield</span> <span class="n">result</span><span class="o">.</span><span class="n">framework</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.6&#39;</span><span class="p">,</span> <span class="s1">&#39;Simplify ParameterSet storage&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.6&#39;</span><span class="p">,</span> <span class="s1">&#39;Simplify ParameterSet storage&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_simplify_parset_storage</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="c1"># ParameterSets in 1.0.5 store the parameters keyed by the type e.g. &#39;cascade&#39;,&#39;comp&#39;</span>
     <span class="c1"># In 1.0.6 they are flat</span>
@@ -451,7 +457,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.7&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.8&#39;</span><span class="p">,</span> <span class="s1">&#39;Add version information to model&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.7&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.8&#39;</span><span class="p">,</span> <span class="s1">&#39;Add version information to model&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_model_version</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="c1"># Note that this is a legacy update via the Project and therefore Results that</span>
     <span class="c1"># are stored separately will not receive this migration. It is unlikely that any</span>
@@ -467,7 +473,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.8&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.9&#39;</span><span class="p">,</span> <span class="s1">&#39;Add currency and units to progset quantities&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.8&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.9&#39;</span><span class="p">,</span> <span class="s1">&#39;Add currency and units to progset quantities&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_currency_and_units</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">add_units</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
@@ -487,7 +493,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.9&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.10&#39;</span><span class="p">,</span> <span class="s1">&#39;Remove target_pars from Programs&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.9&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.10&#39;</span><span class="p">,</span> <span class="s1">&#39;Remove target_pars from Programs&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_remove_target_pars</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">remove_pars</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
@@ -500,13 +506,13 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.10&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.11&#39;</span><span class="p">,</span> <span class="s1">&#39;Add result update flag to Project&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.10&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.11&#39;</span><span class="p">,</span> <span class="s1">&#39;Add result update flag to Project&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_result_update_flag</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="n">proj</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.12&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.13&#39;</span><span class="p">,</span> <span class="s1">&#39;Add timescale to parameters&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.12&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.13&#39;</span><span class="p">,</span> <span class="s1">&#39;Add timescale to parameters&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_timescale</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">transitions</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
@@ -526,7 +532,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.13&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.14&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters use TimeSeries internally&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.13&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.14&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters use TimeSeries internally&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_parameter_use_timeseries</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
@@ -551,7 +557,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.14&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.15&#39;</span><span class="p">,</span> <span class="s1">&#39;Internal model tidying&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.14&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.15&#39;</span><span class="p">,</span> <span class="s1">&#39;Internal model tidying&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_model_tidying</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
@@ -567,7 +573,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.15&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.16&#39;</span><span class="p">,</span> <span class="s1">&#39;Replace AtomicaSpreadsheet&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.15&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.16&#39;</span><span class="p">,</span> <span class="s1">&#39;Replace AtomicaSpreadsheet&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_convert_spreadsheets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">placeholder</span><span class="p">):</span>
@@ -584,7 +590,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.16&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.17&#39;</span><span class="p">,</span> <span class="s1">&#39;Rename capacity constraint&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.16&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.17&#39;</span><span class="p">,</span> <span class="s1">&#39;Rename capacity constraint&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_rename_capacity_constraint</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">prog</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -593,7 +599,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.27&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.28&#39;</span><span class="p">,</span> <span class="s1">&#39;Rename link labels&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.27&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.28&#39;</span><span class="p">,</span> <span class="s1">&#39;Rename link labels&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_rename_link_labels</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
@@ -602,7 +608,7 @@
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.0.30&#39;</span><span class="p">,</span> <span class="s1">&#39;1.1.3&#39;</span><span class="p">,</span> <span class="s1">&#39;Replace scenarios&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.30&#39;</span><span class="p">,</span> <span class="s1">&#39;1.1.3&#39;</span><span class="p">,</span> <span class="s1">&#39;Replace scenarios&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_replace_scenarios</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="c1"># This migration upgrades existing scenarios to match the latest definitions</span>
     <span class="kn">from</span> <span class="nn">.scenarios</span> <span class="kn">import</span> <span class="n">ParameterScenario</span><span class="p">,</span> <span class="n">BudgetScenario</span><span class="p">,</span> <span class="n">CoverageScenario</span>
@@ -678,7 +684,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.2.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Add population type&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.2.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Add population type&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_pop_type</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
 
     <span class="k">for</span> <span class="n">fw</span> <span class="ow">in</span> <span class="n">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
@@ -724,13 +730,14 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameter can be derivative&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameter can be derivative&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_project_derivatives</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">fw</span> <span class="ow">in</span> <span class="n">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
         <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;is derivative&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
     <span class="k">return</span> <span class="n">proj</span>
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span><span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameter can be derivative&#39;</span><span class="p">)</span>
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span> <span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameter can be derivative&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_result_derivatives</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
@@ -738,7 +745,7 @@
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.4.3&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters with functions can be overwritten&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.3&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters with functions can be overwritten&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_parset_disable_function</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="c1"># Add skip_function flag to parset Parameter instances</span>
     <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -747,7 +754,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span><span class="s1">&#39;1.4.3&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters with functions can be overwritten&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.3&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters with functions can be overwritten&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_result_add_skip_flag</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
@@ -755,7 +762,7 @@
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.5.1&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.2&#39;</span><span class="p">,</span> <span class="s1">&#39;OptimInstruction has separate adjustment and start years&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.1&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.2&#39;</span><span class="p">,</span> <span class="s1">&#39;OptimInstruction has separate adjustment and start years&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_separate_optiminstruction_years</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s1">&#39;optims&#39;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">optim</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">optims</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -764,7 +771,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.7.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.8.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters store interpolation method, deprecate scenario smooth onset&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.7.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.8.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters store interpolation method, deprecate scenario smooth onset&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_parameter_interpolation_method</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
@@ -778,7 +785,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.8.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.9.0&#39;</span><span class="p">,</span> <span class="s1">&#39;OptimInstructions functionality moved to apps&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.8.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.9.0&#39;</span><span class="p">,</span> <span class="s1">&#39;OptimInstructions functionality moved to apps&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_refactor_optiminstructions</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s1">&#39;optims&#39;</span><span class="p">):</span>
         <span class="n">delkeys</span> <span class="o">=</span> <span class="p">[]</span>
@@ -806,7 +813,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.10.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.11.0&#39;</span><span class="p">,</span> <span class="s1">&#39;TDVE stores headings to write internally&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.10.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.11.0&#39;</span><span class="p">,</span> <span class="s1">&#39;TDVE stores headings to write internally&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_internal_flags_to_tdve</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="c1"># This migration adds missing attributes to TDVE and TDC objects</span>
     <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
@@ -831,13 +838,15 @@
 
     <span class="k">return</span> <span class="n">proj</span>
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;ProjectFramework&#39;</span><span class="p">,</span><span class="s1">&#39;1.12.2&#39;</span><span class="p">,</span> <span class="s1">&#39;1.13.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Timed compartment updates to framework&#39;</span><span class="p">)</span>
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;ProjectFramework&#39;</span><span class="p">,</span> <span class="s1">&#39;1.12.2&#39;</span><span class="p">,</span> <span class="s1">&#39;1.13.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Timed compartment updates to framework&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_framework_timed_comps</span><span class="p">(</span><span class="n">fw</span><span class="p">):</span>
     <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
     <span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s1">&#39;duration group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">fw</span>
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span><span class="s1">&#39;1.12.2&#39;</span><span class="p">,</span> <span class="s1">&#39;1.13.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Timed compartment updates to result&#39;</span><span class="p">)</span>
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span> <span class="s1">&#39;1.12.2&#39;</span><span class="p">,</span> <span class="s1">&#39;1.13.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Timed compartment updates to result&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_result_timed_attribute</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
@@ -855,9 +864,10 @@
     <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">relink</span><span class="p">()</span>  <span class="c1"># Make sure all of the references are updated to the new compartment instance - it has the same ID so it should be fine</span>
     <span class="k">return</span> <span class="n">result</span>
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.14.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.15.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Refactor migration update flag&#39;</span><span class="p">)</span>
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.14.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.15.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Refactor migration update flag&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_rename_update_field</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span><span class="s1">&#39;_result_update_required&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s1">&#39;_result_update_required&#39;</span><span class="p">):</span>
         <span class="n">proj</span><span class="o">.</span><span class="n">_result_update_required</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">proj</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">_result_update_required</span>
     <span class="k">del</span> <span class="n">proj</span><span class="o">.</span><span class="n">_result_update_required</span>
@@ -866,19 +876,33 @@
         <span class="n">result</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="n">proj</span>
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.15.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.16.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Projects may change due to uncapped probabilities&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_refactor_settings_storage</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.15.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.16.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Projects may change due to uncapped probabilities&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_proj_refactor_settings_storage</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="n">proj</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="n">proj</span>
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span><span class="s1">&#39;1.15.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.16.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Results may change due to uncapped probabilities&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_refactor_settings_storage</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span> <span class="s1">&#39;1.15.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.16.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Results may change due to uncapped probabilities&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_result_refactor_settings_storage</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="n">result</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="n">result</span>
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span><span class="s1">&#39;1.16.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.17.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Add sim end year validation to project settings&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_refactor_settings_storage</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.16.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.17.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Add sim end year validation to project settings&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_add_end_year_to_project_settings</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="n">proj</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">ProjectSettings</span><span class="p">(</span><span class="o">**</span><span class="n">proj</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.17.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.18.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Add data TDC and TDVE attributes&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_add_tdc_tdve_attributes</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tdve</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">tdc</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">transfers</span> <span class="o">+</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">interpops</span><span class="p">:</span>
+            <span class="n">tdc</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">tdc</span><span class="o">.</span><span class="n">ts_attributes</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">return</span> <span class="n">proj</span>
 </pre></div>
 
