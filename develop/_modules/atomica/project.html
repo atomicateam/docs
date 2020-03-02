@@ -432,8 +432,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ParameterSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Project.make_progbook"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.make_progbook">[docs]</a>    <span class="k">def</span> <span class="nf">make_progbook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progbook_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Make a blank program databook&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="Project.make_progbook"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.make_progbook">[docs]</a>    <span class="k">def</span> <span class="nf">make_progbook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progbook_path</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_start</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_end</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save a blank program book</span>
+
+<span class="sd">        This method will create a temporary ``ProgramSet`` and save it to the requested path</span>
+
+<span class="sd">        :param progbook_path: Path to save program book</span>
+<span class="sd">        :param progs: A program specification supposed by ``ProgramSet.new()``</span>
+<span class="sd">        :param data_start: The start year for data entry</span>
+<span class="sd">        :param data_end: The end year for data entry</span>
+<span class="sd">        :return: The full path of the newly created program book</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="c1"># Get filepath</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Please upload a databook before creating a program book. The databook defines which populations will appear in the program book.&#39;</span>
@@ -444,7 +456,8 @@
         <span class="k">if</span> <span class="n">data_end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">data_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tvec</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">progset</span> <span class="o">=</span> <span class="n">ProgramSet</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">tvec</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">data_start</span><span class="p">,</span> <span class="n">data_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">progs</span><span class="o">=</span><span class="n">progs</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">progset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span></div>
+        <span class="n">progset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_path</span></div>
 
 <div class="viewcode-block" id="Project.load_progbook"><a class="viewcode-back" href="../../_autosummary/atomica.project.html#atomica.project.Project.load_progbook">[docs]</a>    <span class="k">def</span> <span class="nf">load_progbook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progbook_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

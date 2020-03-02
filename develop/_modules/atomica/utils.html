@@ -166,6 +166,7 @@
 <span class="kn">import</span> <span class="nn">zlib</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 
 <div class="viewcode-block" id="parent_dir"><a class="viewcode-back" href="../../_autosummary/atomica.utils.html#atomica.utils.parent_dir">[docs]</a><span class="k">def</span> <span class="nf">parent_dir</span><span class="p">():</span>
@@ -900,6 +901,21 @@
 
     <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;branch&#39;</span><span class="p">:</span> <span class="n">gitbranch</span><span class="p">,</span> <span class="s1">&#39;hash&#39;</span><span class="p">:</span> <span class="n">githash</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="n">gitdate</span><span class="p">}</span>  <span class="c1"># Assemble outupt</span>
     <span class="k">return</span> <span class="n">output</span></div>
+
+<div class="viewcode-block" id="datetime_to_year"><a class="viewcode-back" href="../../_autosummary/atomica.utils.html#atomica.utils.datetime_to_year">[docs]</a><span class="k">def</span> <span class="nf">datetime_to_year</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a DateTime instance to decimal year</span>
+
+<span class="sd">    For example, 1/7/2010 would be approximately 2010.5</span>
+
+<span class="sd">    :param dt: The datetime instance to convert</span>
+<span class="sd">    :return: Equivalent decimal year</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># By Luke Davis from https://stackoverflow.com/a/42424261</span>
+    <span class="n">year_part</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">-</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">year_length</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">year_part</span><span class="o">/</span><span class="n">year_length</span></div>
 </pre></div>
 
            </div>
