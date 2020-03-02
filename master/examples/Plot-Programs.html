@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -243,8 +243,8 @@ div.nboutput.container div.prompt pre {
 div.nbinput.container div.prompt,
 div.nboutput.container div.prompt {
     min-width: 5ex;
-    padding-top: 0.4em;
-    padding-right: 0.4em;
+    padding-top: 0.3rem;
+    padding-right: 0.3rem;
     text-align: right;
     flex: 0;
 }
@@ -268,7 +268,6 @@ div.nboutput.container div.prompt pre {
 /* input/output area */
 div.nbinput.container div.input_area,
 div.nboutput.container div.output_area {
-    padding: 0.4em;
     -webkit-flex: 1;
     flex: 1;
     overflow: auto;
@@ -341,6 +340,27 @@ div.nboutput.container div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 0.3rem;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
 
 /* Some additional styling taken form the Jupyter notebook CSS */
 div.rendered_html table {
@@ -444,9 +464,9 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Atomica 1.17.1 (2020-01-28) -- (c) the Atomica development team
+Atomica 1.18.1 (2020-02-02) -- (c) the Atomica development team
 git branch: Git branch N/A (Git hash)
-2020-01-28 08:09:20.502857
+2020-03-02 03:41:37.424629
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -495,29 +515,29 @@ Creating a tb project...
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Parameter &#34;lu_prog&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;lx_prog&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;leu_act&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;lex_act&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;llu_act&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;llx_act&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;l_inf&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;v_inf&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;lr_inf&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;ar_act&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;ar_rec&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;pd_rec&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;pm_rec&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;px_rec&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;nd_rec&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;nm_rec&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;nx_rec&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;pd_term&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;pm_term&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;px_term&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;nd_term&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;nm_term&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;nx_term&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
+Parameter &#34;lu_prog&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;lx_prog&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;leu_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;lex_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;llu_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;llx_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;l_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;v_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;lr_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;ar_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;ar_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;pd_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;pm_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;px_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nd_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nm_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nx_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;pd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;pm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;px_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Initialization characteristics are underdetermined - this may be intentional, but check the initial compartment sizes carefully
 </pre></div></div>
 </div>
@@ -526,10 +546,10 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.517s
-Elapsed time for running &#34;default&#34;: 0.770s
-Elapsed time for running &#34;default&#34;: 0.715s
-Elapsed time for running &#34;default&#34;: 0.701s
+Elapsed time for running &#34;default&#34;: 0.628s
+Elapsed time for running &#34;default&#34;: 0.990s
+Elapsed time for running &#34;default&#34;: 0.892s
+Elapsed time for running &#34;default&#34;: 0.807s
 </pre></div></div>
 </div>
 <div class="section" id="Creating-PlotData-from-programs">

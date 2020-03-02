@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -359,9 +359,11 @@
 
 <span class="sd">    :param name: The name of the scenario. This will also be used to name the result</span>
 <span class="sd">    :param scenario_values: A dict of overwrites to parameter values. The structure is</span>
-<span class="sd">        ``{parameter_label: {pop_label: dict o}`` where the overwrite ``o`` contains keys</span>
+<span class="sd">        ``{parameter_label: {pop_identifier: dict o}`` where the overwrite ``o`` contains keys</span>
 <span class="sd">         - ``t`` : np.array or list with year values</span>
 <span class="sd">         - ``y`` : np.array or list with corresponding parameter values</span>
+<span class="sd">         The ``pop_identifier`` is a single population name if the ``parameter_label`` corresponds to a Framework parameter</span>
+<span class="sd">         or it should be a tuple/list ``(from_pop,to_pop)`` if the ``parameter_label`` corresponds to an interaction or transfer.</span>
 <span class="sd">    :param active: If running via ``Project.run_scenarios`` this flags whether to run the scenario</span>
 <span class="sd">    :param parsetname: If running via ``Project.run_scenarios`` this identifies which parset to use from the project</span>
 <span class="sd">    :param interpolation: The specified interpolation method will be used to interpolate scenario values onto simulation times. Common options are &#39;linear&#39; (smoothly change) and &#39;previous&#39; (stepped)</span>
@@ -385,12 +387,14 @@
 
 <span class="sd">        &gt;&gt;&gt; pscenario = ParameterScenario(name=&quot;examplePS&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; pscenario.add(&#39;rec_rate&#39;,&#39;Pop1&#39;,[2004.,2014],[3e6, 1e4])</span>
+<span class="sd">        &gt;&gt;&gt; pscenario.add(&#39;aging&#39;,(&#39;Pop1&#39;,&#39;Pop2&#39;),[2004.,2014],[0.05,0.06])</span>
 
 <span class="sd">        This can provide a more readable way to define a parameter scenario, without having to</span>
 <span class="sd">        assemble a dict of the overwrites in advance.</span>
 
-<span class="sd">        :param par_name: Name of the parameter to overwrite</span>
-<span class="sd">        :param pop_name: Population to overwrite values for</span>
+<span class="sd">        :param par_name: Name of the parameter to overwrite. This can also be the code name of a transfer or interaction</span>
+<span class="sd">        :param pop_name: Population to overwrite values for. If the ``par_name`` is a transfer or interaction, this</span>
+<span class="sd">                         should be a tuple containing ``(from_pop,to_pop)``</span>
 <span class="sd">        :param t: scalar, list, or array of times</span>
 <span class="sd">        :param y: scalar, list, or array of overwrite values</span>
 <span class="sd">        :param end_overwrite: If True, after the final overwrite, the parameter will revert to its baseline value</span>
@@ -430,10 +434,20 @@
         <span class="n">tvec</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">tvec</span>  <span class="c1"># Simulation times</span>
 
         <span class="k">for</span> <span class="n">par_label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">par</span> <span class="o">=</span> <span class="n">new_parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par_label</span><span class="p">]</span>  <span class="c1"># This is the parameter we are updating</span>
-            <span class="n">has_function</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;function&#39;</span><span class="p">]</span>  <span class="c1"># Flag whether this is a function parameter in the framework</span>
 
-            <span class="k">for</span> <span class="n">pop_label</span><span class="p">,</span> <span class="n">overwrite</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_label</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">par_label</span> <span class="ow">in</span> <span class="n">new_parset</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+                <span class="n">has_function</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">par_label</span><span class="p">,</span> <span class="s1">&#39;function&#39;</span><span class="p">]</span>  <span class="c1"># Flag whether this is a function parameter in the framework</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">has_function</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Interactions and transfers do not have functions</span>
+
+            <span class="k">for</span> <span class="n">pop_specifier</span><span class="p">,</span> <span class="n">overwrite</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_label</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">pop_specifier</span><span class="p">):</span>
+                    <span class="n">par</span> <span class="o">=</span> <span class="n">new_parset</span><span class="o">.</span><span class="n">get_par</span><span class="p">(</span><span class="n">par_label</span><span class="p">)</span>
+                    <span class="n">pop_label</span> <span class="o">=</span> <span class="n">pop_specifier</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">par</span> <span class="o">=</span> <span class="n">new_parset</span><span class="o">.</span><span class="n">get_par</span><span class="p">(</span><span class="n">par_label</span><span class="p">,</span> <span class="n">pop_specifier</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">pop_label</span> <span class="o">=</span> <span class="n">pop_specifier</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
                 <span class="c1"># Sanitize the overwrite values</span>
                 <span class="n">overwrite</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">overwrite</span><span class="p">)</span>

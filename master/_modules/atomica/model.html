@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -402,7 +402,7 @@
 
             <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_DURATION</span><span class="p">:</span>
                 <span class="n">outflow_probability</span> <span class="o">+=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">/</span> <span class="p">(</span><span class="n">transition</span> <span class="o">*</span> <span class="n">par</span><span class="o">.</span><span class="n">timescale</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="ow">in</span> <span class="p">{</span><span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span><span class="p">,</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_RATE</span><span class="p">}:</span>
                 <span class="n">outflow_probability</span> <span class="o">+=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">transition</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">/</span> <span class="n">par</span><span class="o">.</span><span class="n">timescale</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_NUMBER</span><span class="p">:</span>
                 <span class="n">outflow_probability</span> <span class="o">+=</span> <span class="n">par</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">/</span> <span class="bp">self</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span>
@@ -918,10 +918,13 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ti</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:,</span> <span class="n">tr</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
 
         <span class="c1"># Advance the keyring</span>
-        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">ti</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Now, the final subcompartment should be empty - can disable this check if it&#39;s slow</span>
+        <span class="c1"># If this TimedCompartment has only one row, then anyone coming in via TimedLinks will be placed directly</span>
+        <span class="c1"># in the final subcompartment (which is also the initial subcompartment). We are assuming that the cached</span>
+        <span class="c1"># outflow correctly emptied everyone in the flush compartment so don&#39;t check that the final subcompartment</span>
+        <span class="c1"># is empty because people could have been added to it in this timestep</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="n">ti</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># Zero out the inflow (otherwise, it just replicates previous value)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># Zero out the inflow (otherwise, it just replicates previous value)</span>
 
         <span class="c1"># Now, resolve other inputs for which durations are not preserved</span>
         <span class="c1"># Regardless of whether they are TimedLinks or not, they should go into the initial subcompartment</span>
@@ -988,8 +991,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">tvec</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">tvec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_dynamic</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">tvec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vals</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Characteristic.get_included_comps"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Characteristic.get_included_comps">[docs]</a>    <span class="k">def</span> <span class="nf">get_included_comps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">includes</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1104,7 +1108,7 @@
         <span class="c1">#: one wanted to use 1/365.25 instead of 1/365)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timescale</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-<div class="viewcode-block" id="Parameter.set_fcn"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Parameter.set_fcn">[docs]</a>    <span class="k">def</span> <span class="nf">set_fcn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">fcn_str</span><span class="p">,</span> <span class="n">progset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Parameter.set_fcn"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Parameter.set_fcn">[docs]</a>    <span class="k">def</span> <span class="nf">set_fcn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fcn_str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a function to this parameter</span>
 
@@ -1117,7 +1121,6 @@
 
 <span class="sd">        :param framework: A py:class:`ProjectFramework` instance, used to identify and retrieve interaction terms</span>
 <span class="sd">        :param fcn_str: The string containing the function to add</span>
-<span class="sd">        :param progset: A py:class:`ProgramSet` instance, used to identify parameters that will be overwritten</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -1132,19 +1135,12 @@
             <span class="n">function_args</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">function_args</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pop_aggregation</span> <span class="o">=</span> <span class="p">[</span><span class="n">special_function</span><span class="p">]</span> <span class="o">+</span> <span class="n">function_args</span>
             <span class="c1"># Aggregation dependencies are set externally because they may cross populations - see `Model.build()`</span>
+            <span class="c1"># Note that aggregations are computed externally rather than via `Parameter.update`</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">dep_name</span> <span class="ow">in</span> <span class="n">dep_list</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">dep_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;dt&#39;</span><span class="p">]):</span>  <span class="c1"># There are no integration variables associated with the interactions, as they are treated as a special matrix</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">deps</span><span class="p">[</span><span class="n">dep_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">dep_name</span><span class="p">)</span>  <span class="c1"># nb. this lookup will fail if the user has a function that depends on a quantity outside this population</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">deps</span><span class="p">[</span><span class="n">dep_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">dep_name</span><span class="p">)</span>  <span class="c1"># nb. this lookup will fail if the user has a function that depends on a quantity outside this population</span></div>
 
-        <span class="c1"># If this Parameter has links and a function, it must be updated before it is needed during integration.</span>
-        <span class="c1"># If the function depends on any compartment sizes, it must be updated element-wise during integration.</span>
-        <span class="c1"># Similarly, if it is a derivative parameter, it needs to be updated element-wise.</span>
-        <span class="c1"># Otherwise, it can be pre-computed in a fast vector operation</span>
-        <span class="c1"># A timed parameter doesn&#39;t _directly_ have links associated with it (because it does not supply values</span>
-        <span class="c1"># for the links) but it does need to be precomputed</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">derivative</span> <span class="ow">or</span> <span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_dynamic</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Parameter.set_dynamic"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Parameter.set_dynamic">[docs]</a>    <span class="k">def</span> <span class="nf">set_dynamic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1185,7 +1181,7 @@
             <span class="k">for</span> <span class="n">deps</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">deps</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>  <span class="c1"># deps is {&#39;dep_name&#39;:[dep_objects]}</span>
                 <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">deps</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dep</span><span class="p">,</span> <span class="n">Link</span><span class="p">):</span>
-                        <span class="k">raise</span> <span class="n">ModelError</span><span class="p">(</span><span class="s2">&quot;A Parameter that depends on transition flow rates cannot be a dependency, it must be output only.&quot;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">ModelError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter &#39;</span><span class="si">{self.name}</span><span class="s2">&#39; depends on transition flow &#39;</span><span class="si">{dep.name}</span><span class="s2">&#39; thus it cannot be a dependency, it must be output only.&quot;</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dep</span><span class="p">,</span> <span class="n">Compartment</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dep</span><span class="p">,</span> <span class="n">Characteristic</span><span class="p">):</span>
                         <span class="n">dep</span><span class="o">.</span><span class="n">set_dynamic</span><span class="p">()</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_is_dynamic</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1794,7 +1790,17 @@
 
             <span class="n">fcn_str</span> <span class="o">=</span> <span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;function&#39;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">fcn_str</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">par</span><span class="o">.</span><span class="n">set_fcn</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">fcn_str</span><span class="p">,</span> <span class="n">progset</span><span class="p">)</span></div>
+                <span class="n">par</span><span class="o">.</span><span class="n">set_fcn</span><span class="p">(</span><span class="n">fcn_str</span><span class="p">)</span>
+
+        <span class="c1"># If this Parameter has links and a function, it must be updated before it is needed during integration.</span>
+        <span class="c1"># If the function depends on any compartment sizes, it must be updated element-wise during integration.</span>
+        <span class="c1"># Similarly, if it is a derivative parameter, it needs to be updated element-wise.</span>
+        <span class="c1"># Otherwise, it can be pre-computed in a fast vector operation</span>
+        <span class="c1"># A timed parameter doesn&#39;t _directly_ have links associated with it (because it does not supply values</span>
+        <span class="c1"># for the links) but it does need to be precomputed</span>
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">fcn_str</span> <span class="ow">and</span> <span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">links</span> <span class="ow">or</span> <span class="n">par</span><span class="o">.</span><span class="n">derivative</span> <span class="ow">or</span> <span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">):</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">set_dynamic</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Population.initialize_compartments"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Population.initialize_compartments">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_compartments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="p">:</span> <span class="n">ParameterSet</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">t_init</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1983,7 +1989,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_program_cache</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exec_order</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-
 <div class="viewcode-block" id="Model.relink"><a class="viewcode-back" href="../../_autosummary/atomica.model.html#atomica.model.Model.relink">[docs]</a>    <span class="k">def</span> <span class="nf">relink</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Replace IDs with references</span>
@@ -2128,7 +2133,7 @@
                         <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">transfer_parameter</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop_target</span><span class="p">]</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
                         <span class="c1"># Sampling might result in the parameter value going out of bounds, so make sure the transfer parameter values are constrained</span>
-                        <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_RATE</span> <span class="ow">or</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span><span class="p">:</span>
                             <span class="n">par</span><span class="o">.</span><span class="n">limits</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
                         <span class="k">elif</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_NUMBER</span><span class="p">:</span>
                             <span class="n">par</span><span class="o">.</span><span class="n">limits</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span>
@@ -2253,7 +2258,7 @@
         <span class="c1"># dynamic programs or to program overwrites.</span>
         <span class="n">par_derivative</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;is derivative&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>  <span class="c1"># Store all parameter names in framework, as well as whether they are a derivative or not</span>
         <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
-        <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">par_derivative</span><span class="p">,</span><span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">par_derivative</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">dep</span><span class="p">,</span> <span class="n">dep_var</span> <span class="ow">in</span> <span class="n">par</span><span class="o">.</span><span class="n">deps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2279,7 +2284,6 @@
         <span class="n">exec_order</span><span class="p">[</span><span class="s1">&#39;all_pars&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">dag</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vars_by_pop</span><span class="p">]</span>  <span class="c1"># Not all parameters may exist depending on populations, so filter out only the ones that are actually instantiated in this Model</span>
         <span class="n">exec_order</span><span class="p">[</span><span class="s1">&#39;dynamic_pars&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">exec_order</span><span class="p">[</span><span class="s1">&#39;all_pars&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="s1">&#39;keep&#39;</span><span class="p">]]</span>
 
-
         <span class="c1"># Set the parameter execution order - this is a list of only transition parameters, used when updating links</span>
         <span class="c1"># This is a flat list of parameters, but the order actually should not matter since all parameters should be</span>
         <span class="c1"># resolved at this point</span>
@@ -2293,6 +2297,7 @@
         <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">charac</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">characs</span><span class="p">:</span>
+                <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">charac</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">include</span> <span class="ow">in</span> <span class="n">charac</span><span class="o">.</span><span class="n">includes</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">include</span><span class="p">,</span> <span class="n">Characteristic</span><span class="p">):</span>
                         <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">include</span><span class="p">,</span> <span class="n">charac</span><span class="p">)</span>  <span class="c1"># Note directionality - the included characteristic needs to be added first</span>
@@ -2387,7 +2392,7 @@
                 <span class="k">continue</span>
 
             <span class="c1"># Convert probability by Poisson distribution formula to a value appropriate for timestep.</span>
-            <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_RATE</span> <span class="ow">or</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span><span class="p">:</span>
                 <span class="c1"># Note that we convert the transition to the timestep before checking whether it is greater than 1 or not. That way,</span>
                 <span class="c1"># durations get preserved until we limit them based on the timestep size. The rationale is that the annual probability</span>
                 <span class="c1"># will come out at 1.0 if the *mean* duration is the same as the step size, but that doesn&#39;t mean that if the step size</span>
@@ -2548,7 +2553,7 @@
 
                         <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_NUMBER</span><span class="p">:</span>
                             <span class="n">par</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">*=</span> <span class="n">par</span><span class="o">.</span><span class="n">source_popsize</span><span class="p">(</span><span class="n">ti</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>  <span class="c1"># The outcome in the progbook is per person reached, which is a timestep specific value. Thus, need to annualize here</span>
-                        <span class="k">elif</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span><span class="p">:</span>
+                        <span class="k">elif</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_RATE</span> <span class="ow">or</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span><span class="p">:</span>
                             <span class="c1"># Continuous programs generally should not target number or probability parameters</span>
                             <span class="c1"># We apply a factor of dt here regardless of the parameter&#39;s timescale. This is because the dt factor here</span>
                             <span class="c1"># matches the factor of dt used to divide the annual spending into timestep spending</span>

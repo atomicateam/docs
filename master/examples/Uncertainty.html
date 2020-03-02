@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -251,8 +251,8 @@ div.nboutput.container div.prompt pre {
 div.nbinput.container div.prompt,
 div.nboutput.container div.prompt {
     min-width: 5ex;
-    padding-top: 0.4em;
-    padding-right: 0.4em;
+    padding-top: 0.3rem;
+    padding-right: 0.3rem;
     text-align: right;
     flex: 0;
 }
@@ -276,7 +276,6 @@ div.nboutput.container div.prompt pre {
 /* input/output area */
 div.nbinput.container div.input_area,
 div.nboutput.container div.output_area {
-    padding: 0.4em;
     -webkit-flex: 1;
     flex: 1;
     overflow: auto;
@@ -349,6 +348,27 @@ div.nboutput.container div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 0.3rem;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
 
 /* Some additional styling taken form the Jupyter notebook CSS */
 div.rendered_html table {
@@ -480,14 +500,14 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Atomica 1.17.1 (2020-01-28) -- (c) the Atomica development team
+Atomica 1.18.1 (2020-02-02) -- (c) the Atomica development team
 git branch: Git branch N/A (Git hash)
-2020-01-28 08:12:06.229807
-Parameter &#34;screen&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;diag&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;initiate&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;loss&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
-Parameter &#34;fail_rate&#34; is in probability units and a maximum value of &#34;1&#34; has been entered. Probabilities in the framework should generally not be limited to &#34;1&#34; because it is only the timestep-specific probability that is capped at 1
+2020-03-02 03:44:38.884492
+Parameter &#34;screen&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;diag&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;initiate&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;loss&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;fail_rate&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -495,7 +515,7 @@ Parameter &#34;fail_rate&#34; is in probability units and a maximum value of &#3
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0329s
+Elapsed time for running &#34;default&#34;: 0.0253s
 </pre></div></div>
 </div>
 <p>Above, we have loaded in a databook with uncertainty values, and also loaded in two different program books, one with low uncertainty, and one with high uncertainty. We can inspect the objects to see how the uncertainty entered in the spreadsheets is reflected in code.</p>
@@ -514,7 +534,7 @@ Elapsed time for running &#34;default&#34;: 0.0329s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.utils.TimeSeries at 0x7fc4efad4d10&gt;
+&lt;atomica.utils.TimeSeries at 0x7f554d1ead50&gt;
 ============================================================
 Methods:
   copy()              interpolate()       remove_between()
@@ -525,7 +545,7 @@ Methods:
   _sampled: False
 assumption: None
      sigma: 20.0
-         t: [2016.0]
+         t: [2016]
      units: Number
       vals: [214.0]
 ============================================================
@@ -549,7 +569,7 @@ assumption: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0259s
+Elapsed time for running &#34;default&#34;: 0.0268s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -628,7 +648,7 @@ Sampling has already been performed - can only sample once
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0249s
+Elapsed time for running &#34;default&#34;: 0.0280s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -657,8 +677,8 @@ Elapsed time for running &#34;default&#34;: 0.0249s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0340s
-Elapsed time for running &#34;default&#34;: 0.0331s
+Elapsed time for running &#34;default&#34;: 0.0390s
+Elapsed time for running &#34;default&#34;: 0.0376s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -685,7 +705,7 @@ Elapsed time for running &#34;default&#34;: 0.0331s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0353s
+Elapsed time for running &#34;default&#34;: 0.0898s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -748,7 +768,7 @@ Characteristic &#39;all_screened&#39;: Target value = [470.76487173]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[&lt;atomica.results.Result at 0x7fc4ecdb5b10&gt;
+[[&lt;atomica.results.Result at 0x7f554b1aef10&gt;
 ============================================================
 Methods:
   charac_names()      export_raw()        get_variable()
@@ -756,18 +776,18 @@ Methods:
   comp_names()        get_coverage()      par_names()
   copy()              get_equivalent_...  plot()
 ============================================================
-    created: datetime.datetime(2020, 1, 28, 8, 12, 8, 549634,
+    created: datetime.datetime(2020, 3, 2, 3, 44, 41, 371848,
              tzinfo=tzutc())
     gitinfo: {&#39;branch&#39;: &#39;Git branch N/A&#39;, &#39;hash&#39;: &#39;Git hash N/A&#39;,
              &#39;date&#39;: &#39;Git dat [...]
-      model: &lt;atomica.model.Model object at 0x7fc4ed73bb50&gt;
-   modified: datetime.datetime(2020, 1, 28, 8, 12, 8, 549652,
+      model: &lt;atomica.model.Model object at 0x7f554d30b910&gt;
+   modified: datetime.datetime(2020, 3, 2, 3, 44, 41, 371864,
              tzinfo=tzutc())
        name: default
 parset_name: default
   pop_names: [&#39;m_rural&#39;, &#39;f_rural&#39;, &#39;m_urban&#39;, &#39;f_urban&#39;]
-        uid: UUID(&#39;280ba861-425c-49f3-8bdb-12aa951108fe&#39;)
-    version: 1.17.1
+        uid: UUID(&#39;58c2b3aa-fbfa-4b8f-8e5a-c48cdfad15cf&#39;)
+    version: 1.18.1
 ============================================================
 ]]
 </pre></div></div>
@@ -788,7 +808,7 @@ parset_name: default
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 5/5 [00:00&lt;00:00, 22.00it/s]
+100%|██████████| 5/5 [00:00&lt;00:00, 29.41it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -826,7 +846,7 @@ parset_name: default
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:04&lt;00:00, 23.86it/s]
+100%|██████████| 100/100 [00:04&lt;00:00, 22.18it/s]
 </pre></div></div>
 </div>
 <p>For comparison, we will also run a ‘baseline’ simulation with no sampling. A plot of the baseline results looks like this:</p>
@@ -846,7 +866,7 @@ parset_name: default
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0248s
+Elapsed time for running &#34;default&#34;: 0.0269s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1239,8 +1259,8 @@ expected that the labels may need to be edited afterwards depending on usage.</p
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0391s
-Elapsed time for running &#34;default&#34;: 0.0384s
+Elapsed time for running &#34;default&#34;: 0.0332s
+Elapsed time for running &#34;default&#34;: 0.0347s
 </pre></div></div>
 </div>
 <p>Comparing results across budget scenarios is extremely common, so Atomica has built-in functionality to facilitate this. You can pass multiple instructions and result names to <code class="docutils literal notranslate"><span class="pre">Project.run_sampled_sims()</span></code> to generate results as shown above</p>
@@ -1259,7 +1279,7 @@ Elapsed time for running &#34;default&#34;: 0.0384s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:09&lt;00:00, 10.92it/s]
+100%|██████████| 100/100 [00:09&lt;00:00, 10.09it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -1293,7 +1313,7 @@ Elapsed time for running &#34;default&#34;: 0.0384s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:09&lt;00:00, 11.04it/s]
+100%|██████████| 100/100 [00:10&lt;00:00,  9.85it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1650,7 +1670,7 @@ generate the plot via <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:05&lt;00:00, 19.95it/s]
+100%|██████████| 100/100 [00:05&lt;00:00, 17.70it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1687,8 +1707,20 @@ generate the plot via <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/results.py:1501: UserWarning: To output multiple subplots, the figure containing the passed axes is being cleared
+/home/vsts/work/1/s/atomica/results.py:1502: UserWarning: To output multiple subplots, the figure containing the passed axes is being cleared
   pd.plotting.scatter_matrix(df, ax=ax, c=[colormap[x] for x in df[&#39;result&#39;].values], diagonal=&#39;kde&#39;)
+/opt/hostedtoolcache/Python/3.7.6/x64/lib/python3.7/site-packages/pandas-1.0.1-py3.7-linux-x86_64.egg/pandas/plotting/_matplotlib/tools.py:298: MatplotlibDeprecationWarning:
+The rowNum attribute was deprecated in Matplotlib 3.2 and will be removed two minor releases later. Use ax.get_subplotspec().rowspan.start instead.
+  layout[ax.rowNum, ax.colNum] = ax.get_visible()
+/opt/hostedtoolcache/Python/3.7.6/x64/lib/python3.7/site-packages/pandas-1.0.1-py3.7-linux-x86_64.egg/pandas/plotting/_matplotlib/tools.py:298: MatplotlibDeprecationWarning:
+The colNum attribute was deprecated in Matplotlib 3.2 and will be removed two minor releases later. Use ax.get_subplotspec().colspan.start instead.
+  layout[ax.rowNum, ax.colNum] = ax.get_visible()
+/opt/hostedtoolcache/Python/3.7.6/x64/lib/python3.7/site-packages/pandas-1.0.1-py3.7-linux-x86_64.egg/pandas/plotting/_matplotlib/tools.py:304: MatplotlibDeprecationWarning:
+The rowNum attribute was deprecated in Matplotlib 3.2 and will be removed two minor releases later. Use ax.get_subplotspec().rowspan.start instead.
+  if not layout[ax.rowNum + 1, ax.colNum]:
+/opt/hostedtoolcache/Python/3.7.6/x64/lib/python3.7/site-packages/pandas-1.0.1-py3.7-linux-x86_64.egg/pandas/plotting/_matplotlib/tools.py:304: MatplotlibDeprecationWarning:
+The colNum attribute was deprecated in Matplotlib 3.2 and will be removed two minor releases later. Use ax.get_subplotspec().colspan.start instead.
+  if not layout[ax.rowNum + 1, ax.colNum]:
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">

@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -173,6 +173,7 @@
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
+<span class="n">_DEFAULT_PROVENANCE</span> <span class="o">=</span> <span class="s1">&#39;Framework-supplied default&#39;</span>
 
 <div class="viewcode-block" id="ProjectData"><a class="viewcode-back" href="../../_autosummary/atomica.data.html#atomica.data.ProjectData">[docs]</a><span class="k">class</span> <span class="nc">ProjectData</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">prettyobj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -432,6 +433,7 @@
                         <span class="n">ts</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">interpop</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                         <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;default value&#39;</span><span class="p">])</span>
                         <span class="n">interpop</span><span class="o">.</span><span class="n">ts</span><span class="p">[(</span><span class="n">from_pop</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ts</span>
+                        <span class="n">interpop</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">[</span><span class="s1">&#39;Provenance&#39;</span><span class="p">][(</span><span class="n">from_pop</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">)]</span> <span class="o">=</span> <span class="n">_DEFAULT_PROVENANCE</span>
 
         <span class="c1"># Finally, insert parameter and characteristic default values</span>
         <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="p">[</span><span class="n">framework</span><span class="o">.</span><span class="n">comps</span><span class="p">,</span> <span class="n">framework</span><span class="o">.</span><span class="n">characs</span><span class="p">,</span> <span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="p">]:</span>
@@ -441,8 +443,9 @@
                 <span class="c1"># - The quantity should appear in the databook</span>
                 <span class="k">if</span> <span class="s1">&#39;default value&#39;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s1">&#39;default value&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;databook page&#39;</span><span class="p">]:</span>
                     <span class="n">tdve</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
-                    <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                         <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;default value&#39;</span><span class="p">])</span>
+                        <span class="n">tdve</span><span class="o">.</span><span class="n">ts_attributes</span><span class="p">[</span><span class="s1">&#39;Provenance&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_DEFAULT_PROVENANCE</span>
 
         <span class="k">return</span> <span class="n">data</span></div>
 
@@ -469,7 +472,7 @@
 
         <span class="bp">self</span> <span class="o">=</span> <span class="n">ProjectData</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="n">framework</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">spreadsheet</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spreadsheet</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">):</span>
             <span class="n">spreadsheet</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">spreadsheet</span><span class="p">)</span>
 
         <span class="n">workbook</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">load_workbook</span><span class="p">(</span><span class="n">spreadsheet</span><span class="o">.</span><span class="n">tofile</span><span class="p">(),</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">data_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Load in read-only mode for performance, since we don&#39;t parse comments etc.</span>
@@ -630,7 +633,7 @@
                             <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="n">framework_units</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
                                 <span class="c1"># If the units don&#39;t match the framework&#39;s &#39;databook&#39; units, see if they at least match the standard unit (for legacy databooks)</span>
                                 <span class="c1"># For compartments and characteristics, the units must match exactly</span>
-                                <span class="k">if</span> <span class="n">obj_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;comps&#39;</span><span class="p">,</span><span class="s1">&#39;characs&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;format&#39;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;format&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;format&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+                                <span class="k">if</span> <span class="n">obj_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;comps&#39;</span><span class="p">,</span> <span class="s1">&#39;characs&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;format&#39;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;format&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;format&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
                                     <span class="k">assert</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">framework_units</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">. Unit &quot;</span><span class="si">%s</span><span class="s1">&quot; for </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">) does not match the declared units from the Framework (expecting &quot;</span><span class="si">%s</span><span class="s1">&quot;)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">tdve</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">framework_units</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s1">&#39;par&#39;</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
                                 <span class="k">assert</span> <span class="ow">not</span> <span class="n">ts</span><span class="o">.</span><span class="n">has_time_data</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">. Parameter </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">) is marked as a timed transition in the Framework, so it must have a constant value (i.e., the databook cannot contain time-dependent values for this parameter)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">tdve</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
@@ -667,19 +670,27 @@
                 <span class="k">assert</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Units are missing for transfer </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">-&gt;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tdc</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">to_pop</span><span class="p">,</span> <span class="n">from_pop</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="ProjectData.to_spreadsheet"><a class="viewcode-back" href="../../_autosummary/atomica.data.html#atomica.data.ProjectData.to_spreadsheet">[docs]</a>    <span class="k">def</span> <span class="nf">to_spreadsheet</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">:</span>
+<div class="viewcode-block" id="ProjectData.to_workbook"><a class="viewcode-back" href="../../_autosummary/atomica.data.html#atomica.data.ProjectData.to_workbook">[docs]</a>    <span class="k">def</span> <span class="nf">to_workbook</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return content as a Sciris Spreadsheet</span>
+<span class="sd">        Return an open workbook for the databook</span>
 
-<span class="sd">        :return: A :class:`sciris.Spreadsheet` instance</span>
+<span class="sd">        This allows the xlsxwriter workbook to be manipulated prior to closing the</span>
+<span class="sd">        filestream e.g. to append extra sheets. This prevents issues related to cached</span>
+<span class="sd">        data values when reloading a workbook to append or modify content</span>
+
+<span class="sd">        Warning - the workbook is backed by a BytesIO instance and needs to be closed.</span>
+<span class="sd">        See the usage of this method in the :meth`to_spreadsheet` function.</span>
+
+<span class="sd">        :return: A tuple (bytes, workbook) with a BytesIO instance and a corresponding *open* xlsxwriter workbook instance</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Initialize the bytestream</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+        <span class="n">wb</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">Workbook</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;in_memory&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 
         <span class="c1"># Open a workbook</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_book</span> <span class="o">=</span> <span class="n">xw</span><span class="o">.</span><span class="n">Workbook</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_book</span> <span class="o">=</span> <span class="n">wb</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_book</span><span class="o">.</span><span class="n">set_properties</span><span class="p">({</span><span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="s1">&#39;atomica:databook&#39;</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_formats</span> <span class="o">=</span> <span class="n">standard_formats</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_book</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_references</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Reset the references dict</span>
@@ -690,19 +701,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_interpops</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_transfers</span><span class="p">()</span>
 
-        <span class="c1"># Close the workbook</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_book</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-        <span class="c1"># Dump the file content into a ScirisSpreadsheet</span>
-        <span class="n">spreadsheet</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-        <span class="c1"># Clear everything</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c1"># Clean internal variables related to writing the worbkook</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_book</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_formats</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_references</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># Return the spreadsheet</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">wb</span></div>
+
+<div class="viewcode-block" id="ProjectData.to_spreadsheet"><a class="viewcode-back" href="../../_autosummary/atomica.data.html#atomica.data.ProjectData.to_spreadsheet">[docs]</a>    <span class="k">def</span> <span class="nf">to_spreadsheet</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return content as a Sciris Spreadsheet</span>
+
+<span class="sd">        :return: A :class:`sciris.Spreadsheet` instance</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">f</span><span class="p">,</span> <span class="n">wb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_workbook</span><span class="p">()</span>
+        <span class="n">wb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># Close the workbook to flush any xlsxwriter content</span>
+        <span class="n">spreadsheet</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  <span class="c1"># Wrap it in a spreadsheet instance</span>
         <span class="k">return</span> <span class="n">spreadsheet</span></div>
 
 <div class="viewcode-block" id="ProjectData.save"><a class="viewcode-back" href="../../_autosummary/atomica.data.html#atomica.data.ProjectData.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -918,7 +934,7 @@
 
         <span class="n">from_pops</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">pop_spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">pop_spec</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">from_pop_type</span><span class="p">]</span>
         <span class="n">to_pops</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">pop_spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">pop_spec</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">to_pop_type</span><span class="p">]</span>
-        <span class="n">interpop</span> <span class="o">=</span> <span class="n">TimeDependentConnections</span><span class="p">(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">,</span> <span class="n">from_pops</span><span class="o">=</span><span class="n">from_pops</span><span class="p">,</span> <span class="n">to_pops</span><span class="o">=</span><span class="n">to_pops</span><span class="p">,</span> <span class="n">interpop_type</span><span class="o">=</span><span class="s1">&#39;interaction&#39;</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">from_pop_type</span><span class="o">=</span><span class="n">from_pop_type</span><span class="p">,</span> <span class="n">to_pop_type</span><span class="o">=</span><span class="n">to_pop_type</span><span class="p">)</span>
+        <span class="n">interpop</span> <span class="o">=</span> <span class="n">TimeDependentConnections</span><span class="p">(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="n">tvec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tvec</span><span class="p">,</span> <span class="n">from_pops</span><span class="o">=</span><span class="n">from_pops</span><span class="p">,</span> <span class="n">to_pops</span><span class="o">=</span><span class="n">to_pops</span><span class="p">,</span> <span class="n">interpop_type</span><span class="o">=</span><span class="s1">&#39;interaction&#39;</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">from_pop_type</span><span class="o">=</span><span class="n">from_pop_type</span><span class="p">,</span> <span class="n">to_pop_type</span><span class="o">=</span><span class="n">to_pop_type</span><span class="p">)</span>
         <span class="n">interpop</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">interpop</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">interpop</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span>

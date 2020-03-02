@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -380,12 +380,14 @@ a <code class="xref py py-class docutils literal notranslate"><span class="pre">
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – The name of the scenario. This will also be used to name the result</p></li>
 <li><p><strong>scenario_values</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]) – <p>A dict of overwrites to parameter values. The structure is
-<code class="docutils literal notranslate"><span class="pre">{parameter_label:</span> <span class="pre">{pop_label:</span> <span class="pre">dict</span> <span class="pre">o}</span></code> where the overwrite <code class="docutils literal notranslate"><span class="pre">o</span></code> contains keys</p>
+<code class="docutils literal notranslate"><span class="pre">{parameter_label:</span> <span class="pre">{pop_identifier:</span> <span class="pre">dict</span> <span class="pre">o}</span></code> where the overwrite <code class="docutils literal notranslate"><span class="pre">o</span></code> contains keys</p>
 <blockquote>
 <div><ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">t</span></code> : np.array or list with year values</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">y</span></code> : np.array or list with corresponding parameter values</p></li>
 </ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">pop_identifier</span></code> is a single population name if the <code class="docutils literal notranslate"><span class="pre">parameter_label</span></code> corresponds to a Framework parameter
+or it should be a tuple/list <code class="docutils literal notranslate"><span class="pre">(from_pop,to_pop)</span></code> if the <code class="docutils literal notranslate"><span class="pre">parameter_label</span></code> corresponds to an interaction or transfer.</p>
 </div></blockquote>
 </p></li>
 <li><p><strong>active</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – If running via <code class="docutils literal notranslate"><span class="pre">Project.run_scenarios</span></code> this flags whether to run the scenario</p></li>
@@ -403,6 +405,7 @@ ParameterSet</p>
 <p>Example usage:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pscenario</span> <span class="o">=</span> <span class="n">ParameterScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;examplePS&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pscenario</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;rec_rate&#39;</span><span class="p">,</span><span class="s1">&#39;Pop1&#39;</span><span class="p">,[</span><span class="mf">2004.</span><span class="p">,</span><span class="mi">2014</span><span class="p">],[</span><span class="mf">3e6</span><span class="p">,</span> <span class="mf">1e4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pscenario</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;aging&#39;</span><span class="p">,(</span><span class="s1">&#39;Pop1&#39;</span><span class="p">,</span><span class="s1">&#39;Pop2&#39;</span><span class="p">),[</span><span class="mf">2004.</span><span class="p">,</span><span class="mi">2014</span><span class="p">],[</span><span class="mf">0.05</span><span class="p">,</span><span class="mf">0.06</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>This can provide a more readable way to define a parameter scenario, without having to
@@ -410,8 +413,9 @@ assemble a dict of the overwrites in advance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>par_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the parameter to overwrite</p></li>
-<li><p><strong>pop_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Population to overwrite values for</p></li>
+<li><p><strong>par_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the parameter to overwrite. This can also be the code name of a transfer or interaction</p></li>
+<li><p><strong>pop_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Population to overwrite values for. If the <code class="docutils literal notranslate"><span class="pre">par_name</span></code> is a transfer or interaction, this
+should be a tuple containing <code class="docutils literal notranslate"><span class="pre">(from_pop,to_pop)</span></code></p></li>
 <li><p><strong>t</strong> – scalar, list, or array of times</p></li>
 <li><p><strong>y</strong> – scalar, list, or array of overwrite values</p></li>
 <li><p><strong>end_overwrite</strong> – If True, after the final overwrite, the parameter will revert to its baseline value</p></li>

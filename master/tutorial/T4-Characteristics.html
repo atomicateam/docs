@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -88,11 +88,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="T1-Defining-a-model.html">T1 - Defining a model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="T1-Defining-a-model.html#Division-by-zero">Division by zero</a></li>
 <li class="toctree-l2"><a class="reference internal" href="T2-Calibration.html">T2 - Calibration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="T3-Multiple-populations.html">T3 - Multiple populations</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">T4 - Characteristics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="T5-Junctions.html">T5 - Junctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T6-Programs.html">T6 - Programs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
@@ -230,8 +230,8 @@ div.nboutput.container div.prompt pre {
 div.nbinput.container div.prompt,
 div.nboutput.container div.prompt {
     min-width: 5ex;
-    padding-top: 0.4em;
-    padding-right: 0.4em;
+    padding-top: 0.3rem;
+    padding-right: 0.3rem;
     text-align: right;
     flex: 0;
 }
@@ -255,7 +255,6 @@ div.nboutput.container div.prompt pre {
 /* input/output area */
 div.nbinput.container div.input_area,
 div.nboutput.container div.output_area {
-    padding: 0.4em;
     -webkit-flex: 1;
     flex: 1;
     overflow: auto;
@@ -328,6 +327,27 @@ div.nboutput.container div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 0.3rem;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
 
 /* Some additional styling taken form the Jupyter notebook CSS */
 div.rendered_html table {
@@ -432,9 +452,9 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Atomica 1.17.1 (2020-01-28) -- (c) the Atomica development team
+Atomica 1.18.1 (2020-02-02) -- (c) the Atomica development team
 git branch: Git branch N/A (Git hash)
-2020-01-28 08:13:12.624863
+2020-03-02 03:45:51.121334
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -442,7 +462,7 @@ git branch: Git branch N/A (Git hash)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0247s
+Elapsed time for running &#34;default&#34;: 0.0261s
 </pre></div></div>
 </div>
 <p>We now want to check that the initialization has been performed correctly. In the <code class="docutils literal notranslate"><span class="pre">result</span></code> we can retrieve the variables for the compartment sizes and inspect their values at the first timestep</p>
@@ -499,7 +519,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0221s
+Elapsed time for running &#34;default&#34;: 0.0231s
 sus = 600.00
 inf = 200.00
 rec = 200.00
@@ -535,7 +555,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0218s
+Elapsed time for running &#34;default&#34;: 0.0224s
 sus = 0.00
 inf = 200.00
 rec = 200.00
@@ -569,7 +589,7 @@ containing this division. So instead of defining the population size and prevale
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0219s
+Elapsed time for running &#34;default&#34;: 0.0262s
 </pre></div></div>
 </div>
 <p>The final difference between characteristics and parameters is that characteristics take up no storage space, because they get dynamically evaluated in the results. Thus, using characteristics instead of parameters leads to smaller file sizes.</p>

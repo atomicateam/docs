@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -88,7 +88,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="T1-Defining-a-model.html">T1 - Defining a model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="T1-Defining-a-model.html#Division-by-zero">Division by zero</a></li>
 <li class="toctree-l2"><a class="reference internal" href="T2-Calibration.html">T2 - Calibration</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">T3 - Multiple populations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Transfers">Transfers</a></li>
@@ -98,6 +97,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="T4-Characteristics.html">T4 - Characteristics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="T5-Junctions.html">T5 - Junctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T6-Programs.html">T6 - Programs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
@@ -235,8 +235,8 @@ div.nboutput.container div.prompt pre {
 div.nbinput.container div.prompt,
 div.nboutput.container div.prompt {
     min-width: 5ex;
-    padding-top: 0.4em;
-    padding-right: 0.4em;
+    padding-top: 0.3rem;
+    padding-right: 0.3rem;
     text-align: right;
     flex: 0;
 }
@@ -260,7 +260,6 @@ div.nboutput.container div.prompt pre {
 /* input/output area */
 div.nbinput.container div.input_area,
 div.nboutput.container div.output_area {
-    padding: 0.4em;
     -webkit-flex: 1;
     flex: 1;
     overflow: auto;
@@ -333,6 +332,27 @@ div.nboutput.container div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 0.3rem;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
 
 /* Some additional styling taken form the Jupyter notebook CSS */
 div.rendered_html table {
@@ -420,9 +440,9 @@ populations, as shown below.</p>
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Atomica 1.17.1 (2020-01-28) -- (c) the Atomica development team
+Atomica 1.18.1 (2020-02-02) -- (c) the Atomica development team
 git branch: Git branch N/A (Git hash)
-2020-01-28 08:13:07.545983
+2020-03-02 03:45:45.954398
 Initialization characteristics are underdetermined - this may be intentional, but check the initial compartment sizes carefully
 </pre></div></div>
 </div>
@@ -479,7 +499,7 @@ changed in the databook).</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0165s
+Elapsed time for running &#34;default&#34;: 0.0188s
 </pre></div></div>
 </div>
 <p>If we plot the results, we we can now see how the population in the prisoner population increases each year:</p>
@@ -559,7 +579,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0204s
+Elapsed time for running &#34;default&#34;: 0.0232s
 </pre></div></div>
 </div>
 <p>Now, we want to see how the value of <code class="docutils literal notranslate"><span class="pre">foi_in</span></code> in each population relates to the value of <code class="docutils literal notranslate"><span class="pre">foi_out</span></code>. First, check <code class="docutils literal notranslate"><span class="pre">foi_in</span></code> in each population</p>
@@ -670,7 +690,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0233s
+Elapsed time for running &#34;default&#34;: 0.0227s
 foi_out (adults): 0.0542
 foi_out (pris): 0.0667
 Expected value of foi_in = 0.0605
@@ -713,7 +733,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0212s
+Elapsed time for running &#34;default&#34;: 0.0228s
 foi_out (adults): 0.0542
 foi_out (pris): 0.0667
 Expected value of foi_in for prisoners = 0.0625
@@ -748,7 +768,7 @@ Initialization characteristics are underdetermined - this may be intentional, bu
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0219s
+Elapsed time for running &#34;default&#34;: 0.0244s
 </pre></div></div>
 </div>
 <p>This time, the calculation to verify the weighted average is a little more involved, because we need to get the population size variable as well</p>

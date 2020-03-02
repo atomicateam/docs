@@ -21,12 +21,12 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -222,22 +222,25 @@ For example, Excel formatting, and time-varying data entry tables, are implement
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.cell_get_string" title="atomica.excel.cell_get_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_get_string</span></code></a>(cell[, allow_empty])</p></td>
 <td><p>Return string value from cell</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.df_from_table" title="atomica.excel.df_from_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">df_from_table</span></code></a>(table[, index])</p></td>
-<td><p>Convert a table to a dataframe</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.copy_sheet" title="atomica.excel.copy_sheet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_sheet</span></code></a>(source, sheet_name, workbook)</p></td>
+<td><p>Copy a sheet into a Workbook</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.read_tables" title="atomica.excel.read_tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_tables</span></code></a>(worksheet)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.read_dataframes" title="atomica.excel.read_dataframes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_dataframes</span></code></a>(worksheet[, merge])</p></td>
+<td><p>Read dataframes from sheet</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.read_tables" title="atomica.excel.read_tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_tables</span></code></a>(worksheet)</p></td>
 <td><p>Read tables from sheet</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.standard_formats" title="atomica.excel.standard_formats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">standard_formats</span></code></a>(workbook)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.standard_formats" title="atomica.excel.standard_formats"><code class="xref py py-obj docutils literal notranslate"><span class="pre">standard_formats</span></code></a>(workbook)</p></td>
 <td><p>the formats used in the spreadsheet</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.transfer_comments" title="atomica.excel.transfer_comments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transfer_comments</span></code></a>(target, comment_source)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.transfer_comments" title="atomica.excel.transfer_comments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transfer_comments</span></code></a>(target, comment_source)</p></td>
 <td><p>Copy comments between spreadsheets</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.update_widths" title="atomica.excel.update_widths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_widths</span></code></a>(width_dict, column_index, contents)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.update_widths" title="atomica.excel.update_widths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_widths</span></code></a>(width_dict, column_index, contents)</p></td>
 <td><p>Keep track of required width for a column</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.validate_category" title="atomica.excel.validate_category"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_category</span></code></a>(workbook, expected_category)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.validate_category" title="atomica.excel.validate_category"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_category</span></code></a>(workbook, expected_category)</p></td>
 <td><p>Check Atomica workbook type</p></td>
 </tr>
 </tbody>
@@ -279,7 +282,7 @@ This class is used for both transfers and interactions. The content that it writ
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>code_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the code name of this quantity e.g. ‘aging’</p></li>
 <li><p><strong>full_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – the full name of this quantity e.g. ‘Aging’</p></li>
-<li><p><strong>tvec</strong> – time values for the time-dependent rows</p></li>
+<li><p><strong>tvec</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>) – time values for the time-dependent rows</p></li>
 <li><p><strong>pops</strong> – list of strings to use as the rows and columns - these are typically lists of population code names</p></li>
 <li><p><strong>type</strong> – ‘transfer’ or ‘interaction’. A transfer cannot have diagonal entries, and can have Number or Probability formats. An Interaction can have
 diagonal entries and only has N.A. formats</p></li>
@@ -325,6 +328,12 @@ is specified for an entry on the diagonal and <code class="docutils literal notr
 <dd><p>Heading to use for assumption column</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="atomica.excel.TimeDependentConnections.attributes">
+<code class="sig-name descname">attributes</code><em class="property"> = None</em><a class="headerlink" href="#atomica.excel.TimeDependentConnections.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attributes associated with the table</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="atomica.excel.TimeDependentConnections.from_tables">
 <em class="property">static </em><code class="sig-name descname">from_tables</code><span class="sig-paren">(</span><em class="sig-param">tables</em>, <em class="sig-param">interaction_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#TimeDependentConnections.from_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.TimeDependentConnections.from_tables" title="Permalink to this definition">¶</a></dt>
@@ -346,6 +355,12 @@ the groups of three expected by this method.</p>
 <dd class="field-even"><p>A new <a class="reference internal" href="#atomica.excel.TimeDependentConnections" title="atomica.excel.TimeDependentConnections"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code></a> instance</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="atomica.excel.TimeDependentConnections.ts_attributes">
+<code class="sig-name descname">ts_attributes</code><em class="property"> = None</em><a class="headerlink" href="#atomica.excel.TimeDependentConnections.ts_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attributes associated with each TimeSeries row</p>
 </dd></dl>
 
 <dl class="method">
@@ -409,10 +424,10 @@ are able to differ across rows.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – The name/title for this table</p></li>
-<li><p><strong>tvec</strong> – Specify the time values for this table. All TimeSeries in the ts dict should have corresponding time values</p></li>
+<li><p><strong>tvec</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>]) – Specify the time values for this table. All TimeSeries in the ts dict should have corresponding time values</p></li>
 <li><p><strong>ts</strong> – Optionally specify an odict() of TimeSeries objects populating the rows. Could be populated after</p></li>
-<li><p><strong>allowed_units</strong> – Optionally specify a list of allowed units that will appear as a dropdown</p></li>
-<li><p><strong>comment</strong> – Optionally specify descriptive text that will be added as a comment to the name cell</p></li>
+<li><p><strong>allowed_units</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>]) – Optionally specify a list of allowed units that will appear as a dropdown</p></li>
+<li><p><strong>comment</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – Optionally specify descriptive text that will be added as a comment to the name cell</p></li>
 </ul>
 </dd>
 </dl>
@@ -466,6 +481,12 @@ if they are present in the spreadsheet.</p>
 <dt id="atomica.excel.TimeDependentValuesEntry.name">
 <code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#atomica.excel.TimeDependentValuesEntry.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name for th quantity printed in Excel</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="atomica.excel.TimeDependentValuesEntry.ts_attributes">
+<code class="sig-name descname">ts_attributes</code><em class="property"> = None</em><a class="headerlink" href="#atomica.excel.TimeDependentValuesEntry.ts_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary containing extra attributes to write along with each TimeSeries object.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -573,14 +594,60 @@ the openpyxl cell data type.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="atomica.excel.df_from_table">
-<code class="sig-prename descclassname">atomica.excel.</code><code class="sig-name descname">df_from_table</code><span class="sig-paren">(</span><em class="sig-param">table</em>, <em class="sig-param">index=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#df_from_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.df_from_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a table to a dataframe</p>
-<p>If a column is completely empty, it will be skipped
-:param table: A single table read in using <cite>at.excel.read_tables()</cite>
-:param index: A list of column headings to use as indices
-:rtype: <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>
-:return: A dataframe</p>
+<dt id="atomica.excel.copy_sheet">
+<code class="sig-prename descclassname">atomica.excel.</code><code class="sig-name descname">copy_sheet</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">sheet_name</em>, <em class="sig-param">workbook</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#copy_sheet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.copy_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy a sheet into a Workbook</p>
+<p>This function allows values to be copied from a file into a Workbook. The
+main use case is to support custom sheets in databooks that are not otherwise parsed
+but which might need to be retained. In particular, the <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> class does
+not parse ignored sheets at all, because no guarantees can be made about the quantity and
+type of the content, and whether there are formulas etc. that would be lost. In some cases
+though, it may be necessary to edit the databook and preserve specific sheets. In general,
+this can be done by using the <code class="docutils literal notranslate"><span class="pre">to_workbook()</span></code> method and then manually performing whatever
+operations are necessary to preserve the content on the extra sheets. However, when the
+extra sheet content is extremely simple e.g. just a table of values, then this helper
+function can be used to facilitate copying the content.</p>
+<p>Warning - note that Excel functions, formatting, and comments will NOT be preserved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – File name of the spreadsheet to read the source sheet from or an <code class="docutils literal notranslate"><span class="pre">sc.Spreadsheet</span></code> instance</p></li>
+<li><p><strong>sheet_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of the sheet to write to</p></li>
+<li><p><strong>workbook</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Workbook</span></code>) – A Workbook instance to add the sheet to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None - the sheet will be added to the Workbook in-place</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="atomica.excel.read_dataframes">
+<code class="sig-prename descclassname">atomica.excel.</code><code class="sig-name descname">read_dataframes</code><span class="sig-paren">(</span><em class="sig-param">worksheet</em>, <em class="sig-param">merge=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#read_dataframes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.read_dataframes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read dataframes from sheet</p>
+<p>This function operates similarly to <code class="docutils literal notranslate"><span class="pre">read_tables</span></code> except it returns Dataframes instead of
+cells. This enables the dataframes to be constructed more quickly, at the expense of being
+able to track the cell references and row numbers. These are shown for databooks (via <code class="docutils literal notranslate"><span class="pre">read_tables</span></code>)
+but not for frameworks (which go via <code class="docutils literal notranslate"><span class="pre">read_dataframes</span></code>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worksheet</strong> – An openpyxl worksheet</p></li>
+<li><p><strong>merge</strong> – If False (default) then blank rows will be used to split the dataframes. If True, only one
+DataFrame will be returned</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of DataFrames</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
