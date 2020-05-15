@@ -213,71 +213,14 @@ an executable Python representation.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.function_parser.parse_function" title="atomica.function_parser.parse_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_function</span></code></a>(fcn_str)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_function</span></code>(fcn_str)</p></td>
 <td><p>Parses a string into a Python function</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.function_parser.sdiv" title="atomica.function_parser.sdiv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sdiv</span></code></a>(numerator, denominator)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sdiv</span></code>(numerator, denominator)</p></td>
 <td><p>Safe division by zero (return 0)</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="function">
-<dt id="atomica.function_parser.parse_function">
-<code class="sig-prename descclassname">atomica.function_parser.</code><code class="sig-name descname">parse_function</code><span class="sig-paren">(</span><em class="sig-param">fcn_str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/function_parser.html#parse_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.function_parser.parse_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a string into a Python function</p>
-<p>This function takes in the string representation of a function e.g. <code class="docutils literal notranslate"><span class="pre">'x+y'</span></code>. It
-returns an Python function object that takes in a keyword arguments corresponding to the
-original quantities that appeared in the function. For example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fcn</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">parse_function</span><span class="p">(</span><span class="s1">&#39;x+y&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fcn</span>
-<span class="go">&lt;function atomica.function_parser.parse_function.&lt;locals&gt;.fcn(**deps)&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">deps</span>
-<span class="go">[&#39;x&#39;, &#39;y&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fcn</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">5</span>
-</pre></div>
-</div>
-<p>Note that for security, only a subset of Python functions are allowed to be called. These
-are mainly mathematical operations such as <code class="docutils literal notranslate"><span class="pre">max</span></code> or <code class="docutils literal notranslate"><span class="pre">exp</span></code>. A full listing can be found
-in <code class="docutils literal notranslate"><span class="pre">function_parser.py</span></code>.</p>
-<p>A common usage pattern is to construct a dict of inputs to the parsed function using the list
-of dependencies returned by <code class="docutils literal notranslate"><span class="pre">parse_function</span></code>. For example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">argdict</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">deps</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fcn</span><span class="p">(</span><span class="o">**</span><span class="n">argdict</span><span class="p">)</span>
-<span class="go">4</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fcn_str</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – A string containing a single Python expression</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A tuple containing a function, and a list of arguments required by the function</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="atomica.function_parser.sdiv">
-<code class="sig-prename descclassname">atomica.function_parser.</code><code class="sig-name descname">sdiv</code><span class="sig-paren">(</span><em class="sig-param">numerator</em>, <em class="sig-param">denominator</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/function_parser.html#sdiv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.function_parser.sdiv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Safe division by zero (return 0)</p>
-<p>This helper function returns division where <code class="docutils literal notranslate"><span class="pre">0/0=0</span></code> rather than <code class="docutils literal notranslate"><span class="pre">np.nan</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>numerator</strong> – The numerator of the operation (float, array)</p></li>
-<li><p><strong>denominator</strong> – The denominator of the operation (float, array)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Array</p>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 
 
