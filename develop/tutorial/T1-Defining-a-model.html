@@ -532,9 +532,9 @@ required, depending on what layout would be most logical and useful for users fi
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Atomica 1.18.3 (2020-05-21) -- (c) the Atomica development team
+Atomica 1.18.4 (2020-05-21) -- (c) the Atomica development team
 git branch: Git branch N/A (Git hash)
-2020-05-21 02:50:31.723454
+2020-05-21 15:31:54.694817
 </pre></div></div>
 </div>
 <p>Next, load the framework file. A framework file gets loaded into a <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> object. When loading the framework file, it will automatically be checked for validity.</p>
@@ -628,7 +628,7 @@ blank row is required.</p></li>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00786s
+Elapsed time for running &#34;default&#34;: 0.00967s
 </pre></div></div>
 </div>
 <p>When the project is loaded, a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> is automatically created, under <code class="docutils literal notranslate"><span class="pre">P.parsets</span></code></p>
@@ -647,20 +647,20 @@ Elapsed time for running &#34;default&#34;: 0.00786s
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #0: &#34;default&#34;:
-&lt;atomica.parameters.ParameterSet at 0x7f4907fbfa90&gt;
+&lt;atomica.parameters.ParameterSet at 0x7f65042e0190&gt;
 ————————————————————————————————————————————————————————————
 Methods:
   all_pars()          get_par()           copy()
   sample()
 ————————————————————————————————————————————————————————————
-     created: datetime.datetime(2020, 5, 21, 2, 50, 32, 585522,
+     created: datetime.datetime(2020, 5, 21, 15, 31, 55, 656729,
               tzinfo=tzutc())
 interactions: odict()
-    modified: datetime.datetime(2020, 5, 21, 2, 50, 32, 587821,
+    modified: datetime.datetime(2020, 5, 21, 15, 31, 55, 659443,
               tzinfo=tzutc())
         name: default
         pars: #0: &#34;sus&#34;:
-              &lt;atomica.parameters.Parameter at 0x7f490800f550&gt;
+              &lt;atomica.parameters.Parameter at 0x7f64d0548b50&gt;
               ———————— [...]
   pop_labels: [&#39;Adults&#39;]
    pop_names: [&#39;adults&#39;]
@@ -694,7 +694,7 @@ interactions: odict()
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00761s
+Elapsed time for running &#34;default&#34;: 0.0105s
 </pre></div></div>
 </div>
 <p>We can now plot some results from this model:</p>
@@ -739,22 +739,12 @@ Elapsed time for running &#34;default&#34;: 0.00761s
 Initialization characteristics are underdetermined - this may be intentional, but check the initial compartment sizes carefully
 </pre></div></div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00505s
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-&lt;string&gt;:1: RuntimeWarning: invalid value encountered in double_scalars
-&lt;string&gt;:1: RuntimeWarning: invalid value encountered in double_scalars
-&lt;string&gt;:1: RuntimeWarning: invalid value encountered in double_scalars
+Elapsed time for running &#34;default&#34;: 0.00559s
 </pre></div></div>
 </div>
 <p>In this case, it is being caused by the force of infection function <code class="docutils literal notranslate"><span class="pre">infx*inf/(sus+inf+rec)</span></code>. In many Atomica models, we would prefer that <code class="docutils literal notranslate"><span class="pre">0/0</span></code> produces an output of <code class="docutils literal notranslate"><span class="pre">0</span></code> - here for example, it makes sense that the force of infection is 0 if there are no people. There are two ways to avoid this problem - in Tutorial 4 we will look at the canonical way to avoid this problem in Atomica through explicitly working with prevalance. However, a simple alternative is to use the Atomica function
