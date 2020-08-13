@@ -613,7 +613,7 @@ blank row is required.</p></li>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0620s
+Elapsed time for running &#34;default&#34;: 0.0118s
 </pre></div></div>
 </div>
 <p>When the project is loaded, a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> is automatically created, under <code class="docutils literal notranslate"><span class="pre">P.parsets</span></code></p>
@@ -632,20 +632,20 @@ Elapsed time for running &#34;default&#34;: 0.0620s
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #0: &#34;default&#34;:
-&lt;atomica.parameters.ParameterSet at 0x7f41cafc1250&gt;
+&lt;atomica.parameters.ParameterSet at 0x7f7178925bd0&gt;
 ————————————————————————————————————————————————————————————
 Methods:
   all_pars()          get_par()           copy()
   sample()
 ————————————————————————————————————————————————————————————
-     created: datetime.datetime(2020, 7, 22, 11, 43, 12, 500405,
+     created: datetime.datetime(2020, 8, 13, 4, 24, 25, 286691,
               tzinfo=tzutc())
 interactions: odict()
-    modified: datetime.datetime(2020, 7, 22, 11, 43, 12, 502591,
+    modified: datetime.datetime(2020, 8, 13, 4, 24, 25, 289564,
               tzinfo=tzutc())
         name: default
         pars: #0: &#34;sus&#34;:
-              &lt;atomica.parameters.Parameter at 0x7f41a6a02090&gt;
+              &lt;atomica.parameters.Parameter at 0x7f7178960610&gt;
               ———————— [...]
   pop_labels: [&#39;Adults&#39;]
    pop_names: [&#39;adults&#39;]
@@ -679,7 +679,7 @@ interactions: odict()
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0102s
+Elapsed time for running &#34;default&#34;: 0.0720s
 </pre></div></div>
 </div>
 <p>We can now plot some results from this model:</p>
@@ -721,7 +721,7 @@ Elapsed time for running &#34;default&#34;: 0.0102s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00487s
+Elapsed time for running &#34;default&#34;: 0.00559s
 </pre></div></div>
 </div>
 <p>In this case, it is being caused by the force of infection function <code class="docutils literal notranslate"><span class="pre">infx*inf/(sus+inf+rec)</span></code>. In many Atomica models, we would prefer that <code class="docutils literal notranslate"><span class="pre">0/0</span></code> produces an output of <code class="docutils literal notranslate"><span class="pre">0</span></code> - here for example, it makes sense that the force of infection is 0 if there are no people. There are two ways to avoid this problem - in Tutorial 4 we will look at the canonical way to avoid this problem in Atomica through explicitly working with prevalance. However, a simple alternative is to use the Atomica function
