@@ -39,8 +39,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="atomica.function_parser" href="atomica.function_parser.html" />
-    <link rel="prev" title="atomica.optimization" href="atomica.optimization.html" /> 
+    <link rel="next" title="atomica.parameters.Parameter" href="atomica.parameters.Parameter.html" />
+    <link rel="prev" title="atomica.optimization.UnresolvableConstraint" href="atomica.optimization.UnresolvableConstraint.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -62,6 +62,10 @@
 
           
             
+            
+              <div class="version">
+                1.22.0
+              </div>
             
           
 
@@ -85,23 +89,30 @@
               
             
             
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../code_documentation.html">Code documentation</a><ul class="current">
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="atomica.defaults.html">atomica.defaults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.model.html">atomica.model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">atomica.parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">atomica.parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="atomica.parameters.Parameter.html">atomica.parameters.Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.parameters.ParameterSet.html">atomica.parameters.ParameterSet</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.programs.html">atomica.programs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
@@ -110,6 +121,7 @@
 <li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
 </ul>
 </li>
 </ul>
@@ -158,7 +170,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="../code_documentation.html">Code documentation</a> &raquo;</li>
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
         
       <li>atomica.parameters</li>
     
@@ -166,8 +178,6 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/_autosummary/atomica.parameters.rst.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -205,8 +215,8 @@
 </style>
 <div class="section" id="module-atomica.parameters">
 <span id="atomica-parameters"></span><h1>atomica.parameters<a class="headerlink" href="#module-atomica.parameters" title="Permalink to this headline">¶</a></h1>
-<p>Implements data-based model parameters (<code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code>)</p>
-<p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code> (or ‘parset’) is an intermediate representation of
+<p>Implements data-based model parameters (<a class="reference internal" href="atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet" title="atomica.parameters.ParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code></a>)</p>
+<p>A <a class="reference internal" href="atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet" title="atomica.parameters.ParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code></a> (or ‘parset’) is an intermediate representation of
 model parameters. The main role of the parset is to store the calibration
 values that are used to scale model parameters. Therefore, every parameter
 in the model appears in the parset, not just the parameters in the databook.</p>
@@ -217,10 +227,10 @@ in the model appears in the parset, not just the parameters in the databook.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parameter</span></code>(name, ts)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="atomica.parameters.Parameter.html#atomica.parameters.Parameter" title="atomica.parameters.Parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parameter</span></code></a></p></td>
 <td><p>Class to hold one set of parameter values disaggregated by populations.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ParameterSet</span></code>(framework, data[, name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet" title="atomica.parameters.ParameterSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ParameterSet</span></code></a></p></td>
 <td><p>Collection of model parameters to run a simulation</p></td>
 </tr>
 </tbody>
@@ -233,13 +243,22 @@ in the model appears in the parset, not just the parameters in the databook.</p>
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="atomica.parameters.Parameter.html" class="btn btn-neutral float-right" title="atomica.parameters.Parameter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="atomica.optimization.UnresolvableConstraint.html" class="btn btn-neutral float-left" title="atomica.optimization.UnresolvableConstraint" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2018, Atomica Team
+        &copy; Copyright 2020, Atomica Team
 
     </p>
   </div>

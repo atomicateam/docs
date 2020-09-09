@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; Atomica  documentation</title>
+  <title>Logging cookbook &mdash; Atomica  documentation</title>
   
 
   
@@ -39,8 +39,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="Optimization.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="Compartment-Initialization.html" /> 
+    <link rel="next" title="Optimization" href="Optimization.html" />
+    <link rel="prev" title="Contextual overview" href="Contextual-Overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -62,6 +62,10 @@
 
           
             
+            
+              <div class="version">
+                1.22.0
+              </div>
             
           
 
@@ -85,12 +89,31 @@
               
             
             
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">General content</a></li>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General content</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Compartment-Initialization.html">Initializing compartments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contextual-Overview.html">Contextual overview</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Logging cookbook</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#changing-the-amount-of-output">Changing the amount of output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dumping-output-to-a-log-file">Dumping output to a log file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parameters.html">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="junctions/Junctions.html">Junction overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="population-types/Population-Types.html">Population types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="programs/Programs.html">Program System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stochastic/stochastic.html">Stochastic models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timed-transitions/Timed-Transitions.html">Timed transitions</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
 </ul>
 
             
@@ -139,14 +162,12 @@
         
           <li><a href="index.html">General content</a> &raquo;</li>
         
-      <li>&lt;no title&gt;</li>
+      <li>Logging cookbook</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/general/File-Logging.md.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -182,63 +203,68 @@
     text-align: unset;
 }
 </style>
-<p>## Logging cookbook</p>
-<p>The Atomica logger is named <cite>‘atomica’</cite>. At any point, from anywhere, you can retrieve it using</p>
-<blockquote>
-<div><p>import logging
-logger = getLogger(‘atomica’)</p>
-</div></blockquote>
-<p>### Changing the amount of output</p>
+<div class="section" id="logging-cookbook">
+<h1>Logging cookbook<a class="headerlink" href="#logging-cookbook" title="Permalink to this headline">¶</a></h1>
+<p>The Atomica logger is named <code class="docutils literal notranslate"><span class="pre">'atomica'</span></code>. At any point, from anywhere, you can retrieve it using</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;atomica&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="changing-the-amount-of-output">
+<h2>Changing the amount of output<a class="headerlink" href="#changing-the-amount-of-output" title="Permalink to this headline">¶</a></h2>
 <p>Once you have the logger object (e.g. in your own script) you can change the logging level to control the amount of output displayed. The most common levels are</p>
-<p>&lt;table border=”1” class=”docutils”&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Level&lt;/th&gt;
-&lt;th&gt;Command&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Show warnings or worse only&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;logger.setLevel(‘WARNING’)&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Default&lt;/strong&gt; - Show normal output&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;logger.setLevel(‘INFO’)&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Show extra detailed output&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;logger.setLevel(‘DEBUG’)&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;</p>
-<p>When writing code for Atomica, set the level of the message accordingly e.g. in the code you are writing, use</p>
-<blockquote>
-<div><p>logger.warning(‘This should be displayed as a warning’)
-logger.info(‘This is information that the user will normally see’)
-logger.debug(‘This is extra-verbose output’)</p>
-</div></blockquote>
-<p>Note that the use of <cite>logger.debug</cite> means that you do not need to set <cite>verbose</cite> flags and <cite>if</cite> statements - instead, just set the logging level to <cite>debug</cite>.</p>
-<p>Note also that the default logging level is set in <cite>atomica/__init__.py</cite> so normally you should set the logging level in your script _after_ importing Atomica e.g.</p>
-<blockquote>
-<div><p>import atomica as at
-at.logger.setLevel(‘DEBUG’)</p>
-</div></blockquote>
-<p>### Dumping output to a log file</p>
-<p>A common task is storing the log messages for a simulation run. This can be accomplished easily using the <cite>at.start_logging</cite> function:</p>
-<blockquote>
-<div><p>import atomica as at
-at.start_logging(‘logfile.txt’)</p>
-</div></blockquote>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Show warnings or worse only</td>
+<td><code>logger.setLevel('WARNING')</code></td>
+</tr>
+<tr>
+<td><strong>Default</strong> - Show normal output</td>
+<td><code>logger.setLevel('INFO')</code></td>
+</tr>
+<tr>
+<td>Show extra detailed output</td>
+<td><code>logger.setLevel('DEBUG')</code></td>
+</tr>
+</tbody>
+</table><p>When writing code for Atomica, set the level of the message accordingly e.g. in the code you are writing, use</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;This should be displayed as a warning&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;This is information that the user will normally see&#39;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;This is extra-verbose output&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the use of <code class="docutils literal notranslate"><span class="pre">logger.debug</span></code> means that you do not need to set <code class="docutils literal notranslate"><span class="pre">verbose</span></code> flags and <code class="docutils literal notranslate"><span class="pre">if</span></code> statements - instead, just set the logging level to <code class="docutils literal notranslate"><span class="pre">debug</span></code>.</p>
+<p>Note also that the default logging level is set in <code class="docutils literal notranslate"><span class="pre">atomica/__init__.py</span></code> so normally you should set the logging level in your script <em>after</em> importing Atomica e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
+<span class="n">at</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dumping-output-to-a-log-file">
+<h2>Dumping output to a log file<a class="headerlink" href="#dumping-output-to-a-log-file" title="Permalink to this headline">¶</a></h2>
+<p>A common task is storing the log messages for a simulation run. This can be accomplished easily using the <code class="docutils literal notranslate"><span class="pre">at.start_logging</span></code> function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
+<span class="n">at</span><span class="o">.</span><span class="n">start_logging</span><span class="p">(</span><span class="s1">&#39;logfile.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>This will automatically create the log file, and prepend version information (normally not printed). Log messages replicate the messages printed
 by Atomica. The traceback for any unhandled errors that occur will also be logged. The log messages are gated by the logger level in Atomica,
-so the verbosity can be changed by using <cite>at.logger.setLevel</cite>.</p>
+so the verbosity can be changed by using <code class="docutils literal notranslate"><span class="pre">at.logger.setLevel</span></code>.</p>
 <p>The key items that will NOT be captured in the file log are</p>
 <ul class="simple">
-<li><p>Output generated by a <cite>print</cite> statement. Instead of using <cite>print</cite>, use
-<cite>at.logger.info(‘message’)</cite> which will both print and log the output</p></li>
-<li><p>Output generated by worker processes e.g. if using <cite>run_sampled_sims(parallel=True)</cite></p></li>
+<li><p>Output generated by a <code class="docutils literal notranslate"><span class="pre">print</span></code> statement. Instead of using <code class="docutils literal notranslate"><span class="pre">print</span></code>, use
+<code class="docutils literal notranslate"><span class="pre">at.logger.info('message')</span></code> which will both print and log the output</p></li>
+<li><p>Output generated by worker processes e.g. if using <code class="docutils literal notranslate"><span class="pre">run_sampled_sims(parallel=True)</span></code></p></li>
 </ul>
+</div>
+</div>
 
 
            </div>
@@ -246,13 +272,22 @@ so the verbosity can be changed by using <cite>at.logger.setLevel</cite>.</p>
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Optimization.html" class="btn btn-neutral float-right" title="Optimization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Contextual-Overview.html" class="btn btn-neutral float-left" title="Contextual overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2018, Atomica Team
+        &copy; Copyright 2020, Atomica Team
 
     </p>
   </div>

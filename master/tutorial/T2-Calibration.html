@@ -63,6 +63,10 @@
           
             
             
+              <div class="version">
+                1.22.0
+              </div>
+            
           
 
           
@@ -90,7 +94,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="T1-Defining-a-model.html">T1 - Defining a model</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">T2 - Calibration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">T2 - Calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Calibration-tips">Calibration tips</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="T3-Multiple-populations.html">T3 - Multiple populations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="T4-Characteristics.html">T4 - Characteristics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="T5-Junctions.html">T5 - Junctions</a></li>
@@ -98,7 +105,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
 </ul>
 
             
@@ -153,8 +163,6 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/tutorial/T2-Calibration.ipynb.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -423,14 +431,111 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="T2---Calibration">
 <h1>T2 - Calibration<a class="headerlink" href="#T2---Calibration" title="Permalink to this headline">¶</a></h1>
+<p>Models are simplifications of the real world, and quantities in the model (like the force of infection) represent the aggregation of many different factors. As a result, there can be uncertainty as to what value of the parameters most accurately reflects the real world - for instance, the population force of infection varies with the average number of contacts per person per day, but this quantity may not be well constrained. The first step in running a model is to improve estimates of the
+parameter values for a particular setting, using data from that setting. Typically, the model is started off at some point in the past (e.g. 2000), such that the initial compartment sizes correspond to the data in the simulation start year. The model is then run up to the current year, with the compartment sizes changing due to the model parameters. The model predictions can then be compared to the actual data for those same years. This allows model parameters to be adjusted to best match the
+existing data. These same parameters are then used for future projections.</p>
+<p>To see calibration in effect, consider the following simple example:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
-<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/t2_framework_1.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/t2_databook_1.xlsx&#39;</span><span class="p">)</span>
-
+<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/T2/t2_framework_1.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/T2/t2_databook_1.xlsx&#39;</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/hostedtoolcache/Python/3.7.9/x64/lib/python3.7/site-packages/traitlets-5.0.4-py3.7.egg/traitlets/traitlets.py:2945: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
+  FutureWarning,
+</pre></div></div>
+</div>
+<p>First, we inspect the default calibration by running the model and plotting it along with the data. To plot the data, pass the project’s data to the plotting function (in this case, <code class="docutils literal notranslate"><span class="pre">plot_series</span></code>) - this will automatically add scatter points to the plot based on the data in the databook.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">()</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0117s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_4_1.svg" src="../_images/tutorial_T2-Calibration_4_1.svg" /></div>
+</div>
+<p>Notice how the number of susceptible people and infected people exactly match the data points in the simulation start year - as noted above, this is because the model is initialized from the data values in that year. There are some conditions under which the model won’t exactly match the data in the initial year, such as if the initialization characteristics are overdetermined, but these situations are rare.</p>
+<p>We can see, however, that the model does not predict enough susceptible people in 2020. There could be many reasons for this, and determining what parts of the model should be changed can often be something of an art. It typically reflects your understanding of the assumptions that were made in designing the framework, and also uncertainties and bias present in the input data. For example, the methodology used to gather data used for the calibration might provide hints as to which parameters to
+change first.</p>
+<p>In this case, as there are insufficient people, it might be the case that the birth rate was too low. There are two ways to address this</p>
+<ul class="simple">
+<li><p>You could go back to the databook and enter a larger value for the birth rate</p></li>
+<li><p>You can add a ‘scale factor’ to the parameter set, which scales the parameter value up or down</p></li>
+</ul>
+<p>Either approach can be used and would provide equivalent results. However, changing the value in the databook will also change the scatter points on plots, so it should generally only be used in cases where the value corresponds to a model assumption. In cases where the databook contains actual country data, it is preferable to keep the databook as a faithful representation of the actual data that was gathered.</p>
+<div class="alert alert-block alert-info"><p>The web interfaces (such as the Cascade Analysis Tool) perform calibration using scale factors. The scale factors shown on the website correspond to the values being set here.</p>
+</div><p>To set a scale factor, create a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> either by copying an existing one, or creating a new one. Then, access the <code class="docutils literal notranslate"><span class="pre">pars</span></code> attribute to look up the parameter you wish to change, and set the <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> for the population you want to change:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s1">&#39;adults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<p>The example above doubled the birth rate. Now we can run the model again, and see how the results have changed. Notice how the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> command is being called with both the original results object, and the new results object, allowing both model runs to be shown on the same plot.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">r2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p2</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;More births&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r2</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0122s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_8_1.svg" src="../_images/tutorial_T2-Calibration_8_1.svg" /></div>
+</div>
+<p>We can see that we have considerably overshot the data, indicating that doubling the birth rate was much too big a change. This would typically be the first step in an iterative process, where you adjust the scale factor, inspect the data, and then make further adjustments.</p>
+<p>Automated calibration is also available via the project’s <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> method. This will automatically adjust parameter values to match the data. To use this function, you need to specify which parameters to set scale factors for, and which variables in the databook to compute calibration quality from. The framework can provide defaults for which parameters to automatically calibrate, or you can pass a list of those parameters in directly. In this example, we will pass in <code class="docutils literal notranslate"><span class="pre">b_rate</span></code> because we
+want to adjust the birth rate, and we will use <code class="docutils literal notranslate"><span class="pre">sus</span></code> as a measurable since we want to match the number of susceptible people. The configuration therefore corresponds to the example shown above.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">p3</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 </div>
@@ -439,17 +544,106 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0118s
+Elapsed time for running &#34;default&#34;: 0.00859s
+Elapsed time for running &#34;default&#34;: 0.00837s
+     step 1 (0.0 s) ++ (orig: 0.20252 | best:0.20252 | new:0.13898 | diff:-0.063540)
+Elapsed time for running &#34;default&#34;: 0.00885s
+     step 2 (0.0 s) ++ (orig: 0.20252 | best:0.13898 | new:0.043664 | diff:-0.095321)
+Elapsed time for running &#34;default&#34;: 0.00800s
+     step 3 (0.0 s) -- (orig: 0.20252 | best:0.043664 | new:0.099338 | diff:0.055675)
+Elapsed time for running &#34;default&#34;: 0.00837s
+     step 4 (0.0 s) ++ (orig: 0.20252 | best:0.043664 | new:0.027834 | diff:-0.015829)
+Elapsed time for running &#34;default&#34;: 0.00843s
+     step 5 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.13509 | diff:0.10726)
+Elapsed time for running &#34;default&#34;: 0.00813s
+     step 6 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.081462 | diff:0.053627)
+Elapsed time for running &#34;default&#34;: 0.00792s
+     step 7 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.054648 | diff:0.026813)
+Elapsed time for running &#34;default&#34;: 0.00801s
+     step 8 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.041241 | diff:0.013407)
+Elapsed time for running &#34;default&#34;: 0.00817s
+     step 9 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.034538 | diff:0.0067032)
+Elapsed time for running &#34;default&#34;: 0.00822s
+     step 10 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.035720 | diff:0.0078853)
+Elapsed time for running &#34;default&#34;: 0.00784s
+     step 11 (0.1 s) ++ (orig: 0.20252 | best:0.027834 | new:0.0039432 | diff:-0.023891)
+Elapsed time for running &#34;default&#34;: 0.00848s
+     step 12 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.051607 | diff:0.047664)
+Elapsed time for running &#34;default&#34;: 0.00822s
+     step 13 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.027776 | diff:0.023832)
+Elapsed time for running &#34;default&#34;: 0.00826s
+     step 14 (0.1 s) ++ (orig: 0.20252 | best:0.0039432 | new:0.00059175 | diff:-0.0033515)
+Elapsed time for running &#34;default&#34;: 0.00956s
+     step 15 (0.2 s) -- (orig: 0.20252 | best:0.00059175 | new:0.0044355 | diff:0.0038438)
+Elapsed time for running &#34;default&#34;: 0.00827s
+     step 16 (0.2 s) -- (orig: 0.20252 | best:0.00059175 | new:0.012508 | diff:0.011916)
+Elapsed time for running &#34;default&#34;: 0.00872s
+     step 17 (0.2 s) -- (orig: 0.20252 | best:0.00059175 | new:0.0019219 | diff:0.0013301)
+Elapsed time for running &#34;default&#34;: 0.00821s
+     step 18 (0.2 s) -- (orig: 0.20252 | best:0.00059175 | new:0.0065499 | diff:0.0059582)
+Elapsed time for running &#34;default&#34;: 0.00843s
+     step 19 (0.2 s) -- (orig: 0.20252 | best:0.00059175 | new:0.00066507 | diff:0.000073320)
+Elapsed time for running &#34;default&#34;: 0.00868s
+     step 20 (0.2 s) ++ (orig: 0.20252 | best:0.00059175 | new:0.000036660 | diff:-0.00055509)
+Elapsed time for running &#34;default&#34;: 0.00902s
+     step 21 (0.2 s) -- (orig: 0.20252 | best:0.000036660 | new:0.0029424 | diff:0.0029058)
+Elapsed time for running &#34;default&#34;: 0.00878s
+     step 22 (0.2 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00097927 | diff:0.00094261)
+Elapsed time for running &#34;default&#34;: 0.00871s
+     step 23 (0.2 s) -- (orig: 0.20252 | best:0.000036660 | new:0.0014529 | diff:0.0014162)
+Elapsed time for running &#34;default&#34;: 0.00841s
+     step 24 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00070812 | diff:0.00067146)
+Elapsed time for running &#34;default&#34;: 0.00837s
+     step 25 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00050796 | diff:0.00047130)
+Elapsed time for running &#34;default&#34;: 0.00788s
+     step 26 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00027231 | diff:0.00023565)
+Elapsed time for running &#34;default&#34;: 0.00883s
+     step 27 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00015449 | diff:0.00011783)
+Elapsed time for running &#34;default&#34;: 0.00859s
+     step 28 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00033573 | diff:0.00029907)
+Elapsed time for running &#34;default&#34;: 0.00950s
+     step 29 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00014953 | diff:0.00011287)
+Elapsed time for running &#34;default&#34;: 0.00890s
+     step 30 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.000095573 | diff:0.000058913)
+===  Absolute improvement too small (0 &lt; 0.0000010000) (30 steps, orig: 0.20252 | best: 0 | ratio: 0) ===
 </pre></div></div>
 </div>
+<p>The result of automated calibration is another <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>. We can inspect the scale factor that the algorithm found:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">()</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
-<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+<span></span><span class="n">p3</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#0: &#34;adults&#34;: 1.3187622070312501
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<p>and we can run the model to compare the automated calibration to the original default calibration:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">r3</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p3</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;Auto calibration&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r3</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -465,58 +659,20 @@ Elapsed time for running &#34;default&#34;: 0.0130s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_2_1.png" src="../_images/tutorial_T2-Calibration_2_1.png" />
+<img alt="../_images/tutorial_T2-Calibration_14_1.svg" src="../_images/tutorial_T2-Calibration_14_1.svg" /></div>
 </div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">p2</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;infx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s1">&#39;adults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">r2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p2</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;More infectious&#39;</span><span class="p">)</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r2</span><span class="p">],</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
-<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0121s
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_4_1.png" src="../_images/tutorial_T2-Calibration_4_1.png" />
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_4_2.png" src="../_images/tutorial_T2-Calibration_4_2.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_4_3.png" src="../_images/tutorial_T2-Calibration_4_3.png" />
-</div>
+<div class="section" id="Calibration-tips">
+<h2>Calibration tips<a class="headerlink" href="#Calibration-tips" title="Permalink to this headline">¶</a></h2>
+<p>While calibrations can vary significantly from model-to-model, some general tips are</p>
+<ul class="simple">
+<li><p>Match coarse-grained quantities first, followed by fine-grained quantities. For example, for TB you might calibrate it in the following order:</p>
+<ol class="arabic simple">
+<li><p>Match population size (adjusting birth rate and death rate)</p></li>
+<li><p>Match disease prevalance (adjusting force of infection)</p></li>
+<li><p>Match drug-resistant/drug-susceptible split (adjusting proportion of infections that are drug-resistant)</p></li>
+</ol>
+</li>
+</ul>
 </div>
 </div>
 
@@ -526,13 +682,22 @@ Elapsed time for running &#34;default&#34;: 0.0121s
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="T3-Multiple-populations.html" class="btn btn-neutral float-right" title="T3 - Multiple populations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="T1-Defining-a-model.html" class="btn btn-neutral float-left" title="T1 - Defining a model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2018, Atomica Team
+        &copy; Copyright 2020, Atomica Team
 
     </p>
   </div>
