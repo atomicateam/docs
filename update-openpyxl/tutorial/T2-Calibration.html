@@ -1,0 +1,765 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>T2 - Calibration &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="T3 - Multiple populations" href="T3-Multiple-populations.html" />
+    <link rel="prev" title="T1 - Defining a model" href="T1-Defining-a-model.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.22.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="T1-Defining-a-model.html">T1 - Defining a model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">T2 - Calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Calibration-tips">Calibration tips</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="T3-Multiple-populations.html">T3 - Multiple populations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T4-Characteristics.html">T4 - Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T5-Junctions.html">T5 - Junctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T6-Programs.html">T6 - Programs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>T2 - Calibration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container,
+div.nbinput.container div.prompt,
+div.nbinput.container div.input_area,
+div.nbinput.container div[class*=highlight],
+div.nbinput.container div[class*=highlight] pre,
+div.nboutput.container,
+div.nboutput.container div.prompt,
+div.nboutput.container div.output_area,
+div.nboutput.container div[class*=highlight],
+div.nboutput.container div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="T2---Calibration">
+<h1>T2 - Calibration<a class="headerlink" href="#T2---Calibration" title="Permalink to this headline">¶</a></h1>
+<p>Models are simplifications of the real world, and quantities in the model (like the force of infection) represent the aggregation of many different factors. As a result, there can be uncertainty as to what value of the parameters most accurately reflects the real world - for instance, the population force of infection varies with the average number of contacts per person per day, but this quantity may not be well constrained. The first step in running a model is to improve estimates of the
+parameter values for a particular setting, using data from that setting. Typically, the model is started off at some point in the past (e.g. 2000), such that the initial compartment sizes correspond to the data in the simulation start year. The model is then run up to the current year, with the compartment sizes changing due to the model parameters. The model predictions can then be compared to the actual data for those same years. This allows model parameters to be adjusted to best match the
+existing data. These same parameters are then used for future projections.</p>
+<p>To see calibration in effect, consider the following simple example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/T2/t2_framework_1.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/T2/t2_databook_1.xlsx&#39;</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/hostedtoolcache/Python/3.7.9/x64/lib/python3.7/site-packages/traitlets-5.0.4-py3.7.egg/traitlets/traitlets.py:2945: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
+  FutureWarning,
+</pre></div></div>
+</div>
+<p>First, we inspect the default calibration by running the model and plotting it along with the data. To plot the data, pass the project’s data to the plotting function (in this case, <code class="docutils literal notranslate"><span class="pre">plot_series</span></code>) - this will automatically add scatter points to the plot based on the data in the databook.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">()</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0104s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_4_1.svg" src="../_images/tutorial_T2-Calibration_4_1.svg" /></div>
+</div>
+<p>Notice how the number of susceptible people and infected people exactly match the data points in the simulation start year - as noted above, this is because the model is initialized from the data values in that year. There are some conditions under which the model won’t exactly match the data in the initial year, such as if the initialization characteristics are overdetermined, but these situations are rare.</p>
+<p>We can see, however, that the model does not predict enough susceptible people in 2020. There could be many reasons for this, and determining what parts of the model should be changed can often be something of an art. It typically reflects your understanding of the assumptions that were made in designing the framework, and also uncertainties and bias present in the input data. For example, the methodology used to gather data used for the calibration might provide hints as to which parameters to
+change first.</p>
+<p>In this case, as there are insufficient people, it might be the case that the birth rate was too low. There are two ways to address this</p>
+<ul class="simple">
+<li><p>You could go back to the databook and enter a larger value for the birth rate</p></li>
+<li><p>You can add a ‘scale factor’ to the parameter set, which scales the parameter value up or down</p></li>
+</ul>
+<p>Either approach can be used and would provide equivalent results. However, changing the value in the databook will also change the scatter points on plots, so it should generally only be used in cases where the value corresponds to a model assumption. In cases where the databook contains actual country data, it is preferable to keep the databook as a faithful representation of the actual data that was gathered.</p>
+<div class="alert alert-block alert-info"><p>The web interfaces (such as the Cascade Analysis Tool) perform calibration using scale factors. The scale factors shown on the website correspond to the values being set here.</p>
+</div><p>To set a scale factor, create a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> either by copying an existing one, or creating a new one. Then, access the <code class="docutils literal notranslate"><span class="pre">pars</span></code> attribute to look up the parameter you wish to change, and set the <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> for the population you want to change:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s1">&#39;adults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<p>The example above doubled the birth rate. Now we can run the model again, and see how the results have changed. Notice how the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> command is being called with both the original results object, and the new results object, allowing both model runs to be shown on the same plot.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">r2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p2</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;More births&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r2</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0109s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_8_1.svg" src="../_images/tutorial_T2-Calibration_8_1.svg" /></div>
+</div>
+<p>We can see that we have considerably overshot the data, indicating that doubling the birth rate was much too big a change. This would typically be the first step in an iterative process, where you adjust the scale factor, inspect the data, and then make further adjustments.</p>
+<p>Automated calibration is also available via the project’s <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> method. This will automatically adjust parameter values to match the data. To use this function, you need to specify which parameters to set scale factors for, and which variables in the databook to compute calibration quality from. The framework can provide defaults for which parameters to automatically calibrate, or you can pass a list of those parameters in directly. In this example, we will pass in <code class="docutils literal notranslate"><span class="pre">b_rate</span></code> because we
+want to adjust the birth rate, and we will use <code class="docutils literal notranslate"><span class="pre">sus</span></code> as a measurable since we want to match the number of susceptible people. The configuration therefore corresponds to the example shown above.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">p3</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.00741s
+Elapsed time for running &#34;default&#34;: 0.00784s
+     step 1 (0.0 s) ++ (orig: 0.20252 | best:0.20252 | new:0.13898 | diff:-0.063540)
+Elapsed time for running &#34;default&#34;: 0.00653s
+     step 2 (0.0 s) ++ (orig: 0.20252 | best:0.13898 | new:0.043664 | diff:-0.095321)
+Elapsed time for running &#34;default&#34;: 0.00660s
+     step 3 (0.0 s) -- (orig: 0.20252 | best:0.043664 | new:0.099338 | diff:0.055675)
+Elapsed time for running &#34;default&#34;: 0.00626s
+     step 4 (0.0 s) -- (orig: 0.20252 | best:0.043664 | new:0.10721 | diff:0.063549)
+Elapsed time for running &#34;default&#34;: 0.00673s
+     step 5 (0.0 s) ++ (orig: 0.20252 | best:0.043664 | new:0.027834 | diff:-0.015829)
+Elapsed time for running &#34;default&#34;: 0.00632s
+     step 6 (0.0 s) -- (orig: 0.20252 | best:0.027834 | new:0.13509 | diff:0.10726)
+Elapsed time for running &#34;default&#34;: 0.00661s
+     step 7 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.081462 | diff:0.053627)
+Elapsed time for running &#34;default&#34;: 0.00637s
+     step 8 (0.1 s) ++ (orig: 0.20252 | best:0.027834 | new:0.0039432 | diff:-0.023891)
+Elapsed time for running &#34;default&#34;: 0.00694s
+     step 9 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.051607 | diff:0.047664)
+Elapsed time for running &#34;default&#34;: 0.00709s
+     step 10 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.022869 | diff:0.018926)
+Elapsed time for running &#34;default&#34;: 0.00674s
+     step 11 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.0094628 | diff:0.0055196)
+Elapsed time for running &#34;default&#34;: 0.00692s
+     step 12 (0.1 s) ++ (orig: 0.20252 | best:0.0039432 | new:0.0027598 | diff:-0.0011835)
+Elapsed time for running &#34;default&#34;: 0.00729s
+     step 13 (0.1 s) -- (orig: 0.20252 | best:0.0027598 | new:0.012814 | diff:0.010055)
+Elapsed time for running &#34;default&#34;: 0.00689s
+     step 14 (0.1 s) -- (orig: 0.20252 | best:0.0027598 | new:0.021073 | diff:0.018313)
+Elapsed time for running &#34;default&#34;: 0.00712s
+     step 15 (0.1 s) -- (orig: 0.20252 | best:0.0027598 | new:0.0077870 | diff:0.0050273)
+Elapsed time for running &#34;default&#34;: 0.00677s
+     step 16 (0.1 s) -- (orig: 0.20252 | best:0.0027598 | new:0.0052734 | diff:0.0025136)
+Elapsed time for running &#34;default&#34;: 0.00696s
+     step 17 (0.1 s) -- (orig: 0.20252 | best:0.0027598 | new:0.0091566 | diff:0.0063969)
+Elapsed time for running &#34;default&#34;: 0.00702s
+     step 18 (0.1 s) -- (orig: 0.20252 | best:0.0027598 | new:0.0031985 | diff:0.00043870)
+Elapsed time for running &#34;default&#34;: 0.00654s
+     step 19 (0.2 s) ++ (orig: 0.20252 | best:0.0027598 | new:0.00021936 | diff:-0.0025404)
+Elapsed time for running &#34;default&#34;: 0.00709s
+     step 20 (0.2 s) -- (orig: 0.20252 | best:0.00021936 | new:0.0046880 | diff:0.0044687)
+Elapsed time for running &#34;default&#34;: 0.00660s
+     step 21 (0.2 s) -- (orig: 0.20252 | best:0.00021936 | new:0.0010375 | diff:0.00081810)
+Elapsed time for running &#34;default&#34;: 0.00790s
+     step 22 (0.2 s) -- (orig: 0.20252 | best:0.00021936 | new:0.0024537 | diff:0.0022343)
+Elapsed time for running &#34;default&#34;: 0.00693s
+     step 23 (0.2 s) -- (orig: 0.20252 | best:0.00021936 | new:0.00040905 | diff:0.00018969)
+Elapsed time for running &#34;default&#34;: 0.00778s
+     step 24 (0.2 s) -- (orig: 0.20252 | best:0.00021936 | new:0.0013365 | diff:0.0011172)
+Elapsed time for running &#34;default&#34;: 0.00672s
+     step 25 (0.2 s) ++ (orig: 0.20252 | best:0.00021936 | new:0.000094846 | diff:-0.00012451)
+Elapsed time for running &#34;default&#34;: 0.00665s
+     step 26 (0.2 s) -- (orig: 0.20252 | best:0.000094846 | new:0.00056615 | diff:0.00047130)
+Elapsed time for running &#34;default&#34;: 0.00636s
+     step 27 (0.2 s) -- (orig: 0.20252 | best:0.000094846 | new:0.00033050 | diff:0.00023565)
+Elapsed time for running &#34;default&#34;: 0.00739s
+     step 28 (0.2 s) -- (orig: 0.20252 | best:0.000094846 | new:0.00046374 | diff:0.00036889)
+Elapsed time for running &#34;default&#34;: 0.00788s
+     step 29 (0.2 s) -- (orig: 0.20252 | best:0.000094846 | new:0.00018445 | diff:0.000089601)
+Elapsed time for running &#34;default&#34;: 0.00924s
+     step 30 (0.3 s) -- (orig: 0.20252 | best:0.000094846 | new:0.00021267 | diff:0.00011783)
+Elapsed time for running &#34;default&#34;: 0.00737s
+     step 31 (0.3 s) ++ (orig: 0.20252 | best:0.000094846 | new:0.000044800 | diff:-0.000050045)
+Elapsed time for running &#34;default&#34;: 0.00678s
+     step 32 (0.3 s) -- (orig: 0.20252 | best:0.000044800 | new:0.00025427 | diff:0.00020947)
+Elapsed time for running &#34;default&#34;: 0.00656s
+     step 33 (0.3 s) -- (orig: 0.20252 | best:0.000044800 | new:0.00014953 | diff:0.00010473)
+Elapsed time for running &#34;default&#34;: 0.00726s
+     step 34 (0.3 s) -- (orig: 0.20252 | best:0.000044800 | new:0.000097167 | diff:0.000052367)
+Elapsed time for running &#34;default&#34;: 0.00937s
+     step 35 (0.3 s) ++ (orig: 0.20252 | best:0.000044800 | new:0.000014113 | diff:-0.000030688)
+Elapsed time for running &#34;default&#34;: 0.00694s
+     step 36 (0.3 s) ++ (orig: 0.20252 | best:0.000014113 | new:0.000012071 | diff:-0.0000020420)
+Elapsed time for running &#34;default&#34;: 0.00735s
+     step 37 (0.3 s) -- (orig: 0.20252 | best:0.000012071 | new:0.000076299 | diff:0.000064228)
+Elapsed time for running &#34;default&#34;: 0.00699s
+     step 38 (0.3 s) -- (orig: 0.20252 | best:0.000012071 | new:0.000051346 | diff:0.000039275)
+Elapsed time for running &#34;default&#34;: 0.00736s
+     step 39 (0.3 s) -- (orig: 0.20252 | best:0.000012071 | new:0.000032114 | diff:0.000020043)
+Elapsed time for running &#34;default&#34;: 0.00919s
+     step 40 (0.3 s) ++ (orig: 0.20252 | best:0.000012071 | new:0.000010022 | diff:-0.0000020492)
+Elapsed time for running &#34;default&#34;: 0.00755s
+     step 41 (0.4 s) -- (orig: 0.20252 | best:0.000010022 | new:0.000043160 | diff:0.000033139)
+Elapsed time for running &#34;default&#34;: 0.00703s
+     step 42 (0.4 s) -- (orig: 0.20252 | best:0.000010022 | new:0.000026591 | diff:0.000016569)
+Elapsed time for running &#34;default&#34;: 0.00704s
+     step 43 (0.4 s) -- (orig: 0.20252 | best:0.000010022 | new:0.000018306 | diff:0.0000082847)
+Elapsed time for running &#34;default&#34;: 0.00690s
+     step 44 (0.4 s) ++ (orig: 0.20252 | best:0.000010022 | new:0.0000096161 | diff:-0.00000040552)
+Elapsed time for running &#34;default&#34;: 0.00959s
+     step 45 (0.4 s) -- (orig: 0.20252 | best:0.0000096161 | new:0.000039073 | diff:0.000029457)
+===  Absolute improvement too small (0.00000044967 &lt; 0.0000010000) (45 steps, orig: 0.20252 | best: 0 | ratio: 0) ===
+</pre></div></div>
+</div>
+<p>The result of automated calibration is another <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>. We can inspect the scale factor that the algorithm found:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">p3</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#0: &#34;adults&#34;: 1.3186893939971924
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<p>and we can run the model to compare the automated calibration to the original default calibration:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">r3</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p3</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;Auto calibration&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r3</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0113s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_14_1.svg" src="../_images/tutorial_T2-Calibration_14_1.svg" /></div>
+</div>
+<div class="section" id="Calibration-tips">
+<h2>Calibration tips<a class="headerlink" href="#Calibration-tips" title="Permalink to this headline">¶</a></h2>
+<p>While calibrations can vary significantly from model-to-model, some general tips are</p>
+<ul class="simple">
+<li><p>Match coarse-grained quantities first, followed by fine-grained quantities. For example, for TB you might calibrate it in the following order:</p>
+<ol class="arabic simple">
+<li><p>Match population size (adjusting birth rate and death rate)</p></li>
+<li><p>Match disease prevalance (adjusting force of infection)</p></li>
+<li><p>Match drug-resistant/drug-susceptible split (adjusting proportion of infections that are drug-resistant)</p></li>
+</ol>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="T3-Multiple-populations.html" class="btn btn-neutral float-right" title="T3 - Multiple populations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="T1-Defining-a-model.html" class="btn btn-neutral float-left" title="T1 - Defining a model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
