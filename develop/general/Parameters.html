@@ -39,8 +39,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Population types" href="population-types/Population-Types.html" />
-    <link rel="prev" title="Program System" href="programs/Programs.html" /> 
+    <link rel="next" title="Junction overview" href="junctions/Junctions.html" />
+    <link rel="prev" title="Optimization" href="Optimization.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -62,6 +62,10 @@
 
           
             
+            
+              <div class="version">
+                1.22.0
+              </div>
             
           
 
@@ -87,11 +91,14 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">General content</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Compartment-Initialization.html">Initializing compartments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Contextual-Overview.html">Contextual overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="programs/Programs.html">Program System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="File-Logging.html">Logging cookbook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Optimization.html">Optimization</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Parameters</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#types-of-parameter">Types of parameter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#value-precedence">Value precedence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#performance-considerations">Performance considerations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#timescales">Timescales</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#derivatives">Derivatives</a></li>
@@ -99,7 +106,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#maximum-compartment-duration">Maximum compartment duration</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="junctions/Junctions.html">Junction overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="population-types/Population-Types.html">Population types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="programs/Programs.html">Program System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stochastic/stochastic.html">Stochastic models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timed-transitions/Timed-Transitions.html">Timed transitions</a></li>
 </ul>
@@ -107,7 +116,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
 </ul>
 
             
@@ -162,8 +174,6 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/general/Parameters.rst.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -228,6 +238,26 @@
 <p class="admonition-title">Caution</p>
 <p>Links can only be used inside parameter functions for output parameters</p>
 </div>
+</div>
+<div class="section" id="value-precedence">
+<h2>Value precedence<a class="headerlink" href="#value-precedence" title="Permalink to this headline">¶</a></h2>
+<p>The value for a parameter is derived from (in order of precedence):</p>
+<ol class="arabic simple">
+<li><p>Data entered in the databook</p></li>
+<li><p>A parameter function</p></li>
+<li><p>The result of a program calculation</p></li>
+</ol>
+<p>The workflow in the model is</p>
+<ul class="simple">
+<li><p>First any data points in the parameter set (that is, the values from the databook after any parameter scenarios have been applied) are inserted into the parameter</p></li>
+<li><p>Next, if a parameter function is present, it is evaluated, and the result of the function overwrites the parameter’s current value</p></li>
+<li><p>Finally, program outcomes are evaluated, and used to overwrite any parameters that are being reached by active programs</p></li>
+</ul>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>If a parameter has both a databook page and a function, the simulation dynamics will reflect the function. The data in the databook is used for plotting and calibration only.</p>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>, it is possible to set the <code class="docutils literal notranslate"><span class="pre">skip_function</span></code> attribute in order to skip evaluating the parameter function, in which case the parameter value will be drawn from either the data points or from the program calculation, if present. This functionality is used internally by parameter scenarios, so that it is possible to use a parameter overwrite to override a function (e.g. to use a parameter scenario to explicitly set the force of infection). However, using the <code class="docutils literal notranslate"><span class="pre">skip_function</span></code> attribute directly is a non-standard workflow and must be implemented consistently in all scripts. If a script omits setting this flag then the simulation will run without errors, but will produce different results. It is therefore recommended not to use this functionality directly, but to modify the framework to avoid the need to disable the parameter function.</p>
 </div>
 <div class="section" id="performance-considerations">
 <h2>Performance considerations<a class="headerlink" href="#performance-considerations" title="Permalink to this headline">¶</a></h2>
@@ -313,13 +343,22 @@
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="junctions/Junctions.html" class="btn btn-neutral float-right" title="Junction overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Optimization.html" class="btn btn-neutral float-left" title="Optimization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2018, Atomica Team
+        &copy; Copyright 2020, Atomica Team
 
     </p>
   </div>

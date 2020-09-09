@@ -63,6 +63,10 @@
           
             
             
+              <div class="version">
+                1.22.0
+              </div>
+            
           
 
           
@@ -111,7 +115,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
 </ul>
 
             
@@ -166,8 +173,6 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/tutorial/T6-Programs.ipynb.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -456,7 +461,7 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 <p>Parameter values from the <em>databook</em> are stored in a <em>ParameterSet</em> which is used to produce results for any given databook and calibration. Similarly, program-specific inputs are read in from the <em>program book</em> which maps to a <em>ProgramSet</em>. A ProgramSet together with a set of <em>program instructions</em> is used to generate results incorporating the effect of programs. A schematic overview of how these inputs relate to results is shown below:</p>
 <p><img alt="t6-model-structure" src="../_images/t6_model_structure.png" /></p>
 <p>We will now implement the SIR model with a treatment program described above, to see how these different components are instantiated and used within Atomica. First, we will load in a framework and databook for a simple SIR model:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -467,6 +472,15 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 <span class="n">P</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update_time_vector</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/hostedtoolcache/Python/3.7.9/x64/lib/python3.7/site-packages/traitlets-5.0.4-py3.7.egg/traitlets/traitlets.py:2945: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
+  FutureWarning,
+</pre></div></div>
 </div>
 <p>This framework is much the same as the SIR framework in previous tutorials, except that on the parameters sheet, an additional column called ‘Targetable’ is present. This column specifies whether certain parameters should appear in program books. Since we know that the treatment program is going to change the value of the disease recovery rate, this parameter has a ‘y’ in the ‘Targetable’ column:</p>
 <p><img alt="t6-framework-targetable" src="../_images/t6_framework_targetable.png" /></p>
@@ -491,22 +505,20 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00734s
+Elapsed time for running &#34;default&#34;: 0.0156s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T6-Programs_3_1.png" src="../_images/tutorial_T6-Programs_3_1.png" />
-</div>
+<img alt="../_images/tutorial_T6-Programs_3_1.svg" src="../_images/tutorial_T6-Programs_3_1.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T6-Programs_3_2.png" src="../_images/tutorial_T6-Programs_3_2.png" />
-</div>
+<img alt="../_images/tutorial_T6-Programs_3_2.svg" src="../_images/tutorial_T6-Programs_3_2.svg" /></div>
 </div>
 <p>We will now produce a ‘Program book’ (sometimes referred to as a ‘Progbook’) to define our treatment program. The key attributes that we need to capture for the program are</p>
 <ul class="simple">
@@ -638,8 +650,8 @@ for that program, and <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00824s
-Elapsed time for running &#34;default&#34;: 0.00973s
+Elapsed time for running &#34;default&#34;: 0.00754s
+Elapsed time for running &#34;default&#34;: 0.00883s
 </pre></div></div>
 </div>
 <p>We can now plot the recovery rate parameter and the resulting number of people flowing into the ‘recovered’ state each year.</p>
@@ -662,15 +674,13 @@ Elapsed time for running &#34;default&#34;: 0.00973s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T6-Programs_19_0.png" src="../_images/tutorial_T6-Programs_19_0.png" />
-</div>
+<img alt="../_images/tutorial_T6-Programs_19_0.svg" src="../_images/tutorial_T6-Programs_19_0.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T6-Programs_19_1.png" src="../_images/tutorial_T6-Programs_19_1.png" />
-</div>
+<img alt="../_images/tutorial_T6-Programs_19_1.svg" src="../_images/tutorial_T6-Programs_19_1.svg" /></div>
 </div>
 <p>As expected, the recovery rate with the addition of the treatment program is considerably higher than the baseline simulation. However, the flow of people from infected to recovered is initially high, but then drops below the baseline results after around 2022. The program is set up to transfer a fixed number of people per year. If the epidemic is decreasing, then each year fewer and fewer people are infected. Thus the fixed number of people per year is a larger and larger proportion of the
 total number infected (resulting in the recovery rate increasing over time) and the number of people recovering each year decrease (resulting in a decreasing recovery flow over time). We can verify this by examining the overall proportion of the population infected under the baseline results and with the addition of the treatment program:</p>
@@ -689,15 +699,13 @@ total number infected (resulting in the recovery rate increasing over time) and 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T6-Programs_21_0.png" src="../_images/tutorial_T6-Programs_21_0.png" />
-</div>
+<img alt="../_images/tutorial_T6-Programs_21_0.svg" src="../_images/tutorial_T6-Programs_21_0.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T6-Programs_21_1.png" src="../_images/tutorial_T6-Programs_21_1.png" />
-</div>
+<img alt="../_images/tutorial_T6-Programs_21_1.svg" src="../_images/tutorial_T6-Programs_21_1.svg" /></div>
 </div>
 <p>This confirms that the treatment program results in a considerable decrease in prevalance.</p>
 <div class="section" id="Reconciliation">
@@ -725,15 +733,14 @@ match this scenario.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00869s
+Elapsed time for running &#34;default&#34;: 0.00849s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T6-Programs_24_1.png" src="../_images/tutorial_T6-Programs_24_1.png" />
-</div>
+<img alt="../_images/tutorial_T6-Programs_24_1.svg" src="../_images/tutorial_T6-Programs_24_1.svg" /></div>
 </div>
 <p>As shown above, the program produces a recovery rate that is too low. The reason for this is depends on likely sources of error in the data. For example, the recovery rate could be too low because</p>
 <ul class="simple">
@@ -768,7 +775,7 @@ Reconcilation when parameter is in number units not fully tested
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Program set &#39;default&#39; will be ignored while running project &#39;default&#39; due to the absence of program set instructions
-Elapsed time for running &#34;default&#34;: 0.00797s
+Elapsed time for running &#34;default&#34;: 0.00863s
 Reconciling in 2020.00, evaluating from 2020.00 up to 2021.00
      step 1 (0.0 s) -- (orig: 0.012100 | best:0.012100 | new:0.013967 | diff:0.0018669)
      step 2 (0.0 s) ++ (orig: 0.012100 | best:0.012100 | new:0.010000 | diff:-0.0021000)
@@ -776,20 +783,22 @@ Reconciling in 2020.00, evaluating from 2020.00 up to 2021.00
      step 4 (0.0 s) -- (orig: 0.012100 | best:0.0051020 | new:0.010000 | diff:0.0048980)
      step 5 (0.0 s) ++ (orig: 0.012100 | best:0.0051020 | new:0.00040000 | diff:-0.0047020)
      step 6 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.49000 | diff:0.48960)
-     step 7 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.010000 | diff:0.0096000)
-     step 8 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.00062500 | diff:0.00022500)
-     step 9 (0.0 s) ++ (orig: 0.012100 | best:0.00040000 | new:0.00000000000000000000000000000000077037 | diff:-0.00040000)
-     step 10 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0032653 | diff:0.0032653)
-     step 11 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00062500 | diff:0.00062500)
-     step 12 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00040000 | diff:0.00040000)
-     step 13 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00013841 | diff:0.00013841)
-     step 14 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00011080 | diff:0.00011080)
-     step 15 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000032653 | diff:0.000032653)
-     step 16 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000029218 | diff:0.000029218)
-     step 17 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000079349 | diff:0.0000079349)
-     step 18 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000075061 | diff:0.0000075061)
-     step 19 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019561 | diff:0.0000019561)
-===  Absolute improvement too small (0 &lt; 0.0000010000) (19 steps, orig: 0.012100 | best: 0 | ratio: 0) ===
+     step 7 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.0013223 | diff:0.00092231)
+     step 8 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.010000 | diff:0.0096000)
+     step 9 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.00062500 | diff:0.00022500)
+     step 10 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.00081633 | diff:0.00041633)
+     step 11 (0.0 s) ++ (orig: 0.012100 | best:0.00040000 | new:0.00000000000000000000000000000000077037 | diff:-0.00040000)
+     step 12 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0032653 | diff:0.0032653)
+     step 13 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00062500 | diff:0.00062500)
+     step 14 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00013841 | diff:0.00013841)
+     step 15 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000029218 | diff:0.000029218)
+     step 16 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000032653 | diff:0.000032653)
+     step 17 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000075061 | diff:0.0000075061)
+     step 18 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019025 | diff:0.0000019025)
+     step 19 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000079349 | diff:0.0000079349)
+     step 20 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019561 | diff:0.0000019561)
+     step 21 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00000048562 | diff:0.00000048562)
+===  Absolute improvement too small (0 &lt; 0.0000010000) (21 steps, orig: 0.012100 | best: 0 | ratio: 0) ===
 </pre></div></div>
 </div>
 <p>Regardless of how reconciliation is performed, the idea is that the result of reconciliation is a <em>reconciled progset</em> that provides a better match to a given parameter set in the program start year. We expected based on the un-reconciled result that reconciliation based on unit cost should result in decreasing the unit cost to achieve an increase in recovery rate. We can look at the reconciled unit cost to confirm this is what the automatic reconciliation has done:</p>
@@ -831,15 +840,14 @@ not be possible to reach the target recovery rate.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00994s
+Elapsed time for running &#34;default&#34;: 0.0113s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T6-Programs_30_1.png" src="../_images/tutorial_T6-Programs_30_1.png" />
-</div>
+<img alt="../_images/tutorial_T6-Programs_30_1.svg" src="../_images/tutorial_T6-Programs_30_1.svg" /></div>
 </div>
 <p>In this case, we can see that the reconciliation was indeed successful at matching the recovery rate in the parameter set.</p>
 <div class="alert alert-block alert-danger"><p>Reconciliation involves matching the programs to the parameter set in the reconciliation year only. In general, the parameter set and the program set make different assumptions about future parameter values. In this example, the parameter set assumes the recovery rate will remain constant, while the program set assumes the number of people treated each year will remain constant. Therefore it is NOT expected that the parameter set and program set would produce similar values in the future
@@ -924,13 +932,22 @@ book. There are examples of how to set up different kinds of programs in the Ato
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../library/index.html" class="btn btn-neutral float-right" title="Model library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="T5-Junctions.html" class="btn btn-neutral float-left" title="T5 - Junctions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2018, Atomica Team
+        &copy; Copyright 2020, Atomica Team
 
     </p>
   </div>

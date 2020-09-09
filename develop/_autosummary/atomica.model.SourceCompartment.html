@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.model.SourceCompartment &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.model.TimedCompartment" href="atomica.model.TimedCompartment.html" />
+    <link rel="prev" title="atomica.model.SinkCompartment" href="atomica.model.SinkCompartment.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.22.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.model.html">atomica.model</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.run_model.html">atomica.model.run_model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Characteristic.html">atomica.model.Characteristic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Compartment.html">atomica.model.Compartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.JunctionCompartment.html">atomica.model.JunctionCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Link.html">atomica.model.Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Model.html">atomica.model.Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Parameter.html">atomica.model.Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Population.html">atomica.model.Population</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.ResidualJunctionCompartment.html">atomica.model.ResidualJunctionCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.SinkCompartment.html">atomica.model.SinkCompartment</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.model.SourceCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.TimedCompartment.html">atomica.model.TimedCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.TimedLink.html">atomica.model.TimedLink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Variable.html">atomica.model.Variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.BadInitialization.html">atomica.model.BadInitialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.ModelError.html">atomica.model.ModelError</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.programs.html">atomica.programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.model.html">atomica.model</a> &raquo;</li>
+        
+      <li>atomica.model.SourceCompartment</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-model-sourcecompartment">
+<h1>atomica.model.SourceCompartment<a class="headerlink" href="#atomica-model-sourcecompartment" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="atomica.model.SourceCompartment">
+<em class="property">class </em><code class="sig-prename descclassname">atomica.model.</code><code class="sig-name descname">SourceCompartment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pop</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#SourceCompartment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.SourceCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="atomica.model.Compartment.html#atomica.model.Compartment" title="atomica.model.Compartment"><code class="xref py py-class docutils literal notranslate"><span class="pre">atomica.model.Compartment</span></code></a></p>
+<p>Derived class for source compartments</p>
+<p>Source compartments are unlimited reservoirs, and are subject to limitations like</p>
+<ul class="simple">
+<li><p>Unlimited size</p></li>
+<li><p>No inflows</p></li>
+<li><p>Only one outflow</p></li>
+</ul>
+<p>Therefore, the methods to update these compartments can take some shortcuts not available
+to normal compartments. These shortcuts are implemented in the overloaded methods here.</p>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.SourceCompartment.name" title="atomica.model.SourceCompartment.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Variable code name</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.SourceCompartment.outflow" title="atomica.model.SourceCompartment.outflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outflow</span></code></a></p></td>
+<td><p>Return the outflow at all times</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.SourceCompartment.connect" title="atomica.model.SourceCompartment.connect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connect</span></code></a></p></td>
+<td><p>Construct link out of this compartment</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">expected_duration</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">expected_outflow</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.SourceCompartment.plot" title="atomica.model.SourceCompartment.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a></p></td>
+<td><p>Produce a time series plot</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.SourceCompartment.preallocate" title="atomica.model.SourceCompartment.preallocate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preallocate</span></code></a></p></td>
+<td><p>Preallocate data storage</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">relink</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.SourceCompartment.resolve_outflows" title="atomica.model.SourceCompartment.resolve_outflows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resolve_outflows</span></code></a></p></td>
+<td><p>Resolve outgoing links and convert to number</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.SourceCompartment.set_dynamic" title="atomica.model.SourceCompartment.set_dynamic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dynamic</span></code></a></p></td>
+<td><p>Make the variable a dependency</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unlink</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.SourceCompartment.update" title="atomica.model.SourceCompartment.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a></p></td>
+<td><p>Update compartment value</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="atomica.model.SourceCompartment.connect">
+<code class="sig-name descname">connect</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dest</span></em>, <em class="sig-param"><span class="n">par</span></em><span class="sig-paren">)</span><a class="headerlink" href="#atomica.model.SourceCompartment.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct link out of this compartment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dest</strong> – A <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> instance</p></li>
+<li><p><strong>par</strong> – The parameter that the Link will be associated with</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.SourceCompartment.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#atomica.model.SourceCompartment.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variable code name</p>
+<p>This is implemented as a property method because the <code class="docutils literal notranslate"><span class="pre">id</span></code> of the <code class="docutils literal notranslate"><span class="pre">Variable</span></code> is a
+tuple containing the population name and the variable code name, so this property
+method returns just the variable code name portion. That way, storage does not need
+to be duplicated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A code name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.SourceCompartment.outflow">
+<em class="property">property </em><code class="sig-name descname">outflow</code><a class="headerlink" href="#atomica.model.SourceCompartment.outflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the outflow at all times</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The sum of outgoing links at all time indices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.SourceCompartment.plot">
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#atomica.model.SourceCompartment.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a time series plot</p>
+<p>This is a quick function to make a basic line plot of this <code class="docutils literal notranslate"><span class="pre">Variable</span></code>. Mainly
+intended for debugging. Production-ready plots should be generated using the
+plotting library functions instead</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.SourceCompartment.preallocate">
+<code class="sig-name descname">preallocate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tvec</span></em>, <em class="sig-param"><span class="n">dt</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#SourceCompartment.preallocate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.SourceCompartment.preallocate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preallocate data storage</p>
+<p>This method gets called just before integration, once the final sizes of the arrays are known.
+Performance is improved by preallocating the arrays. The <code class="docutils literal notranslate"><span class="pre">tvec</span></code> attribute is assigned
+as-is, so it is typically a reference to the array stored in the parent <code class="docutils literal notranslate"><span class="pre">Model</span></code> object. Thus,
+there is no duplication of storage there, and <code class="docutils literal notranslate"><span class="pre">Variable.tvec</span></code> is mainly for convenience when
+interpolating or plotting.</p>
+<p>This method may be overloaded in derived classes to preallocate other variables specific
+to those classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tvec</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>) – An array of time values</p></li>
+<li><p><strong>dt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Time step size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.SourceCompartment.resolve_outflows">
+<code class="sig-name descname">resolve_outflows</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ti</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#SourceCompartment.resolve_outflows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.SourceCompartment.resolve_outflows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolve outgoing links and convert to number</p>
+<p>For the base class, rescale outgoing links so that the compartment won’t go negative</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Time index at which to update link outflows</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.SourceCompartment.set_dynamic">
+<code class="sig-name descname">set_dynamic</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#atomica.model.SourceCompartment.set_dynamic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the variable a dependency</p>
+<p>For Compartments and Links, this does nothing. For Characteristics and
+Parameters, it will set the dynamic flag, but in addition, any validation constraints e.g. a Parameter
+that depends on Links cannot itself be dynamic, will be enforced.</p>
+<p>This method generally must be overloaded in derived classes e.g. <a class="reference internal" href="atomica.model.Parameter.html#atomica.model.Parameter.set_dynamic" title="atomica.model.Parameter.set_dynamic"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Parameter.set_dynamic()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.SourceCompartment.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ti</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#SourceCompartment.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.SourceCompartment.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update compartment value</p>
+<p>A compartment update passes in the time to assign (ti). We have</p>
+<p>x(ti) = x(ti-1) + inflow(ti-1) - outflow(ti-1)</p>
+<p>Thus, need to initialize the value and then resolve all inflows and outflows
+Junctions have already been flushed and thus do not need to be updated in this step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="atomica.model.TimedCompartment.html" class="btn btn-neutral float-right" title="atomica.model.TimedCompartment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="atomica.model.SinkCompartment.html" class="btn btn-neutral float-left" title="atomica.model.SinkCompartment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

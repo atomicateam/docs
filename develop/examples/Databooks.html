@@ -63,6 +63,10 @@
           
             
             
+              <div class="version">
+                1.22.0
+              </div>
+            
           
 
           
@@ -102,7 +106,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Frameworks.html">Frameworks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Model-dev.html">Models (implementation)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Model-user.html">Results and Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Plotting.html">Atomica Plotting Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plotting.html">Plotting Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Plot-Programs.html">Plotting programs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Plot-Units.html">Plot unit conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Probability-Rescaling.html">Probability rescaling</a></li>
@@ -111,7 +115,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
 </ul>
 
             
@@ -166,8 +173,6 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/examples/Databooks.ipynb.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -443,7 +448,7 @@ div.rendered_html tbody tr:hover {
 <li><p>Population and time specific values for characteristics, parameters, transfers, and interactions</p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> is a Python object containing the data, and it has methods to convert to and from the databook spreadsheet.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -454,6 +459,15 @@ div.rendered_html tbody tr:hover {
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/hostedtoolcache/Python/3.7.9/x64/lib/python3.7/site-packages/traitlets-5.0.4-py3.7.egg/traitlets/traitlets.py:2945: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
+  FutureWarning,
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -590,15 +604,14 @@ Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&lt;matplotlib.lines.Line2D at 0x7fa5be4f2510&gt;]
+[&lt;matplotlib.lines.Line2D at 0x7f46b0381890&gt;]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Databooks_12_1.png" src="../_images/examples_Databooks_12_1.png" />
-</div>
+<img alt="../_images/examples_Databooks_12_1.svg" src="../_images/examples_Databooks_12_1.svg" /></div>
 </div>
 <p>One of the special features of the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> object that caters for databook entry is the fact that it can independently store the constant assumption value. This is set by inserting a value with no time associated with it</p>
 <div class="nbinput docutils container">
@@ -667,15 +680,14 @@ Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7fa5be4b93d0&gt;
+&lt;matplotlib.legend.Legend at 0x7f46b03b3b10&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Databooks_18_1.png" src="../_images/examples_Databooks_18_1.png" />
-</div>
+<img alt="../_images/examples_Databooks_18_1.svg" src="../_images/examples_Databooks_18_1.svg" /></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> object also has a <code class="docutils literal notranslate"><span class="pre">units</span></code> property that lets it store the units of the quantity entered in the databook.</p>
 <div class="alert alert-info"><p>In general, whenever the databook has a time-dependent values row with an assumption and some year-specific data, the corresponding object used to store the data on that row is a <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code></p>
@@ -747,13 +759,22 @@ Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; 
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Frameworks.html" class="btn btn-neutral float-right" title="Frameworks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Basic-workflow.html" class="btn btn-neutral float-left" title="Basic workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2018, Atomica Team
+        &copy; Copyright 2020, Atomica Team
 
     </p>
   </div>

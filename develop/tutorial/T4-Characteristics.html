@@ -63,6 +63,10 @@
           
             
             
+              <div class="version">
+                1.22.0
+              </div>
+            
           
 
           
@@ -98,7 +102,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../code_documentation.html">Code documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
 </ul>
 
             
@@ -153,8 +160,6 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/tutorial/T4-Characteristics.ipynb.txt" rel="nofollow"> View page source</a>
-          
         
       </li>
     
@@ -458,17 +463,26 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
-<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/t4_framework_1.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/t4_databook_1.xlsx&#39;</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/T4/t4_framework_1.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/T4/t4_databook_1.xlsx&#39;</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/hostedtoolcache/Python/3.7.9/x64/lib/python3.7/site-packages/traitlets-5.0.4-py3.7.egg/traitlets/traitlets.py:2945: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
+  FutureWarning,
+</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0271s
+Elapsed time for running &#34;default&#34;: 0.0265s
 </pre></div></div>
 </div>
 <p>We now want to check that the initialization has been performed correctly. In the <code class="docutils literal notranslate"><span class="pre">result</span></code> we can retrieve the variables for the compartment sizes and inspect their values at the first timestep</p>
@@ -504,7 +518,7 @@ the ‘minimum norm’ solution which means that the inputs are distributed equa
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
-<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/t4_framework_2.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/t4_databook_2.xlsx&#39;</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/T4/t4_framework_2.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/T4/t4_databook_2.xlsx&#39;</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sus = </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;sus&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;inf = </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -517,14 +531,14 @@ the ‘minimum norm’ solution which means that the inputs are distributed equa
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0263s
+Elapsed time for running &#34;default&#34;: 0.0258s
 sus = 600.00
 inf = 200.00
 rec = 200.00
 </pre></div></div>
 </div>
 <p>We also now recieve a warning that ‘Initialization characteristics are underdetermined’ which reflects the fact that we had to rely on the minimum norm solution to infer the value of some of the compartments. For compartments that are missing entirely, we can remove the ‘alive’ characteristic entirely, leaving us with:</p>
-<p><img alt="t4-framework-4" src="../_images/t4_framework_4.png" /> <img alt="t4-databook-3" src="../_images/t4_databook_3.png" /></p>
+<p><img alt="t4-framework-4" src="tutorial/assets/t4_framework_4.png" /> <img alt="t4-databook-3" src="tutorial/assets/t4_databook_3.png" /></p>
 <p>Now, we expect that the 400 people will be assigned to <code class="docutils literal notranslate"><span class="pre">inf</span></code> and <code class="docutils literal notranslate"><span class="pre">rec</span></code> in equal proportions, but since we have no information at all about <code class="docutils literal notranslate"><span class="pre">sus</span></code>, it will be initialized with a value of zero:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -532,7 +546,7 @@ rec = 200.00
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
-<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/t4_framework_3.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/t4_databook_3.xlsx&#39;</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/T4/t4_framework_3.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/T4/t4_databook_3.xlsx&#39;</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sus = </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;sus&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;inf = </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -545,7 +559,7 @@ rec = 200.00
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0256s
+Elapsed time for running &#34;default&#34;: 0.0275s
 sus = 0.00
 inf = 200.00
 rec = 200.00
@@ -557,32 +571,7 @@ Atomica.</p>
 <div class="alert alert-block alert-danger"><p>Errors relating to negative compartment sizes mean that inconsistent information about the system has been entered</p>
 </div><p>It’s also possible for a system to be overdetermined. For example, if you specify data values for <code class="docutils literal notranslate"><span class="pre">inf</span></code>, <code class="docutils literal notranslate"><span class="pre">rec</span></code>, and <code class="docutils literal notranslate"><span class="pre">inf+rec</span></code>. If you specify inconsistent initial values, then a warning will be displayed and ‘best fit’ values will be used.</p>
 <div class="alert alert-block alert-info"><p>Further reading: Compartment initialization is described in more detail in the Atomica code documentation</p>
-</div><p>Characterastic also differ from parameters in that normalized characteristics contain additional logic to deal with the numerator or denominator being zero. Previously we defined <code class="docutils literal notranslate"><span class="pre">foi_out</span> <span class="pre">=</span> <span class="pre">infx*inf/popsize</span></code> but this gave rise to a ‘RuntimeWarning’ due to the prisoner population being zero at the first timestep, which was resolved by entering <code class="docutils literal notranslate"><span class="pre">infx*sdiv(inf,popsize)</span></code> instead. For division by zero occuring due to compartments being empty, we can generally instead construct a characteristic
-containing this division. So instead of defining the population size and prevalence as parameters and using them in the calculation for <code class="docutils literal notranslate"><span class="pre">foi_out</span></code>, we can instead define a characteristics for the prevalance <code class="docutils literal notranslate"><span class="pre">inf/popsize</span></code>. We can reuse the <code class="docutils literal notranslate"><span class="pre">alive</span></code> characteristic, and define an additional characteristic for the prevalence.</p>
-<p><img alt="t4-framework-5" src="../_images/t4_framework_5.png" /></p>
-<p>Notice that we haven’t provided a databook page for the <code class="docutils literal notranslate"><span class="pre">prev</span></code> characteristic - this way, it won’t affect the initialization at all. Now we can use <code class="docutils literal notranslate"><span class="pre">alive</span></code> instead of <code class="docutils literal notranslate"><span class="pre">popsize</span></code> in the parameter functions, and we can use <code class="docutils literal notranslate"><span class="pre">prev</span></code> instead of <code class="docutils literal notranslate"><span class="pre">inf/popsize</span></code> for the prevalance. Importantly, if the numerator and denominator of a characteristic are both zero, then the characteristic value will also be zero. Our parameters sheet now reads:</p>
-<p><img alt="t4-framework-6" src="../_images/t4_framework_6.png" /></p>
-<p>We can now go ahead and run this framework, confirming that no <code class="docutils literal notranslate"><span class="pre">RuntimeWarning</span></code> occurs:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
-<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/t4_framework_4.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/t4_databook_1.xlsx&#39;</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0228s
-</pre></div></div>
-</div>
-<p>The final difference between characteristics and parameters is that characteristics take up no storage space, because they get dynamically evaluated in the results. Thus, using characteristics instead of parameters leads to smaller file sizes.</p>
+</div><p>Finally, the last main difference between characteristics and parameters is that characteristics take up no storage space, because they get dynamically evaluated in the results. Thus, using characteristics instead of parameters leads to smaller file sizes.</p>
 </div>
 
 
@@ -591,13 +580,22 @@ Elapsed time for running &#34;default&#34;: 0.0228s
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="T5-Junctions.html" class="btn btn-neutral float-right" title="T5 - Junctions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="T3-Multiple-populations.html" class="btn btn-neutral float-left" title="T3 - Multiple populations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2018, Atomica Team
+        &copy; Copyright 2020, Atomica Team
 
     </p>
   </div>
