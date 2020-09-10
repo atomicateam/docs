@@ -1,0 +1,1806 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>T2 - Calibration &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="T3 - Multiple populations" href="T3-Multiple-populations.html" />
+    <link rel="prev" title="T1 - Defining a model" href="T1-Defining-a-model.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.22.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="T1-Defining-a-model.html">T1 - Defining a model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">T2 - Calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Calibration-tips">Calibration tips</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="T3-Multiple-populations.html">T3 - Multiple populations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T4-Characteristics.html">T4 - Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T5-Junctions.html">T5 - Junctions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T6-Programs.html">T6 - Programs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>T2 - Calibration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container,
+div.nbinput.container div.prompt,
+div.nbinput.container div.input_area,
+div.nbinput.container div[class*=highlight],
+div.nbinput.container div[class*=highlight] pre,
+div.nboutput.container,
+div.nboutput.container div.prompt,
+div.nboutput.container div.output_area,
+div.nboutput.container div[class*=highlight],
+div.nboutput.container div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="T2---Calibration">
+<h1>T2 - Calibration<a class="headerlink" href="#T2---Calibration" title="Permalink to this headline">¶</a></h1>
+<p>Models are simplifications of the real world, and quantities in the model (like the force of infection) represent the aggregation of many different factors. As a result, there can be uncertainty as to what value of the parameters most accurately reflects the real world - for instance, the population force of infection varies with the average number of contacts per person per day, but this quantity may not be well constrained. The first step in running a model is to improve estimates of the
+parameter values for a particular setting, using data from that setting. Typically, the model is started off at some point in the past (e.g. 2000), such that the initial compartment sizes correspond to the data in the simulation start year. The model is then run up to the current year, with the compartment sizes changing due to the model parameters. The model predictions can then be compared to the actual data for those same years. This allows model parameters to be adjusted to best match the
+existing data. These same parameters are then used for future projections.</p>
+<p>To see calibration in effect, consider the following simple example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/T2/t2_framework_1.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/T2/t2_databook_1.xlsx&#39;</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/hostedtoolcache/Python/3.7.9/x64/lib/python3.7/site-packages/traitlets-5.0.4-py3.7.egg/traitlets/traitlets.py:2945: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
+  FutureWarning,
+</pre></div></div>
+</div>
+<p>First, we inspect the default calibration by running the model and plotting it along with the data. To plot the data, pass the project’s data to the plotting function (in this case, <code class="docutils literal notranslate"><span class="pre">plot_series</span></code>) - this will automatically add scatter points to the plot based on the data in the databook.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">()</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.00980s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_4_1.svg" src="../_images/tutorial_T2-Calibration_4_1.svg" /></div>
+</div>
+<p>Notice how the number of susceptible people and infected people exactly match the data points in the simulation start year - as noted above, this is because the model is initialized from the data values in that year. There are some conditions under which the model won’t exactly match the data in the initial year, such as if the initialization characteristics are overdetermined, but these situations are rare.</p>
+<p>We can see, however, that the model does not predict enough susceptible people in 2020. There could be many reasons for this, and determining what parts of the model should be changed can often be something of an art. It typically reflects your understanding of the assumptions that were made in designing the framework, and also uncertainties and bias present in the input data. For example, the methodology used to gather data used for the calibration might provide hints as to which parameters to
+change first.</p>
+<p>In this case, as there are insufficient people, it might be the case that the birth rate was too low. There are two ways to address this</p>
+<ul class="simple">
+<li><p>You could go back to the databook and enter a larger value for the birth rate</p></li>
+<li><p>You can add a ‘scale factor’ to the parameter set, which scales the parameter value up or down</p></li>
+</ul>
+<p>Either approach can be used and would provide equivalent results. Why would we prefer one over the other?</p>
+<p>An example of a suitable parameter for databook calibration is <code class="docutils literal notranslate"><span class="pre">relative</span> <span class="pre">seasonality</span> <span class="pre">of</span> <span class="pre">mosquito</span> <span class="pre">population</span> <span class="pre">size</span></code> - no hard data can exist, but it might be possible to calculate proxy values from other data such as rainfall patterns in different years, adjust annual values manually to match historical epidemic patterns, and then assume a median value for future years. Having this assumption in the databook allows for those calculations to be used as a starting point in the databook before
+manually editing, and allows for comparability with other projects that use the same parameter.</p>
+<p>Suggestion: When designing a databook, it is recommended that <strong>all</strong> parameters intended for explicit databook calibration are placed on a single ‘Calibration’ sheet to provide clarity about what is data and what are calibrated assumptions.</p>
+<p>An example of a suitable parameter for scale factor calibration is <code class="docutils literal notranslate"><span class="pre">treatment</span> <span class="pre">initiation</span></code> used to determine model transitions from diagnosed to treated - a country has reported data for the number of people initiating treatment, and it is important to accurately maintain the official numbers in the databook. Nevertheless, there may be systematic under-reporting by an unknown degree and we want to account for those additional treatments in the model to ensure outcomes are representative, so it
+is appropriate to adjust the scale factor.</p>
+<p>An example of a parameter that could be adjusted in either way depending on the circumstances or just personal preferencec would be <code class="docutils literal notranslate"><span class="pre">force</span> <span class="pre">of</span> <span class="pre">infection</span></code> - this is a clear calibration parameter that is not based on data, and could be adjusted in a databook if it’s necessary to reflect changing circumstances external to the model over time, calibrated automatically with a scale factor via the <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> function below in order to achieve the best fit to data, or even a mixture of the two
+methods.</p>
+<div class="alert alert-block alert-info"><p>The web interfaces (such as the Cascade Analysis Tool) perform calibration using scale factors. The scale factors shown on the website correspond to the values being set here.</p>
+</div><p>To set a scale factor, create a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> either by copying an existing one, or creating a new one. Then, access the <code class="docutils literal notranslate"><span class="pre">pars</span></code> attribute to look up the parameter you wish to change, and set the <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> for the population you want to change:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s1">&#39;adults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<p>The example above doubled the birth rate. Now we can run the model again, and see how the results have changed. Notice how the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> command is being called with both the original results object, and the new results object, allowing both model runs to be shown on the same plot.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">r2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p2</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;More births&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r2</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0105s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_8_1.svg" src="../_images/tutorial_T2-Calibration_8_1.svg" /></div>
+</div>
+<p>We can see that we have considerably overshot the data, indicating that doubling the birth rate was much too big a change. This would typically be the first step in an iterative process, where you adjust the scale factor, inspect the data, and then make further adjustments.</p>
+<p>Automated calibration is also available via the project’s <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> method. This will automatically adjust parameter values to match the data. To use this function, you need to specify which parameters to set scale factors for, and which variables in the databook to compute calibration quality from. The framework can provide defaults for which parameters to automatically calibrate, or you can pass a list of those parameters in directly. In this example, we will pass in <code class="docutils literal notranslate"><span class="pre">b_rate</span></code> because we
+want to adjust the birth rate, and we will use <code class="docutils literal notranslate"><span class="pre">sus</span></code> as a measurable since we want to match the number of susceptible people. The configuration therefore corresponds to the example shown above.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">p3</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.00773s
+Elapsed time for running &#34;default&#34;: 0.00633s
+     step 1 (0.0 s) -- (orig: 0.20252 | best:0.20252 | new:0.26606 | diff:0.063534)
+Elapsed time for running &#34;default&#34;: 0.00666s
+     step 2 (0.0 s) ++ (orig: 0.20252 | best:0.20252 | new:0.13898 | diff:-0.063540)
+Elapsed time for running &#34;default&#34;: 0.00640s
+     step 3 (0.0 s) ++ (orig: 0.20252 | best:0.13898 | new:0.043664 | diff:-0.095321)
+Elapsed time for running &#34;default&#34;: 0.00666s
+     step 4 (0.0 s) -- (orig: 0.20252 | best:0.043664 | new:0.099338 | diff:0.055675)
+Elapsed time for running &#34;default&#34;: 0.00620s
+     step 5 (0.0 s) ++ (orig: 0.20252 | best:0.043664 | new:0.027834 | diff:-0.015829)
+Elapsed time for running &#34;default&#34;: 0.00774s
+     step 6 (0.0 s) ++ (orig: 0.20252 | best:0.027834 | new:0.0039432 | diff:-0.023891)
+Elapsed time for running &#34;default&#34;: 0.00749s
+     step 7 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.10331 | diff:0.099367)
+Elapsed time for running &#34;default&#34;: 0.00657s
+     step 8 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.049682 | diff:0.045739)
+Elapsed time for running &#34;default&#34;: 0.00768s
+     step 9 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.022869 | diff:0.018926)
+Elapsed time for running &#34;default&#34;: 0.00659s
+     step 10 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.051607 | diff:0.047664)
+Elapsed time for running &#34;default&#34;: 0.00798s
+     step 11 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.027776 | diff:0.023832)
+Elapsed time for running &#34;default&#34;: 0.00680s
+     step 12 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.0094628 | diff:0.0055196)
+Elapsed time for running &#34;default&#34;: 0.00642s
+     step 13 (0.1 s) ++ (orig: 0.20252 | best:0.0039432 | new:0.0027598 | diff:-0.0011835)
+Elapsed time for running &#34;default&#34;: 0.00647s
+     step 14 (0.1 s) -- (orig: 0.20252 | best:0.0027598 | new:0.012814 | diff:0.010055)
+Elapsed time for running &#34;default&#34;: 0.00677s
+     step 15 (0.1 s) -- (orig: 0.20252 | best:0.0027598 | new:0.0077870 | diff:0.0050273)
+Elapsed time for running &#34;default&#34;: 0.00639s
+     step 16 (0.1 s) -- (orig: 0.20252 | best:0.0027598 | new:0.0052734 | diff:0.0025136)
+Elapsed time for running &#34;default&#34;: 0.00662s
+     step 17 (0.1 s) -- (orig: 0.20252 | best:0.0027598 | new:0.0040166 | diff:0.0012568)
+Elapsed time for running &#34;default&#34;: 0.00683s
+     step 18 (0.2 s) -- (orig: 0.20252 | best:0.0027598 | new:0.0091566 | diff:0.0063969)
+Elapsed time for running &#34;default&#34;: 0.00658s
+     step 19 (0.2 s) -- (orig: 0.20252 | best:0.0027598 | new:0.0031985 | diff:0.00043870)
+Elapsed time for running &#34;default&#34;: 0.00832s
+     step 20 (0.2 s) ++ (orig: 0.20252 | best:0.0027598 | new:0.00021936 | diff:-0.0025404)
+Elapsed time for running &#34;default&#34;: 0.00680s
+     step 21 (0.2 s) -- (orig: 0.20252 | best:0.00021936 | new:0.0046880 | diff:0.0044687)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 22 (0.2 s) -- (orig: 0.20252 | best:0.00021936 | new:0.0024537 | diff:0.0022343)
+Elapsed time for running &#34;default&#34;: 0.00930s
+     step 23 (0.2 s) -- (orig: 0.20252 | best:0.00021936 | new:0.00040905 | diff:0.00018969)
+Elapsed time for running &#34;default&#34;: 0.00708s
+     step 24 (0.2 s) -- (orig: 0.20252 | best:0.00021936 | new:0.0013365 | diff:0.0011172)
+Elapsed time for running &#34;default&#34;: 0.00682s
+     step 25 (0.2 s) ++ (orig: 0.20252 | best:0.00021936 | new:0.000094846 | diff:-0.00012451)
+Elapsed time for running &#34;default&#34;: 0.00665s
+     step 26 (0.2 s) -- (orig: 0.20252 | best:0.000094846 | new:0.00056615 | diff:0.00047130)
+Elapsed time for running &#34;default&#34;: 0.00660s
+     step 27 (0.2 s) -- (orig: 0.20252 | best:0.000094846 | new:0.00046374 | diff:0.00036889)
+Elapsed time for running &#34;default&#34;: 0.00742s
+     step 28 (0.2 s) -- (orig: 0.20252 | best:0.000094846 | new:0.00033050 | diff:0.00023565)
+Elapsed time for running &#34;default&#34;: 0.00604s
+     step 29 (0.2 s) -- (orig: 0.20252 | best:0.000094846 | new:0.00018445 | diff:0.000089601)
+Elapsed time for running &#34;default&#34;: 0.00627s
+     step 30 (0.3 s) -- (orig: 0.20252 | best:0.000094846 | new:0.00021267 | diff:0.00011783)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 31 (0.3 s) ++ (orig: 0.20252 | best:0.000094846 | new:0.000044800 | diff:-0.000050045)
+Elapsed time for running &#34;default&#34;: 0.00728s
+     step 32 (0.3 s) -- (orig: 0.20252 | best:0.000044800 | new:0.00025427 | diff:0.00020947)
+Elapsed time for running &#34;default&#34;: 0.00673s
+     step 33 (0.3 s) ++ (orig: 0.20252 | best:0.000044800 | new:0.000014113 | diff:-0.000030688)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 34 (0.3 s) -- (orig: 0.20252 | best:0.000014113 | new:0.00010248 | diff:0.000088370)
+Elapsed time for running &#34;default&#34;: 0.00726s
+     step 35 (0.3 s) -- (orig: 0.20252 | best:0.000014113 | new:0.000090622 | diff:0.000076509)
+Elapsed time for running &#34;default&#34;: 0.00617s
+     step 36 (0.3 s) -- (orig: 0.20252 | best:0.000014113 | new:0.000038254 | diff:0.000024142)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 37 (0.3 s) -- (orig: 0.20252 | best:0.000014113 | new:0.000058298 | diff:0.000044185)
+Elapsed time for running &#34;default&#34;: 0.00732s
+     step 38 (0.3 s) ++ (orig: 0.20252 | best:0.000014113 | new:0.000012071 | diff:-0.0000020420)
+Elapsed time for running &#34;default&#34;: 0.00624s
+     step 39 (0.3 s) -- (orig: 0.20252 | best:0.000012071 | new:0.000051346 | diff:0.000039275)
+Elapsed time for running &#34;default&#34;: 0.00723s
+     step 40 (0.3 s) -- (orig: 0.20252 | best:0.000012071 | new:0.000031708 | diff:0.000019638)
+Elapsed time for running &#34;default&#34;: 0.00633s
+     step 41 (0.4 s) ++ (orig: 0.20252 | best:0.000012071 | new:0.000010022 | diff:-0.0000020492)
+Elapsed time for running &#34;default&#34;: 0.00621s
+     step 42 (0.4 s) -- (orig: 0.20252 | best:0.000010022 | new:0.000043160 | diff:0.000033139)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 43 (0.4 s) -- (orig: 0.20252 | best:0.000010022 | new:0.000026591 | diff:0.000016569)
+===  Absolute improvement too small (0.00000040912 &lt; 0.0000010000) (43 steps, orig: 0.20252 | best: 0 | ratio: 0) ===
+</pre></div></div>
+</div>
+<p>The result of automated calibration is another <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>. We can inspect the scale factor that the algorithm found:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">p3</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#0: &#34;adults&#34;: 1.318720293045044
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<p>and we can run the model to compare the automated calibration to the original default calibration:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">r3</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p3</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;Auto calibration&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r3</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0131s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_14_1.svg" src="../_images/tutorial_T2-Calibration_14_1.svg" /></div>
+</div>
+<div class="section" id="Calibration-tips">
+<h2>Calibration tips<a class="headerlink" href="#Calibration-tips" title="Permalink to this headline">¶</a></h2>
+<p>While calibrations can vary significantly from model-to-model, some general tips are</p>
+<ul class="simple">
+<li><p>Match coarse-grained quantities first, followed by fine-grained quantities. For example, for TB you might calibrate it in the following order:</p>
+<ol class="arabic simple">
+<li><p>Match population size (adjusting birth rate and death rate)</p></li>
+<li><p>Match disease prevalance (adjusting force of infection)</p></li>
+<li><p>Match drug-resistant/drug-susceptible split (adjusting proportion of infections that are drug-resistant)</p></li>
+</ol>
+</li>
+</ul>
+<p>For complex models when considering how to proceed with a calibration, it can help to start with mapping the expected relationships between key input parameters that will be used for calibration and key output parameters for which data exists and that should be matched by the calibration, in terms of how changes might flow throughout the model.</p>
+<p><img alt="t2-calibration-mapping.png" src="../_images/t2_calibration_mapping.png" /></p>
+<p>From the diagram above, it can be seen that as is typically the case, population size (<code class="docutils literal notranslate"><span class="pre">alive</span></code>) has a large impact on everything else, but the number of disease-related deaths have only a minor impact on population size in return, so population size needs to be matched first. Incidence (<code class="docutils literal notranslate"><span class="pre">inci</span></code>) and prevalence (<code class="docutils literal notranslate"><span class="pre">inf</span></code>) have a strong cyclical relationship should be considered together, but force of infection and recovery rate have direct links to modifying each of those individually through
+changing the rate at which people are infected and changing the rate at which people recover. Disease-related deaths (<code class="docutils literal notranslate"><span class="pre">m_num</span></code>) can be considered last if it is not already closely matched from calibrating to prevalence. Because this may adjust the population size, an iterative cycle of calibration may be appropriate to get the best overall fit.</p>
+<p>A calibration might then proceed in the following order with three repeats:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cal_par</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">cal_par</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="n">cal_par</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;doth_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;alive&#39;</span><span class="p">])</span>
+    <span class="n">cal_par</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="n">cal_par</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;foi&#39;</span><span class="p">,</span> <span class="s1">&#39;rec_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;inci&#39;</span><span class="p">,</span> <span class="s1">&#39;inf&#39;</span><span class="p">])</span>
+    <span class="n">cal_par</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="n">cal_par</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;m_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;m_num&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.00677s
+Elapsed time for running &#34;default&#34;: 0.00627s
+     step 1 (0.0 s) ++ (orig: 0.40380 | best:0.40380 | new:0.36136 | diff:-0.042440)
+Elapsed time for running &#34;default&#34;: 0.00828s
+     step 2 (0.0 s) ++ (orig: 0.40380 | best:0.36136 | new:0.29770 | diff:-0.063661)
+Elapsed time for running &#34;default&#34;: 0.00644s
+     step 3 (0.0 s) ++ (orig: 0.40380 | best:0.29770 | new:0.20221 | diff:-0.095493)
+Elapsed time for running &#34;default&#34;: 0.00623s
+     step 4 (0.0 s) -- (orig: 0.40380 | best:0.20221 | new:0.24465 | diff:0.042441)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 5 (0.0 s) ++ (orig: 0.40380 | best:0.20221 | new:0.058968 | diff:-0.14324)
+Elapsed time for running &#34;default&#34;: 0.00628s
+     step 6 (0.0 s) ++ (orig: 0.40380 | best:0.058968 | new:0.020612 | diff:-0.038357)
+Elapsed time for running &#34;default&#34;: 0.00604s
+     step 7 (0.1 s) -- (orig: 0.40380 | best:0.020612 | new:0.075416 | diff:0.054804)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 8 (0.1 s) -- (orig: 0.40380 | best:0.020612 | new:0.030351 | diff:0.0097387)
+Elapsed time for running &#34;default&#34;: 0.00628s
+     step 9 (0.1 s) ++ (orig: 0.40380 | best:0.020612 | new:0.00060964 | diff:-0.020002)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 10 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.020612 | diff:0.020002)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 11 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.020612 | diff:0.020002)
+Elapsed time for running &#34;default&#34;: 0.00623s
+     step 12 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.020612 | diff:0.020002)
+Elapsed time for running &#34;default&#34;: 0.00604s
+     step 13 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.020612 | diff:0.020002)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 14 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.019534 | diff:0.018925)
+Elapsed time for running &#34;default&#34;: 0.00628s
+     step 15 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.025846 | diff:0.025236)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 16 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.032442 | diff:0.031832)
+Elapsed time for running &#34;default&#34;: 0.00603s
+     step 17 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.026118 | diff:0.025508)
+Elapsed time for running &#34;default&#34;: 0.00627s
+     step 18 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.013480 | diff:0.012870)
+Elapsed time for running &#34;default&#34;: 0.00606s
+     step 19 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.0094623 | diff:0.0088526)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 20 (0.1 s) -- (orig: 0.40380 | best:0.00060964 | new:0.016526 | diff:0.015916)
+Elapsed time for running &#34;default&#34;: 0.00625s
+     step 21 (0.2 s) -- (orig: 0.40380 | best:0.00060964 | new:0.012497 | diff:0.011888)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 22 (0.2 s) -- (orig: 0.40380 | best:0.00060964 | new:0.0044263 | diff:0.0038167)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 23 (0.2 s) -- (orig: 0.40380 | best:0.00060964 | new:0.0085677 | diff:0.0079581)
+Elapsed time for running &#34;default&#34;: 0.00632s
+     step 24 (0.2 s) -- (orig: 0.40380 | best:0.00060964 | new:0.0019083 | diff:0.0012987)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 25 (0.2 s) -- (orig: 0.40380 | best:0.00060964 | new:0.0045887 | diff:0.0039790)
+Elapsed time for running &#34;default&#34;: 0.00616s
+     step 26 (0.2 s) -- (orig: 0.40380 | best:0.00060964 | new:0.0070740 | diff:0.0064644)
+Elapsed time for running &#34;default&#34;: 0.00625s
+     step 27 (0.2 s) -- (orig: 0.40380 | best:0.00060964 | new:0.0059139 | diff:0.0053043)
+Elapsed time for running &#34;default&#34;: 0.00603s
+     step 28 (0.2 s) -- (orig: 0.40380 | best:0.00060964 | new:0.0038492 | diff:0.0032395)
+Elapsed time for running &#34;default&#34;: 0.00641s
+     step 29 (0.2 s) -- (orig: 0.40380 | best:0.00060964 | new:0.0026447 | diff:0.0020351)
+===  Absolute improvement too small (0 &lt; 0.0000010000) (29 steps, orig: 0.40380 | best: 0 | ratio: 0) ===
+Elapsed time for running &#34;default&#34;: 0.00663s
+Elapsed time for running &#34;default&#34;: 0.00614s
+     step 1 (0.0 s) -- (orig: 2.3328 | best:2.3328 | new:2.3331 | diff:0.00028439)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 2 (0.0 s) ++ (orig: 2.3328 | best:2.3328 | new:2.2660 | diff:-0.066808)
+Elapsed time for running &#34;default&#34;: 0.00701s
+     step 3 (0.0 s) ++ (orig: 2.3328 | best:2.2660 | new:2.1657 | diff:-0.10028)
+Elapsed time for running &#34;default&#34;: 0.00606s
+     step 4 (0.0 s) ++ (orig: 2.3328 | best:2.1657 | new:2.1646 | diff:-0.0011619)
+Elapsed time for running &#34;default&#34;: 0.00604s
+     step 5 (0.0 s) ++ (orig: 2.3328 | best:2.1646 | new:2.0132 | diff:-0.15140)
+Elapsed time for running &#34;default&#34;: 0.00618s
+     step 6 (0.0 s) -- (orig: 2.3328 | best:2.0132 | new:2.2011 | diff:0.18795)
+Elapsed time for running &#34;default&#34;: 0.00601s
+     step 7 (0.1 s) -- (orig: 2.3328 | best:2.0132 | new:2.0908 | diff:0.077609)
+Elapsed time for running &#34;default&#34;: 0.00616s
+     step 8 (0.1 s) -- (orig: 2.3328 | best:2.0132 | new:2.0354 | diff:0.022202)
+Elapsed time for running &#34;default&#34;: 0.00615s
+     step 9 (0.1 s) -- (orig: 2.3328 | best:2.0132 | new:2.0806 | diff:0.067370)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 10 (0.1 s) -- (orig: 2.3328 | best:2.0132 | new:2.0143 | diff:0.0011476)
+Elapsed time for running &#34;default&#34;: 0.00604s
+     step 11 (0.1 s) ++ (orig: 2.3328 | best:2.0132 | new:2.0054 | diff:-0.0077597)
+Elapsed time for running &#34;default&#34;: 0.00625s
+     step 12 (0.1 s) ++ (orig: 2.3328 | best:2.0054 | new:1.9992 | diff:-0.0062657)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 13 (0.1 s) ++ (orig: 2.3328 | best:1.9992 | new:1.9459 | diff:-0.053301)
+Elapsed time for running &#34;default&#34;: 0.00638s
+     step 14 (0.1 s) ++ (orig: 2.3328 | best:1.9459 | new:1.3531 | diff:-0.59278)
+Elapsed time for running &#34;default&#34;: 0.00660s
+     step 15 (0.1 s) ++ (orig: 2.3328 | best:1.3531 | new:1.3272 | diff:-0.025915)
+Elapsed time for running &#34;default&#34;: 0.00633s
+     step 16 (0.1 s) ++ (orig: 2.3328 | best:1.3272 | new:1.2807 | diff:-0.046497)
+Elapsed time for running &#34;default&#34;: 0.00647s
+     step 17 (0.1 s) ++ (orig: 2.3328 | best:1.2807 | new:1.1951 | diff:-0.085583)
+Elapsed time for running &#34;default&#34;: 0.00661s
+     step 18 (0.1 s) ++ (orig: 2.3328 | best:1.1951 | new:1.0628 | diff:-0.13224)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 19 (0.1 s) -- (orig: 2.3328 | best:1.0628 | new:1.5433 | diff:0.48049)
+Elapsed time for running &#34;default&#34;: 0.00644s
+     step 20 (0.2 s) -- (orig: 2.3328 | best:1.0628 | new:1.5433 | diff:0.48049)
+Elapsed time for running &#34;default&#34;: 0.00661s
+     step 21 (0.2 s) ++ (orig: 2.3328 | best:1.0628 | new:1.0278 | diff:-0.035034)
+Elapsed time for running &#34;default&#34;: 0.00650s
+     step 22 (0.2 s) -- (orig: 2.3328 | best:1.0278 | new:1.5433 | diff:0.51552)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 23 (0.2 s) -- (orig: 2.3328 | best:1.0278 | new:1.5433 | diff:0.51552)
+Elapsed time for running &#34;default&#34;: 0.00662s
+     step 24 (0.2 s) -- (orig: 2.3328 | best:1.0278 | new:1.3586 | diff:0.33075)
+Elapsed time for running &#34;default&#34;: 0.00639s
+     step 25 (0.2 s) ++ (orig: 2.3328 | best:1.0278 | new:0.95855 | diff:-0.069254)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 26 (0.2 s) -- (orig: 2.3328 | best:0.95855 | new:1.0278 | diff:0.069254)
+Elapsed time for running &#34;default&#34;: 0.00659s
+     step 27 (0.2 s) -- (orig: 2.3328 | best:0.95855 | new:1.0278 | diff:0.069254)
+Elapsed time for running &#34;default&#34;: 0.00644s
+     step 28 (0.2 s) -- (orig: 2.3328 | best:0.95855 | new:1.0029 | diff:0.044314)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 29 (0.2 s) -- (orig: 2.3328 | best:0.95855 | new:1.0278 | diff:0.069254)
+Elapsed time for running &#34;default&#34;: 0.00637s
+     step 30 (0.2 s) ++ (orig: 2.3328 | best:0.95855 | new:0.90815 | diff:-0.050397)
+Elapsed time for running &#34;default&#34;: 0.00651s
+     step 31 (0.2 s) ++ (orig: 2.3328 | best:0.90815 | new:0.80281 | diff:-0.10535)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 32 (0.2 s) -- (orig: 2.3328 | best:0.80281 | new:0.82678 | diff:0.023975)
+Elapsed time for running &#34;default&#34;: 0.00663s
+     step 33 (0.3 s) -- (orig: 2.3328 | best:0.80281 | new:0.85915 | diff:0.056338)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 34 (0.3 s) ++ (orig: 2.3328 | best:0.80281 | new:0.72707 | diff:-0.075739)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 35 (0.3 s) -- (orig: 2.3328 | best:0.72707 | new:0.80445 | diff:0.077380)
+Elapsed time for running &#34;default&#34;: 0.00624s
+     step 36 (0.3 s) -- (orig: 2.3328 | best:0.72707 | new:0.75450 | diff:0.027427)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 37 (0.3 s) -- (orig: 2.3328 | best:0.72707 | new:0.74605 | diff:0.018976)
+Elapsed time for running &#34;default&#34;: 0.00644s
+     step 38 (0.3 s) ++ (orig: 2.3328 | best:0.72707 | new:0.71614 | diff:-0.010926)
+Elapsed time for running &#34;default&#34;: 0.00702s
+     step 39 (0.3 s) -- (orig: 2.3328 | best:0.71614 | new:0.76083 | diff:0.044688)
+Elapsed time for running &#34;default&#34;: 0.00650s
+     step 40 (0.3 s) -- (orig: 2.3328 | best:0.71614 | new:0.73861 | diff:0.022466)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 41 (0.3 s) ++ (orig: 2.3328 | best:0.71614 | new:0.70540 | diff:-0.010741)
+Elapsed time for running &#34;default&#34;: 0.00654s
+     step 42 (0.3 s) -- (orig: 2.3328 | best:0.70540 | new:1.1194 | diff:0.41403)
+Elapsed time for running &#34;default&#34;: 0.00645s
+     step 43 (0.3 s) -- (orig: 2.3328 | best:0.70540 | new:0.72283 | diff:0.017430)
+Elapsed time for running &#34;default&#34;: 0.00642s
+     step 44 (0.3 s) -- (orig: 2.3328 | best:0.70540 | new:0.71257 | diff:0.0071628)
+Elapsed time for running &#34;default&#34;: 0.00662s
+     step 45 (0.3 s) -- (orig: 2.3328 | best:0.70540 | new:0.71402 | diff:0.0086130)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 46 (0.4 s) -- (orig: 2.3328 | best:0.70540 | new:0.70815 | diff:0.0027481)
+Elapsed time for running &#34;default&#34;: 0.00645s
+     step 47 (0.4 s) -- (orig: 2.3328 | best:0.70540 | new:0.71672 | diff:0.011314)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 48 (0.4 s) -- (orig: 2.3328 | best:0.70540 | new:0.70744 | diff:0.0020328)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 49 (0.4 s) -- (orig: 2.3328 | best:0.70540 | new:0.71107 | diff:0.0056638)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 50 (0.4 s) -- (orig: 2.3328 | best:0.70540 | new:0.92611 | diff:0.22070)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 51 (0.4 s) ++ (orig: 2.3328 | best:0.70540 | new:0.70523 | diff:-0.00017620)
+Elapsed time for running &#34;default&#34;: 0.00651s
+     step 52 (0.4 s) -- (orig: 2.3328 | best:0.70523 | new:0.80765 | diff:0.10243)
+Elapsed time for running &#34;default&#34;: 0.00643s
+     step 53 (0.4 s) -- (orig: 2.3328 | best:0.70523 | new:0.70779 | diff:0.0025675)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 54 (0.4 s) -- (orig: 2.3328 | best:0.70523 | new:0.70651 | diff:0.0012837)
+Elapsed time for running &#34;default&#34;: 0.00642s
+     step 55 (0.4 s) -- (orig: 2.3328 | best:0.70523 | new:0.70962 | diff:0.0043885)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 56 (0.4 s) -- (orig: 2.3328 | best:0.70523 | new:0.75122 | diff:0.045994)
+Elapsed time for running &#34;default&#34;: 0.00681s
+     step 57 (0.4 s) -- (orig: 2.3328 | best:0.70523 | new:0.70742 | diff:0.0021927)
+Elapsed time for running &#34;default&#34;: 0.00650s
+     step 58 (0.4 s) -- (orig: 2.3328 | best:0.70523 | new:0.72232 | diff:0.017094)
+Elapsed time for running &#34;default&#34;: 0.00640s
+     step 59 (0.5 s) -- (orig: 2.3328 | best:0.70523 | new:0.70632 | diff:0.0010960)
+Elapsed time for running &#34;default&#34;: 0.00625s
+     step 60 (0.5 s) ++ (orig: 2.3328 | best:0.70523 | new:0.70162 | diff:-0.0036055)
+Elapsed time for running &#34;default&#34;: 0.00638s
+     step 61 (0.5 s) ++ (orig: 2.3328 | best:0.70162 | new:0.70010 | diff:-0.0015243)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 62 (0.5 s) -- (orig: 2.3328 | best:0.70010 | new:0.70650 | diff:0.0064062)
+Elapsed time for running &#34;default&#34;: 0.00671s
+     step 63 (0.5 s) -- (orig: 2.3328 | best:0.70010 | new:0.70330 | diff:0.0032052)
+Elapsed time for running &#34;default&#34;: 0.00652s
+     step 64 (0.5 s) -- (orig: 2.3328 | best:0.70010 | new:0.70170 | diff:0.0016031)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 65 (0.5 s) ++ (orig: 2.3328 | best:0.70010 | new:0.69777 | diff:-0.0023312)
+Elapsed time for running &#34;default&#34;: 0.00667s
+     step 66 (0.5 s) -- (orig: 2.3328 | best:0.69777 | new:0.71245 | diff:0.014686)
+Elapsed time for running &#34;default&#34;: 0.00641s
+     step 67 (0.5 s) ++ (orig: 2.3328 | best:0.69777 | new:0.69740 | diff:-0.00036388)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 68 (0.5 s) -- (orig: 2.3328 | best:0.69740 | new:0.69836 | diff:0.00096230)
+Elapsed time for running &#34;default&#34;: 0.00663s
+     step 69 (0.5 s) -- (orig: 2.3328 | best:0.69740 | new:0.69822 | diff:0.00081848)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 70 (0.5 s) -- (orig: 2.3328 | best:0.69740 | new:0.69806 | diff:0.00065876)
+Elapsed time for running &#34;default&#34;: 0.00640s
+     step 71 (0.5 s) -- (orig: 2.3328 | best:0.69740 | new:0.69766 | diff:0.00025722)
+Elapsed time for running &#34;default&#34;: 0.00665s
+     step 72 (0.6 s) -- (orig: 2.3328 | best:0.69740 | new:0.69788 | diff:0.00048114)
+Elapsed time for running &#34;default&#34;: 0.00652s
+     step 73 (0.6 s) -- (orig: 2.3328 | best:0.69740 | new:0.69764 | diff:0.00024057)
+Elapsed time for running &#34;default&#34;: 0.00647s
+     step 74 (0.6 s) -- (orig: 2.3328 | best:0.69740 | new:0.69752 | diff:0.00012028)
+Elapsed time for running &#34;default&#34;: 0.00703s
+     step 75 (0.6 s) -- (orig: 2.3328 | best:0.69740 | new:0.69746 | diff:0.000060141)
+Elapsed time for running &#34;default&#34;: 0.00641s
+     step 76 (0.6 s) -- (orig: 2.3328 | best:0.69740 | new:0.70462 | diff:0.0072158)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 77 (0.6 s) -- (orig: 2.3328 | best:0.69740 | new:0.69781 | diff:0.00040918)
+Elapsed time for running &#34;default&#34;: 0.00665s
+     step 78 (0.6 s) -- (orig: 2.3328 | best:0.69740 | new:0.69761 | diff:0.00020458)
+Elapsed time for running &#34;default&#34;: 0.00645s
+     step 79 (0.6 s) -- (orig: 2.3328 | best:0.69740 | new:0.69746 | diff:0.000056426)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 80 (0.6 s) -- (orig: 2.3328 | best:0.69740 | new:0.70094 | diff:0.0035394)
+Elapsed time for running &#34;default&#34;: 0.00661s
+     step 81 (0.6 s) ++ (orig: 2.3328 | best:0.69740 | new:0.69736 | diff:-0.000043977)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 82 (0.6 s) -- (orig: 2.3328 | best:0.69736 | new:0.69751 | diff:0.00015060)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 83 (0.6 s) -- (orig: 2.3328 | best:0.69736 | new:0.69920 | diff:0.0018427)
+Elapsed time for running &#34;default&#34;: 0.00656s
+     step 84 (0.6 s) -- (orig: 2.3328 | best:0.69736 | new:0.69828 | diff:0.00092156)
+Elapsed time for running &#34;default&#34;: 0.00637s
+     step 85 (0.7 s) -- (orig: 2.3328 | best:0.69736 | new:0.69782 | diff:0.00046084)
+===  Relative improvement too small (0.000029242 &lt; 0.0010000) (85 steps, orig: 2.3328 | best: 0 | ratio: 0) ===
+Elapsed time for running &#34;default&#34;: 0.00649s
+Elapsed time for running &#34;default&#34;: 0.00640s
+     step 1 (0.0 s) -- (orig: 3.5417 | best:3.5417 | new:3.7664 | diff:0.22466)
+Elapsed time for running &#34;default&#34;: 0.00645s
+     step 2 (0.0 s) -- (orig: 3.5417 | best:3.5417 | new:3.6591 | diff:0.11744)
+Elapsed time for running &#34;default&#34;: 0.00651s
+     step 3 (0.0 s) ++ (orig: 3.5417 | best:3.5417 | new:3.2739 | diff:-0.26784)
+Elapsed time for running &#34;default&#34;: 0.00663s
+     step 4 (0.0 s) ++ (orig: 3.5417 | best:3.2739 | new:2.9054 | diff:-0.36843)
+Elapsed time for running &#34;default&#34;: 0.00655s
+     step 5 (0.0 s) ++ (orig: 3.5417 | best:2.9054 | new:2.4857 | diff:-0.41975)
+Elapsed time for running &#34;default&#34;: 0.00651s
+     step 6 (0.0 s) ++ (orig: 3.5417 | best:2.4857 | new:1.1725 | diff:-1.3132)
+Elapsed time for running &#34;default&#34;: 0.00669s
+     step 7 (0.1 s) -- (orig: 3.5417 | best:1.1725 | new:2.0000 | diff:0.82751)
+Elapsed time for running &#34;default&#34;: 0.00653s
+     step 8 (0.1 s) -- (orig: 3.5417 | best:1.1725 | new:2.0000 | diff:0.82751)
+Elapsed time for running &#34;default&#34;: 0.00651s
+     step 9 (0.1 s) -- (orig: 3.5417 | best:1.1725 | new:1.4270 | diff:0.25456)
+Elapsed time for running &#34;default&#34;: 0.00669s
+     step 10 (0.1 s) ++ (orig: 3.5417 | best:1.1725 | new:0.87309 | diff:-0.29940)
+Elapsed time for running &#34;default&#34;: 0.00652s
+     step 11 (0.1 s) -- (orig: 3.5417 | best:0.87309 | new:1.7196 | diff:0.84648)
+Elapsed time for running &#34;default&#34;: 0.00652s
+     step 12 (0.1 s) -- (orig: 3.5417 | best:0.87309 | new:1.2847 | diff:0.41163)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 13 (0.1 s) -- (orig: 3.5417 | best:0.87309 | new:1.0761 | diff:0.20297)
+Elapsed time for running &#34;default&#34;: 0.00650s
+     step 14 (0.1 s) -- (orig: 3.5417 | best:0.87309 | new:0.97388 | diff:0.10078)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 15 (0.1 s) -- (orig: 3.5417 | best:0.87309 | new:0.92331 | diff:0.050217)
+Elapsed time for running &#34;default&#34;: 0.00666s
+     step 16 (0.1 s) -- (orig: 3.5417 | best:0.87309 | new:0.89816 | diff:0.025065)
+Elapsed time for running &#34;default&#34;: 0.00644s
+     step 17 (0.1 s) -- (orig: 3.5417 | best:0.87309 | new:0.96167 | diff:0.088576)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 18 (0.1 s) -- (orig: 3.5417 | best:0.87309 | new:0.88561 | diff:0.012521)
+Elapsed time for running &#34;default&#34;: 0.00665s
+     step 19 (0.1 s) -- (orig: 3.5417 | best:0.87309 | new:0.88978 | diff:0.016686)
+Elapsed time for running &#34;default&#34;: 0.00643s
+     step 20 (0.2 s) ++ (orig: 3.5417 | best:0.87309 | new:0.85326 | diff:-0.019831)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 21 (0.2 s) -- (orig: 3.5417 | best:0.85326 | new:0.90789 | diff:0.054633)
+Elapsed time for running &#34;default&#34;: 0.00675s
+     step 22 (0.2 s) ++ (orig: 3.5417 | best:0.85326 | new:0.84890 | diff:-0.0043583)
+Elapsed time for running &#34;default&#34;: 0.00707s
+     step 23 (0.2 s) -- (orig: 3.5417 | best:0.84890 | new:0.87636 | diff:0.027458)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 24 (0.2 s) -- (orig: 3.5417 | best:0.84890 | new:0.86266 | diff:0.013756)
+Elapsed time for running &#34;default&#34;: 0.00716s
+     step 25 (0.2 s) ++ (orig: 3.5417 | best:0.84890 | new:0.84236 | diff:-0.0065477)
+Elapsed time for running &#34;default&#34;: 0.00643s
+     step 26 (0.2 s) -- (orig: 3.5417 | best:0.84236 | new:0.85012 | diff:0.0077673)
+Elapsed time for running &#34;default&#34;: 0.00650s
+     step 27 (0.2 s) -- (orig: 3.5417 | best:0.84236 | new:0.84925 | diff:0.0068976)
+Elapsed time for running &#34;default&#34;: 0.00661s
+     step 28 (0.2 s) -- (orig: 3.5417 | best:0.84236 | new:0.84311 | diff:0.00075598)
+Elapsed time for running &#34;default&#34;: 0.00647s
+     step 29 (0.2 s) ++ (orig: 3.5417 | best:0.84236 | new:0.83990 | diff:-0.0024585)
+Elapsed time for running &#34;default&#34;: 0.00655s
+     step 30 (0.2 s) -- (orig: 3.5417 | best:0.83990 | new:0.84486 | diff:0.0049667)
+Elapsed time for running &#34;default&#34;: 0.00666s
+     step 31 (0.2 s) -- (orig: 3.5417 | best:0.83990 | new:0.84335 | diff:0.0034529)
+Elapsed time for running &#34;default&#34;: 0.00650s
+     step 32 (0.2 s) -- (orig: 3.5417 | best:0.83990 | new:0.84224 | diff:0.0023386)
+Elapsed time for running &#34;default&#34;: 0.00653s
+     step 33 (0.3 s) -- (orig: 3.5417 | best:0.83990 | new:0.84092 | diff:0.0010249)
+Elapsed time for running &#34;default&#34;: 0.00670s
+     step 34 (0.3 s) -- (orig: 3.5417 | best:0.83990 | new:0.84027 | diff:0.00036812)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 35 (0.3 s) -- (orig: 3.5417 | best:0.83990 | new:0.83994 | diff:0.000039764)
+Elapsed time for running &#34;default&#34;: 0.00647s
+     step 36 (0.3 s) ++ (orig: 3.5417 | best:0.83990 | new:0.83978 | diff:-0.00011528)
+Elapsed time for running &#34;default&#34;: 0.00671s
+     step 37 (0.3 s) -- (orig: 3.5417 | best:0.83978 | new:0.84002 | diff:0.00023714)
+Elapsed time for running &#34;default&#34;: 0.00654s
+     step 38 (0.3 s) -- (orig: 3.5417 | best:0.83978 | new:0.84151 | diff:0.0017269)
+Elapsed time for running &#34;default&#34;: 0.00650s
+     step 39 (0.3 s) -- (orig: 3.5417 | best:0.83978 | new:0.84065 | diff:0.00086357)
+===  Relative improvement too small (0.000013728 &lt; 0.0010000) (39 steps, orig: 3.5417 | best: 0 | ratio: 0) ===
+Elapsed time for running &#34;default&#34;: 0.00673s
+Elapsed time for running &#34;default&#34;: 0.00627s
+     step 1 (0.0 s) -- (orig: 0.0086542 | best:0.0086542 | new:0.012449 | diff:0.0037946)
+Elapsed time for running &#34;default&#34;: 0.00651s
+     step 2 (0.0 s) -- (orig: 0.0086542 | best:0.0086542 | new:0.044606 | diff:0.035952)
+Elapsed time for running &#34;default&#34;: 0.00661s
+     step 3 (0.0 s) -- (orig: 0.0086542 | best:0.0086542 | new:0.090938 | diff:0.082284)
+Elapsed time for running &#34;default&#34;: 0.00643s
+     step 4 (0.0 s) -- (orig: 0.0086542 | best:0.0086542 | new:0.012449 | diff:0.0037946)
+Elapsed time for running &#34;default&#34;: 0.00652s
+     step 5 (0.0 s) -- (orig: 0.0086542 | best:0.0086542 | new:0.011921 | diff:0.0032670)
+Elapsed time for running &#34;default&#34;: 0.00668s
+     step 6 (0.0 s) -- (orig: 0.0086542 | best:0.0086542 | new:0.017488 | diff:0.0088342)
+Elapsed time for running &#34;default&#34;: 0.00645s
+     step 7 (0.1 s) -- (orig: 0.0086542 | best:0.0086542 | new:0.049800 | diff:0.041146)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 8 (0.1 s) ++ (orig: 0.0086542 | best:0.0086542 | new:0.0042977 | diff:-0.0043565)
+Elapsed time for running &#34;default&#34;: 0.00671s
+     step 9 (0.1 s) -- (orig: 0.0086542 | best:0.0042977 | new:0.046125 | diff:0.041828)
+Elapsed time for running &#34;default&#34;: 0.00654s
+     step 10 (0.1 s) -- (orig: 0.0086542 | best:0.0042977 | new:0.016490 | diff:0.012192)
+Elapsed time for running &#34;default&#34;: 0.00654s
+     step 11 (0.1 s) -- (orig: 0.0086542 | best:0.0042977 | new:0.024175 | diff:0.019877)
+Elapsed time for running &#34;default&#34;: 0.00665s
+     step 12 (0.1 s) -- (orig: 0.0086542 | best:0.0042977 | new:0.021372 | diff:0.017075)
+Elapsed time for running &#34;default&#34;: 0.00642s
+     step 13 (0.1 s) -- (orig: 0.0086542 | best:0.0042977 | new:0.014168 | diff:0.0098704)
+Elapsed time for running &#34;default&#34;: 0.00646s
+     step 14 (0.1 s) -- (orig: 0.0086542 | best:0.0042977 | new:0.0086542 | diff:0.0043565)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 15 (0.1 s) -- (orig: 0.0086542 | best:0.0042977 | new:0.014692 | diff:0.010394)
+Elapsed time for running &#34;default&#34;: 0.00644s
+     step 16 (0.1 s) -- (orig: 0.0086542 | best:0.0042977 | new:0.0060962 | diff:0.0017985)
+Elapsed time for running &#34;default&#34;: 0.00640s
+     step 17 (0.1 s) ++ (orig: 0.0086542 | best:0.0042977 | new:0.00089929 | diff:-0.0033984)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 18 (0.1 s) -- (orig: 0.0086542 | best:0.00089929 | new:0.0073780 | diff:0.0064787)
+Elapsed time for running &#34;default&#34;: 0.00644s
+     step 19 (0.1 s) -- (orig: 0.0086542 | best:0.00089929 | new:0.0086946 | diff:0.0077953)
+Elapsed time for running &#34;default&#34;: 0.00643s
+     step 20 (0.2 s) -- (orig: 0.0086542 | best:0.00089929 | new:0.0041460 | diff:0.0032468)
+Elapsed time for running &#34;default&#34;: 0.00715s
+     step 21 (0.2 s) -- (orig: 0.0086542 | best:0.00089929 | new:0.0047970 | diff:0.0038977)
+Elapsed time for running &#34;default&#34;: 0.00657s
+     step 22 (0.2 s) -- (orig: 0.0086542 | best:0.00089929 | new:0.0025245 | diff:0.0016252)
+Elapsed time for running &#34;default&#34;: 0.00651s
+     step 23 (0.2 s) -- (orig: 0.0086542 | best:0.00089929 | new:0.0039987 | diff:0.0030995)
+Elapsed time for running &#34;default&#34;: 0.00659s
+     step 24 (0.2 s) -- (orig: 0.0086542 | best:0.00089929 | new:0.0042977 | diff:0.0033984)
+Elapsed time for running &#34;default&#34;: 0.00639s
+     step 25 (0.2 s) -- (orig: 0.0086542 | best:0.00089929 | new:0.0015455 | diff:0.00064624)
+Elapsed time for running &#34;default&#34;: 0.00617s
+     step 26 (0.2 s) ++ (orig: 0.0086542 | best:0.00089929 | new:0.00032207 | diff:-0.00057722)
+Elapsed time for running &#34;default&#34;: 0.00622s
+     step 27 (0.2 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.0016287 | diff:0.0013066)
+Elapsed time for running &#34;default&#34;: 0.00605s
+     step 28 (0.2 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.0021580 | diff:0.0018360)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 29 (0.2 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.0012395 | diff:0.00091740)
+Elapsed time for running &#34;default&#34;: 0.00659s
+     step 30 (0.2 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.0029231 | diff:0.0026010)
+Elapsed time for running &#34;default&#34;: 0.00605s
+     step 31 (0.2 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.00049240 | diff:0.00017033)
+Elapsed time for running &#34;default&#34;: 0.00647s
+     step 32 (0.2 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.00078062 | diff:0.00045855)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 33 (0.3 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.00055131 | diff:0.00022924)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 34 (0.3 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.00043668 | diff:0.00011461)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 35 (0.3 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.0016226 | diff:0.0013005)
+Elapsed time for running &#34;default&#34;: 0.00673s
+     step 36 (0.3 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.00037937 | diff:0.000057303)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 37 (0.3 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.00097232 | diff:0.00065025)
+Elapsed time for running &#34;default&#34;: 0.00643s
+     step 38 (0.3 s) -- (orig: 0.0086542 | best:0.00032207 | new:0.00064720 | diff:0.00032513)
+Elapsed time for running &#34;default&#34;: 0.00663s
+     step 39 (0.3 s) ++ (orig: 0.0086542 | best:0.00032207 | new:0.000085282 | diff:-0.00023679)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 40 (0.3 s) -- (orig: 0.0086542 | best:0.000085282 | new:0.0010603 | diff:0.00097506)
+Elapsed time for running &#34;default&#34;: 0.00606s
+     step 41 (0.3 s) -- (orig: 0.0086542 | best:0.000085282 | new:0.00069588 | diff:0.00061059)
+Elapsed time for running &#34;default&#34;: 0.00661s
+     step 42 (0.3 s) -- (orig: 0.0086542 | best:0.000085282 | new:0.00039064 | diff:0.00030536)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 43 (0.3 s) ++ (orig: 0.0086542 | best:0.000085282 | new:0.000077228 | diff:-0.0000080536)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 44 (0.3 s) -- (orig: 0.0086542 | best:0.000077228 | new:0.00032099 | diff:0.00024377)
+Elapsed time for running &#34;default&#34;: 0.00665s
+     step 45 (0.3 s) -- (orig: 0.0086542 | best:0.000077228 | new:0.00041030 | diff:0.00033307)
+Elapsed time for running &#34;default&#34;: 0.00603s
+     step 46 (0.4 s) ++ (orig: 0.0086542 | best:0.000077228 | new:0.000075489 | diff:-0.0000017394)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 47 (0.4 s) ++ (orig: 0.0086542 | best:0.000075489 | new:0.000046379 | diff:-0.000029110)
+Elapsed time for running &#34;default&#34;: 0.00668s
+     step 48 (0.4 s) -- (orig: 0.0086542 | best:0.000046379 | new:0.00018266 | diff:0.00013628)
+Elapsed time for running &#34;default&#34;: 0.00644s
+     step 49 (0.4 s) -- (orig: 0.0086542 | best:0.000046379 | new:0.000068149 | diff:0.000021770)
+Elapsed time for running &#34;default&#34;: 0.00642s
+     step 50 (0.4 s) ++ (orig: 0.0086542 | best:0.000046379 | new:0.000010887 | diff:-0.000035492)
+Elapsed time for running &#34;default&#34;: 0.00661s
+     step 51 (0.4 s) -- (orig: 0.0086542 | best:0.000010887 | new:0.000096778 | diff:0.000085890)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 52 (0.4 s) -- (orig: 0.0086542 | best:0.000010887 | new:0.00025461 | diff:0.00024372)
+Elapsed time for running &#34;default&#34;: 0.00604s
+     step 53 (0.4 s) -- (orig: 0.0086542 | best:0.000010887 | new:0.00017191 | diff:0.00016102)
+Elapsed time for running &#34;default&#34;: 0.00622s
+     step 54 (0.4 s) -- (orig: 0.0086542 | best:0.000010887 | new:0.000053834 | diff:0.000042947)
+Elapsed time for running &#34;default&#34;: 0.00605s
+     step 55 (0.4 s) -- (orig: 0.0086542 | best:0.000010887 | new:0.000017745 | diff:0.0000068583)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 56 (0.4 s) -- (orig: 0.0086542 | best:0.000010887 | new:0.00013275 | diff:0.00012186)
+Elapsed time for running &#34;default&#34;: 0.00662s
+     step 57 (0.4 s) -- (orig: 0.0086542 | best:0.000010887 | new:0.000080510 | diff:0.000069623)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 58 (0.4 s) -- (orig: 0.0086542 | best:0.000010887 | new:0.000034811 | diff:0.000023924)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 59 (0.5 s) -- (orig: 0.0086542 | best:0.000010887 | new:0.000011962 | diff:0.0000010751)
+Elapsed time for running &#34;default&#34;: 0.00658s
+     step 60 (0.5 s) ++ (orig: 0.0086542 | best:0.000010887 | new:0.00000053755 | diff:-0.000010350)
+Elapsed time for running &#34;default&#34;: 0.00669s
+     step 61 (0.5 s) -- (orig: 0.0086542 | best:0.00000053755 | new:0.000060394 | diff:0.000059856)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 62 (0.5 s) -- (orig: 0.0086542 | best:0.00000053755 | new:0.000020936 | diff:0.000020399)
+Elapsed time for running &#34;default&#34;: 0.00660s
+     step 63 (0.5 s) -- (orig: 0.0086542 | best:0.00000053755 | new:0.000017674 | diff:0.000017137)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 64 (0.5 s) -- (orig: 0.0086542 | best:0.00000053755 | new:0.000010199 | diff:0.0000096619)
+Elapsed time for running &#34;default&#34;: 0.00653s
+     step 65 (0.5 s) -- (orig: 0.0086542 | best:0.00000053755 | new:0.000029928 | diff:0.000029391)
+Elapsed time for running &#34;default&#34;: 0.00663s
+     step 66 (0.5 s) -- (orig: 0.0086542 | best:0.00000053755 | new:0.0000091060 | diff:0.0000085685)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 67 (0.5 s) -- (orig: 0.0086542 | best:0.00000053755 | new:0.000014854 | diff:0.000014316)
+Elapsed time for running &#34;default&#34;: 0.00614s
+     step 68 (0.5 s) -- (orig: 0.0086542 | best:0.00000053755 | new:0.0000076956 | diff:0.0000071581)
+Elapsed time for running &#34;default&#34;: 0.00669s
+     step 69 (0.5 s) -- (orig: 0.0086542 | best:0.00000053755 | new:0.0000041166 | diff:0.0000035790)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 70 (0.5 s) -- (orig: 0.0086542 | best:0.00000053755 | new:0.000014695 | diff:0.000014158)
+===  Absolute improvement too small (0.00000051748 &lt; 0.0000010000) (70 steps, orig: 0.0086542 | best: 0 | ratio: 0) ===
+Elapsed time for running &#34;default&#34;: 0.00609s
+Elapsed time for running &#34;default&#34;: 0.00633s
+     step 1 (0.0 s) ++ (orig: 0.74380 | best:0.74380 | new:0.73595 | diff:-0.0078495)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 2 (0.0 s) -- (orig: 0.74380 | best:0.73595 | new:0.74380 | diff:0.0078495)
+Elapsed time for running &#34;default&#34;: 0.00615s
+     step 3 (0.0 s) ++ (orig: 0.74380 | best:0.73595 | new:0.72061 | diff:-0.015337)
+Elapsed time for running &#34;default&#34;: 0.00626s
+     step 4 (0.0 s) -- (orig: 0.74380 | best:0.72061 | new:0.90202 | diff:0.18141)
+Elapsed time for running &#34;default&#34;: 0.00655s
+     step 5 (0.0 s) ++ (orig: 0.74380 | best:0.72061 | new:0.69151 | diff:-0.029103)
+Elapsed time for running &#34;default&#34;: 0.00614s
+     step 6 (0.0 s) ++ (orig: 0.74380 | best:0.69151 | new:0.54077 | diff:-0.15074)
+Elapsed time for running &#34;default&#34;: 0.00675s
+     step 7 (0.1 s) ++ (orig: 0.74380 | best:0.54077 | new:0.48929 | diff:-0.051478)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 8 (0.1 s) -- (orig: 0.74380 | best:0.48929 | new:0.81130 | diff:0.32200)
+Elapsed time for running &#34;default&#34;: 0.00614s
+     step 9 (0.1 s) -- (orig: 0.74380 | best:0.48929 | new:0.58215 | diff:0.092858)
+Elapsed time for running &#34;default&#34;: 0.00624s
+     step 10 (0.1 s) ++ (orig: 0.74380 | best:0.48929 | new:0.47513 | diff:-0.014164)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 11 (0.1 s) -- (orig: 0.74380 | best:0.47513 | new:0.86192 | diff:0.38680)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 12 (0.1 s) -- (orig: 0.74380 | best:0.47513 | new:0.58470 | diff:0.10958)
+Elapsed time for running &#34;default&#34;: 0.00623s
+     step 13 (0.1 s) -- (orig: 0.74380 | best:0.47513 | new:0.48895 | diff:0.013829)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 14 (0.1 s) -- (orig: 0.74380 | best:0.47513 | new:0.48216 | diff:0.0070377)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 15 (0.1 s) -- (orig: 0.74380 | best:0.47513 | new:0.56744 | diff:0.092317)
+Elapsed time for running &#34;default&#34;: 0.00630s
+     step 16 (0.1 s) -- (orig: 0.74380 | best:0.47513 | new:0.49905 | diff:0.023920)
+Elapsed time for running &#34;default&#34;: 0.00651s
+     step 17 (0.1 s) -- (orig: 0.74380 | best:0.47513 | new:0.47867 | diff:0.0035474)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 18 (0.1 s) ++ (orig: 0.74380 | best:0.47513 | new:0.46971 | diff:-0.0054186)
+Elapsed time for running &#34;default&#34;: 0.00635s
+     step 19 (0.1 s) -- (orig: 0.74380 | best:0.46971 | new:0.53273 | diff:0.063024)
+Elapsed time for running &#34;default&#34;: 0.00619s
+     step 20 (0.2 s) -- (orig: 0.74380 | best:0.46971 | new:0.52082 | diff:0.051114)
+Elapsed time for running &#34;default&#34;: 0.00614s
+     step 21 (0.2 s) -- (orig: 0.74380 | best:0.46971 | new:0.47153 | diff:0.0018185)
+Elapsed time for running &#34;default&#34;: 0.00710s
+     step 22 (0.2 s) -- (orig: 0.74380 | best:0.46971 | new:0.49401 | diff:0.024300)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 23 (0.2 s) -- (orig: 0.74380 | best:0.46971 | new:0.48807 | diff:0.018360)
+Elapsed time for running &#34;default&#34;: 0.00606s
+     step 24 (0.2 s) -- (orig: 0.74380 | best:0.46971 | new:0.47148 | diff:0.0017778)
+Elapsed time for running &#34;default&#34;: 0.00662s
+     step 25 (0.2 s) ++ (orig: 0.74380 | best:0.46971 | new:0.46868 | diff:-0.0010280)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 26 (0.2 s) -- (orig: 0.74380 | best:0.46868 | new:0.48272 | diff:0.014042)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 27 (0.2 s) -- (orig: 0.74380 | best:0.46868 | new:0.52710 | diff:0.058422)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 28 (0.2 s) -- (orig: 0.74380 | best:0.46868 | new:0.47564 | diff:0.0069643)
+Elapsed time for running &#34;default&#34;: 0.00606s
+     step 29 (0.2 s) -- (orig: 0.74380 | best:0.46868 | new:0.46959 | diff:0.00091398)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 30 (0.2 s) -- (orig: 0.74380 | best:0.46868 | new:0.49788 | diff:0.029201)
+Elapsed time for running &#34;default&#34;: 0.00622s
+     step 31 (0.2 s) -- (orig: 0.74380 | best:0.46868 | new:0.46940 | diff:0.00072332)
+Elapsed time for running &#34;default&#34;: 0.00605s
+     step 32 (0.2 s) -- (orig: 0.74380 | best:0.46868 | new:0.47295 | diff:0.0042666)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 33 (0.3 s) -- (orig: 0.74380 | best:0.46868 | new:0.48328 | diff:0.014597)
+Elapsed time for running &#34;default&#34;: 0.00667s
+     step 34 (0.3 s) ++ (orig: 0.74380 | best:0.46868 | new:0.46829 | diff:-0.00038644)
+Elapsed time for running &#34;default&#34;: 0.00654s
+     step 35 (0.3 s) -- (orig: 0.74380 | best:0.46829 | new:0.47096 | diff:0.0026718)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 36 (0.3 s) -- (orig: 0.74380 | best:0.46829 | new:0.46862 | diff:0.00032828)
+Elapsed time for running &#34;default&#34;: 0.00668s
+     step 37 (0.3 s) -- (orig: 0.74380 | best:0.46829 | new:0.46875 | diff:0.00045795)
+Elapsed time for running &#34;default&#34;: 0.00617s
+     step 38 (0.3 s) -- (orig: 0.74380 | best:0.46829 | new:0.46852 | diff:0.00022906)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 39 (0.3 s) -- (orig: 0.74380 | best:0.46829 | new:0.46841 | diff:0.00011455)
+Elapsed time for running &#34;default&#34;: 0.00627s
+     step 40 (0.3 s) -- (orig: 0.74380 | best:0.46829 | new:0.47559 | diff:0.0072961)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 41 (0.3 s) -- (orig: 0.74380 | best:0.46829 | new:0.47117 | diff:0.0028779)
+Elapsed time for running &#34;default&#34;: 0.00606s
+     step 42 (0.3 s) ++ (orig: 0.74380 | best:0.46829 | new:0.46815 | diff:-0.00014504)
+Elapsed time for running &#34;default&#34;: 0.00631s
+     step 43 (0.3 s) -- (orig: 0.74380 | best:0.46815 | new:0.46921 | diff:0.0010595)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 44 (0.3 s) -- (orig: 0.74380 | best:0.46815 | new:0.46990 | diff:0.0017476)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 45 (0.3 s) -- (orig: 0.74380 | best:0.46815 | new:0.46833 | diff:0.00018019)
+Elapsed time for running &#34;default&#34;: 0.00628s
+     step 46 (0.4 s) -- (orig: 0.74380 | best:0.46815 | new:0.46867 | diff:0.00052425)
+Elapsed time for running &#34;default&#34;: 0.00615s
+     step 47 (0.4 s) ++ (orig: 0.74380 | best:0.46815 | new:0.46809 | diff:-0.000054410)
+Elapsed time for running &#34;default&#34;: 0.00614s
+     step 48 (0.4 s) -- (orig: 0.74380 | best:0.46809 | new:0.46855 | diff:0.00045445)
+Elapsed time for running &#34;default&#34;: 0.00665s
+     step 49 (0.4 s) -- (orig: 0.74380 | best:0.46809 | new:0.46822 | diff:0.00012466)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 50 (0.4 s) ++ (orig: 0.74380 | best:0.46809 | new:0.46807 | diff:-0.000020406)
+Elapsed time for running &#34;default&#34;: 0.00614s
+     step 51 (0.4 s) -- (orig: 0.74380 | best:0.46807 | new:0.47172 | diff:0.0036474)
+Elapsed time for running &#34;default&#34;: 0.00624s
+     step 52 (0.4 s) -- (orig: 0.74380 | best:0.46807 | new:0.46830 | diff:0.00022752)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 53 (0.4 s) -- (orig: 0.74380 | best:0.46807 | new:0.46813 | diff:0.000057324)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 54 (0.4 s) -- (orig: 0.74380 | best:0.46807 | new:0.46818 | diff:0.00010384)
+===  Relative improvement too small (0.000023483 &lt; 0.0010000) (54 steps, orig: 0.74380 | best: 0 | ratio: 0) ===
+Elapsed time for running &#34;default&#34;: 0.00668s
+Elapsed time for running &#34;default&#34;: 0.00623s
+     step 1 (0.0 s) -- (orig: 1.1811 | best:1.1811 | new:1.2574 | diff:0.076340)
+Elapsed time for running &#34;default&#34;: 0.00637s
+     step 2 (0.0 s) -- (orig: 1.1811 | best:1.1811 | new:1.2191 | diff:0.038022)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 3 (0.0 s) ++ (orig: 1.1811 | best:1.1811 | new:1.1059 | diff:-0.075161)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 4 (0.0 s) ++ (orig: 1.1811 | best:1.1059 | new:0.99538 | diff:-0.11056)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 5 (0.0 s) ++ (orig: 1.1811 | best:0.99538 | new:0.83435 | diff:-0.16104)
+Elapsed time for running &#34;default&#34;: 0.00624s
+     step 6 (0.0 s) ++ (orig: 1.1811 | best:0.83435 | new:0.81590 | diff:-0.018442)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 7 (0.1 s) -- (orig: 1.1811 | best:0.81590 | new:0.97767 | diff:0.16177)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 8 (0.1 s) -- (orig: 1.1811 | best:0.81590 | new:0.90009 | diff:0.084189)
+Elapsed time for running &#34;default&#34;: 0.00656s
+     step 9 (0.1 s) -- (orig: 1.1811 | best:0.81590 | new:0.85884 | diff:0.042934)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 10 (0.1 s) -- (orig: 1.1811 | best:0.81590 | new:0.83758 | diff:0.021678)
+Elapsed time for running &#34;default&#34;: 0.00654s
+     step 11 (0.1 s) -- (orig: 1.1811 | best:0.81590 | new:0.82680 | diff:0.010892)
+Elapsed time for running &#34;default&#34;: 0.00665s
+     step 12 (0.1 s) -- (orig: 1.1811 | best:0.81590 | new:0.82136 | diff:0.0054595)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 13 (0.1 s) ++ (orig: 1.1811 | best:0.81590 | new:0.80722 | diff:-0.0086817)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 14 (0.1 s) ++ (orig: 1.1811 | best:0.80722 | new:0.79407 | diff:-0.013148)
+Elapsed time for running &#34;default&#34;: 0.00673s
+     step 15 (0.1 s) -- (orig: 1.1811 | best:0.79407 | new:0.79686 | diff:0.0027859)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 16 (0.1 s) ++ (orig: 1.1811 | best:0.79407 | new:0.77407 | diff:-0.020005)
+Elapsed time for running &#34;default&#34;: 0.00606s
+     step 17 (0.1 s) ++ (orig: 1.1811 | best:0.77407 | new:0.74342 | diff:-0.030650)
+Elapsed time for running &#34;default&#34;: 0.00662s
+     step 18 (0.1 s) -- (orig: 1.1811 | best:0.74342 | new:0.82886 | diff:0.085436)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 19 (0.1 s) -- (orig: 1.1811 | best:0.74342 | new:0.78464 | diff:0.041220)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 20 (0.2 s) -- (orig: 1.1811 | best:0.74342 | new:0.76270 | diff:0.019277)
+Elapsed time for running &#34;default&#34;: 0.00669s
+     step 21 (0.2 s) -- (orig: 1.1811 | best:0.74342 | new:0.75177 | diff:0.0083469)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 22 (0.2 s) -- (orig: 1.1811 | best:0.74342 | new:0.74631 | diff:0.0028922)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 23 (0.2 s) -- (orig: 1.1811 | best:0.74342 | new:0.74359 | diff:0.00016733)
+Elapsed time for running &#34;default&#34;: 0.00677s
+     step 24 (0.2 s) ++ (orig: 1.1811 | best:0.74342 | new:0.74269 | diff:-0.00072765)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 25 (0.2 s) -- (orig: 1.1811 | best:0.74269 | new:0.74415 | diff:0.0014549)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 26 (0.2 s) -- (orig: 1.1811 | best:0.74269 | new:0.74427 | diff:0.0015760)
+Elapsed time for running &#34;default&#34;: 0.00667s
+     step 27 (0.2 s) -- (orig: 1.1811 | best:0.74269 | new:0.74325 | diff:0.00055450)
+===  Relative improvement too small (0.000097975 &lt; 0.0010000) (27 steps, orig: 1.1811 | best: 0 | ratio: 0) ===
+Elapsed time for running &#34;default&#34;: 0.00620s
+Elapsed time for running &#34;default&#34;: 0.00630s
+     step 1 (0.0 s) -- (orig: 0.0031900 | best:0.0031900 | new:0.049071 | diff:0.045881)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 2 (0.0 s) -- (orig: 0.0031900 | best:0.0031900 | new:0.023058 | diff:0.019868)
+Elapsed time for running &#34;default&#34;: 0.00657s
+     step 3 (0.0 s) -- (orig: 0.0031900 | best:0.0031900 | new:0.023058 | diff:0.019868)
+Elapsed time for running &#34;default&#34;: 0.00673s
+     step 4 (0.0 s) -- (orig: 0.0031900 | best:0.0031900 | new:0.051868 | diff:0.048678)
+Elapsed time for running &#34;default&#34;: 0.00625s
+     step 5 (0.0 s) -- (orig: 0.0031900 | best:0.0031900 | new:0.022475 | diff:0.019285)
+Elapsed time for running &#34;default&#34;: 0.00616s
+     step 6 (0.0 s) -- (orig: 0.0031900 | best:0.0031900 | new:0.027960 | diff:0.024770)
+Elapsed time for running &#34;default&#34;: 0.00674s
+     step 7 (0.1 s) -- (orig: 0.0031900 | best:0.0031900 | new:0.085913 | diff:0.082723)
+Elapsed time for running &#34;default&#34;: 0.00654s
+     step 8 (0.1 s) -- (orig: 0.0031900 | best:0.0031900 | new:0.044556 | diff:0.041366)
+Elapsed time for running &#34;default&#34;: 0.00657s
+     step 9 (0.1 s) -- (orig: 0.0031900 | best:0.0031900 | new:0.0095283 | diff:0.0063383)
+Elapsed time for running &#34;default&#34;: 0.00712s
+     step 10 (0.1 s) -- (orig: 0.0031900 | best:0.0031900 | new:0.023874 | diff:0.020684)
+Elapsed time for running &#34;default&#34;: 0.00656s
+     step 11 (0.1 s) ++ (orig: 0.0031900 | best:0.0031900 | new:0.0031409 | diff:-0.000049151)
+Elapsed time for running &#34;default&#34;: 0.00650s
+     step 12 (0.1 s) -- (orig: 0.0031900 | best:0.0031409 | new:0.012743 | diff:0.0096025)
+Elapsed time for running &#34;default&#34;: 0.00667s
+     step 13 (0.1 s) -- (orig: 0.0031900 | best:0.0031409 | new:0.0094650 | diff:0.0063241)
+Elapsed time for running &#34;default&#34;: 0.00644s
+     step 14 (0.1 s) -- (orig: 0.0031900 | best:0.0031409 | new:0.0072536 | diff:0.0041127)
+Elapsed time for running &#34;default&#34;: 0.00637s
+     step 15 (0.1 s) -- (orig: 0.0031900 | best:0.0031409 | new:0.023931 | diff:0.020790)
+Elapsed time for running &#34;default&#34;: 0.00668s
+     step 16 (0.1 s) -- (orig: 0.0031900 | best:0.0031409 | new:0.0031900 | diff:0.000049151)
+Elapsed time for running &#34;default&#34;: 0.00637s
+     step 17 (0.1 s) -- (orig: 0.0031900 | best:0.0031409 | new:0.013536 | diff:0.010395)
+Elapsed time for running &#34;default&#34;: 0.00652s
+     step 18 (0.1 s) -- (orig: 0.0031900 | best:0.0031409 | new:0.0079261 | diff:0.0047852)
+Elapsed time for running &#34;default&#34;: 0.00678s
+     step 19 (0.1 s) ++ (orig: 0.0031900 | best:0.0031409 | new:0.0020564 | diff:-0.0010845)
+Elapsed time for running &#34;default&#34;: 0.00614s
+     step 20 (0.2 s) -- (orig: 0.0031900 | best:0.0020564 | new:0.0098521 | diff:0.0077957)
+Elapsed time for running &#34;default&#34;: 0.00654s
+     step 21 (0.2 s) -- (orig: 0.0031900 | best:0.0020564 | new:0.0031409 | diff:0.0010845)
+Elapsed time for running &#34;default&#34;: 0.00673s
+     step 22 (0.2 s) -- (orig: 0.0031900 | best:0.0020564 | new:0.0059543 | diff:0.0038979)
+Elapsed time for running &#34;default&#34;: 0.00653s
+     step 23 (0.2 s) ++ (orig: 0.0031900 | best:0.0020564 | new:0.00054222 | diff:-0.0015142)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 24 (0.2 s) -- (orig: 0.0031900 | best:0.00054222 | new:0.0029259 | diff:0.0023837)
+Elapsed time for running &#34;default&#34;: 0.00672s
+     step 25 (0.2 s) -- (orig: 0.0031900 | best:0.00054222 | new:0.0017331 | diff:0.0011909)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 26 (0.2 s) -- (orig: 0.0031900 | best:0.00054222 | new:0.0014068 | diff:0.00086453)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 27 (0.2 s) ++ (orig: 0.0031900 | best:0.00054222 | new:0.00043227 | diff:-0.00010995)
+Elapsed time for running &#34;default&#34;: 0.00626s
+     step 28 (0.2 s) -- (orig: 0.0031900 | best:0.00043227 | new:0.0035957 | diff:0.0031635)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 29 (0.2 s) ++ (orig: 0.0031900 | best:0.00043227 | new:0.00016245 | diff:-0.00026982)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 30 (0.2 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.0010555 | diff:0.00089301)
+Elapsed time for running &#34;default&#34;: 0.00662s
+     step 31 (0.2 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.0040623 | diff:0.0038998)
+Elapsed time for running &#34;default&#34;: 0.00617s
+     step 32 (0.2 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.0021124 | diff:0.0019499)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 33 (0.3 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.0011374 | diff:0.00097495)
+Elapsed time for running &#34;default&#34;: 0.00630s
+     step 34 (0.3 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.0014224 | diff:0.0012599)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 35 (0.3 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.00060881 | diff:0.00044636)
+Elapsed time for running &#34;default&#34;: 0.00655s
+     step 36 (0.3 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.0013000 | diff:0.0011375)
+Elapsed time for running &#34;default&#34;: 0.00666s
+     step 37 (0.3 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.00056876 | diff:0.00040631)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 38 (0.3 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.00038560 | diff:0.00022315)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 39 (0.3 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.00064992 | diff:0.00048747)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 40 (0.3 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.00040619 | diff:0.00024374)
+Elapsed time for running &#34;default&#34;: 0.00606s
+     step 41 (0.3 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.00063040 | diff:0.00046795)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 42 (0.3 s) -- (orig: 0.0031900 | best:0.00016245 | new:0.00023408 | diff:0.000071633)
+Elapsed time for running &#34;default&#34;: 0.00669s
+     step 43 (0.3 s) ++ (orig: 0.0031900 | best:0.00016245 | new:0.000035844 | diff:-0.00012661)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 44 (0.3 s) -- (orig: 0.0031900 | best:0.000035844 | new:0.000075690 | diff:0.000039845)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 45 (0.3 s) -- (orig: 0.0031900 | best:0.000035844 | new:0.00040139 | diff:0.00036555)
+Elapsed time for running &#34;default&#34;: 0.00705s
+     step 46 (0.4 s) -- (orig: 0.0031900 | best:0.000035844 | new:0.00033318 | diff:0.00029734)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 47 (0.4 s) ++ (orig: 0.0031900 | best:0.000035844 | new:0.000019920 | diff:-0.000015924)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 48 (0.4 s) -- (orig: 0.0031900 | best:0.000019920 | new:0.00016286 | diff:0.00014294)
+Elapsed time for running &#34;default&#34;: 0.00661s
+     step 49 (0.4 s) -- (orig: 0.0031900 | best:0.000019920 | new:0.00014178 | diff:0.00012185)
+Elapsed time for running &#34;default&#34;: 0.00605s
+     step 50 (0.4 s) -- (orig: 0.0031900 | best:0.000019920 | new:0.00010358 | diff:0.000083655)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 51 (0.4 s) -- (orig: 0.0031900 | best:0.000019920 | new:0.000061747 | diff:0.000041826)
+Elapsed time for running &#34;default&#34;: 0.00691s
+     step 52 (0.4 s) -- (orig: 0.0031900 | best:0.000019920 | new:0.00012878 | diff:0.00010886)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 53 (0.4 s) -- (orig: 0.0031900 | best:0.000019920 | new:0.000071470 | diff:0.000051550)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 54 (0.4 s) -- (orig: 0.0031900 | best:0.000019920 | new:0.000040833 | diff:0.000020913)
+Elapsed time for running &#34;default&#34;: 0.00629s
+     step 55 (0.4 s) -- (orig: 0.0031900 | best:0.000019920 | new:0.000080848 | diff:0.000060927)
+Elapsed time for running &#34;default&#34;: 0.00619s
+     step 56 (0.4 s) -- (orig: 0.0031900 | best:0.000019920 | new:0.000054431 | diff:0.000034511)
+Elapsed time for running &#34;default&#34;: 0.00623s
+     step 57 (0.4 s) -- (orig: 0.0031900 | best:0.000019920 | new:0.000025775 | diff:0.0000058545)
+Elapsed time for running &#34;default&#34;: 0.00635s
+     step 58 (0.4 s) ++ (orig: 0.0031900 | best:0.000019920 | new:0.000017256 | diff:-0.0000026640)
+Elapsed time for running &#34;default&#34;: 0.00615s
+     step 59 (0.5 s) -- (orig: 0.0031900 | best:0.000017256 | new:0.000073018 | diff:0.000055762)
+Elapsed time for running &#34;default&#34;: 0.00615s
+     step 60 (0.5 s) ++ (orig: 0.0031900 | best:0.000017256 | new:0.000013206 | diff:-0.0000040501)
+Elapsed time for running &#34;default&#34;: 0.00635s
+     step 61 (0.5 s) -- (orig: 0.0031900 | best:0.000013206 | new:0.000014676 | diff:0.0000014695)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 62 (0.5 s) -- (orig: 0.0031900 | best:0.000013206 | new:0.000058900 | diff:0.000045694)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 63 (0.5 s) ++ (orig: 0.0031900 | best:0.000013206 | new:0.0000096408 | diff:-0.0000035655)
+Elapsed time for running &#34;default&#34;: 0.00665s
+     step 64 (0.5 s) -- (orig: 0.0031900 | best:0.0000096408 | new:0.000023582 | diff:0.000013941)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 65 (0.5 s) -- (orig: 0.0031900 | best:0.0000096408 | new:0.000043911 | diff:0.000034271)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 66 (0.5 s) -- (orig: 0.0031900 | best:0.0000096408 | new:0.000026776 | diff:0.000017135)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 67 (0.5 s) -- (orig: 0.0031900 | best:0.0000096408 | new:0.000013206 | diff:0.0000035655)
+===  Absolute improvement too small (0.00000051399 &lt; 0.0000010000) (67 steps, orig: 0.0031900 | best: 0 | ratio: 0) ===
+Elapsed time for running &#34;default&#34;: 0.00618s
+Elapsed time for running &#34;default&#34;: 0.00626s
+     step 1 (0.0 s) -- (orig: 0.53114 | best:0.53114 | new:0.70743 | diff:0.17630)
+Elapsed time for running &#34;default&#34;: 0.00605s
+     step 2 (0.0 s) -- (orig: 0.53114 | best:0.53114 | new:0.66996 | diff:0.13882)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 3 (0.0 s) -- (orig: 0.53114 | best:0.53114 | new:0.60187 | diff:0.070730)
+Elapsed time for running &#34;default&#34;: 0.00631s
+     step 4 (0.0 s) -- (orig: 0.53114 | best:0.53114 | new:0.62080 | diff:0.089664)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 5 (0.0 s) -- (orig: 0.53114 | best:0.53114 | new:0.56683 | diff:0.035699)
+Elapsed time for running &#34;default&#34;: 0.00606s
+     step 6 (0.0 s) -- (orig: 0.53114 | best:0.53114 | new:0.67592 | diff:0.14478)
+Elapsed time for running &#34;default&#34;: 0.00626s
+     step 7 (0.1 s) -- (orig: 0.53114 | best:0.53114 | new:0.57032 | diff:0.039186)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 8 (0.1 s) -- (orig: 0.53114 | best:0.53114 | new:0.57642 | diff:0.045282)
+Elapsed time for running &#34;default&#34;: 0.00603s
+     step 9 (0.1 s) -- (orig: 0.53114 | best:0.53114 | new:0.55388 | diff:0.022742)
+Elapsed time for running &#34;default&#34;: 0.00667s
+     step 10 (0.1 s) ++ (orig: 0.53114 | best:0.53114 | new:0.48384 | diff:-0.047299)
+Elapsed time for running &#34;default&#34;: 0.00647s
+     step 11 (0.1 s) -- (orig: 0.53114 | best:0.48384 | new:0.50992 | diff:0.026082)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 12 (0.1 s) -- (orig: 0.53114 | best:0.48384 | new:0.49736 | diff:0.013527)
+Elapsed time for running &#34;default&#34;: 0.00664s
+     step 13 (0.1 s) -- (orig: 0.53114 | best:0.48384 | new:0.49071 | diff:0.0068695)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 14 (0.1 s) -- (orig: 0.53114 | best:0.48384 | new:0.48730 | diff:0.0034593)
+Elapsed time for running &#34;default&#34;: 0.00615s
+     step 15 (0.1 s) ++ (orig: 0.53114 | best:0.48384 | new:0.47055 | diff:-0.013290)
+Elapsed time for running &#34;default&#34;: 0.00626s
+     step 16 (0.1 s) -- (orig: 0.53114 | best:0.47055 | new:0.47227 | diff:0.0017265)
+Elapsed time for running &#34;default&#34;: 0.00634s
+     step 17 (0.1 s) ++ (orig: 0.53114 | best:0.47055 | new:0.46823 | diff:-0.0023188)
+Elapsed time for running &#34;default&#34;: 0.00618s
+     step 18 (0.1 s) ++ (orig: 0.53114 | best:0.46823 | new:0.46472 | diff:-0.0035122)
+Elapsed time for running &#34;default&#34;: 0.00634s
+     step 19 (0.1 s) -- (orig: 0.53114 | best:0.46472 | new:0.48351 | diff:0.018798)
+Elapsed time for running &#34;default&#34;: 0.00617s
+     step 20 (0.2 s) ++ (orig: 0.53114 | best:0.46472 | new:0.46266 | diff:-0.0020529)
+Elapsed time for running &#34;default&#34;: 0.00622s
+     step 21 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.51505 | diff:0.052389)
+Elapsed time for running &#34;default&#34;: 0.00632s
+     step 22 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.48056 | diff:0.017896)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 23 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.49386 | diff:0.031194)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 24 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.47162 | diff:0.0089603)
+Elapsed time for running &#34;default&#34;: 0.00621s
+     step 25 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.47832 | diff:0.015658)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 26 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.47051 | diff:0.0078445)
+Elapsed time for running &#34;default&#34;: 0.00647s
+     step 27 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.48854 | diff:0.025879)
+Elapsed time for running &#34;default&#34;: 0.00632s
+     step 28 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.46659 | diff:0.0039261)
+Elapsed time for running &#34;default&#34;: 0.00648s
+     step 29 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.47530 | diff:0.012633)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 30 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.46868 | diff:0.0060121)
+Elapsed time for running &#34;default&#34;: 0.00670s
+     step 31 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.46463 | diff:0.0019640)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 32 (0.2 s) -- (orig: 0.53114 | best:0.46266 | new:0.46295 | diff:0.00028237)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 33 (0.3 s) ++ (orig: 0.53114 | best:0.46266 | new:0.46250 | diff:-0.00016169)
+Elapsed time for running &#34;default&#34;: 0.00627s
+     step 34 (0.3 s) -- (orig: 0.53114 | best:0.46250 | new:0.46366 | diff:0.0011580)
+Elapsed time for running &#34;default&#34;: 0.00606s
+     step 35 (0.3 s) -- (orig: 0.53114 | best:0.46250 | new:0.46317 | diff:0.00066587)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 36 (0.3 s) ++ (orig: 0.53114 | best:0.46250 | new:0.46238 | diff:-0.00012499)
+Elapsed time for running &#34;default&#34;: 0.00666s
+     step 37 (0.3 s) -- (orig: 0.53114 | best:0.46238 | new:0.46240 | diff:0.000020029)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 38 (0.3 s) ++ (orig: 0.53114 | best:0.46238 | new:0.46127 | diff:-0.0011026)
+Elapsed time for running &#34;default&#34;: 0.00647s
+     step 39 (0.3 s) -- (orig: 0.53114 | best:0.46127 | new:0.46275 | diff:0.0014740)
+Elapsed time for running &#34;default&#34;: 0.00674s
+     step 40 (0.3 s) -- (orig: 0.53114 | best:0.46127 | new:0.46147 | diff:0.00019475)
+Elapsed time for running &#34;default&#34;: 0.00614s
+     step 41 (0.3 s) -- (orig: 0.53114 | best:0.46127 | new:0.46445 | diff:0.0031710)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 42 (0.3 s) -- (orig: 0.53114 | best:0.46127 | new:0.46296 | diff:0.0016839)
+Elapsed time for running &#34;default&#34;: 0.00625s
+     step 43 (0.3 s) -- (orig: 0.53114 | best:0.46127 | new:0.46130 | diff:0.000028291)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 44 (0.3 s) -- (orig: 0.53114 | best:0.46127 | new:0.46279 | diff:0.0015163)
+Elapsed time for running &#34;default&#34;: 0.00607s
+     step 45 (0.3 s) -- (orig: 0.53114 | best:0.46127 | new:0.46212 | diff:0.00084204)
+Elapsed time for running &#34;default&#34;: 0.00626s
+     step 46 (0.4 s) ++ (orig: 0.53114 | best:0.46127 | new:0.46122 | diff:-0.000054970)
+Elapsed time for running &#34;default&#34;: 0.00614s
+     step 47 (0.4 s) -- (orig: 0.53114 | best:0.46122 | new:0.46134 | diff:0.00012488)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 48 (0.4 s) -- (orig: 0.53114 | best:0.46122 | new:0.46136 | diff:0.00013689)
+Elapsed time for running &#34;default&#34;: 0.00701s
+     step 49 (0.4 s) ++ (orig: 0.53114 | best:0.46122 | new:0.46117 | diff:-0.000046843)
+Elapsed time for running &#34;default&#34;: 0.00618s
+     step 50 (0.4 s) -- (orig: 0.53114 | best:0.46117 | new:0.46123 | diff:0.000062455)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 51 (0.4 s) -- (orig: 0.53114 | best:0.46117 | new:0.46200 | diff:0.00082727)
+Elapsed time for running &#34;default&#34;: 0.00624s
+     step 52 (0.4 s) -- (orig: 0.53114 | best:0.46117 | new:0.46154 | diff:0.00036804)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 53 (0.4 s) -- (orig: 0.53114 | best:0.46117 | new:0.46120 | diff:0.000031229)
+Elapsed time for running &#34;default&#34;: 0.00609s
+     step 54 (0.4 s) -- (orig: 0.53114 | best:0.46117 | new:0.46141 | diff:0.00023619)
+Elapsed time for running &#34;default&#34;: 0.00671s
+     step 55 (0.4 s) -- (orig: 0.53114 | best:0.46117 | new:0.46159 | diff:0.00041363)
+Elapsed time for running &#34;default&#34;: 0.00610s
+     step 56 (0.4 s) -- (orig: 0.53114 | best:0.46117 | new:0.46120 | diff:0.000025636)
+Elapsed time for running &#34;default&#34;: 0.00618s
+     step 57 (0.4 s) -- (orig: 0.53114 | best:0.46117 | new:0.46126 | diff:0.000091572)
+Elapsed time for running &#34;default&#34;: 0.00680s
+     step 58 (0.4 s) -- (orig: 0.53114 | best:0.46117 | new:0.46119 | diff:0.000015615)
+===  Relative improvement too small (0.000011038 &lt; 0.0010000) (58 steps, orig: 0.53114 | best: 0 | ratio: 0) ===
+Elapsed time for running &#34;default&#34;: 0.00613s
+Elapsed time for running &#34;default&#34;: 0.00631s
+     step 1 (0.0 s) -- (orig: 0.80020 | best:0.80020 | new:0.86284 | diff:0.062635)
+Elapsed time for running &#34;default&#34;: 0.00613s
+     step 2 (0.0 s) -- (orig: 0.80020 | best:0.80020 | new:0.80183 | diff:0.0016284)
+Elapsed time for running &#34;default&#34;: 0.00611s
+     step 3 (0.0 s) ++ (orig: 0.80020 | best:0.80020 | new:0.76777 | diff:-0.032429)
+Elapsed time for running &#34;default&#34;: 0.00633s
+     step 4 (0.0 s) -- (orig: 0.80020 | best:0.76777 | new:0.80020 | diff:0.032429)
+Elapsed time for running &#34;default&#34;: 0.00612s
+     step 5 (0.0 s) -- (orig: 0.80020 | best:0.76777 | new:0.83158 | diff:0.063809)
+Elapsed time for running &#34;default&#34;: 0.00645s
+     step 6 (0.0 s) -- (orig: 0.80020 | best:0.76777 | new:0.78408 | diff:0.016308)
+Elapsed time for running &#34;default&#34;: 0.00666s
+     step 7 (0.1 s) -- (orig: 0.80020 | best:0.76777 | new:0.78703 | diff:0.019253)
+Elapsed time for running &#34;default&#34;: 0.00647s
+     step 8 (0.1 s) -- (orig: 0.80020 | best:0.76777 | new:0.77595 | diff:0.0081774)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 9 (0.1 s) ++ (orig: 0.80020 | best:0.76777 | new:0.76491 | diff:-0.0028650)
+Elapsed time for running &#34;default&#34;: 0.00668s
+     step 10 (0.1 s) -- (orig: 0.80020 | best:0.76491 | new:0.79813 | diff:0.033217)
+Elapsed time for running &#34;default&#34;: 0.00619s
+     step 11 (0.1 s) -- (orig: 0.80020 | best:0.76491 | new:0.78149 | diff:0.016579)
+Elapsed time for running &#34;default&#34;: 0.00622s
+     step 12 (0.1 s) ++ (orig: 0.80020 | best:0.76491 | new:0.75955 | diff:-0.0053594)
+Elapsed time for running &#34;default&#34;: 0.00638s
+     step 13 (0.1 s) -- (orig: 0.80020 | best:0.75955 | new:0.76572 | diff:0.0061727)
+Elapsed time for running &#34;default&#34;: 0.00625s
+     step 14 (0.1 s) -- (orig: 0.80020 | best:0.75955 | new:0.76583 | diff:0.0062789)
+Elapsed time for running &#34;default&#34;: 0.00617s
+     step 15 (0.1 s) -- (orig: 0.80020 | best:0.75955 | new:0.76264 | diff:0.0030896)
+Elapsed time for running &#34;default&#34;: 0.00638s
+     step 16 (0.1 s) -- (orig: 0.80020 | best:0.75955 | new:0.76169 | diff:0.0021427)
+Elapsed time for running &#34;default&#34;: 0.00649s
+     step 17 (0.1 s) -- (orig: 0.80020 | best:0.75955 | new:0.75963 | diff:0.000076045)
+Elapsed time for running &#34;default&#34;: 0.00618s
+     step 18 (0.1 s) ++ (orig: 0.80020 | best:0.75955 | new:0.75897 | diff:-0.00058004)
+Elapsed time for running &#34;default&#34;: 0.00631s
+     step 19 (0.1 s) -- (orig: 0.80020 | best:0.75897 | new:0.76014 | diff:0.0011727)
+Elapsed time for running &#34;default&#34;: 0.00615s
+     step 20 (0.2 s) -- (orig: 0.80020 | best:0.75897 | new:0.75937 | diff:0.00039782)
+Elapsed time for running &#34;default&#34;: 0.00608s
+     step 21 (0.2 s) -- (orig: 0.80020 | best:0.75897 | new:0.76052 | diff:0.0015463)
+Elapsed time for running &#34;default&#34;: 0.00627s
+     step 22 (0.2 s) -- (orig: 0.80020 | best:0.75897 | new:0.75974 | diff:0.00077334)
+===  Relative improvement too small (0.000076425 &lt; 0.0010000) (22 steps, orig: 0.80020 | best: 0 | ratio: 0) ===
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">r4</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">cal_par</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;Auto calibration repeated&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;alive&#39;</span><span class="p">,</span> <span class="s1">&#39;inci&#39;</span><span class="p">,</span> <span class="s1">&#39;inf&#39;</span><span class="p">,</span> <span class="s1">&#39;m_num&#39;</span><span class="p">]:</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r4</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">output</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.00886s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_17_1.svg" src="../_images/tutorial_T2-Calibration_17_1.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_17_2.svg" src="../_images/tutorial_T2-Calibration_17_2.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_17_3.svg" src="../_images/tutorial_T2-Calibration_17_3.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_17_4.svg" src="../_images/tutorial_T2-Calibration_17_4.svg" /></div>
+</div>
+<p>There are a few major dangers in calibration, including but not limited to:</p>
+<p><strong>1. Solution-rich spaces</strong></p>
+<p>Often multiple input parameters can be adjusted and they might superficially produce the same historical trend lines. For example if modelled prevalence is far lower than data points from epidemiological surveys, a better calibration might be achieved in a number of different ways: increased force of infection (calibration parameter), increased behavioural risk factors (e.g. number of shared injections for HIV), increased duration of infection, reduced treatment success rate, or any number of
+other subtle data inputs. Where possible calibrate to include data from multiple other outputs, and even if this is not possible <em>review</em> other outputs as a sanity check. In addition, consult country experts to determine which solution better explains the trend where it is not clear from the data.</p>
+<p><strong>2. Overfitting</strong></p>
+<p>Don’t try to exactly match every historical data point such as by adjusting ‘force of infection’ precisely for every historical year. Often there is year to year variation in diagnostic capacity, reporting, or natural fluctation based on behaviour or external circumstances. It is more important to accurately capture the trend and the <em>reasons</em> for that trend in the model than to match data from every year exactly, and this will lead to more reasonable future projections as well as a more useful
+model for prioritizing programs.</p>
+<p><strong>3. Inaccurate data</strong></p>
+<p>In conjunction with overfitting - not all data is of equal quality or reliability, or it may have been gathered with a methodology that does not exactly fit the way it is used in the model (<em>this is often a good argument to adjust the model if it applies to more than a single project</em>). Be aware of the quality of data and prioritize calibration to data that is known to be more accurate in a given project. Sometimes it is better to just ignore data for a specific output parameter if the
+methodology used to gather that data was unreliable or cannot be adequately represented by the model.</p>
+<p><strong>4. Forced outcomes</strong></p>
+<p>Especially with automatic calibration, it is possible to match outputs with some extreme values for <code class="docutils literal notranslate"><span class="pre">y_factor</span></code>. Some examples of how this can occur: - The calibration of <code class="docutils literal notranslate"><span class="pre">prev</span></code> in a Males 50+ population using the <code class="docutils literal notranslate"><span class="pre">foi</span></code> parameter results in a <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> of 0.00001 - if optimizations are run with this force of infection value, the Males 50+ population will be almost immune to infection for any reason, and any programs that target Males 50+ will be defunded. In reality, something else is
+wrong in the model, perhaps this high prevalence is because of Males 40-49 aging into the 50+ population and that population should be reviewed, or even more likely there is a risk-based transition from a key population such as people who inject drugs which is too high. - The calibration to match <code class="docutils literal notranslate"><span class="pre">incidence</span></code> in children aged 0-14 using the <code class="docutils literal notranslate"><span class="pre">foi</span></code> parameter results in a <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> of 1000. The real reason for this may be that the model itself has failed to include the critical pathway for
+child incidence through mother-to-child transmission.</p>
+<p>In order to avoid these kinds of modelling outcomes it is critical to (a) review calibration values/<code class="docutils literal notranslate"><span class="pre">y_factors</span></code> to ensure they are within expected bounds, and (b) if there are extreme values conduct further investigation, as there will be something else that should be changed to improve how the model represents reality, and this will result in better recommendations using the model.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;doth_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;foi&#39;</span><span class="p">,</span> <span class="s1">&#39;rec_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;m_rate&#39;</span><span class="p">]:</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">par</span><span class="si">}</span><span class="s1">: y_factor = </span><span class="si">{</span><span class="n">cal_par</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s2">&quot;adults&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+b_rate: y_factor = 1.930194013594883
+doth_rate: y_factor = 0.960870852023363
+foi: y_factor = 1.6542180044646377
+rec_rate: y_factor = 0.16125646369233787
+m_rate: y_factor = 0.192975021742773
+</pre></div></div>
+</div>
+<p>Some of these values are low at around 0.15, and this can be attributed to the high value for prevalence (<code class="docutils literal notranslate"><span class="pre">inf</span></code>) in the databook requiring a low value for each of <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code>, <code class="docutils literal notranslate"><span class="pre">rec_rate</span></code>, and <code class="docutils literal notranslate"><span class="pre">m_rate</span></code>. Individually these are not outside of a ‘reasonable’ range for calibration <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> but as they are all needed to fit a single data point this might suggest a second look at the reliability of original data values for prevalence in this project.</p>
+<p><strong>5. Missing model features</strong> Calibration at its best accounts for factors outside of a model in order to focus on what is in the model. Sometimes those factors have too big an impact on the model to be ignored, and the right solution is to add depth to the model as the only other solution is to force outcomes with extreme <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> or unrealistic values for other parameters.</p>
+<p>In the example above, it is impossible to match both the 2010 and 2020 data points for number of deaths (<code class="docutils literal notranslate"><span class="pre">m_num</span></code>) as they are not consistent with increasing prevalence. Perhaps it is necessary to calibrate a changing <code class="docutils literal notranslate"><span class="pre">m_rate</span></code> over time in the databook, or even add diagnosis and treatment to the model?</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="T3-Multiple-populations.html" class="btn btn-neutral float-right" title="T3 - Multiple populations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="T1-Defining-a-model.html" class="btn btn-neutral float-left" title="T1 - Defining a model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
