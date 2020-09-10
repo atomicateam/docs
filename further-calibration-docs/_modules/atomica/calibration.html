@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.22.0
+                1.22.1
               </div>
             
           
@@ -173,6 +173,7 @@
 <span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">BadInitialization</span>
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">from</span> <span class="nn">.parameters</span> <span class="kn">import</span> <span class="n">ParameterSet</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;calibrate&#39;</span><span class="p">]</span>
 
@@ -367,6 +368,12 @@
 
             <span class="k">if</span> <span class="n">max_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">optim_args</span><span class="p">[</span><span class="s1">&#39;maxtime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_time</span>
+
+            <span class="n">log_level</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">log_level</span> <span class="o">&lt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">:</span>
+                <span class="n">optim_args</span><span class="p">[</span><span class="s1">&#39;verbose&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">optim_args</span><span class="p">[</span><span class="s1">&#39;verbose&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="n">opt_result</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">asd</span><span class="p">(</span><span class="n">_calculate_objective</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">optim_args</span><span class="p">)</span>
             <span class="n">x1</span> <span class="o">=</span> <span class="n">opt_result</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
