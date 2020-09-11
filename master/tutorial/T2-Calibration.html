@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.22.0
+                1.22.1
               </div>
             
           
@@ -435,7 +435,7 @@ div.rendered_html tbody tr:hover {
 parameter values for a particular setting, using data from that setting. Typically, the model is started off at some point in the past (e.g. 2000), such that the initial compartment sizes correspond to the data in the simulation start year. The model is then run up to the current year, with the compartment sizes changing due to the model parameters. The model predictions can then be compared to the actual data for those same years. This allows model parameters to be adjusted to best match the
 existing data. These same parameters are then used for future projections.</p>
 <p>To see calibration in effect, consider the following simple example:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -444,15 +444,6 @@ existing data. These same parameters are then used for future projections.</p>
 <span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/T2/t2_framework_1.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/T2/t2_databook_1.xlsx&#39;</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/opt/hostedtoolcache/Python/3.7.9/x64/lib/python3.7/site-packages/traitlets-5.0.4-py3.7.egg/traitlets/traitlets.py:2945: FutureWarning: --rc={&#39;figure.dpi&#39;: 96} for dict-traits is deprecated in traitlets 5.0. You can pass --rc &lt;key=value&gt; ... multiple times to add items to a dict.
-  FutureWarning,
-</pre></div></div>
 </div>
 <p>First, we inspect the default calibration by running the model and plotting it along with the data. To plot the data, pass the project’s data to the plotting function (in this case, <code class="docutils literal notranslate"><span class="pre">plot_series</span></code>) - this will automatically add scatter points to the plot based on the data in the databook.</p>
 <div class="nbinput docutils container">
@@ -488,7 +479,34 @@ change first.</p>
 <li><p>You could go back to the databook and enter a larger value for the birth rate</p></li>
 <li><p>You can add a ‘scale factor’ to the parameter set, which scales the parameter value up or down</p></li>
 </ul>
-<p>Either approach can be used and would provide equivalent results. However, changing the value in the databook will also change the scatter points on plots, so it should generally only be used in cases where the value corresponds to a model assumption. In cases where the databook contains actual country data, it is preferable to keep the databook as a faithful representation of the actual data that was gathered.</p>
+<p>Either approach can be used and would provide equivalent results. Why would we prefer one over the other?</p>
+<table><thead><tr><th><p>Decision factor</p>
+</th><th><p>Databook calibration</p>
+</th><th><p>Scale factor calibration</p>
+</th></tr></thead><tbody><tr><td><p>How do you want to adjust the parameter?</p>
+</td><td><p>Manual adjustment</p>
+</td><td><p>Automatic adjustment</p>
+</td></tr><tr><td><p>What kinds of parameters is this appropriate for?</p>
+</td><td><p>Appropriate for model assumptions</p>
+</td><td><p>Appropriate for original data</p>
+</td></tr><tr><td><p>Granularity of calibration?</p>
+</td><td><p>Adjustments can vary by year or even timestep</p>
+</td><td><p>Single scaling factor for all timesteps</p>
+</td></tr><tr><td><p>Pros?</p>
+</td><td><ul><li><p>Easy to review reference point for value used in project</p>
+</li><li><p>What you see is what you get in the databook</p>
+</li></ul></td><td><ul><li><p>Maintains scatter points on plots of the parameter</p>
+</li><li><p>Can calibrate a parameter with a function without defining additional multiplicative parameters</p>
+</li></ul></td><tr><td><p>Cons?</p>
+</td><td><p>Can cause confusion in the databook around what is data and what is not data</p>
+</td><td><p>Can lack transparency about how parameters are being adjusted without careful review</p>
+</td></tr></tbody></table><p>An example of a suitable parameter for databook calibration is <code class="docutils literal notranslate"><span class="pre">relative</span> <span class="pre">seasonality</span> <span class="pre">of</span> <span class="pre">mosquito</span> <span class="pre">population</span> <span class="pre">size</span></code> - no hard data can exist, but it might be possible to calculate proxy values from other data such as rainfall patterns in different years, adjust annual values manually to match historical epidemic patterns, and then assume a median value for future years. Having this assumption in the databook allows for those calculations to be used as a starting point in the databook before
+manually editing, and allows for comparability with other projects that use the same parameter.</p>
+<div class="alert alert-block alert-success"><p>Suggestion: When designing a databook, it is recommended that all parameters intended for explicit databook calibration are placed on a single ‘Calibration’ sheet to provide clarity about what is data and what are calibrated assumptions.</p>
+</div><p>An example of a suitable parameter for scale factor calibration is <code class="docutils literal notranslate"><span class="pre">treatment</span> <span class="pre">initiation</span></code> used to determine model transitions from diagnosed to treated - a country has reported data for the number of people initiating treatment, and it is important to accurately maintain the official numbers in the databook. Nevertheless, there may be systematic under-reporting by an unknown degree and we want to account for those additional treatments in the model to ensure outcomes are representative, so it
+is appropriate to adjust the scale factor.</p>
+<p>An example of a parameter that could be adjusted in either way depending on the circumstances or just personal preference would be <code class="docutils literal notranslate"><span class="pre">force</span> <span class="pre">of</span> <span class="pre">infection</span></code> - this is a clear calibration parameter that is not based on data, and could be adjusted in a databook if it’s necessary to reflect changing circumstances external to the model over time, calibrated automatically with a scale factor via the <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> function below in order to achieve the best fit to data, or even a mixture of the two
+methods.</p>
 <div class="alert alert-block alert-info"><p>The web interfaces (such as the Cascade Analysis Tool) perform calibration using scale factors. The scale factors shown on the website correspond to the values being set here.</p>
 </div><p>To set a scale factor, create a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> either by copying an existing one, or creating a new one. Then, access the <code class="docutils literal notranslate"><span class="pre">pars</span></code> attribute to look up the parameter you wish to change, and set the <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> for the population you want to change:</p>
 <div class="nbinput nblast docutils container">
@@ -518,7 +536,7 @@ change first.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0122s
+Elapsed time for running &#34;default&#34;: 0.0114s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -530,83 +548,15 @@ Elapsed time for running &#34;default&#34;: 0.0122s
 <p>We can see that we have considerably overshot the data, indicating that doubling the birth rate was much too big a change. This would typically be the first step in an iterative process, where you adjust the scale factor, inspect the data, and then make further adjustments.</p>
 <p>Automated calibration is also available via the project’s <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> method. This will automatically adjust parameter values to match the data. To use this function, you need to specify which parameters to set scale factors for, and which variables in the databook to compute calibration quality from. The framework can provide defaults for which parameters to automatically calibrate, or you can pass a list of those parameters in directly. In this example, we will pass in <code class="docutils literal notranslate"><span class="pre">b_rate</span></code> because we
 want to adjust the birth rate, and we will use <code class="docutils literal notranslate"><span class="pre">sus</span></code> as a measurable since we want to match the number of susceptible people. The configuration therefore corresponds to the example shown above.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">p3</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">]);</span>
+<span></span><span class="k">with</span> <span class="n">at</span><span class="o">.</span><span class="n">Quiet</span><span class="p">():</span>
+    <span class="n">p3</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00859s
-Elapsed time for running &#34;default&#34;: 0.00837s
-     step 1 (0.0 s) ++ (orig: 0.20252 | best:0.20252 | new:0.13898 | diff:-0.063540)
-Elapsed time for running &#34;default&#34;: 0.00885s
-     step 2 (0.0 s) ++ (orig: 0.20252 | best:0.13898 | new:0.043664 | diff:-0.095321)
-Elapsed time for running &#34;default&#34;: 0.00800s
-     step 3 (0.0 s) -- (orig: 0.20252 | best:0.043664 | new:0.099338 | diff:0.055675)
-Elapsed time for running &#34;default&#34;: 0.00837s
-     step 4 (0.0 s) ++ (orig: 0.20252 | best:0.043664 | new:0.027834 | diff:-0.015829)
-Elapsed time for running &#34;default&#34;: 0.00843s
-     step 5 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.13509 | diff:0.10726)
-Elapsed time for running &#34;default&#34;: 0.00813s
-     step 6 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.081462 | diff:0.053627)
-Elapsed time for running &#34;default&#34;: 0.00792s
-     step 7 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.054648 | diff:0.026813)
-Elapsed time for running &#34;default&#34;: 0.00801s
-     step 8 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.041241 | diff:0.013407)
-Elapsed time for running &#34;default&#34;: 0.00817s
-     step 9 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.034538 | diff:0.0067032)
-Elapsed time for running &#34;default&#34;: 0.00822s
-     step 10 (0.1 s) -- (orig: 0.20252 | best:0.027834 | new:0.035720 | diff:0.0078853)
-Elapsed time for running &#34;default&#34;: 0.00784s
-     step 11 (0.1 s) ++ (orig: 0.20252 | best:0.027834 | new:0.0039432 | diff:-0.023891)
-Elapsed time for running &#34;default&#34;: 0.00848s
-     step 12 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.051607 | diff:0.047664)
-Elapsed time for running &#34;default&#34;: 0.00822s
-     step 13 (0.1 s) -- (orig: 0.20252 | best:0.0039432 | new:0.027776 | diff:0.023832)
-Elapsed time for running &#34;default&#34;: 0.00826s
-     step 14 (0.1 s) ++ (orig: 0.20252 | best:0.0039432 | new:0.00059175 | diff:-0.0033515)
-Elapsed time for running &#34;default&#34;: 0.00956s
-     step 15 (0.2 s) -- (orig: 0.20252 | best:0.00059175 | new:0.0044355 | diff:0.0038438)
-Elapsed time for running &#34;default&#34;: 0.00827s
-     step 16 (0.2 s) -- (orig: 0.20252 | best:0.00059175 | new:0.012508 | diff:0.011916)
-Elapsed time for running &#34;default&#34;: 0.00872s
-     step 17 (0.2 s) -- (orig: 0.20252 | best:0.00059175 | new:0.0019219 | diff:0.0013301)
-Elapsed time for running &#34;default&#34;: 0.00821s
-     step 18 (0.2 s) -- (orig: 0.20252 | best:0.00059175 | new:0.0065499 | diff:0.0059582)
-Elapsed time for running &#34;default&#34;: 0.00843s
-     step 19 (0.2 s) -- (orig: 0.20252 | best:0.00059175 | new:0.00066507 | diff:0.000073320)
-Elapsed time for running &#34;default&#34;: 0.00868s
-     step 20 (0.2 s) ++ (orig: 0.20252 | best:0.00059175 | new:0.000036660 | diff:-0.00055509)
-Elapsed time for running &#34;default&#34;: 0.00902s
-     step 21 (0.2 s) -- (orig: 0.20252 | best:0.000036660 | new:0.0029424 | diff:0.0029058)
-Elapsed time for running &#34;default&#34;: 0.00878s
-     step 22 (0.2 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00097927 | diff:0.00094261)
-Elapsed time for running &#34;default&#34;: 0.00871s
-     step 23 (0.2 s) -- (orig: 0.20252 | best:0.000036660 | new:0.0014529 | diff:0.0014162)
-Elapsed time for running &#34;default&#34;: 0.00841s
-     step 24 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00070812 | diff:0.00067146)
-Elapsed time for running &#34;default&#34;: 0.00837s
-     step 25 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00050796 | diff:0.00047130)
-Elapsed time for running &#34;default&#34;: 0.00788s
-     step 26 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00027231 | diff:0.00023565)
-Elapsed time for running &#34;default&#34;: 0.00883s
-     step 27 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00015449 | diff:0.00011783)
-Elapsed time for running &#34;default&#34;: 0.00859s
-     step 28 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00033573 | diff:0.00029907)
-Elapsed time for running &#34;default&#34;: 0.00950s
-     step 29 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.00014953 | diff:0.00011287)
-Elapsed time for running &#34;default&#34;: 0.00890s
-     step 30 (0.3 s) -- (orig: 0.20252 | best:0.000036660 | new:0.000095573 | diff:0.000058913)
-===  Absolute improvement too small (0 &lt; 0.0000010000) (30 steps, orig: 0.20252 | best: 0 | ratio: 0) ===
-</pre></div></div>
 </div>
 <p>The result of automated calibration is another <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>. We can inspect the scale factor that the algorithm found:</p>
 <div class="nbinput docutils container">
@@ -623,7 +573,7 @@ Elapsed time for running &#34;default&#34;: 0.00890s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-#0: &#34;adults&#34;: 1.3187622070312501
+#0: &#34;adults&#34;: 1.3187231063842775
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -652,7 +602,7 @@ Elapsed time for running &#34;default&#34;: 0.00890s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0130s
+Elapsed time for running &#34;default&#34;: 0.0179s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -663,16 +613,118 @@ Elapsed time for running &#34;default&#34;: 0.0130s
 </div>
 <div class="section" id="Calibration-tips">
 <h2>Calibration tips<a class="headerlink" href="#Calibration-tips" title="Permalink to this headline">¶</a></h2>
-<p>While calibrations can vary significantly from model-to-model, some general tips are</p>
-<ul class="simple">
-<li><p>Match coarse-grained quantities first, followed by fine-grained quantities. For example, for TB you might calibrate it in the following order:</p>
+<p>While calibrations can vary significantly from model-to-model, it’s generally a good idea to try and match coarse-grained quantities first, followed by fine-grained quantities. For example, for TB you might calibrate it in the following order:</p>
 <ol class="arabic simple">
 <li><p>Match population size (adjusting birth rate and death rate)</p></li>
 <li><p>Match disease prevalance (adjusting force of infection)</p></li>
 <li><p>Match drug-resistant/drug-susceptible split (adjusting proportion of infections that are drug-resistant)</p></li>
 </ol>
-</li>
-</ul>
+<p>For complex models when considering how to proceed with a calibration, it can help to start with mapping the expected relationships between key input parameters that will be used for calibration and key output parameters for which data exists and that should be matched by the calibration, in terms of how changes might flow throughout the model.</p>
+<p><img alt="t2-calibration-mapping.png" src="../_images/t2_calibration_mapping.png" /></p>
+<p>From the diagram above, it can be seen that as is typically the case, population size (<code class="docutils literal notranslate"><span class="pre">alive</span></code>) has a large impact on everything else, but the number of disease-related deaths have only a minor impact on population size in return, so population size needs to be matched first. Incidence (<code class="docutils literal notranslate"><span class="pre">inci</span></code>) and prevalence (<code class="docutils literal notranslate"><span class="pre">inf</span></code>) have a strong cyclical relationship should be considered together, but force of infection and recovery rate have direct links to modifying each of those individually through
+changing the rate at which people are infected and changing the rate at which people recover. Disease-related deaths (<code class="docutils literal notranslate"><span class="pre">m_num</span></code>) can be considered last if it is not already closely matched from calibrating to prevalence. Because this may adjust the population size, an iterative cycle of calibration may be appropriate to get the best overall fit.</p>
+<p>A calibration might then proceed in the following order with three repeats:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">cal_par</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">at</span><span class="o">.</span><span class="n">Quiet</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">cal_par</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="n">cal_par</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;doth_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;alive&#39;</span><span class="p">])</span>
+        <span class="n">cal_par</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="n">cal_par</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;foi&#39;</span><span class="p">,</span> <span class="s1">&#39;rec_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;inci&#39;</span><span class="p">,</span> <span class="s1">&#39;inf&#39;</span><span class="p">])</span>
+        <span class="n">cal_par</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">calibrate</span><span class="p">(</span><span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="n">cal_par</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;m_rate&#39;</span><span class="p">],</span> <span class="n">measurables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;m_num&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">r4</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">cal_par</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;Auto calibration repeated&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;alive&#39;</span><span class="p">,</span> <span class="s1">&#39;inci&#39;</span><span class="p">,</span> <span class="s1">&#39;inf&#39;</span><span class="p">,</span> <span class="s1">&#39;m_num&#39;</span><span class="p">]:</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r4</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="n">output</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0113s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_17_1.svg" src="../_images/tutorial_T2-Calibration_17_1.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_17_2.svg" src="../_images/tutorial_T2-Calibration_17_2.svg" /></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_17_3.svg" src="../_images/tutorial_T2-Calibration_17_3.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_17_4.svg" src="../_images/tutorial_T2-Calibration_17_4.svg" /></div>
+</div>
+<p>There are a few major dangers in calibration, including but not limited to:</p>
+<p><strong>1. Solution-rich spaces</strong></p>
+<p>Often multiple input parameters can be adjusted and they might superficially produce the same historical trend lines. For example if modelled prevalence is far lower than data points from epidemiological surveys, a better calibration might be achieved in a number of different ways: increased force of infection (calibration parameter), increased behavioural risk factors (e.g. number of shared injections for HIV), increased duration of infection, reduced treatment success rate, or any number of
+other subtle data inputs. Where possible calibrate to include data from multiple other outputs, and even if this is not possible <em>review</em> other outputs as a sanity check. In addition, consult country experts to determine which solution better explains the trend where it is not clear from the data.</p>
+<p><strong>2. Overfitting</strong></p>
+<p>Don’t try to exactly match every historical data point such as by adjusting ‘force of infection’ precisely for every historical year. Often there is year to year variation in diagnostic capacity, reporting, or natural fluctation based on behaviour or external circumstances. It is more important to accurately capture the trend and the <em>reasons</em> for that trend in the model than to match data from every year exactly, and this will lead to more reasonable future projections as well as a more useful
+model for prioritizing programs.</p>
+<p><strong>3. Inaccurate data</strong></p>
+<p>In conjunction with overfitting - not all data is of equal quality or reliability, or it may have been gathered with a methodology that does not exactly fit the way it is used in the model (<em>this is often a good argument to adjust the model if it applies to more than a single project</em>). Be aware of the quality of data and prioritize calibration to data that is known to be more accurate in a given project. Sometimes it is better to just ignore data for a specific output parameter if the
+methodology used to gather that data was unreliable or cannot be adequately represented by the model.</p>
+<p><strong>4. Forced outcomes</strong></p>
+<p>Especially with automatic calibration, it is possible to match outputs with some extreme values for <code class="docutils literal notranslate"><span class="pre">y_factor</span></code>. Some examples of how this can occur: - The calibration of <code class="docutils literal notranslate"><span class="pre">prev</span></code> in a Males 50+ population using the <code class="docutils literal notranslate"><span class="pre">foi</span></code> parameter results in a <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> of 0.00001 - if optimizations are run with this force of infection value, the Males 50+ population will be almost immune to infection for any reason, and any programs that target Males 50+ will be defunded. In reality, something else is
+wrong in the model, perhaps this high prevalence is because of Males 40-49 aging into the 50+ population and that population should be reviewed, or even more likely there is a risk-based transition from a key population such as people who inject drugs which is too high. - The calibration to match <code class="docutils literal notranslate"><span class="pre">incidence</span></code> in children aged 0-14 using the <code class="docutils literal notranslate"><span class="pre">foi</span></code> parameter results in a <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> of 1000. The real reason for this may be that the model itself has failed to include the critical pathway for
+child incidence through mother-to-child transmission.</p>
+<p>In order to avoid these kinds of modelling outcomes it is critical to (a) review calibration values/<code class="docutils literal notranslate"><span class="pre">y_factors</span></code> to ensure they are within expected bounds, and (b) if there are extreme values conduct further investigation, as there will be something else that should be changed to improve how the model represents reality, and this will result in better recommendations using the model.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;doth_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;foi&#39;</span><span class="p">,</span> <span class="s1">&#39;rec_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;m_rate&#39;</span><span class="p">]:</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">par</span><span class="si">}</span><span class="s1">: y_factor = </span><span class="si">{</span><span class="n">cal_par</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s2">&quot;adults&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+b_rate: y_factor = 1.9378125
+doth_rate: y_factor = 0.9768981933593751
+foi: y_factor = 1.3189746093749999
+rec_rate: y_factor = 0.040771850585937505
+m_rate: y_factor = 0.12491082074120625
+</pre></div></div>
+</div>
+<p>Some of these values are low at around 0.15, and this can be attributed to the high value for prevalence (<code class="docutils literal notranslate"><span class="pre">inf</span></code>) in the databook requiring a low value for each of <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code>, <code class="docutils literal notranslate"><span class="pre">rec_rate</span></code>, and <code class="docutils literal notranslate"><span class="pre">m_rate</span></code>. Individually these are not outside of a ‘reasonable’ range for calibration <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> but as they are all needed to fit a single data point this might suggest a second look at the reliability of original data values for prevalence in this project.</p>
+<p><strong>5. Missing model features</strong> Calibration at its best accounts for factors outside of a model in order to focus on what is in the model. Sometimes those factors have too big an impact on the model to be ignored, and the right solution is to add depth to the model as the only other solution is to force outcomes with extreme <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> or unrealistic values for other parameters.</p>
+<p>In the example above, it is impossible to match both the 2010 and 2020 data points for number of deaths (<code class="docutils literal notranslate"><span class="pre">m_num</span></code>) as they are not consistent with increasing prevalence. Perhaps it is necessary to calibrate a changing <code class="docutils literal notranslate"><span class="pre">m_rate</span></code> over time in the databook, or even add diagnosis and treatment to the model?</p>
+<p><strong>6. ‘Burn-in’ period</strong> Often with more complex models, there may be too many parameters to initialize each and every one of them accurately in the first time step of the model via databook entry, such as tracking compartments for many different stages of a disease or stages of treatment. In these cases, it may be best to initialize just using key databook values such as ‘number on treatment’, ‘number infected’ and make assumptions for compartments within these categories. This will typically
+result in strange model behaviour for a number of time steps during a ‘burn-in’ period before the proportions at different stages of treatment settle down to an equilibrium, so it may be necessary to exclude these burn-in years from exported results in general, and not try to match these in calibration. Ideally, the model should either initialize a model earlier (e.g. several years in models with long time steps) and/or calibrate to the years for which data exists, and exclude those burn-in
+years from exported results in general.</p>
 </div>
 </div>
 
