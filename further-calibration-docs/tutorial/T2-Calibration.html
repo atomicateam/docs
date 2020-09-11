@@ -462,7 +462,7 @@ existing data. These same parameters are then used for future projections.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0120s
+Elapsed time for running &#34;default&#34;: 0.0106s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -480,12 +480,32 @@ change first.</p>
 <li><p>You can add a ‘scale factor’ to the parameter set, which scales the parameter value up or down</p></li>
 </ul>
 <p>Either approach can be used and would provide equivalent results. Why would we prefer one over the other?</p>
-<p>An example of a suitable parameter for databook calibration is <code class="docutils literal notranslate"><span class="pre">relative</span> <span class="pre">seasonality</span> <span class="pre">of</span> <span class="pre">mosquito</span> <span class="pre">population</span> <span class="pre">size</span></code> - no hard data can exist, but it might be possible to calculate proxy values from other data such as rainfall patterns in different years, adjust annual values manually to match historical epidemic patterns, and then assume a median value for future years. Having this assumption in the databook allows for those calculations to be used as a starting point in the databook before
+<table><thead><tr><th><p>Decision factor</p>
+</th><th><p>Databook calibration</p>
+</th><th><p>Scale factor calibration</p>
+</th></tr></thead><tbody><tr><td><p>How do you want to adjust the parameter?</p>
+</td><td><p>Manual adjustment</p>
+</td><td><p>Automatic adjustment</p>
+</td></tr><tr><td><p>What kinds of parameters is this appropriate for?</p>
+</td><td><p>Appropriate for model assumptions</p>
+</td><td><p>Appropriate for original data</p>
+</td></tr><tr><td><p>Granularity of calibration?</p>
+</td><td><p>Adjustments can vary by year or even timestep</p>
+</td><td><p>Single scaling factor for all timesteps</p>
+</td></tr><tr><td><p>Pros?</p>
+</td><td><ul><li><p>Easy to review reference point for value used in project</p>
+</li><li><p>What you see is what you get in the databook</p>
+</li></ul></td><td><ul><li><p>Maintains scatter points on plots of the parameter</p>
+</li><li><p>Can calibrate a parameter with a function without defining additional multiplicative parameters</p>
+</li></ul></td><tr><td><p>Cons?</p>
+</td><td><p>Can cause confusion in the databook around what is data and what is not data</p>
+</td><td><p>Can lack transparency about how parameters are being adjusted without careful review</p>
+</td></tr></tbody></table><p>An example of a suitable parameter for databook calibration is <code class="docutils literal notranslate"><span class="pre">relative</span> <span class="pre">seasonality</span> <span class="pre">of</span> <span class="pre">mosquito</span> <span class="pre">population</span> <span class="pre">size</span></code> - no hard data can exist, but it might be possible to calculate proxy values from other data such as rainfall patterns in different years, adjust annual values manually to match historical epidemic patterns, and then assume a median value for future years. Having this assumption in the databook allows for those calculations to be used as a starting point in the databook before
 manually editing, and allows for comparability with other projects that use the same parameter.</p>
-<p>Suggestion: When designing a databook, it is recommended that <strong>all</strong> parameters intended for explicit databook calibration are placed on a single ‘Calibration’ sheet to provide clarity about what is data and what are calibrated assumptions.</p>
-<p>An example of a suitable parameter for scale factor calibration is <code class="docutils literal notranslate"><span class="pre">treatment</span> <span class="pre">initiation</span></code> used to determine model transitions from diagnosed to treated - a country has reported data for the number of people initiating treatment, and it is important to accurately maintain the official numbers in the databook. Nevertheless, there may be systematic under-reporting by an unknown degree and we want to account for those additional treatments in the model to ensure outcomes are representative, so it
+<div class="alert alert-block alert-success"><p>Suggestion: When designing a databook, it is recommended that all parameters intended for explicit databook calibration are placed on a single ‘Calibration’ sheet to provide clarity about what is data and what are calibrated assumptions.</p>
+</div><p>An example of a suitable parameter for scale factor calibration is <code class="docutils literal notranslate"><span class="pre">treatment</span> <span class="pre">initiation</span></code> used to determine model transitions from diagnosed to treated - a country has reported data for the number of people initiating treatment, and it is important to accurately maintain the official numbers in the databook. Nevertheless, there may be systematic under-reporting by an unknown degree and we want to account for those additional treatments in the model to ensure outcomes are representative, so it
 is appropriate to adjust the scale factor.</p>
-<p>An example of a parameter that could be adjusted in either way depending on the circumstances or just personal preferencec would be <code class="docutils literal notranslate"><span class="pre">force</span> <span class="pre">of</span> <span class="pre">infection</span></code> - this is a clear calibration parameter that is not based on data, and could be adjusted in a databook if it’s necessary to reflect changing circumstances external to the model over time, calibrated automatically with a scale factor via the <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> function below in order to achieve the best fit to data, or even a mixture of the two
+<p>An example of a parameter that could be adjusted in either way depending on the circumstances or just personal preference would be <code class="docutils literal notranslate"><span class="pre">force</span> <span class="pre">of</span> <span class="pre">infection</span></code> - this is a clear calibration parameter that is not based on data, and could be adjusted in a databook if it’s necessary to reflect changing circumstances external to the model over time, calibrated automatically with a scale factor via the <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> function below in order to achieve the best fit to data, or even a mixture of the two
 methods.</p>
 <div class="alert alert-block alert-info"><p>The web interfaces (such as the Cascade Analysis Tool) perform calibration using scale factors. The scale factors shown on the website correspond to the values being set here.</p>
 </div><p>To set a scale factor, create a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> either by copying an existing one, or creating a new one. Then, access the <code class="docutils literal notranslate"><span class="pre">pars</span></code> attribute to look up the parameter you wish to change, and set the <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> for the population you want to change:</p>
@@ -516,7 +536,7 @@ methods.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0110s
+Elapsed time for running &#34;default&#34;: 0.0116s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -553,7 +573,7 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-#0: &#34;adults&#34;: 1.3187028408050536
+#0: &#34;adults&#34;: 1.3187072575092316
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -582,7 +602,7 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0108s
+Elapsed time for running &#34;default&#34;: 0.0104s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -635,7 +655,7 @@ changing the rate at which people are infected and changing the rate at which pe
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0107s
+Elapsed time for running &#34;default&#34;: 0.0109s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -692,19 +712,19 @@ child incidence through mother-to-child transmission.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-b_rate: y_factor = 1.8548532455762337
-doth_rate: y_factor = 0.9015447997585865
-foi: y_factor = 1.4999740048125387
-rec_rate: y_factor = 0.12840669022500517
-m_rate: y_factor = 0.17517823613132327
+b_rate: y_factor = 1.0
+doth_rate: y_factor = 0.18471859079785638
+foi: y_factor = 1.4675194576915236
+rec_rate: y_factor = 0.1400655713040388
+m_rate: y_factor = 0.12471738988530506
 </pre></div></div>
 </div>
 <p>Some of these values are low at around 0.15, and this can be attributed to the high value for prevalence (<code class="docutils literal notranslate"><span class="pre">inf</span></code>) in the databook requiring a low value for each of <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code>, <code class="docutils literal notranslate"><span class="pre">rec_rate</span></code>, and <code class="docutils literal notranslate"><span class="pre">m_rate</span></code>. Individually these are not outside of a ‘reasonable’ range for calibration <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> but as they are all needed to fit a single data point this might suggest a second look at the reliability of original data values for prevalence in this project.</p>
 <p><strong>5. Missing model features</strong> Calibration at its best accounts for factors outside of a model in order to focus on what is in the model. Sometimes those factors have too big an impact on the model to be ignored, and the right solution is to add depth to the model as the only other solution is to force outcomes with extreme <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> or unrealistic values for other parameters.</p>
 <p>In the example above, it is impossible to match both the 2010 and 2020 data points for number of deaths (<code class="docutils literal notranslate"><span class="pre">m_num</span></code>) as they are not consistent with increasing prevalence. Perhaps it is necessary to calibrate a changing <code class="docutils literal notranslate"><span class="pre">m_rate</span></code> over time in the databook, or even add diagnosis and treatment to the model?</p>
 <p><strong>6. ‘Burn-in’ period</strong> Often with more complex models, there may be too many parameters to initialize each and every one of them accurately in the first time step of the model via databook entry, such as tracking compartments for many different stages of a disease or stages of treatment. In these cases, it may be best to initialize just using key databook values such as ‘number on treatment’, ‘number infected’ and make assumptions for compartments within these categories. This will typically
-result in strange model behaviour for a number of time steps during a ‘burn-in’ period before the proportions at different stages of treatment settle down to an equilibrium, so it may be necessary to exclude these burn-in years from exported results in general, and not try to match these in calibration. Ideally, the model shoueither initialize a model earlier (e.g. several years in models with long time steps) and/or calibrate to the years for which data exists, and exclude those burn-in years
-from exported results in general.</p>
+result in strange model behaviour for a number of time steps during a ‘burn-in’ period before the proportions at different stages of treatment settle down to an equilibrium, so it may be necessary to exclude these burn-in years from exported results in general, and not try to match these in calibration. Ideally, the model should either initialize a model earlier (e.g. several years in models with long time steps) and/or calibrate to the years for which data exists, and exclude those burn-in
+years from exported results in general.</p>
 </div>
 </div>
 
