@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.model.Parameter &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.model.Population" href="atomica.model.Population.html" />
+    <link rel="prev" title="atomica.model.Model" href="atomica.model.Model.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.23.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.model.html">atomica.model</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.run_model.html">atomica.model.run_model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Characteristic.html">atomica.model.Characteristic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Compartment.html">atomica.model.Compartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.JunctionCompartment.html">atomica.model.JunctionCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Link.html">atomica.model.Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Model.html">atomica.model.Model</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.model.Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Population.html">atomica.model.Population</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.ResidualJunctionCompartment.html">atomica.model.ResidualJunctionCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.SinkCompartment.html">atomica.model.SinkCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.SourceCompartment.html">atomica.model.SourceCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.TimedCompartment.html">atomica.model.TimedCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.TimedLink.html">atomica.model.TimedLink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Variable.html">atomica.model.Variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.BadInitialization.html">atomica.model.BadInitialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.ModelError.html">atomica.model.ModelError</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.programs.html">atomica.programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.model.html">atomica.model</a> &raquo;</li>
+        
+      <li>atomica.model.Parameter</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-model-parameter">
+<h1>atomica.model.Parameter<a class="headerlink" href="#atomica-model-parameter" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="atomica.model.Parameter">
+<em class="property">class </em><code class="sig-prename descclassname">atomica.model.</code><code class="sig-name descname">Parameter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pop</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="atomica.model.Variable.html#atomica.model.Variable" title="atomica.model.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">atomica.model.Variable</span></code></a></p>
+<p>Integration object to represent Parameters</p>
+<p>A parameter is a Variable that can have a value computed via an fcn_str and a list of
+dependent Variables. This is a Parameter in the cascade.xlsx sense - there is one Parameter object for every item in the
+Parameters sheet. A parameter that maps to multiple transitions (e.g. <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code>) will have one parameter
+and multiple Link instances that depend on the same Parameter instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pop</strong> – A <a class="reference internal" href="atomica.model.Population.html#atomica.model.Population" title="atomica.model.Population"><code class="xref py py-class docutils literal notranslate"><span class="pre">Population</span></code></a> instance corresponding to the population that will contain this parameter</p></li>
+<li><p><strong>name</strong> – The code name for this parameter</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.Parameter.name" title="atomica.model.Parameter.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Variable code name</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.Parameter.constrain" title="atomica.model.Parameter.constrain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constrain</span></code></a></p></td>
+<td><p>Constrain the parameter value to allowed range</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.Parameter.plot" title="atomica.model.Parameter.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a></p></td>
+<td><p>Produce a time series plot</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.Parameter.preallocate" title="atomica.model.Parameter.preallocate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preallocate</span></code></a></p></td>
+<td><p>Preallocate data storage</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">relink</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.Parameter.set_dynamic" title="atomica.model.Parameter.set_dynamic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_dynamic</span></code></a></p></td>
+<td><p>Mark this parameter as needing evaluation for integration</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.Parameter.set_fcn" title="atomica.model.Parameter.set_fcn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fcn</span></code></a></p></td>
+<td><p>Add a function to this parameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">source_popsize</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.Parameter.update" title="atomica.model.Parameter.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a></p></td>
+<td><p>Update the value of this Parameter</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="atomica.model.Parameter.constrain">
+<code class="sig-name descname">constrain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ti</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Parameter.constrain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Parameter.constrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constrain the parameter value to allowed range</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">Parameter.limits</span></code> is not None, then the parameter values at the specified
+time will be clipped to the limits. If no time index is provided, clipping will
+be performed on all values in a vectorized operation. Vector clipping is used
+for data parameters that are not evaluated during integration, while index-specific
+clipping is used for dependencies that are calculated during integration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ti</strong> – An integer index, or None (to operate on all time points)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Parameter.deps">
+<code class="sig-name descname">deps</code><a class="headerlink" href="#atomica.model.Parameter.deps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dict of dependencies containing lists of integration objects</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Parameter.derivative">
+<code class="sig-name descname">derivative</code><a class="headerlink" href="#atomica.model.Parameter.derivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>If True, the parameter function will be treated as a derivative and the value added on to the end</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Parameter.fcn_str">
+<code class="sig-name descname">fcn_str</code><a class="headerlink" href="#atomica.model.Parameter.fcn_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>String representation of parameter function</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Parameter.limits">
+<code class="sig-name descname">limits</code><a class="headerlink" href="#atomica.model.Parameter.limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can be a two element vector [min,max]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Parameter.links">
+<code class="sig-name descname">links</code><a class="headerlink" href="#atomica.model.Parameter.links" title="Permalink to this definition">¶</a></dt>
+<dd><p>References to links that derive from this parameter</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Parameter.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#atomica.model.Parameter.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variable code name</p>
+<p>This is implemented as a property method because the <code class="docutils literal notranslate"><span class="pre">id</span></code> of the <code class="docutils literal notranslate"><span class="pre">Variable</span></code> is a
+tuple containing the population name and the variable code name, so this property
+method returns just the variable code name portion. That way, storage does not need
+to be duplicated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A code name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Parameter.plot">
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#atomica.model.Parameter.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a time series plot</p>
+<p>This is a quick function to make a basic line plot of this <code class="docutils literal notranslate"><span class="pre">Variable</span></code>. Mainly
+intended for debugging. Production-ready plots should be generated using the
+plotting library functions instead</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Parameter.pop_aggregation">
+<code class="sig-name descname">pop_aggregation</code><a class="headerlink" href="#atomica.model.Parameter.pop_aggregation" title="Permalink to this definition">¶</a></dt>
+<dd><p>If not None, stores list of population aggregation information (special function, which weighting comp/charac and which interaction term to use)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Parameter.preallocate">
+<code class="sig-name descname">preallocate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tvec</span></em>, <em class="sig-param"><span class="n">dt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#atomica.model.Parameter.preallocate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preallocate data storage</p>
+<p>This method gets called just before integration, once the final sizes of the arrays are known.
+Performance is improved by preallocating the arrays. The <code class="docutils literal notranslate"><span class="pre">tvec</span></code> attribute is assigned
+as-is, so it is typically a reference to the array stored in the parent <code class="docutils literal notranslate"><span class="pre">Model</span></code> object. Thus,
+there is no duplication of storage there, and <code class="docutils literal notranslate"><span class="pre">Variable.tvec</span></code> is mainly for convenience when
+interpolating or plotting.</p>
+<p>This method may be overloaded in derived classes to preallocate other variables specific
+to those classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tvec</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>) – An array of time values</p></li>
+<li><p><strong>dt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Time step size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Parameter.scale_factor">
+<code class="sig-name descname">scale_factor</code><a class="headerlink" href="#atomica.model.Parameter.scale_factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>This should be set to the product of the population-specific <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> and the <code class="docutils literal notranslate"><span class="pre">meta_y_factor</span></code> from the ParameterSet</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Parameter.set_dynamic">
+<code class="sig-name descname">set_dynamic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">progset</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Parameter.set_dynamic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Parameter.set_dynamic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark this parameter as needing evaluation for integration</p>
+<p>If a parameter has a function and <cite>set_dynamic()</cite> has been called, that means the
+result of the function is required to drive a transition in the model. In this context,
+‘dynamic’ means that the parameter depends on values that are only known during integration
+(i.e. compartment sizes). It could also depend on compartment sizes indirectly, if
+it depends on characteristics, or if it depends on parameters that depend on compartments
+or characteristics. If none of these are true, then the parameter function can be evaluated
+before integration starts, taking advantage of vector operations.</p>
+<p>If a parameter is overwritten by a program in this simulation, then its value may change
+during integration, and we again need to make this parameter dynamic. Note that this doesn’t
+apply to the parameter <em>being</em> overwritten - if it gets overwritten, that has no bearing on
+when its function gets evaluated. But if a parameter depends on a value that has changed, then
+the function must be re-evaluated. Technically this only needs to be done after the time index
+where programs turn on, but it’s simpler just to mark it as dynamic for the entire simulation,
+the gains aren’t large enough to justify the extra complexity otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>progset</strong> – A <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> instance (the one contained in the Model containing this Parameter)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Parameter.set_fcn">
+<code class="sig-name descname">set_fcn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fcn_str</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Parameter.set_fcn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Parameter.set_fcn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a function to this parameter</p>
+<p>This method adds a function to the parameter. The following steps are carried out</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The function is parsed and stored in the <code class="docutils literal notranslate"><span class="pre">._fcn</span></code> attribute (until the Parameter is pickled)</p></li>
+<li><p>The dependencies are extracted, and are stored as references to the actual integration objects
+to increase performance during integration</p></li>
+<li><p>If this is a transition parameter, then dependencies will have their <cite>dynamic</cite> flag updated</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>framework</strong> – A py:class:<cite>ProjectFramework</cite> instance, used to identify and retrieve interaction terms</p></li>
+<li><p><strong>fcn_str</strong> – The string containing the function to add</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Parameter.skip_function">
+<code class="sig-name descname">skip_function</code><a class="headerlink" href="#atomica.model.Parameter.skip_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can optionally be set to a (start,stop) tuple of times. Between these times, the parameter will not be updated so the parset value will be left unchanged</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Parameter.timescale">
+<code class="sig-name descname">timescale</code><a class="headerlink" href="#atomica.model.Parameter.timescale" title="Permalink to this definition">¶</a></dt>
+<dd><p>For transition parameters, the <code class="docutils literal notranslate"><span class="pre">vals</span></code> stored by the parameter is effectively a rate. The <code class="docutils literal notranslate"><span class="pre">timescale</span></code>
+attribute informs the time period corresponding to the units in which the rate has been provided.
+If the units are <code class="docutils literal notranslate"><span class="pre">number</span></code> or <code class="docutils literal notranslate"><span class="pre">probability</span></code> then the <code class="docutils literal notranslate"><span class="pre">timescale</span></code> corresponds to the denominator of the units
+e.g. probability/day (with <code class="docutils literal notranslate"><span class="pre">timescale=1/365</span></code>).
+If the units are <code class="docutils literal notranslate"><span class="pre">duration</span></code> then the timescale stores the units in which the duration has been specified
+e.g. <code class="docutils literal notranslate"><span class="pre">duration=1</span></code> with <code class="docutils literal notranslate"><span class="pre">timescale=1/52</span></code> is the same as <code class="docutils literal notranslate"><span class="pre">duration=7</span></code> with <code class="docutils literal notranslate"><span class="pre">timescale=1/365</span></code>
+The effective duration used in the simulation is <code class="docutils literal notranslate"><span class="pre">duration*timescale</span></code> with units of years (so it will behave correctly if
+one wanted to use 1/365.25 instead of 1/365)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Parameter.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ti</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Parameter.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Parameter.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the value of this Parameter</p>
+<p>If the parameter contains a function, this entails evaluating the function.
+Typically this is done at a single time point during integration, or over all
+time points for precomputing and postcomputing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ti</strong> – An <code class="docutils literal notranslate"><span class="pre">int</span></code>, or a numpy array with index values. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, all time values will be used</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="atomica.model.Population.html" class="btn btn-neutral float-right" title="atomica.model.Population" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="atomica.model.Model.html" class="btn btn-neutral float-left" title="atomica.model.Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
