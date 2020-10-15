@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Initializing compartments &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contextual overview" href="Contextual-Overview.html" />
+    <link rel="prev" title="General content" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.22.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General content</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Initializing compartments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#characteristics-to-compartments">Characteristics to Compartments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#problems-and-solutions">Problems and solutions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#computing-initial-values-at-arbitrary-times">Computing initial values at arbitrary times</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Contextual-Overview.html">Contextual overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="File-Logging.html">Logging cookbook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parameters.html">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="junctions/Junctions.html">Junction overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="population-types/Population-Types.html">Population types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="programs/Programs.html">Program System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stochastic/stochastic.html">Stochastic models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timed-transitions/Timed-Transitions.html">Timed transitions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">General content</a> &raquo;</li>
+        
+      <li>Initializing compartments</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="initializing-compartments">
+<h1>Initializing compartments<a class="headerlink" href="#initializing-compartments" title="Permalink to this headline">¶</a></h1>
+<p>An important step in integrating the model equations is specifying the initial conditions. There are two challenges to overcome</p>
+<ul class="simple">
+<li><p>Computing initial compartment sizes <em>based on the values entered in the databook</em></p></li>
+<li><p>Computing the initial compartment sizes <em>at an arbitrary initial time</em></p></li>
+</ul>
+<p>We will discuss these two issues in turn.</p>
+<div class="section" id="characteristics-to-compartments">
+<h2>Characteristics to Compartments<a class="headerlink" href="#characteristics-to-compartments" title="Permalink to this headline">¶</a></h2>
+<p>The first challenge is related to the fact that in the databook, users enter initial values for characteristics, not just compartments. This is motivated by the fact that application data may correspond to characteristics rather than compartments. <strong>The guiding principle is that the databook should strive to directly accept as much data as the user has available</strong>. That is, the databook aims to be as complete a record of the available data as possible, with as little manual user processing as possible.</p>
+<p>To see why initial values are often drawn via characteristics, consider a standard TB model. Because latent infection has a separate stream for vaccinated and unvaccinated individuals, the model contains the following compartments</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Short name</th>
+<th>Long name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vac</code></td>
+<td>Vaccinated</td>
+</tr>
+<tr>
+<td><code>ltex</code></td>
+<td>Early latent (undiagnosable)</td>
+</tr>
+<tr>
+<td><code>ltlx</code></td>
+<td>Late latent (undiagnosable)</td>
+</tr>
+</tbody>
+</table><p>All of the people in these compartments have recieved a vaccine, because the <code class="docutils literal notranslate"><span class="pre">ltex</span></code> and <code class="docutils literal notranslate"><span class="pre">ltlx</span></code> compartments are specific to vaccinated individuals. Thus, the <code class="docutils literal notranslate"><span class="pre">vac</span></code> <em>compartment</em> corresponds to people who have been vaccinated, but who have <em>not</em> acquired a latent TB infection. However, data is likely to be available for the total number of vaccinated people regardless of their latent infection status. Thus, the data is likely to correspond to a characteristic defined as <code class="docutils literal notranslate"><span class="pre">vac+ltex+ltlx</span></code>. Similarly, there is typically good demographic data available for the total population size. However, the total population size is given by the sum of all of the compartments in the model.</p>
+<p>Given a set of characteristics, the goal is then to compute the corresponding compartment sizes. For example, if we know</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nvac</span> <span class="o">=</span> <span class="n">vac</span><span class="o">+</span><span class="n">ltex</span><span class="o">+</span><span class="n">ltlt</span> <span class="p">(</span><span class="n">total</span> <span class="n">number</span> <span class="n">of</span> <span class="n">vaccinated</span> <span class="n">individuals</span><span class="p">)</span>
+<span class="n">ltx</span> <span class="o">=</span> <span class="n">ltex</span><span class="o">+</span><span class="n">ltlx</span> <span class="p">(</span><span class="n">total</span> <span class="n">number</span> <span class="n">of</span> <span class="n">latent</span> <span class="n">infections</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">vaccinated</span> <span class="n">population</span><span class="p">)</span>
+<span class="n">ltlx</span> <span class="p">(</span><span class="n">number</span> <span class="n">of</span> <span class="n">late</span> <span class="n">latent</span> <span class="n">infections</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">nvac</span></code> and <code class="docutils literal notranslate"><span class="pre">ltx</span></code> are the names of the characteristics, then we can readily use substitutions to infer the initial compartment sizes. However, the equations for the characteristics</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nvac</span> <span class="o">=</span> <span class="n">vac</span><span class="o">+</span><span class="n">ltex</span><span class="o">+</span><span class="n">ltlt</span>
+<span class="n">ltx</span> <span class="o">=</span> <span class="n">ltex</span><span class="o">+</span><span class="n">ltlx</span>
+<span class="n">ltlx</span>
+</pre></div>
+</div>
+<p>can be readily recognized as a system of simultaneous equations. This can be written in matrix form as follows</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">nvac</span><span class="p">]</span>   <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">]</span>    <span class="p">[</span><span class="n">vac</span> <span class="p">]</span>
+<span class="p">[</span><span class="n">ltx</span> <span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span>  <span class="p">[</span><span class="n">ltex</span><span class="p">]</span>
+<span class="p">[</span><span class="n">ltlx</span><span class="p">]</span>   <span class="p">[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>    <span class="p">[</span><span class="n">ltlx</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>where the column vector on the left corresponds to the characteristics that the user enters in the databook, the matrix in the middle corresponds to the included compartments for each characteristic defined in the Framework, and the column vector on the right corresponds to the compartment sizes for all compartments in the model. We therefore want to solve for the values in the column vector on the right, given the values for the characteristics on the left, and the compartment membership matrix in the middle. This is the familiar system</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">x</span>
+</pre></div>
+</div>
+<p>which can be solved using any number of standard linear algebra functions (e.g. <code class="docutils literal notranslate"><span class="pre">numpy.linalg.solve</span></code>).</p>
+<div class="section" id="problems-and-solutions">
+<h3>Problems and solutions<a class="headerlink" href="#problems-and-solutions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="negative-initial-compartment-sizes">
+<h4>Negative initial compartment sizes<a class="headerlink" href="#negative-initial-compartment-sizes" title="Permalink to this headline">¶</a></h4>
+<p>It is possible for the initial characteristic values provided by the user to lead to negative initial compartment sizes. For example, if the user specified</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alive</span> <span class="o">=</span> <span class="n">sus</span> <span class="o">+</span> <span class="n">vac</span>
+<span class="n">alive</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">vac</span> <span class="o">=</span> <span class="mi">120</span>
+</pre></div>
+</div>
+<p>then the value for <code class="docutils literal notranslate"><span class="pre">vac</span></code> is clearly critically inconsistent with the value for <code class="docutils literal notranslate"><span class="pre">alive</span></code>, because the corresponding value for <code class="docutils literal notranslate"><span class="pre">sus</span></code> must be <code class="docutils literal notranslate"><span class="pre">-20</span></code>. In the previous Optima TB approach, this error can be isolated to the computation of the <code class="docutils literal notranslate"><span class="pre">alive</span></code> characteristic, whereas in the linear algebra approach, it is the consequence of the matrix operation and thus cannot be isolated directly. However, in practice this did not make much difference in Optima TB because characteristics are typically nested. That is, if we instead had</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alive</span> <span class="o">=</span> <span class="n">sus</span> <span class="o">+</span> <span class="n">nvac</span>
+<span class="n">nvac</span> <span class="o">=</span> <span class="n">vac</span> <span class="o">+</span> <span class="n">ltex</span> <span class="o">+</span> <span class="n">ltlt</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>then a negative value for <code class="docutils literal notranslate"><span class="pre">sus</span></code> would be a consequence of the value for the characteristic <code class="docutils literal notranslate"><span class="pre">nvac</span></code> which itself could be the result of a computation. Thus, the user has to look at a set of characteristics and compartments to trace where the original inconsistency occurred. As a result, the most helpful output for the user to debug this is a dump of all of the compartment and characteristic values, which is the same in both the original and the linear algebra based approach.</p>
+</div>
+<div class="section" id="underdetermined-system">
+<h4>Underdetermined system<a class="headerlink" href="#underdetermined-system" title="Permalink to this headline">¶</a></h4>
+<p>An initialization is underdetermined if the input data is not sufficient to uniquely specify the initialization without additional assumptions. This condition can be directly detected based on the <code class="docutils literal notranslate"><span class="pre">A</span></code> matrix. For example, consider the system</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nvac</span> <span class="o">=</span> <span class="n">vac</span> <span class="o">+</span> <span class="n">ltex</span> <span class="o">+</span> <span class="n">ltlx</span>
+<span class="n">ltx</span> <span class="o">=</span> <span class="n">ltex</span> <span class="o">+</span> <span class="n">ltlx</span>
+</pre></div>
+</div>
+<p>By inspection, there is clearly insufficient information provided to be able to uniquely solve for the compartment sizes. The corresponding matrix equation is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">nvac</span><span class="p">]</span>   <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">]</span>    <span class="p">[</span><span class="n">vac</span> <span class="p">]</span>
+<span class="p">[</span><span class="n">ltx</span> <span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span>  <span class="p">[</span><span class="n">ltex</span><span class="p">]</span>
+                    <span class="p">[</span><span class="n">ltlx</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>(which is of course a valid matrix equation, with dimensions <code class="docutils literal notranslate"><span class="pre">(2x1)</span> <span class="pre">=</span> <span class="pre">(2x3)*(3x1)</span></code>). The fact that there is insufficient information can be detected by comparing the rank of the <code class="docutils literal notranslate"><span class="pre">A</span></code> matrix with the number of compartments. Specifically, <code class="docutils literal notranslate"><span class="pre">y=A*x</span></code> is underdetermined if the rank of <code class="docutils literal notranslate"><span class="pre">A</span></code> is less than the length of <code class="docutils literal notranslate"><span class="pre">x</span></code>. This can be trivially checked using Numpy’s built in <code class="docutils literal notranslate"><span class="pre">numpy.linalg.matrix_rank</span></code> function. Note that this is a stricter condition than simply counting the number of characteristics on the left hand side, because it is possible for a characteristic to not to provide any unique information if that characteristic can be expressed as a linear combination of other characteristics in the system.</p>
+<p>In Atomica, underdetermined systems are handled by returning the minimum norm solution, so any compartments missing entirely will be initialized with 0, and in cases where compartments are nonzero but not uniquely constrained, people will be uniformly distributed across those compartments.</p>
+</div>
+<div class="section" id="inconsistent-system">
+<h4>Inconsistent system<a class="headerlink" href="#inconsistent-system" title="Permalink to this headline">¶</a></h4>
+<p>In the case where the number of characteristics used for initialization is the same as the number of compartments, there exists a single unique solution for the compartment values that exactly matches the characteristic values. For example, if we have</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alive</span> <span class="o">=</span> <span class="n">sus</span> <span class="o">+</span> <span class="n">vac</span>
+</pre></div>
+</div>
+<p>and are also given that</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alive</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">vac</span> <span class="o">=</span> <span class="mi">120</span>
+</pre></div>
+</div>
+<p>then we have the unique solution</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sus</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span>
+<span class="n">vac</span> <span class="o">=</span> <span class="mi">120</span>
+<span class="n">alive</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span> <span class="o">+</span> <span class="mi">120</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p>which exactly matches the specified values <code class="docutils literal notranslate"><span class="pre">alive=100</span></code> and <code class="docutils literal notranslate"><span class="pre">vac=120</span></code>. The inconsistency in the system therefore results in a negative compartment size appearing in one or more compartments, and this can be detected regardless of the implementation used for initialization.</p>
+</div>
+<div class="section" id="inconsistent-overdetermined-system">
+<h4>Inconsistent overdetermined system<a class="headerlink" href="#inconsistent-overdetermined-system" title="Permalink to this headline">¶</a></h4>
+<p>As described above, the guiding principle for the databook is that it strives to be a complete, direct record of all available data. In pursuing this, it is possible that the user could provide an overspecification of the system. For example, suppose we have a characteristic <code class="docutils literal notranslate"><span class="pre">alive</span> <span class="pre">=</span> <span class="pre">sus</span> <span class="pre">+</span> <span class="pre">vac</span></code> and the user has the following values from their data sources</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alive</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">sus</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">vac</span> <span class="o">=</span> <span class="mi">50</span>
+</pre></div>
+</div>
+<p>This situation (where the data values are not entirely consistent) can occur when users are compiling data from multiple sources. How should this inconsistency be resolved? Note that in the case where the system is overdetermined, the inconsistent values mean that it is not possible to choose initial values for <code class="docutils literal notranslate"><span class="pre">sus</span></code> and <code class="docutils literal notranslate"><span class="pre">vac</span></code> that exactly satisfy the provided values. For example, we could have</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sus</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">vac</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">alive</span> <span class="o">=</span> <span class="mi">60</span><span class="o">+</span><span class="mi">50</span><span class="o">=</span><span class="mi">110</span> <span class="p">(</span><span class="n">does</span> <span class="ow">not</span> <span class="n">match</span> <span class="n">provided</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or we could have</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sus</span> <span class="o">=</span> <span class="mi">50</span> <span class="p">(</span><span class="n">does</span> <span class="ow">not</span> <span class="n">match</span> <span class="n">provided</span> <span class="n">value</span><span class="p">)</span>
+<span class="n">vac</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">alive</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">+</span> <span class="mi">50</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p>In this case though, the consequence of the inconsistency is <em>not</em> that a compartment value becomes negative. Instead, it is manifested as a nonzero residual when comparing the provided input values to the calculated initialization. We can write out the matrix equation as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">alive</span><span class="p">]</span>   <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span><span class="p">]</span>    <span class="p">[</span><span class="n">sus</span> <span class="p">]</span>
+<span class="p">[</span><span class="n">sus</span>  <span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span>  <span class="p">[</span><span class="n">vac</span> <span class="p">]</span>
+<span class="p">[</span><span class="n">vac</span>  <span class="p">]</span>   <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Notice how this system is obviously overdetermined, because the column vector on the left is longer than the column vector on the right. We can solve this overdetermined system using a standard least squares approach (e.g. <code class="docutils literal notranslate"><span class="pre">np.linalg.lstsq</span></code>). In the case where all of the information provided is consistent, the residual for the fit will be <code class="docutils literal notranslate"><span class="pre">0</span></code>. If the values are inconsistent, the least squares solution will solve for the compartment sizes on the right that best match the set of characteristics on the left. In this case, this would be</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sus</span> <span class="o">=</span> <span class="mf">56.66</span>
+<span class="n">vac</span> <span class="o">=</span> <span class="mf">46.66</span>
+</pre></div>
+</div>
+<p>and the corresponding value of alive would be 103.32. In this way, the difference between the data provided by the user and the values used for initialization is minimized across all of the values provided. The least squares solution also has the useful property that it is unique.</p>
+</div>
+<div class="section" id="resolving-inconsistencies-initialization-weight">
+<h4>Resolving inconsistencies - initialization weight<a class="headerlink" href="#resolving-inconsistencies-initialization-weight" title="Permalink to this headline">¶</a></h4>
+<p>In the example above, where the inconsistent input values of</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sus</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">vac</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">alive</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p>were resolved with the valid initialization</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sus</span> <span class="o">=</span> <span class="mf">56.66</span>
+<span class="n">vac</span> <span class="o">=</span> <span class="mf">46.66</span>
+<span class="n">alive</span> <span class="o">=</span> <span class="mf">103.32</span>
+</pre></div>
+</div>
+<p>the overall residual has been minimized across all of the provided characteristics. However, in general there are likely to be uncertainties in the data. The user may wish to more closely match the data they are most certain about. For example, if there was a census in that year so that <code class="docutils literal notranslate"><span class="pre">alive=100</span></code> is quite likely, and there was also good data on vaccination stating that <code class="docutils literal notranslate"><span class="pre">vac=50</span></code> then it may be preferable to use an initialization like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sus</span> <span class="o">=</span> <span class="mf">50.2</span>
+<span class="n">vac</span> <span class="o">=</span> <span class="mf">49.9</span>
+<span class="n">alive</span> <span class="o">=</span> <span class="mf">100.2</span>
+</pre></div>
+</div>
+<p>where the initialization penalizes discrepancies in <code class="docutils literal notranslate"><span class="pre">alive</span></code> and <code class="docutils literal notranslate"><span class="pre">vac</span></code> more than discrepancies in <code class="docutils literal notranslate"><span class="pre">sus</span></code>. This is a simple case of weighted least squares, and can be readily incorporated into the algorithm. To cater for this, the user needs to specify a <strong>setup weight</strong> for each characteristic. <strong>However, using the provided setup weights has not been implemented in Atomica yet</strong>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="computing-initial-values-at-arbitrary-times">
+<h2>Computing initial values at arbitrary times<a class="headerlink" href="#computing-initial-values-at-arbitrary-times" title="Permalink to this headline">¶</a></h2>
+<p>The initial compartment values are computed based on the characteristic values at a specific point in time. However, the data values entered in the databook are in general provided at sparse, arbitrary times. Therefore, it is typically necessary to interpolate each of the characteristics onto the initial simulation time prior to calculating the initial compartment values.</p>
+<p>The critical issue here is that inconsistencies in the values can be time dependent. For example, the user may enter a consistent set of values in 1990 but an invalid set of values in 2000. If the simulation is started in 1990 then it may run fine, but if started in 2000 it is possible that an inconsistency could result in negative compartment sizes. More insidious is the possibility that interpolation could result in inconsistent values. For example, suppose that the values are consistent in 1990 <em>and</em> in 2000. It is still possible that in 1995 the interpolated values are not consistent, particularly if some of the characteristics have data values between 1990 and 2000 and others do not.</p>
+<p>Because the interpolation routine uses the nearest-neighbour value for times before and after the first or last data point, respectively, if the simulation is started from the first year in the databook then it is possible to directly read out the characteristic values used for interpolation, which makes diagnosing inconsistencies easier. However, if interpolation results in inconsistencies, the input characteristic values will not correspond to anything entered in the databook. So it is important to keep this issue in mind when diagnosing inconsistent initializations when the simulation start year is different to the data start year.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Contextual-Overview.html" class="btn btn-neutral float-right" title="Contextual overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="General content" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
