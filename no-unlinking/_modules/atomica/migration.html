@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.23.0
+                1.23.1
               </div>
             
           
@@ -179,7 +179,6 @@
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
 <span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
-<span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
 <span class="kn">import</span> <span class="nn">atomica</span>
 <span class="kn">import</span> <span class="nn">types</span>
@@ -389,6 +388,7 @@
 <span class="sd">        do_stuff(result)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
 
     <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -416,6 +416,7 @@
 <span class="sd">        do_stuff(progset)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
 
     <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">progsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">yield</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
@@ -442,6 +443,7 @@
 <span class="sd">    :return: A framework (via yield)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
 
     <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span>
@@ -929,6 +931,16 @@
     <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
         <span class="k">del</span> <span class="n">pop</span><span class="o">.</span><span class="n">is_linked</span>
     <span class="k">return</span> <span class="n">result</span>
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;ProgramSet&#39;</span><span class="p">,</span> <span class="s1">&#39;1.23.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.23.1&#39;</span><span class="p">,</span> <span class="s1">&#39;ProgramSet records all compartments including non-targetable ones&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_add_progset_non_targetable_flag</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">code_name</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">comp</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+            <span class="n">comp</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;non_targetable&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">comp</span><span class="p">:</span>
+            <span class="n">comp</span><span class="p">[</span><span class="s1">&#39;non_targetable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">progset</span>
 </pre></div>
 
            </div>
