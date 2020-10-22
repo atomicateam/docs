@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.22.1
+                1.23.2
               </div>
             
           
@@ -176,7 +176,8 @@
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">NamedItem</span><span class="p">,</span> <span class="n">TimeSeries</span>
 <span class="kn">import</span> <span class="nn">scipy.interpolate</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Parameter&#39;</span><span class="p">,</span><span class="s1">&#39;ParameterSet&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Parameter&quot;</span><span class="p">,</span> <span class="s2">&quot;ParameterSet&quot;</span><span class="p">]</span>
+
 
 <div class="viewcode-block" id="Parameter"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter">[docs]</a><span class="k">class</span> <span class="nc">Parameter</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -193,7 +194,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">y_factor</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># : Calibration scale factors for the parameter in each population</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta_y_factor</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># : Calibration scale factor for all populations</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">skip_function</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># : This can be a range of years [start,stop] between which the parameter function will not be evaluated</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_interpolation_method</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span>  <span class="c1">#: Fallback interpolation method. It is _strongly_ recommended not to change this, but to call ``Parameter.smooth()` instead</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interpolation_method</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>  <span class="c1">#: Fallback interpolation method. It is _strongly_ recommended not to change this, but to call ``Parameter.smooth()` instead</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">pops</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -263,7 +264,7 @@
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">constant</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Parameter.smooth"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter.smooth">[docs]</a>    <span class="k">def</span> <span class="nf">smooth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;smoothinterp&#39;</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Parameter.smooth"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter.smooth">[docs]</a>    <span class="k">def</span> <span class="nf">smooth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;smoothinterp&quot;</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Smooth the parameter&#39;s time values</span>
 
@@ -301,17 +302,19 @@
             <span class="n">pop_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;smoothinterp&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;smoothinterp&quot;</span><span class="p">:</span>
                 <span class="c1"># Generating function for smooth-interp interpolator</span>
                 <span class="k">def</span> <span class="nf">smoothinterp</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
                     <span class="k">def</span> <span class="nf">fcn</span><span class="p">(</span><span class="n">x2</span><span class="p">):</span>
                         <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">smoothinterp</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
                     <span class="k">return</span> <span class="n">fcn</span>
+
                 <span class="n">method</span> <span class="o">=</span> <span class="n">smoothinterp</span>
-            <span class="k">elif</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;pchip&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;previous&#39;</span><span class="p">]:</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;pchip&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;previous&quot;</span><span class="p">]:</span>
                 <span class="k">pass</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unknown smoothing method&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unknown smoothing method&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_names</span><span class="p">:</span>
             <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span>
@@ -348,7 +351,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pop_names</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># : List of all population code names contained in the ``ParameterSet``</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pop_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">pop</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>  <span class="c1"># : List of corresponding full names for populations</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pop_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">pop</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>  <span class="c1"># : List of corresponding population types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pop_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">pop</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>  <span class="c1"># : List of corresponding population types</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pars</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>  <span class="c1"># : Stores the Parameter instances contained by this ParameterSet associated with framework comps, characs, and parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>  <span class="c1"># : Stores the Parameter instances contained by this ParameterSet associated with databook transfers, keyed by source population</span>
@@ -369,19 +372,19 @@
                 <span class="n">ts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
                 <span class="n">units</span> <span class="o">=</span> <span class="n">framework</span><span class="o">.</span><span class="n">get_databook_units</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">pop_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_names</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">pop_name</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;population type&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">pop_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;population type&quot;</span><span class="p">]:</span>
                         <span class="n">ts</span><span class="p">[</span><span class="n">pop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
 
         <span class="c1"># Instantiate parameters for transfers and interactions</span>
         <span class="c1"># As with TDVE quantities, these must be initialized from the databook</span>
         <span class="k">for</span> <span class="n">tdc</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">transfers</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">interpops</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tdc</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;transfer&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tdc</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;transfer&quot;</span><span class="p">:</span>
                 <span class="n">item_storage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span>
-            <span class="k">elif</span> <span class="n">tdc</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;interaction&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">tdc</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;interaction&quot;</span><span class="p">:</span>
                 <span class="n">item_storage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unknown time-dependent connection type&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unknown time-dependent connection type&quot;</span><span class="p">)</span>
 
             <span class="n">name</span> <span class="o">=</span> <span class="n">tdc</span><span class="o">.</span><span class="n">code_name</span>  <span class="c1"># The name of this interaction e.g. &#39;age&#39;</span>
             <span class="n">item_storage</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>

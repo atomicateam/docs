@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.22.1
+                1.23.2
               </div>
             
           
@@ -179,21 +179,35 @@
 /* CSS for nbsphinx extension */
 
 /* remove conflicting styling from Sphinx themes */
-div.nbinput.container,
-div.nbinput.container div.prompt,
-div.nbinput.container div.input_area,
-div.nbinput.container div[class*=highlight],
-div.nbinput.container div[class*=highlight] pre,
-div.nboutput.container,
-div.nboutput.container div.prompt,
-div.nboutput.container div.output_area,
-div.nboutput.container div[class*=highlight],
-div.nboutput.container div[class*=highlight] pre {
-    background: none;
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
     border: none;
-    padding: 0 0;
+    padding: 0;
     margin: 0;
     box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
 }
 
 /* avoid gaps between output lines */
@@ -294,7 +308,7 @@ div.nboutput.container div.output_area {
 div.nbinput.container div.input_area {
     border: 1px solid #e0e0e0;
     border-radius: 2px;
-    background: #f5f5f5;
+    /*background: #f5f5f5;*/
 }
 
 /* override MathJax center alignment in output cells */
@@ -360,6 +374,7 @@ div.nboutput.container div.output_area.rendered_html,
 div.nboutput.container div.output_area > div.output_javascript,
 div.nboutput.container div.output_area:not(.rendered_html) > img{
     padding: 5px;
+    margin: 0;
 }
 
 /* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
@@ -462,7 +477,7 @@ existing data. These same parameters are then used for future projections.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0117s
+Elapsed time for running &#34;default&#34;: 0.00974s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -536,7 +551,7 @@ methods.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0114s
+Elapsed time for running &#34;default&#34;: 0.00967s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -573,7 +588,7 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-#0: &#34;adults&#34;: 1.3187231063842775
+#0: &#34;adults&#34;: 1.3186998248100283
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -602,7 +617,7 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0179s
+Elapsed time for running &#34;default&#34;: 0.00899s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -655,7 +670,7 @@ changing the rate at which people are infected and changing the rate at which pe
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0113s
+Elapsed time for running &#34;default&#34;: 0.00887s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -712,11 +727,11 @@ child incidence through mother-to-child transmission.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-b_rate: y_factor = 1.9378125
-doth_rate: y_factor = 0.9768981933593751
-foi: y_factor = 1.3189746093749999
-rec_rate: y_factor = 0.040771850585937505
-m_rate: y_factor = 0.12491082074120625
+b_rate: y_factor = 1.8496538853220195
+doth_rate: y_factor = 0.8969955247068474
+foi: y_factor = 1.5007108744874136
+rec_rate: y_factor = 0.12856873439281485
+m_rate: y_factor = 0.17445178544340928
 </pre></div></div>
 </div>
 <p>Some of these values are low at around 0.15, and this can be attributed to the high value for prevalence (<code class="docutils literal notranslate"><span class="pre">inf</span></code>) in the databook requiring a low value for each of <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code>, <code class="docutils literal notranslate"><span class="pre">rec_rate</span></code>, and <code class="docutils literal notranslate"><span class="pre">m_rate</span></code>. Individually these are not outside of a ‘reasonable’ range for calibration <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> but as they are all needed to fit a single data point this might suggest a second look at the reliability of original data values for prevalence in this project.</p>
