@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.23.1
+                1.23.2
               </div>
             
           
@@ -462,6 +462,8 @@ to be manually called. However, in rare cases, it may be necessary to explicitly
 Specifically, the interpolation method needs to match the underlying assumption for parameter values. For
 parameter scenarios, this may require that the ‘previous’ method is used (to match the assumption in the parameter overwrite)
 rather than relying on the standard assumption that databook quantities can be interpolated directly.</p>
+<p>This method modifies the <cite>PlotData</cite> object in-place. However, the modified object is also returned, so that
+time aggregation can be chained with other operations, the same as <cite>PlotData.interpolate()</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -473,8 +475,8 @@ aggregated over a 1 year period will display as the equivalent number of people 
 most dynamic quantities, while ‘previous’ should be used for spending and other program-related quantities.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same modified <cite>PlotData</cite> instance</p>
 </dd>
 </dl>
 </dd></dl>

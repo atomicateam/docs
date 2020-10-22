@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.23.1
+                1.23.2
               </div>
             
           
@@ -173,7 +173,8 @@
 <span class="kn">from</span> <span class="nn">.scenarios</span> <span class="kn">import</span> <span class="n">BudgetScenario</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;demo&#39;</span><span class="p">,</span> <span class="s1">&#39;make_demo_scenarios&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;demo&quot;</span><span class="p">,</span> <span class="s2">&quot;make_demo_scenarios&quot;</span><span class="p">]</span>
+
 
 <div class="viewcode-block" id="demo"><a class="viewcode-back" href="../../_autosummary/atomica.demos.demo.html#atomica.demos.demo">[docs]</a><span class="k">def</span> <span class="nf">demo</span><span class="p">(</span><span class="n">which</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">do_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">addprogs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Project</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -187,33 +188,33 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">options</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">&#39;udt&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;udt_dyn&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;usdt&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;cervicalcancer&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;sir&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;diabetes&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;combined&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;udt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;udt_dyn&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;usdt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cervicalcancer&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sir&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;diabetes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;combined&quot;</span><span class="p">,</span>
         <span class="c1"># &#39;service&#39;,</span>
-        <span class="s1">&#39;hypertension&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;hypertension_dyn&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;hiv&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;hiv_dyn&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;tb_simple&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;tb_simple_dyn&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;environment&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;tb&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;hypertension&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hypertension_dyn&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hiv&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hiv_dyn&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tb_simple&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tb_simple_dyn&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;environment&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tb&quot;</span><span class="p">,</span>
     <span class="p">]</span>
 
-    <span class="n">dtdict</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
-    <span class="n">dtdict</span><span class="p">[</span><span class="s1">&#39;tb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">dtdict</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">dtdict</span><span class="p">[</span><span class="s2">&quot;tb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
 
     <span class="k">if</span> <span class="n">which</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">which</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Supported project types are:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">options</span><span class="p">)))</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Supported project types are:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">options</span><span class="p">)))</span>
 
-    <span class="n">framework</span> <span class="o">=</span> <span class="n">LIBRARY_PATH</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s1">_framework.xlsx&#39;</span>
-    <span class="n">databook</span> <span class="o">=</span> <span class="n">LIBRARY_PATH</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s1">_databook.xlsx&#39;</span>
-    <span class="n">progbook</span> <span class="o">=</span> <span class="n">LIBRARY_PATH</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s1">_progbook.xlsx&#39;</span>
+    <span class="n">framework</span> <span class="o">=</span> <span class="n">LIBRARY_PATH</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2">_framework.xlsx&quot;</span>
+    <span class="n">databook</span> <span class="o">=</span> <span class="n">LIBRARY_PATH</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2">_databook.xlsx&quot;</span>
+    <span class="n">progbook</span> <span class="o">=</span> <span class="n">LIBRARY_PATH</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2">_progbook.xlsx&quot;</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating a &quot;</span> <span class="o">+</span> <span class="n">which</span> <span class="o">+</span> <span class="s2">&quot; project...&quot;</span><span class="p">)</span>
     <span class="n">P</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="n">framework</span><span class="p">,</span> <span class="n">databook</span><span class="o">=</span><span class="n">databook</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -226,10 +227,10 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading progbook&quot;</span><span class="p">)</span>
         <span class="n">P</span><span class="o">.</span><span class="n">load_progbook</span><span class="p">(</span><span class="n">progbook</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Creating program scenarios&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Creating program scenarios&quot;</span><span class="p">)</span>
         <span class="n">make_demo_scenarios</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Finished creating demo project&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Finished creating demo project&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">P</span></div>
 
@@ -264,8 +265,7 @@
 
     <span class="c1"># Add default budget scenario</span>
     <span class="c1"># proj.scens.append(CombinedScenario(name=&#39;Default budget&#39;,parsetname=parsetname,progsetname=progset.name,active=True,instructions=ProgramInstructions(start_year,alloc=current_budget)))</span>
-    <span class="n">proj</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BudgetScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Default budget&#39;</span><span class="p">,</span> <span class="n">parsetname</span><span class="o">=</span><span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="o">=</span><span class="n">progset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                                     <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alloc</span><span class="o">=</span><span class="n">current_budget</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="n">start_year</span><span class="p">))</span>
+    <span class="n">proj</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BudgetScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Default budget&quot;</span><span class="p">,</span> <span class="n">parsetname</span><span class="o">=</span><span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="o">=</span><span class="n">progset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alloc</span><span class="o">=</span><span class="n">current_budget</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="n">start_year</span><span class="p">))</span>
 
     <span class="c1"># Add doubled budget</span>
     <span class="n">doubled_budget</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">current_budget</span><span class="p">)</span>
@@ -274,16 +274,14 @@
         <span class="n">ts</span><span class="o">.</span><span class="n">remove_after</span><span class="p">(</span><span class="n">start_year</span><span class="p">)</span>
         <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">start_year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">start_year</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
     <span class="c1"># proj.scens.append(CombinedScenario(name=&#39;Doubled budget&#39;,parsetname=parsetname,progsetname=progset.name,active=True,instructions=ProgramInstructions(start_year,alloc=doubled_budget)))</span>
-    <span class="n">proj</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BudgetScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Doubled budget&#39;</span><span class="p">,</span> <span class="n">parsetname</span><span class="o">=</span><span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="o">=</span><span class="n">progset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                                     <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alloc</span><span class="o">=</span><span class="n">doubled_budget</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="n">start_year</span><span class="p">))</span>
+    <span class="n">proj</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BudgetScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Doubled budget&quot;</span><span class="p">,</span> <span class="n">parsetname</span><span class="o">=</span><span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="o">=</span><span class="n">progset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alloc</span><span class="o">=</span><span class="n">doubled_budget</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="n">start_year</span><span class="p">))</span>
 
     <span class="c1"># Add zero budget</span>
     <span class="n">zero_budget</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">doubled_budget</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">zero_budget</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">start_year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
     <span class="c1"># proj.scens.append(CombinedScenario(name=&#39;Zero budget&#39;,parsetname=parsetname,progsetname=progset.name,active=True,instructions=ProgramInstructions(start_year,alloc=zero_budget)))</span>
-    <span class="n">proj</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BudgetScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Zero budget&#39;</span><span class="p">,</span> <span class="n">parsetname</span><span class="o">=</span><span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="o">=</span><span class="n">progset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                                     <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alloc</span><span class="o">=</span><span class="n">zero_budget</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="n">start_year</span><span class="p">))</span></div>
+    <span class="n">proj</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BudgetScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Zero budget&quot;</span><span class="p">,</span> <span class="n">parsetname</span><span class="o">=</span><span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="o">=</span><span class="n">progset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alloc</span><span class="o">=</span><span class="n">zero_budget</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="n">start_year</span><span class="p">))</span></div>
 </pre></div>
 
            </div>
