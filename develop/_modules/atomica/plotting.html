@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.22.1
+                1.23.0
               </div>
             
           
@@ -619,7 +619,7 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">output</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Cumulative &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">output</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="PlotData.time_aggregate"><a class="viewcode-back" href="../../_autosummary/atomica.plotting.PlotData.html#atomica.plotting.PlotData.time_aggregate">[docs]</a>    <span class="k">def</span> <span class="nf">time_aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_bins</span><span class="p">,</span> <span class="n">time_aggregation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interpolation_method</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PlotData.time_aggregate"><a class="viewcode-back" href="../../_autosummary/atomica.plotting.PlotData.html#atomica.plotting.PlotData.time_aggregate">[docs]</a>    <span class="k">def</span> <span class="nf">time_aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_bins</span><span class="p">,</span> <span class="n">time_aggregation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interpolation_method</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Aggregate values over time</span>
 
@@ -632,12 +632,16 @@
 <span class="sd">        parameter scenarios, this may require that the &#39;previous&#39; method is used (to match the assumption in the parameter overwrite)</span>
 <span class="sd">        rather than relying on the standard assumption that databook quantities can be interpolated directly.</span>
 
+<span class="sd">        This method modifies the `PlotData` object in-place. However, the modified object is also returned, so that</span>
+<span class="sd">        time aggregation can be chained with other operations, the same as `PlotData.interpolate()`.</span>
+
 <span class="sd">        :param t_bins: Vector of bin edges OR a scalar bin size, which will be automatically expanded to a vector of bin edges</span>
 <span class="sd">        :param time_aggregation: can be &#39;sum&#39; or &#39;average&#39;. Note that for quantities that have a timescale, &#39;sum&#39; behaves like integration</span>
 <span class="sd">                                 so flow parameters in number units will be adjusted accordingly (e.g. a parameter in units of &#39;people/day&#39;</span>
 <span class="sd">                                 aggregated over a 1 year period will display as the equivalent number of people that year)</span>
 <span class="sd">        :param interpolation_method: Assumption on how the quantity behaves in between timesteps - in general, &#39;linear&#39; should be suitable for</span>
 <span class="sd">                                     most dynamic quantities, while &#39;previous&#39; should be used for spending and other program-related quantities.</span>
+<span class="sd">        :return: The same modified `PlotData` instance</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -737,7 +741,9 @@
             <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">t_bins</span><span class="p">)</span> <span class="ow">and</span> <span class="n">t_bins</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
                 <span class="n">s</span><span class="o">.</span><span class="n">t_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;All&#39;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">s</span><span class="o">.</span><span class="n">t_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">-</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span> <span class="k">for</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)]</span></div>
+                <span class="n">s</span><span class="o">.</span><span class="n">t_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">-</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">)</span> <span class="k">for</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)]</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;PlotData</span><span class="se">\n</span><span class="s2">&quot;</span>

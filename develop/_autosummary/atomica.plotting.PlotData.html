@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.22.1
+                1.23.0
               </div>
             
           
@@ -226,7 +226,7 @@
 <dl class="py class">
 <dt id="atomica.plotting.PlotData">
 <em class="property">class </em><code class="sig-prename descclassname">atomica.plotting.</code><code class="sig-name descname">PlotData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span></em>, <em class="sig-param"><span class="n">outputs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pops</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_aggregation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pop_aggregation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">project</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">time_aggregation</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">t_bins</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">accumulate</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#PlotData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.PlotData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Process model outputs into plottable quantities</p>
 <p>This is what gets passed into a plotting function, which displays a View of the data
 Conceptually, we are applying visuals to the data.
@@ -306,7 +306,7 @@ a particular <a class="reference internal" href="atomica.plotting.Series.html#at
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>) – A tuple of (result,pop,output)</p>
+<dd class="field-odd"><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>) – A tuple of (result,pop,output)</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A <a class="reference internal" href="atomica.plotting.Series.html#atomica.plotting.Series" title="atomica.plotting.Series"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></a> instance</p>
@@ -364,7 +364,7 @@ Therefore, we need to use the time vector actually contained in the Series objec
 </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -462,6 +462,8 @@ to be manually called. However, in rare cases, it may be necessary to explicitly
 Specifically, the interpolation method needs to match the underlying assumption for parameter values. For
 parameter scenarios, this may require that the ‘previous’ method is used (to match the assumption in the parameter overwrite)
 rather than relying on the standard assumption that databook quantities can be interpolated directly.</p>
+<p>This method modifies the <cite>PlotData</cite> object in-place. However, the modified object is also returned, so that
+time aggregation can be chained with other operations, the same as <cite>PlotData.interpolate()</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -473,8 +475,8 @@ aggregated over a 1 year period will display as the equivalent number of people 
 most dynamic quantities, while ‘previous’ should be used for spending and other program-related quantities.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The same modified <cite>PlotData</cite> instance</p>
 </dd>
 </dl>
 </dd></dl>
