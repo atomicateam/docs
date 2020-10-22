@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.plotting.plot_bars &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.plotting.plot_legend" href="atomica.plotting.plot_legend.html" />
+    <link rel="prev" title="atomica.plotting" href="atomica.plotting.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.23.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.model.html">atomica.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.plotting.plot_bars</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.plot_legend.html">atomica.plotting.plot_legend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.plot_series.html">atomica.plotting.plot_series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.relabel_legend.html">atomica.plotting.relabel_legend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.reorder_legend.html">atomica.plotting.reorder_legend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.save_figs.html">atomica.plotting.save_figs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.PlotData.html">atomica.plotting.PlotData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.Series.html">atomica.plotting.Series</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.programs.html">atomica.programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.plotting.html">atomica.plotting</a> &raquo;</li>
+        
+      <li>atomica.plotting.plot_bars</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-plotting-plot-bars">
+<h1>atomica.plotting.plot_bars<a class="headerlink" href="#atomica-plotting-plot-bars" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="atomica.plotting.plot_bars">
+<code class="sig-prename descclassname">atomica.plotting.</code><code class="sig-name descname">plot_bars</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plotdata</span></em>, <em class="sig-param"><span class="n">stack_pops</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stack_outputs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">outer</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">legend_mode</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">show_all_labels</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">orientation</span><span class="o">=</span><span class="default_value">'vertical'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#plot_bars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.plot_bars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a bar plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plotdata</strong> – a <a class="reference internal" href="atomica.plotting.PlotData.html#atomica.plotting.PlotData" title="atomica.plotting.PlotData"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotData</span></code></a> instance to plot</p></li>
+<li><p><strong>stack_pops</strong> – A list of lists with populations to stack. A bar is rendered for each item in the list.
+For example, <cite>[[‘0-4’,’5-14’],[‘15-64’]]</cite> will render two bars, with two populations stacked
+in the first bar, and only one population in the second bar. Items not appearing in this list
+will be rendered unstacked.</p></li>
+<li><p><strong>stack_outputs</strong> – Same as <cite>stack_pops</cite>, but for outputs.</p></li>
+<li><p><strong>outer</strong> – Optionally select whether the outermost/highest level of grouping is by <cite>‘times’</cite> or by <cite>‘results’</cite></p></li>
+<li><p><strong>legend_mode</strong> – override the default legend mode in settings</p></li>
+<li><p><strong>show_all_labels</strong> – If True, then inner/outer labels will be shown even if there is only one label</p></li>
+<li><p><strong>orientation</strong> – ‘vertical’ (default) or ‘horizontal’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of newly created Figures</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="atomica.plotting.plot_legend.html" class="btn btn-neutral float-right" title="atomica.plotting.plot_legend" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="atomica.plotting.html" class="btn btn-neutral float-left" title="atomica.plotting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

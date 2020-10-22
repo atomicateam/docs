@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.plotting.Series &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.programs" href="atomica.programs.html" />
+    <link rel="prev" title="atomica.plotting.PlotData" href="atomica.plotting.PlotData.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.23.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.model.html">atomica.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.plot_bars.html">atomica.plotting.plot_bars</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.plot_legend.html">atomica.plotting.plot_legend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.plot_series.html">atomica.plotting.plot_series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.relabel_legend.html">atomica.plotting.relabel_legend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.reorder_legend.html">atomica.plotting.reorder_legend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.save_figs.html">atomica.plotting.save_figs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.plotting.PlotData.html">atomica.plotting.PlotData</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.plotting.Series</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.programs.html">atomica.programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.plotting.html">atomica.plotting</a> &raquo;</li>
+        
+      <li>atomica.plotting.Series</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-plotting-series">
+<h1>atomica.plotting.Series<a class="headerlink" href="#atomica-plotting-series" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="atomica.plotting.Series">
+<em class="property">class </em><code class="sig-prename descclassname">atomica.plotting.</code><code class="sig-name descname">Series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tvec</span></em>, <em class="sig-param"><span class="n">vals</span></em>, <em class="sig-param"><span class="n">result</span><span class="o">=</span><span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">pop</span><span class="o">=</span><span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">output</span><span class="o">=</span><span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">data_label</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">timescale</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">data_pop</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#Series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.Series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represent a plottable time series</p>
+<p>A Series represents a quantity available for plotting. It is like a <cite>TimeSeries</cite> but contains
+additional information only used for plotting, such as color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tvec</strong> – array of time values</p></li>
+<li><p><strong>vals</strong> – array of values</p></li>
+<li><p><strong>result</strong> – name of the result associated with ths data</p></li>
+<li><p><strong>pop</strong> – name of the pop associated with the data</p></li>
+<li><p><strong>output</strong> – name of the output associated with the data</p></li>
+<li><p><strong>data_label</strong> – name of a quantity in project data to plot in conjunction with this <cite>Series</cite></p></li>
+<li><p><strong>color</strong> – the color to render the <cite>Series</cite> with</p></li>
+<li><p><strong>units</strong> – the units for the values</p></li>
+<li><p><strong>timescale</strong> – For Number, Probability and Duration units, there are timescales associated with them</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.plotting.Series.unit_string" title="atomica.plotting.Series.unit_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unit_string</span></code></a></p></td>
+<td><p>Return the units for the quantity including timescale</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.plotting.Series.interpolate" title="atomica.plotting.Series.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate</span></code></a></p></td>
+<td><p>Return interpolated vector of values</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="atomica.plotting.Series.data_label">
+<code class="sig-name descname">data_label</code><a class="headerlink" href="#atomica.plotting.Series.data_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to identify data for plotting - should match the name of a data TDVE</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.plotting.Series.data_pop">
+<code class="sig-name descname">data_pop</code><a class="headerlink" href="#atomica.plotting.Series.data_pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to identify which population in the TDVE (specified by <code class="docutils literal notranslate"><span class="pre">data_label</span></code>) to look up</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.plotting.Series.interpolate">
+<code class="sig-name descname">interpolate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_tvec</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#Series.interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.plotting.Series.interpolate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return interpolated vector of values</p>
+<p>This function returns an <cite>np.array()</cite> with the values of this series interpolated onto the requested
+time array new_tvec. To ensure results are not misleading, extrapolation is disabled
+and will return <cite>NaN</cite> if <cite>new_tvec</cite> contains values outside the original time range.</p>
+<p>Note that unlike <cite>PlotData.interpolate()</cite>, <cite>Series.interpolate()</cite> does not modify the object but instead
+returns the interpolated values. This makes the <cite>Series</cite> object more versatile (<cite>PlotData</cite> is generally
+used only for plotting, but the <cite>Series</cite> object can be a convenient way to work with values computed using
+the sophisticated aggregations within <cite>PlotData</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_tvec</strong> – array of new time values</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>array with interpolated values (same size as <cite>new_tvec</cite>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.plotting.Series.timescale">
+<code class="sig-name descname">timescale</code><a class="headerlink" href="#atomica.plotting.Series.timescale" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the quantity has a time-like denominator (e.g. number/year, probability/day) then the denominator is stored here (in units of years)
+This enables quantities to be time-aggregated correctly (e.g. number/day must be converted to number/timestep prior to summation or integration)
+For links, the timescale is normally just <code class="docutils literal notranslate"><span class="pre">dt</span></code>. This also enables more rigorous checking for quantities with time denominators than checking
+for a string like <code class="docutils literal notranslate"><span class="pre">'/year'</span></code> because users may not set this specifically.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.plotting.Series.unit_string">
+<em class="property">property </em><code class="sig-name descname">unit_string</code><a class="headerlink" href="#atomica.plotting.Series.unit_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the units for the quantity including timescale</p>
+<p>When making plots, it is useful for the axis label to have the units of the quantity. The units should
+also include the time scale e.g. “Death rate (probability per day)”. However, if the timescale changes
+due to aggregation or accumulation, then the value might be different. In that case,
+The unit of the quantity is interpreted as a numerator if the Timescale is not None. For example,
+Compartments have units of ‘number’, while Links have units of ‘number/timestep’ which is stored as
+<code class="docutils literal notranslate"><span class="pre">Series.units='number'</span></code> and <code class="docutils literal notranslate"><span class="pre">Series.timescale=0.25</span></code> (if <code class="docutils literal notranslate"><span class="pre">dt=0.25</span></code>). The <cite>unit_string</cite> attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.plotting.Series.units">
+<code class="sig-name descname">units</code><a class="headerlink" href="#atomica.plotting.Series.units" title="Permalink to this definition">¶</a></dt>
+<dd><p>The units for the quantity to display on the plot</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="atomica.programs.html" class="btn btn-neutral float-right" title="atomica.programs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="atomica.plotting.PlotData.html" class="btn btn-neutral float-left" title="atomica.plotting.PlotData" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
