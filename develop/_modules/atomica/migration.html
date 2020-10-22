@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.23.0
+                1.23.2
               </div>
             
           
@@ -179,7 +179,6 @@
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
 <span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
-<span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
 <span class="kn">import</span> <span class="nn">atomica</span>
 <span class="kn">import</span> <span class="nn">types</span>
@@ -187,7 +186,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;migration&#39;</span><span class="p">,</span> <span class="s1">&#39;migrate&#39;</span><span class="p">,</span> <span class="s1">&#39;register_migration&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;migration&quot;</span><span class="p">,</span> <span class="s2">&quot;migrate&quot;</span><span class="p">,</span> <span class="s2">&quot;register_migration&quot;</span><span class="p">]</span>
 
 <span class="n">SKIP_MIGRATION</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Global migration flag to disable migration</span>
 
@@ -197,13 +196,13 @@
 <span class="c1"># to be loaded at all</span>
 
 
-<span class="k">class</span> <span class="nc">_Placeholder</span><span class="p">():</span>
+<span class="k">class</span> <span class="nc">_Placeholder</span><span class="p">:</span>
     <span class="k">pass</span>
 
 
 <span class="c1"># First, add any placeholder modules that have been subsequently removed</span>
-<span class="n">atomica</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">(</span><span class="s1">&#39;structure&#39;</span><span class="p">)</span>  <span class="c1"># Removed &#39;structure&#39; module in 1.0.12 20181107</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;atomica.structure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">structure</span>
+<span class="n">atomica</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">(</span><span class="s2">&quot;structure&quot;</span><span class="p">)</span>  <span class="c1"># Removed &#39;structure&#39; module in 1.0.12 20181107</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s2">&quot;atomica.structure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">structure</span>
 
 <span class="c1"># Then, remap any required classes</span>
 <span class="n">atomica</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">TimeSeries</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">TimeSeries</span>  <span class="c1"># Moved &#39;TimeSeries&#39; in 1.0.12 20181107</span>
@@ -225,7 +224,7 @@
 
 
 <div class="viewcode-block" id="Migration"><a class="viewcode-back" href="../../_autosummary/atomica.migration.Migration.html#atomica.migration.Migration">[docs]</a><span class="k">class</span> <span class="nc">Migration</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot; Class representation of a migration</span>
+    <span class="sd">&quot;&quot;&quot;Class representation of a migration</span>
 
 <span class="sd">    This class stores a migration function together with all required metadata. It would</span>
 <span class="sd">    normally be instantiated using the `migration` decorator, which also registers the</span>
@@ -252,7 +251,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fcn</span> <span class="o">=</span> <span class="n">fcn</span>
 
     <span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;MIGRATION: Upgrading </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> -&gt; </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;MIGRATION: Upgrading </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fcn</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>  <span class="c1"># Run the migration function</span>
         <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Migration &quot;</span><span class="si">%s</span><span class="s1">&quot; returned None, it is likely missing a return statement&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
@@ -262,11 +261,11 @@
         <span class="k">return</span> <span class="n">obj</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;Migration(</span><span class="si">%s</span><span class="s1">-&gt;</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">original_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_version</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s2">&quot;Migration(</span><span class="si">%s</span><span class="s2">-&gt;</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">original_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_version</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="register_migration"><a class="viewcode-back" href="../../_autosummary/atomica.migration.register_migration.html#atomica.migration.register_migration">[docs]</a><span class="k">def</span> <span class="nf">register_migration</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">original_version</span><span class="p">,</span> <span class="n">new_version</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">update_required</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Decorator to register migration functions</span>
+    <span class="sd">&quot;&quot;&quot;Decorator to register migration functions</span>
 
 <span class="sd">    This decorator constructs a `Migration` object from a decorated migration function, and registers it</span>
 <span class="sd">    in the module&#39;s list of migrations to be run when calling migrate()</span>
@@ -299,6 +298,7 @@
             <span class="n">registry</span><span class="p">[</span><span class="n">classname</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">registry</span><span class="p">[</span><span class="n">classname</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Migration</span><span class="p">(</span><span class="n">classname</span><span class="p">,</span> <span class="n">original_version</span><span class="p">,</span> <span class="n">new_version</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">fcn</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">update_required</span><span class="o">=</span><span class="n">update_required</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">f</span>
+
     <span class="k">return</span> <span class="n">register</span></div>
 
 
@@ -311,7 +311,7 @@
 
 
 <div class="viewcode-block" id="migrate"><a class="viewcode-back" href="../../_autosummary/atomica.migration.migrate.html#atomica.migration.migrate">[docs]</a><span class="k">def</span> <span class="nf">migrate</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">registry</span><span class="o">=</span><span class="n">migrations</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span><span class="o">=</span><span class="n">gitinfo</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Update a object to the latest version</span>
+    <span class="sd">&quot;&quot;&quot;Update a object to the latest version</span>
 
 <span class="sd">    Run all of the migrations in the list of available migrations. The migrations are run in ascending order, as long</span>
 <span class="sd">    as the version is &lt;= the migration&#39;s original version. This way, migrations don&#39;t need to be added if a version number</span>
@@ -337,13 +337,13 @@
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">registry</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">obj</span>  <span class="c1"># If there are no migrations for the object, then return immediately</span>
 
-    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">):</span>
         <span class="c1"># If the object has no version attribute, then add one with version 0. This is presumably</span>
         <span class="c1"># because the original object didn&#39;t have a version, but now migrations for it are required.</span>
         <span class="c1"># In that case, any object that doesn&#39;t have a version would require all migrations to be run.</span>
         <span class="c1"># New objects would all have a version already. After any migrations are run, these values will</span>
         <span class="c1"># then be updated to the current version</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;0.0.0&#39;</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;0.0.0&quot;</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">gitinfo</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">SKIP_MIGRATION</span><span class="p">:</span>
@@ -354,10 +354,10 @@
     <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">compareversions</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">obj</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Migrating </span><span class="si">%s</span><span class="s1"> &quot;</span><span class="si">%s</span><span class="s1">&quot; from </span><span class="si">%s</span><span class="s1">-&gt;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Migrating </span><span class="si">%s</span><span class="s1"> from </span><span class="si">%s</span><span class="s1">-&gt;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Migrating </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">-&gt;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">migrations_to_run</span><span class="p">:</span>  <span class="c1"># Run the migrations in increasing version order</span>
         <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">compareversions</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">new_version</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -365,13 +365,13 @@
 
     <span class="n">obj</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>  <span class="c1"># Set object version to the current Atomica version</span>
     <span class="n">obj</span><span class="o">.</span><span class="n">gitinfo</span> <span class="o">=</span> <span class="n">gitinfo</span>  <span class="c1"># Update gitinfo to current version</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;_update_required&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">_update_required</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Caution: due to migration, object may behave different if re-run.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;_update_required&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">_update_required</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Caution: due to migration, object may behave different if re-run.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">obj</span></div>
 
 
 <div class="viewcode-block" id="all_results"><a class="viewcode-back" href="../../_autosummary/atomica.migration.all_results.html#atomica.migration.all_results">[docs]</a><span class="k">def</span> <span class="nf">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Helper generator to iterate over all results in a project</span>
+    <span class="sd">&quot;&quot;&quot;Helper generator to iterate over all results in a project</span>
 
 <span class="sd">    Project results may be</span>
 <span class="sd">        - Standalone results</span>
@@ -389,6 +389,7 @@
 <span class="sd">        do_stuff(result)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
 
     <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -399,7 +400,7 @@
 
 
 <div class="viewcode-block" id="all_progsets"><a class="viewcode-back" href="../../_autosummary/atomica.migration.all_progsets.html#atomica.migration.all_progsets">[docs]</a><span class="k">def</span> <span class="nf">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Helper generator to iterate over all progsets in a project</span>
+    <span class="sd">&quot;&quot;&quot;Helper generator to iterate over all progsets in a project</span>
 
 <span class="sd">    Project progsets may be</span>
 <span class="sd">        - Standalone progsets</span>
@@ -416,9 +417,10 @@
 <span class="sd">        do_stuff(progset)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
 
     <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">progsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-        <span class="k">yield</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="p">(</span><span class="n">progset</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -430,7 +432,7 @@
 
 
 <div class="viewcode-block" id="all_frameworks"><a class="viewcode-back" href="../../_autosummary/atomica.migration.all_frameworks.html#atomica.migration.all_frameworks">[docs]</a><span class="k">def</span> <span class="nf">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Helper generator to iterate over all frameworks in a project</span>
+    <span class="sd">&quot;&quot;&quot;Helper generator to iterate over all frameworks in a project</span>
 
 <span class="sd">    Project frameworks may be</span>
 <span class="sd">        - Standalone frameworks</span>
@@ -442,6 +444,7 @@
 <span class="sd">    :return: A framework (via yield)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
 
     <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span>
@@ -454,7 +457,7 @@
             <span class="k">yield</span> <span class="n">result</span><span class="o">.</span><span class="n">framework</span></div>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.5&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.6&#39;</span><span class="p">,</span> <span class="s1">&#39;Simplify ParameterSet storage&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.5&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.6&quot;</span><span class="p">,</span> <span class="s2">&quot;Simplify ParameterSet storage&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_simplify_parset_storage</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="c1"># ParameterSets in 1.0.5 store the parameters keyed by the type e.g. &#39;cascade&#39;,&#39;comp&#39;</span>
     <span class="c1"># In 1.0.6 they are flat</span>
@@ -468,7 +471,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.7&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.8&#39;</span><span class="p">,</span> <span class="s1">&#39;Add version information to model&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.7&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.8&quot;</span><span class="p">,</span> <span class="s2">&quot;Add version information to model&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_model_version</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="c1"># Note that this is a legacy update via the Project and therefore Results that</span>
     <span class="c1"># are stored separately will not receive this migration. It is unlikely that any</span>
@@ -484,66 +487,63 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.8&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.9&#39;</span><span class="p">,</span> <span class="s1">&#39;Add currency and units to progset quantities&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_add_currency_and_units</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;ProgramSet&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.8&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.9&quot;</span><span class="p">,</span> <span class="s2">&quot;Add currency and units to progset quantities&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_add_currency_and_units</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">add_units</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
-        <span class="c1"># Add in the default units</span>
-        <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">=</span> <span class="s1">&#39;$&#39;</span>
-        <span class="k">for</span> <span class="n">program</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">program</span><span class="o">.</span><span class="n">baseline_spend</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">+</span> <span class="s1">&#39;/year&#39;</span>
-            <span class="n">program</span><span class="o">.</span><span class="n">spend_data</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">+</span> <span class="s1">&#39;/year&#39;</span>
-            <span class="n">program</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">+</span> <span class="s1">&#39;/person&#39;</span>
-            <span class="n">program</span><span class="o">.</span><span class="n">capacity</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;people/year&#39;</span>
-            <span class="n">program</span><span class="o">.</span><span class="n">saturation</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_SYMBOL_INAPPLICABLE</span>
-            <span class="n">program</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;people/year&#39;</span>
+    <span class="c1"># If the progset was saved prior to 1.23, it would have no version but it might have already</span>
+    <span class="c1"># had these migrations applied. Therefore we need to check if they have already been run</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">progset</span><span class="p">,</span> <span class="s2">&quot;currency&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">progset</span>
 
-    <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-        <span class="n">add_units</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
+    <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">=</span> <span class="s2">&quot;$&quot;</span>
+    <span class="k">for</span> <span class="n">program</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">program</span><span class="o">.</span><span class="n">baseline_spend</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">+</span> <span class="s2">&quot;/year&quot;</span>
+        <span class="n">program</span><span class="o">.</span><span class="n">spend_data</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">+</span> <span class="s2">&quot;/year&quot;</span>
+        <span class="n">program</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">currency</span> <span class="o">+</span> <span class="s2">&quot;/person&quot;</span>
+        <span class="n">program</span><span class="o">.</span><span class="n">capacity</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s2">&quot;people/year&quot;</span>
+        <span class="n">program</span><span class="o">.</span><span class="n">saturation</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_SYMBOL_INAPPLICABLE</span>
+        <span class="n">program</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s2">&quot;people/year&quot;</span>
 
-    <span class="k">return</span> <span class="n">proj</span>
+    <span class="k">return</span> <span class="n">progset</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.9&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.10&#39;</span><span class="p">,</span> <span class="s1">&#39;Remove target_pars from Programs&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_remove_target_pars</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;ProgramSet&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.9&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.10&quot;</span><span class="p">,</span> <span class="s2">&quot;Remove target_pars from Programs&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_remove_target_pars</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">remove_pars</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">program</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">program</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="s2">&quot;target_pars&quot;</span><span class="p">):</span>
             <span class="k">del</span> <span class="n">program</span><span class="o">.</span><span class="n">target_pars</span>
 
-    <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-        <span class="n">remove_pars</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">proj</span>
+    <span class="k">return</span> <span class="n">progset</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.10&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.11&#39;</span><span class="p">,</span> <span class="s1">&#39;Add result update flag to Project&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.10&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.11&quot;</span><span class="p">,</span> <span class="s2">&quot;Add result update flag to Project&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_result_update_flag</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="n">proj</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.12&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.13&#39;</span><span class="p">,</span> <span class="s1">&#39;Add timescale to parameters&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.12&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.13&quot;</span><span class="p">,</span> <span class="s2">&quot;Add timescale to parameters&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_timescale</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">transitions</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
-            <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;timescale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Default timescale - note that currently only transition parameters are allowed to have a timescale that is not None</span>
+            <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;timescale&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Default timescale - note that currently only transition parameters are allowed to have a timescale that is not None</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">[</span><span class="s1">&#39;format&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The Framework now needs to define the units for transition parameters, but the current one does not define units for Parameter &quot;</span><span class="si">%s</span><span class="s1">&quot; and data was not saved either, so cannot infer the unit type. Please modify the Framework spreadsheet to add units&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># Get the units from the first ts associated with the table</span>
                     <span class="n">units</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">units</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                        <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">units</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">units</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Parameters must now have a single unit for all populations. However, the existing data has more than one unit type associated with Parameter &quot;</span><span class="si">%s</span><span class="s1">&quot; so it is no longer valid.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.13&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.14&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters use TimeSeries internally&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.13&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.14&quot;</span><span class="p">,</span> <span class="s2">&quot;Parameters use TimeSeries internally&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_parameter_use_timeseries</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
@@ -568,7 +568,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.14&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.15&#39;</span><span class="p">,</span> <span class="s1">&#39;Internal model tidying&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.14&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.15&quot;</span><span class="p">,</span> <span class="s2">&quot;Internal model tidying&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_model_tidying</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
@@ -584,9 +584,8 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.15&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.16&#39;</span><span class="p">,</span> <span class="s1">&#39;Replace AtomicaSpreadsheet&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.15&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.16&quot;</span><span class="p">,</span> <span class="s2">&quot;Replace AtomicaSpreadsheet&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_convert_spreadsheets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-
     <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">placeholder</span><span class="p">):</span>
         <span class="n">new</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">placeholder</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">filename</span><span class="o">=</span><span class="n">placeholder</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">new</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">placeholder</span><span class="o">.</span><span class="n">load_date</span>
@@ -601,25 +600,25 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.16&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.17&#39;</span><span class="p">,</span> <span class="s1">&#39;Rename capacity constraint&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_rename_capacity_constraint</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">prog</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;ProgramSet&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.16&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.17&quot;</span><span class="p">,</span> <span class="s2">&quot;Rename capacity constraint&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_rename_capacity_constraint</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">prog</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">prog</span><span class="p">,</span> <span class="s2">&quot;capacity&quot;</span><span class="p">):</span>
             <span class="n">prog</span><span class="o">.</span><span class="n">capacity_constraint</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">capacity</span>
             <span class="k">del</span> <span class="n">prog</span><span class="o">.</span><span class="n">capacity</span>
-    <span class="k">return</span> <span class="n">proj</span>
+    <span class="k">return</span> <span class="n">progset</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.27&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.28&#39;</span><span class="p">,</span> <span class="s1">&#39;Rename link labels&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.27&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.28&quot;</span><span class="p">,</span> <span class="s2">&quot;Rename link labels&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_rename_link_labels</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
-            <span class="n">link</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">id</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;:flow&#39;</span><span class="p">,)</span>
+            <span class="n">link</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">id</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;:flow&quot;</span><span class="p">,)</span>
     <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_set_vars_by_pop</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.0.30&#39;</span><span class="p">,</span> <span class="s1">&#39;1.1.3&#39;</span><span class="p">,</span> <span class="s1">&#39;Replace scenarios&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.30&quot;</span><span class="p">,</span> <span class="s2">&quot;1.1.3&quot;</span><span class="p">,</span> <span class="s2">&quot;Replace scenarios&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_replace_scenarios</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="c1"># This migration upgrades existing scenarios to match the latest definitions</span>
     <span class="kn">from</span> <span class="nn">.scenarios</span> <span class="kn">import</span> <span class="n">ParameterScenario</span><span class="p">,</span> <span class="n">BudgetScenario</span><span class="p">,</span> <span class="n">CoverageScenario</span>
@@ -695,22 +694,39 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.2.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Add population type&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;ProgramSet&quot;</span><span class="p">,</span> <span class="s2">&quot;1.2.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.3.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Add population type&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_add_pop_type_progset</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">pop</span><span class="p">]):</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">pop</span><span class="p">],</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">comp</span><span class="p">]):</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">comp</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">comp</span><span class="p">],</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">progset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par</span><span class="p">]):</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">progset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par</span><span class="p">],</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">progset</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.2.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.3.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Add population type&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_pop_type</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
 
     <span class="k">for</span> <span class="n">fw</span> <span class="ow">in</span> <span class="n">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
 
         <span class="c1"># Add default population type sheet</span>
-        <span class="n">fw</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s1">&#39;population types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">([(</span><span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">,</span> <span class="s1">&#39;Default&#39;</span><span class="p">)],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;code name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">])]</span>
-        <span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s1">&#39;population type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
-        <span class="n">fw</span><span class="o">.</span><span class="n">characs</span><span class="p">[</span><span class="s1">&#39;population type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
-        <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;population type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
-        <span class="n">fw</span><span class="o">.</span><span class="n">interactions</span><span class="p">[</span><span class="s1">&#39;to population type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
-        <span class="n">fw</span><span class="o">.</span><span class="n">interactions</span><span class="p">[</span><span class="s1">&#39;from population type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;population types&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">([(</span><span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">,</span> <span class="s2">&quot;Default&quot;</span><span class="p">)],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;code name&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">])]</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s2">&quot;population type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">characs</span><span class="p">[</span><span class="s2">&quot;population type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;population type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">interactions</span><span class="p">[</span><span class="s2">&quot;to population type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">interactions</span><span class="p">[</span><span class="s2">&quot;from population type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
 
     <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">pop_spec</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">pop_spec</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
+            <span class="n">pop_spec</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
 
         <span class="c1"># Fix up TDVE types</span>
         <span class="c1"># Fix up transfers and interactions</span>
@@ -722,17 +738,7 @@
             <span class="n">interaction</span><span class="o">.</span><span class="n">to_pop_type</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span>
 
     <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-        <span class="n">parset</span><span class="o">.</span><span class="n">pop_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">pop</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>  <span class="c1"># If there are parsets without data, then we don&#39;t know what pop types to add. Project is essentially incomplete and considered unusable</span>
-
-    <span class="k">for</span> <span class="n">progset</span> <span class="ow">in</span> <span class="n">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">progset</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">pop</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">}</span>
-
-        <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">comp</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">comp</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">}</span>
-
-        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">progset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">progset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">FS</span><span class="o">.</span><span class="n">DEFAULT_POP_TYPE</span><span class="p">}</span>
+        <span class="n">parset</span><span class="o">.</span><span class="n">pop_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">pop</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>  <span class="c1"># If there are parsets without data, then we don&#39;t know what pop types to add. Project is essentially incomplete and considered unusable</span>
 
     <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
@@ -741,14 +747,14 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameter can be derivative&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.3.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Parameter can be derivative&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_project_derivatives</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">fw</span> <span class="ow">in</span> <span class="n">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-        <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;is derivative&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+        <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;is derivative&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;n&quot;</span>
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span> <span class="s1">&#39;1.3.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameter can be derivative&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">,</span> <span class="s2">&quot;1.3.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Parameter can be derivative&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_result_derivatives</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
@@ -756,7 +762,7 @@
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.3&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters with functions can be overwritten&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4.3&quot;</span><span class="p">,</span> <span class="s2">&quot;1.5.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Parameters with functions can be overwritten&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_parset_disable_function</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="c1"># Add skip_function flag to parset Parameter instances</span>
     <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -765,7 +771,7 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span> <span class="s1">&#39;1.4.3&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters with functions can be overwritten&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">,</span> <span class="s2">&quot;1.4.3&quot;</span><span class="p">,</span> <span class="s2">&quot;1.5.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Parameters with functions can be overwritten&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_result_add_skip_flag</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
@@ -773,47 +779,47 @@
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.1&#39;</span><span class="p">,</span> <span class="s1">&#39;1.5.2&#39;</span><span class="p">,</span> <span class="s1">&#39;OptimInstruction has separate adjustment and start years&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.5.1&quot;</span><span class="p">,</span> <span class="s2">&quot;1.5.2&quot;</span><span class="p">,</span> <span class="s2">&quot;OptimInstruction has separate adjustment and start years&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_separate_optiminstruction_years</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s1">&#39;optims&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s2">&quot;optims&quot;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">optim</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">optims</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="k">if</span> <span class="s1">&#39;adjustment_year&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">optim</span><span class="o">.</span><span class="n">json</span><span class="p">:</span>
-                <span class="n">optim</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;adjustment_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;start_year&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;adjustment_year&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">optim</span><span class="o">.</span><span class="n">json</span><span class="p">:</span>
+                <span class="n">optim</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;adjustment_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;start_year&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.7.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.8.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Parameters store interpolation method, deprecate scenario smooth onset&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.7.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.8.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Parameters store interpolation method, deprecate scenario smooth onset&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_parameter_interpolation_method</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">parset</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
-            <span class="n">par</span><span class="o">.</span><span class="n">_interpolation_method</span> <span class="o">=</span> <span class="s1">&#39;pchip&#39;</span>  <span class="c1"># New projects will default to linear, but migrations use pchip to ensure results don&#39;t change</span>
+            <span class="n">par</span><span class="o">.</span><span class="n">_interpolation_method</span> <span class="o">=</span> <span class="s2">&quot;pchip&quot;</span>  <span class="c1"># New projects will default to linear, but migrations use pchip to ensure results don&#39;t change</span>
     <span class="k">for</span> <span class="n">scen</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scen</span><span class="p">,</span> <span class="n">atomica</span><span class="o">.</span><span class="n">ParameterScenario</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">par_name</span> <span class="ow">in</span> <span class="n">scen</span><span class="o">.</span><span class="n">scenario_values</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">pop_name</span> <span class="ow">in</span> <span class="n">scen</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="s1">&#39;smooth_onset&#39;</span> <span class="ow">in</span> <span class="n">scen</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_name</span><span class="p">][</span><span class="n">pop_name</span><span class="p">]:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Parameter scenario smooth onset is deprecated and will not be used&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="s2">&quot;smooth_onset&quot;</span> <span class="ow">in</span> <span class="n">scen</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_name</span><span class="p">][</span><span class="n">pop_name</span><span class="p">]:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Parameter scenario smooth onset is deprecated and will not be used&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.8.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.9.0&#39;</span><span class="p">,</span> <span class="s1">&#39;OptimInstructions functionality moved to apps&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.8.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.9.0&quot;</span><span class="p">,</span> <span class="s2">&quot;OptimInstructions functionality moved to apps&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_refactor_optiminstructions</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s1">&#39;optims&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s2">&quot;optims&quot;</span><span class="p">):</span>
         <span class="n">delkeys</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">optims</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">_Placeholder</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;json&#39;</span><span class="p">):</span>  <span class="c1"># If it was previously an OptimInstructions</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">_Placeholder</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">):</span>  <span class="c1"># If it was previously an OptimInstructions</span>
                 <span class="c1"># This was a project from the FE, which stores the optimization JSON dicts in</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s1">&#39;optim_jsons&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s2">&quot;optim_jsons&quot;</span><span class="p">):</span>
                     <span class="n">proj</span><span class="o">.</span><span class="n">optim_jsons</span> <span class="o">=</span> <span class="p">[]</span>
 
                 <span class="n">json</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">json</span>
-                <span class="k">for</span> <span class="n">prog_name</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;prog_spending&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="n">spend</span> <span class="o">=</span> <span class="n">json</span><span class="p">[</span><span class="s1">&#39;prog_spending&#39;</span><span class="p">][</span><span class="n">prog_name</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">prog_name</span> <span class="ow">in</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;prog_spending&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">spend</span> <span class="o">=</span> <span class="n">json</span><span class="p">[</span><span class="s2">&quot;prog_spending&quot;</span><span class="p">][</span><span class="n">prog_name</span><span class="p">]</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">prog_label</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">progsets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">prog_name</span><span class="p">]</span><span class="o">.</span><span class="n">label</span>
                     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                         <span class="n">prog_label</span> <span class="o">=</span> <span class="n">prog_name</span>
-                    <span class="n">json</span><span class="p">[</span><span class="s1">&#39;prog_spending&#39;</span><span class="p">][</span><span class="n">prog_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="n">spend</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="n">spend</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">prog_label</span><span class="p">}</span>
+                    <span class="n">json</span><span class="p">[</span><span class="s2">&quot;prog_spending&quot;</span><span class="p">][</span><span class="n">prog_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">spend</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">spend</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">prog_label</span><span class="p">}</span>
                 <span class="n">proj</span><span class="o">.</span><span class="n">optim_jsons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
                 <span class="n">delkeys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">delkeys</span><span class="p">:</span>
@@ -824,23 +830,23 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.10.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.11.0&#39;</span><span class="p">,</span> <span class="s1">&#39;TDVE stores headings to write internally&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.10.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.11.0&quot;</span><span class="p">,</span> <span class="s2">&quot;TDVE stores headings to write internally&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_internal_flags_to_tdve</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="c1"># This migration adds missing attributes to TDVE and TDC objects</span>
     <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tdve</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">tdve</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>
+            <span class="n">tdve</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s2">&quot;Constant&quot;</span>
             <span class="n">tdve</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">tdve</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">tdve</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">tdve</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">for</span> <span class="n">tdc</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">transfers</span> <span class="o">+</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">interpops</span><span class="p">:</span>
-            <span class="n">tdc</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s1">&#39;Constant&#39;</span>
+            <span class="n">tdc</span><span class="o">.</span><span class="n">assumption_heading</span> <span class="o">=</span> <span class="s2">&quot;Constant&quot;</span>
             <span class="n">tdc</span><span class="o">.</span><span class="n">write_assumption</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">tdc</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">tdc</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tdc</span><span class="p">,</span> <span class="s1">&#39;from_pops&#39;</span><span class="p">):</span>  <span class="c1"># This was missed in the previous migration `add_pop_type` so add it in here</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tdc</span><span class="p">,</span> <span class="s2">&quot;from_pops&quot;</span><span class="p">):</span>  <span class="c1"># This was missed in the previous migration `add_pop_type` so add it in here</span>
                 <span class="c1"># If the pop type is missing, then we must be using a legacy framework with only one pop type</span>
                 <span class="n">tdc</span><span class="o">.</span><span class="n">from_pop_type</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pop_types</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">tdc</span><span class="o">.</span><span class="n">from_pops</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -850,14 +856,14 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;ProjectFramework&#39;</span><span class="p">,</span> <span class="s1">&#39;1.12.2&#39;</span><span class="p">,</span> <span class="s1">&#39;1.13.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Timed compartment updates to framework&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;ProjectFramework&quot;</span><span class="p">,</span> <span class="s2">&quot;1.12.2&quot;</span><span class="p">,</span> <span class="s2">&quot;1.13.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Timed compartment updates to framework&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_framework_timed_comps</span><span class="p">(</span><span class="n">fw</span><span class="p">):</span>
-    <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;timed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
-    <span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s1">&#39;duration group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;timed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;n&quot;</span>
+    <span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s2">&quot;duration group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">fw</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span> <span class="s1">&#39;1.12.2&#39;</span><span class="p">,</span> <span class="s1">&#39;1.13.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Timed compartment updates to result&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">,</span> <span class="s2">&quot;1.12.2&quot;</span><span class="p">,</span> <span class="s2">&quot;1.13.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Timed compartment updates to result&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_result_timed_attribute</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
@@ -876,9 +882,9 @@
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.14.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.15.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Refactor migration update flag&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.14.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.15.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Refactor migration update flag&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_rename_update_field</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s1">&#39;_result_update_required&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="s2">&quot;_result_update_required&quot;</span><span class="p">):</span>
         <span class="n">proj</span><span class="o">.</span><span class="n">_result_update_required</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">proj</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">_result_update_required</span>
     <span class="k">del</span> <span class="n">proj</span><span class="o">.</span><span class="n">_result_update_required</span>
@@ -888,25 +894,25 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.15.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.16.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Projects may change due to uncapped probabilities&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.15.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.16.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Projects may change due to uncapped probabilities&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_proj_refactor_settings_storage</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="n">proj</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Result&#39;</span><span class="p">,</span> <span class="s1">&#39;1.15.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.16.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Results may change due to uncapped probabilities&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Result&quot;</span><span class="p">,</span> <span class="s2">&quot;1.15.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.16.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Results may change due to uncapped probabilities&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_result_refactor_settings_storage</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="n">result</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.16.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.17.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Add sim end year validation to project settings&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.16.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.17.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Add sim end year validation to project settings&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_end_year_to_project_settings</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="n">proj</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">ProjectSettings</span><span class="p">(</span><span class="o">**</span><span class="n">proj</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.17.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.18.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Add data TDC and TDVE attributes&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.17.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.18.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Add data TDC and TDVE attributes&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_add_tdc_tdve_attributes</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tdve</span> <span class="ow">in</span> <span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -917,11 +923,22 @@
     <span class="k">return</span> <span class="n">proj</span>
 
 
-<span class="nd">@migration</span><span class="p">(</span><span class="s1">&#39;Project&#39;</span><span class="p">,</span> <span class="s1">&#39;1.19.0&#39;</span><span class="p">,</span> <span class="s1">&#39;1.20.0&#39;</span><span class="p">,</span> <span class="s1">&#39;Framework.transitions is a defaultdict&#39;</span><span class="p">)</span>
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.19.0&quot;</span><span class="p">,</span> <span class="s2">&quot;1.20.0&quot;</span><span class="p">,</span> <span class="s2">&quot;Framework.transitions is a defaultdict&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_framework_transitions_defaultdict</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">fw</span> <span class="ow">in</span> <span class="n">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
         <span class="n">fw</span><span class="o">.</span><span class="n">transitions</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">fw</span><span class="o">.</span><span class="n">transitions</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">proj</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;ProgramSet&quot;</span><span class="p">,</span> <span class="s2">&quot;1.23.1&quot;</span><span class="p">,</span> <span class="s2">&quot;1.23.2&quot;</span><span class="p">,</span> <span class="s2">&quot;ProgramSet records all compartments including non-targetable ones&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_add_progset_non_targetable_flag</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">code_name</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">comp</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+            <span class="n">comp</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;non_targetable&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">comp</span><span class="p">:</span>
+            <span class="n">comp</span><span class="p">[</span><span class="s2">&quot;non_targetable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">progset</span>
 </pre></div>
 
            </div>
