@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.function_parser &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.23.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>atomica.function_parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for atomica.function_parser</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements the parameter function parser</span>
+
+<span class="sd">Parameter functions are entered as strings in the Framework file.</span>
+<span class="sd">This module implements the function parser that converts the string into</span>
+<span class="sd">an executable Python representation.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;parse_function&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="sdiv"><a class="viewcode-back" href="../../_autosummary/atomica.function_parser.sdiv.html#atomica.function_parser.sdiv">[docs]</a><span class="k">def</span> <span class="nf">sdiv</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Safe division by zero (return 0)</span>
+
+<span class="sd">    This helper function returns division where ``0/0=0`` rather than ``np.nan``.</span>
+
+<span class="sd">    :param numerator: The numerator of the operation (float, array)</span>
+<span class="sd">    :param denominator: The denominator of the operation (float, array)</span>
+<span class="sd">    :return: Array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">numerator</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">denominator</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="n">where</span><span class="o">=</span><span class="n">numerator</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="n">where</span><span class="o">=</span><span class="n">numerator</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="vector_min"><a class="viewcode-back" href="../../_autosummary/atomica.function_parser.vector_min.html#atomica.function_parser.vector_min">[docs]</a><span class="k">def</span> <span class="nf">vector_min</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Repeated elementwise minimum</span>
+
+<span class="sd">    Repeatedly call `np.minimum` so that both scalars and arrays are supported</span>
+<span class="sd">    as well as &gt;2 items.</span>
+
+<span class="sd">    All arrays provided (if any) must be the same size</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; vector_min([1,2],0,[-1,1])</span>
+<span class="sd">        array([-1,  0])</span>
+
+<span class="sd">    :param args: Scalars or arrays to take minimum over</span>
+<span class="sd">    :return: Result of calling `np.minimum` repeatedly</span>
+<span class="sd">        - Scalar if all inputs are scalar</span>
+<span class="sd">        - np.array if any input is an array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="vector_max"><a class="viewcode-back" href="../../_autosummary/atomica.function_parser.vector_max.html#atomica.function_parser.vector_max">[docs]</a><span class="k">def</span> <span class="nf">vector_max</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Repeated elementwise maximum</span>
+
+<span class="sd">    Repeatedly call `np.maximum` so that both scalars and arrays are supported</span>
+<span class="sd">    as well as &gt;2 items.</span>
+
+<span class="sd">    All arrays provided (if any) must be the same size</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; vector_max([1,2],5,[10,1])</span>
+<span class="sd">        array([10,  5])</span>
+
+<span class="sd">    :param args: Scalars or arrays to take maximum over</span>
+<span class="sd">    :return: Result of calling `np.maximum` repeatedly</span>
+<span class="sd">        - Scalar if all inputs are scalar</span>
+<span class="sd">        - np.array if any input is an array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+
+
+<span class="c1"># Only calls to functions in the dict below will be permitted</span>
+<span class="n">supported_functions</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">vector_max</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">vector_min</span><span class="p">,</span> <span class="s2">&quot;exp&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">,</span> <span class="s2">&quot;floor&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">,</span> <span class="s2">&quot;SRC_POP_AVG&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;TGT_POP_AVG&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;SRC_POP_SUM&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;TGT_POP_SUM&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;pi&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="s2">&quot;cos&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">,</span> <span class="s2">&quot;sin&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">,</span> <span class="s2">&quot;sqrt&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">,</span> <span class="s2">&quot;ln&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">,</span> <span class="s2">&quot;rand&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">,</span> <span class="s2">&quot;randn&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">,</span> <span class="s2">&quot;sdiv&quot;</span><span class="p">:</span> <span class="n">sdiv</span><span class="p">}</span>
+
+
+<span class="k">class</span> <span class="nc">_DivTransformer</span><span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">NodeTransformer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper class to use sdiv everywhere</span>
+
+<span class="sd">    This is a NodeTransformer that converts Div nodes into</span>
+<span class="sd">    function nodes that call the sdiv function</span>
+
+<span class="sd">    Modified from https://stackoverflow.com/a/51918098 by Aran-Fey</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">visit_BinOp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="n">lhs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="n">rhs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Div</span><span class="p">):</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">lhs</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">rhs</span>
+            <span class="k">return</span> <span class="n">node</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="s2">&quot;sdiv&quot;</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="parse_function"><a class="viewcode-back" href="../../_autosummary/atomica.function_parser.parse_function.html#atomica.function_parser.parse_function">[docs]</a><span class="k">def</span> <span class="nf">parse_function</span><span class="p">(</span><span class="n">fcn_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses a string into a Python function</span>
+
+<span class="sd">    This function takes in the string representation of a function e.g. ``&#39;x+y&#39;``. It</span>
+<span class="sd">    returns an Python function object that takes in a keyword arguments corresponding to the</span>
+<span class="sd">    original quantities that appeared in the function. For example:</span>
+
+<span class="sd">    &gt;&gt;&gt; fcn, deps = atomica.parse_function(&#39;x+y&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; fcn</span>
+<span class="sd">    &lt;function atomica.function_parser.parse_function.&lt;locals&gt;.fcn(**deps)&gt;</span>
+<span class="sd">    &gt;&gt;&gt; deps</span>
+<span class="sd">    [&#39;x&#39;, &#39;y&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; fcn(x=2,y=3)</span>
+<span class="sd">    5</span>
+
+<span class="sd">    Note that for security, only a subset of Python functions are allowed to be called. These</span>
+<span class="sd">    are mainly mathematical operations such as ``max`` or ``exp``. A full listing can be found</span>
+<span class="sd">    in ``function_parser.py``.</span>
+
+<span class="sd">    A common usage pattern is to construct a dict of inputs to the parsed function using the list</span>
+<span class="sd">    of dependencies returned by ``parse_function``. For example:</span>
+
+<span class="sd">    &gt;&gt;&gt; argdict = dict.fromkeys(deps,2)</span>
+<span class="sd">    &gt;&gt;&gt; fcn(**argdict)</span>
+<span class="sd">    4</span>
+
+<span class="sd">    :param fcn_str: A string containing a single Python expression</span>
+<span class="sd">    :return: A tuple containing a function, and a list of arguments required by the function</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Returns (fcn,dep_list)</span>
+    <span class="c1"># Where dep_list corresponds to a list of keys for</span>
+    <span class="c1"># the dict that needs to be passed to fcn()</span>
+    <span class="c1"># supported_functions is a dict mapping ast names to functors imported in the namespace of this file</span>
+    <span class="k">assert</span> <span class="s2">&quot;__&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fcn_str</span><span class="p">,</span> <span class="s2">&quot;Cannot use double underscores in functions&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">fcn_str</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1800</span>  <span class="c1"># Function string must be less than 1800 characters</span>
+    <span class="n">fcn_str</span> <span class="o">=</span> <span class="n">fcn_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;___&quot;</span><span class="p">)</span>
+    <span class="n">fcn_ast</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fcn_str</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;eval&quot;</span><span class="p">)</span>
+    <span class="n">fcn_ast</span> <span class="o">=</span> <span class="n">_DivTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">fcn_ast</span><span class="p">)</span>
+    <span class="n">fcn_ast</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">fix_missing_locations</span><span class="p">(</span><span class="n">fcn_ast</span><span class="p">)</span>
+    <span class="n">dep_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">fcn_ast</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">supported_functions</span><span class="p">:</span>
+            <span class="n">dep_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;func&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">supported_functions</span><span class="p">,</span> <span class="s2">&quot;Only calls to supported functions are allowed&quot;</span>
+    <span class="n">compiled_code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">fcn_ast</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;&lt;ast&gt;&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;eval&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">fcn</span><span class="p">(</span><span class="o">**</span><span class="n">deps</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">eval</span><span class="p">(</span><span class="n">compiled_code</span><span class="p">,</span> <span class="n">deps</span><span class="p">,</span> <span class="n">supported_functions</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fcn</span><span class="p">,</span> <span class="n">dep_list</span></div>
+
+
+<span class="c1"># Example usage below - This can be moved to documentation later.</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">f_string</span> <span class="o">=</span> <span class="s2">&quot;exp(x)+y**2&quot;</span>
+    <span class="n">fcn</span><span class="p">,</span> <span class="n">dep_list</span> <span class="o">=</span> <span class="n">parse_function</span><span class="p">(</span><span class="n">f_string</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">dep_list</span><span class="p">)</span>
+    <span class="n">deps</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">fcn</span><span class="p">(</span><span class="o">**</span><span class="n">deps</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">fcn</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># The use of **deps means you can write out keyword arguments for `fcn` directly</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
