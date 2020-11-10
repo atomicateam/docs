@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.22.1
+                1.23.3
               </div>
             
           
@@ -173,7 +173,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;parse_function&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;parse_function&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="sdiv"><a class="viewcode-back" href="../../_autosummary/atomica.function_parser.sdiv.html#atomica.function_parser.sdiv">[docs]</a><span class="k">def</span> <span class="nf">sdiv</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="p">):</span>
@@ -280,7 +280,7 @@
             <span class="n">node</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">rhs</span>
             <span class="k">return</span> <span class="n">node</span>
 
-        <span class="n">name</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="s1">&#39;sdiv&#39;</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">(</span><span class="s2">&quot;sdiv&quot;</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">())</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">]</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
@@ -322,17 +322,17 @@
     <span class="c1"># Where dep_list corresponds to a list of keys for</span>
     <span class="c1"># the dict that needs to be passed to fcn()</span>
     <span class="c1"># supported_functions is a dict mapping ast names to functors imported in the namespace of this file</span>
-    <span class="k">assert</span> <span class="s1">&#39;__&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fcn_str</span><span class="p">,</span> <span class="s1">&#39;Cannot use double underscores in functions&#39;</span>
+    <span class="k">assert</span> <span class="s2">&quot;__&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fcn_str</span><span class="p">,</span> <span class="s2">&quot;Cannot use double underscores in functions&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">fcn_str</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1800</span>  <span class="c1"># Function string must be less than 1800 characters</span>
-    <span class="n">fcn_str</span> <span class="o">=</span> <span class="n">fcn_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;___&#39;</span><span class="p">)</span>
-    <span class="n">fcn_ast</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fcn_str</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;eval&#39;</span><span class="p">)</span>
+    <span class="n">fcn_str</span> <span class="o">=</span> <span class="n">fcn_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;___&quot;</span><span class="p">)</span>
+    <span class="n">fcn_ast</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fcn_str</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;eval&quot;</span><span class="p">)</span>
     <span class="n">fcn_ast</span> <span class="o">=</span> <span class="n">_DivTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">fcn_ast</span><span class="p">)</span>
     <span class="n">fcn_ast</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">fix_missing_locations</span><span class="p">(</span><span class="n">fcn_ast</span><span class="p">)</span>
     <span class="n">dep_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">fcn_ast</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">supported_functions</span><span class="p">:</span>
             <span class="n">dep_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s1">&#39;func&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;func&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">):</span>
             <span class="k">assert</span> <span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">supported_functions</span><span class="p">,</span> <span class="s2">&quot;Only calls to supported functions are allowed&quot;</span>
     <span class="n">compiled_code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">fcn_ast</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;&lt;ast&gt;&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;eval&quot;</span><span class="p">)</span>
 
@@ -343,11 +343,11 @@
 
 
 <span class="c1"># Example usage below - This can be moved to documentation later.</span>
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">f_string</span> <span class="o">=</span> <span class="s1">&#39;exp(x)+y**2&#39;</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">f_string</span> <span class="o">=</span> <span class="s2">&quot;exp(x)+y**2&quot;</span>
     <span class="n">fcn</span><span class="p">,</span> <span class="n">dep_list</span> <span class="o">=</span> <span class="n">parse_function</span><span class="p">(</span><span class="n">f_string</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">dep_list</span><span class="p">)</span>
-    <span class="n">deps</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+    <span class="n">deps</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">fcn</span><span class="p">(</span><span class="o">**</span><span class="n">deps</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">fcn</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>  <span class="c1"># The use of **deps means you can write out keyword arguments for `fcn` directly</span>
 </pre></div>
