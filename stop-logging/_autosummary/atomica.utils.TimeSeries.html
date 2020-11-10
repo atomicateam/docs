@@ -1,0 +1,639 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.utils.TimeSeries &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.version" href="atomica.version.html" />
+    <link rel="prev" title="atomica.utils.Quiet" href="atomica.utils.Quiet.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.23.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.model.html">atomica.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.programs.html">atomica.programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.utils.html">atomica.utils</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.datetime_to_year.html">atomica.utils.datetime_to_year</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.evaluate_plot_string.html">atomica.utils.evaluate_plot_string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.fast_gitinfo.html">atomica.utils.fast_gitinfo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.format_duration.html">atomica.utils.format_duration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.nested_loop.html">atomica.utils.nested_loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.parallel_progress.html">atomica.utils.parallel_progress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.parent_dir.html">atomica.utils.parent_dir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.start_logging.html">atomica.utils.start_logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.stop_logging.html">atomica.utils.stop_logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.NDict.html">atomica.utils.NDict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.NamedItem.html">atomica.utils.NamedItem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.utils.Quiet.html">atomica.utils.Quiet</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.utils.TimeSeries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.utils.html">atomica.utils</a> &raquo;</li>
+        
+      <li>atomica.utils.TimeSeries</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-utils-timeseries">
+<h1>atomica.utils.TimeSeries<a class="headerlink" href="#atomica-utils-timeseries" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="atomica.utils.TimeSeries">
+<em class="property">class </em><code class="sig-prename descclassname">atomica.utils.</code><code class="sig-name descname">TimeSeries</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">vals</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">assumption</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sigma</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class to store time-series data</p>
+<p>Internally values are stored as lists rather than numpy arrays because
+insert/remove operations on lists tend to be faster (and working with sparse
+data is a key role of TimeSeries objects). Note that methods like <a class="reference internal" href="#atomica.utils.TimeSeries.interpolate" title="atomica.utils.TimeSeries.interpolate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">interpolate()</span></code></a>
+return numpy arrays, so the output types from such functions should generally match up
+with what is required by the calling function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> – Optionally specify a scalar, list, or array of time values</p></li>
+<li><p><strong>vals</strong> – Optionally specify a scalar, list, or array of values (must be same size as <code class="docutils literal notranslate"><span class="pre">t</span></code>)</p></li>
+<li><p><strong>units</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Optionally specify units (as a string)</p></li>
+<li><p><strong>assumption</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]) – Optionally specify a scalar assumption</p></li>
+<li><p><strong>sigma</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]) – Optionally specify a scalar uncertainty</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.assumption" title="atomica.utils.TimeSeries.assumption"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assumption</span></code></a></p></td>
+<td><p>The time-independent scalar assumption</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.has_data" title="atomica.utils.TimeSeries.has_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_data</span></code></a></p></td>
+<td><p>Check if any data has been provided</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.has_time_data" title="atomica.utils.TimeSeries.has_time_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_time_data</span></code></a></p></td>
+<td><p>Check if time-specific data has been provided</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.sigma" title="atomica.utils.TimeSeries.sigma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sigma</span></code></a></p></td>
+<td><p>Uncertainty value, assumed to be a standard deviation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.t" title="atomica.utils.TimeSeries.t"><code class="xref py py-obj docutils literal notranslate"><span class="pre">t</span></code></a></p></td>
+<td><p>Sorted array of time points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.units" title="atomica.utils.TimeSeries.units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">units</span></code></a></p></td>
+<td><p>The units of the quantity</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.vals" title="atomica.utils.TimeSeries.vals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vals</span></code></a></p></td>
+<td><p>Time-specific values - indices correspond to <code class="docutils literal notranslate"><span class="pre">self.t</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.copy" title="atomica.utils.TimeSeries.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Return a copy of the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.get" title="atomica.utils.TimeSeries.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a></p></td>
+<td><p>Retrieve value at a particular time</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.get_arrays" title="atomica.utils.TimeSeries.get_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_arrays</span></code></a></p></td>
+<td><p>Return arrays with the contents of this TimeSeries</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.insert" title="atomica.utils.TimeSeries.insert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert</span></code></a></p></td>
+<td><p>Insert a value or list of at a particular time</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.interpolate" title="atomica.utils.TimeSeries.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate</span></code></a></p></td>
+<td><p>Return interpolated values</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.remove" title="atomica.utils.TimeSeries.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
+<td><p>Remove single time point</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.remove_after" title="atomica.utils.TimeSeries.remove_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_after</span></code></a></p></td>
+<td><p>Remove times from start</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.remove_before" title="atomica.utils.TimeSeries.remove_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_before</span></code></a></p></td>
+<td><p>Remove times from start</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.remove_between" title="atomica.utils.TimeSeries.remove_between"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_between</span></code></a></p></td>
+<td><p>Remove a range of times</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.utils.TimeSeries.sample" title="atomica.utils.TimeSeries.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample</span></code></a></p></td>
+<td><p>Return a sampled copy of the TimeSeries</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="atomica.utils.TimeSeries.assumption">
+<code class="sig-name descname">assumption</code><a class="headerlink" href="#atomica.utils.TimeSeries.assumption" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time-independent scalar assumption</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An independent copy of the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve value at a particular time</p>
+<p>This function will automatically retrieve the value of the assumption if
+no time specific values have been provided, or if any time specific values
+are provided, will return the value entered at that time. If time specific
+values have been entered and the requested time is not explicitly present,
+an error will be raised.</p>
+<p>This function may be deprecated in future because generally it is more useful
+to either call <code class="docutils literal notranslate"><span class="pre">TimeSeries.interpolate()</span></code> if interested in getting values at
+arbitrary times, or <code class="docutils literal notranslate"><span class="pre">TimeSeries.get_arrays()</span></code> if interested in retrieving
+values that have been entered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t</strong> – A time value. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, will return assumption regardless of whether
+time data has been entered or not</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The value at the corresponding time. Returns None if the value no value present</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.get_arrays">
+<code class="sig-name descname">get_arrays</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.get_arrays"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.get_arrays" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return arrays with the contents of this TimeSeries</p>
+<p>The TimeSeries instance may have time values, or may simply have
+an assumption. If obtaining raw arrays is desired, this function will
+return arrays with values extracted from the appropriate attribute of the
+TimeSeries. However, in general, it is usually <cite>.interpolate()</cite> that is
+desired, rather than <cite>.get_arrays()</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Tuple with two arrays - the first item is times (with a single NaN if
+the TimeSeries only has an assumption) and the second item is values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.has_data">
+<em class="property">property </em><code class="sig-name descname">has_data</code><a class="headerlink" href="#atomica.utils.TimeSeries.has_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if any data has been provided</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if any data has been entered (assumption or time-specific)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.has_time_data">
+<em class="property">property </em><code class="sig-name descname">has_time_data</code><a class="headerlink" href="#atomica.utils.TimeSeries.has_time_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if time-specific data has been provided</p>
+<p>Unlike <code class="docutils literal notranslate"><span class="pre">has_data</span></code>, this will return <code class="docutils literal notranslate"><span class="pre">False</span></code> if only an assumption has been entered</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if any time-specific data has been entered</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.insert">
+<code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a value or list of at a particular time</p>
+<p>If the value already exists in the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code>, it will be overwritten/updated.
+The arrays are internally sorted by time value, and this order will be maintained.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> – Time value to insert or update. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the value will be assigned to the assumption</p></li>
+<li><p><strong>v</strong> – Value to insert. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, this function will return immediately without doing anything</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.interpolate">
+<code class="sig-name descname">interpolate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t2</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'linear'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.interpolate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return interpolated values</p>
+<p>This method returns interpolated values from the time series at time points <cite>t2</cite>
+according to a given interpolation method. There are 4 possibilities for the method</p>
+<ul class="simple">
+<li><p>‘linear’ - normal linear interpolation (with constant, zero-gradient extrapolation)</p></li>
+<li><p>‘pchip’ - legacy interpolation with some curvature between points (with constant, zero-gradient extrapolation)</p></li>
+<li><p>‘previous’ - stepped interpolation, maintain value until the next timepoint is reached (with constant, zero-gradient extrapolation)</p></li>
+<li><p>Interpolation class or generator function</p></li>
+</ul>
+<p>That final option allows the use of arbitrary interpolation methods. The underlying call will be</p>
+<blockquote>
+<div><p>c = method(t1, v1, <a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs)
+return c(t2)</p>
+</div></blockquote>
+<p>so for example, if you wanted to use the base Scipy pchip method with no extrapolation, then could pass in</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">TimeSeries</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="o">...</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">PchipInterpolator</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the following special behaviours apply:</p>
+<ul class="simple">
+<li><p>If there is no data at all, this function will return <code class="docutils literal notranslate"><span class="pre">np.nan</span></code> for all requested time points</p></li>
+<li><p>If only an assumption exists, this assumption will be returned for all requested time points</p></li>
+<li><dl class="simple">
+<dt>Otherwise, arrays will be formed with all finite time values</dt><dd><ul>
+<li><p>If no finite time values remain, an error will be raised (in general, a TimeSeries should not store such values anyway)</p></li>
+<li><p>If only one finite time value remains, then that value will be returned for all requested time points</p></li>
+<li><p>Otherwise, the specified interpolation method will be used</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t2</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>) – float, list, or array, with times</p></li>
+<li><p><strong>method</strong> – A string ‘linear’, ‘pchip’ or ‘previous’ OR a callable item that returns an Interpolator</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array the same length as t2, with interpolated values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.remove">
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove single time point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t</strong> – Time value to remove. Set to <code class="docutils literal notranslate"><span class="pre">None</span></code> to remove the assumption</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.remove_after">
+<code class="sig-name descname">remove_after</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t_remove</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.remove_after"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.remove_after" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove times from start</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tval</strong> – Remove times up to but not including this time</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.remove_before">
+<code class="sig-name descname">remove_before</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t_remove</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.remove_before"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.remove_before" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove times from start</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tval</strong> – Remove times up to but not including this time</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.remove_between">
+<code class="sig-name descname">remove_between</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t_remove</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.remove_between"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.remove_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a range of times</p>
+<p>Note that the endpoints are not included</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t_remove</strong> – two element iterable e.g. array, with [min,max] times</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.utils.TimeSeries.sample">
+<code class="sig-name descname">sample</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">constant</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#TimeSeries.sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.utils.TimeSeries.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a sampled copy of the TimeSeries</p>
+<p>This method returns a copy of the TimeSeries in which the values have been
+perturbed based on the uncertainty value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>constant</strong> – If True, time series will be perturbed by a single constant offset. If False,
+an different perturbation will be applied to each time specific value independently.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A copied <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> with perturbed values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.utils.TimeSeries.sigma">
+<code class="sig-name descname">sigma</code><a class="headerlink" href="#atomica.utils.TimeSeries.sigma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uncertainty value, assumed to be a standard deviation</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.utils.TimeSeries.t">
+<code class="sig-name descname">t</code><a class="headerlink" href="#atomica.utils.TimeSeries.t" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorted array of time points. Normally interacted with via methods like <a class="reference internal" href="#atomica.utils.TimeSeries.insert" title="atomica.utils.TimeSeries.insert"><code class="xref py py-meth docutils literal notranslate"><span class="pre">insert()</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.utils.TimeSeries.units">
+<code class="sig-name descname">units</code><a class="headerlink" href="#atomica.utils.TimeSeries.units" title="Permalink to this definition">¶</a></dt>
+<dd><p>The units of the quantity</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.utils.TimeSeries.vals">
+<code class="sig-name descname">vals</code><a class="headerlink" href="#atomica.utils.TimeSeries.vals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time-specific values - indices correspond to <code class="docutils literal notranslate"><span class="pre">self.t</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="atomica.version.html" class="btn btn-neutral float-right" title="atomica.version" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="atomica.utils.Quiet.html" class="btn btn-neutral float-left" title="atomica.utils.Quiet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

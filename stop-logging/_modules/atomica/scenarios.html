@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.scenarios &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.23.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>atomica.scenarios</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for atomica.scenarios</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Define classes for handling scenarios</span>
+
+
+<span class="sd">This module implements the classes used to represent the four</span>
+<span class="sd">main types of scenarios in Atomica:</span>
+
+<span class="sd">- Parameter scenarios</span>
+<span class="sd">- Budget scenarios</span>
+<span class="sd">- Capacity scenarios</span>
+<span class="sd">- Coverage scenarios</span>
+
+<span class="sd">There are broadly two kinds of scenario</span>
+
+<span class="sd">- Parameter scenarios which involve modifying a :class:`ParameterSet` instance</span>
+<span class="sd">- Program scenarios (budget, capacity, coverage) which involve modifying a :class:`ProgramInstructions` instance</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">NamedItem</span><span class="p">,</span> <span class="n">TimeSeries</span>
+<span class="kn">from</span> <span class="nn">.programs</span> <span class="kn">import</span> <span class="n">ProgramInstructions</span><span class="p">,</span> <span class="n">ProgramSet</span>
+<span class="kn">from</span> <span class="nn">.parameters</span> <span class="kn">import</span> <span class="n">ParameterSet</span>
+<span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">Result</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Scenario&quot;</span><span class="p">,</span> <span class="s2">&quot;CombinedScenario&quot;</span><span class="p">,</span> <span class="s2">&quot;BudgetScenario&quot;</span><span class="p">,</span> <span class="s2">&quot;CoverageScenario&quot;</span><span class="p">,</span> <span class="s2">&quot;ParameterScenario&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Scenario"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.Scenario.html#atomica.scenarios.Scenario">[docs]</a><span class="k">class</span> <span class="nc">Scenario</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base scenario class</span>
+
+<span class="sd">    All Scenario objects share this type. It is a NamedItem that also has an</span>
+<span class="sd">    ``active`` property which represents whether the scenario should be run</span>
+<span class="sd">    as part of :meth:`project.Project.run_scenarios`</span>
+
+<span class="sd">    The optional variables ``parsetname`` and ``progsetname`` reference the name of parsets</span>
+<span class="sd">    and progsets to use via :meth:`Scenario.run`. These should match the names of objects in the</span>
+<span class="sd">    project passed into :meth:`Scenario.run`. However, :meth:`Scenario.run` can also take in</span>
+<span class="sd">    a parset and/or progset directly, allowing the scenario to be used with other parsets and</span>
+<span class="sd">    progsets on the fly. If  ``parsetname`` and ``progsetname`` are not set in the :class:`Scenario`</span>
+<span class="sd">    then they must be passed into :meth:`Scenario.run`.</span>
+
+<span class="sd">    :param name: The name of the scenario - also sets the result name via :meth:`Scenario.run`</span>
+<span class="sd">    :param parsetname: If running via ``Project.run_scenarios`` this identifies which parset to use from the project</span>
+<span class="sd">    :param progsetname: If running via ``Project.run_scenarios`` this identifies which progset to use. If set to ``None`` then programs will not be used</span>
+<span class="sd">    :param active: If running via ``Project.run_scenarios`` this flags whether to run the scenario</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">parsetname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">progsetname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">NamedItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parsetname</span> <span class="o">=</span> <span class="n">parsetname</span>  <span class="c1">#: Specify parset name when run via ``Project.run_scenarios``</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progsetname</span> <span class="o">=</span> <span class="n">progsetname</span>  <span class="c1">#: Specify progset name when run via ``Project.run_scenarios``</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="n">active</span>  <span class="c1">#: Flag whether the scenario should be run via ``Project.run_scenarios``</span>
+
+<div class="viewcode-block" id="Scenario.get_parset"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.Scenario.html#atomica.scenarios.Scenario.get_parset">[docs]</a>    <span class="k">def</span> <span class="nf">get_parset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get scenario parset</span>
+
+<span class="sd">        If the derived scenario class modifies the parset, return the modified version</span>
+
+<span class="sd">        :param parset: Input :class:`ParameterSet`</span>
+<span class="sd">        :return: Modified parset for use in the simulation</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">parset</span></div>
+
+<div class="viewcode-block" id="Scenario.get_progset"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.Scenario.html#atomica.scenarios.Scenario.get_progset">[docs]</a>    <span class="k">def</span> <span class="nf">get_progset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progset</span><span class="p">:</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProgramSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get scenario progset</span>
+
+<span class="sd">        If the derived scenario class modifies the progset, return the modified version</span>
+
+<span class="sd">        :param progset: Input :class:`ProgramSet`</span>
+<span class="sd">        :return: Modified progset for use in the simulation</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">progset</span></div>
+
+<div class="viewcode-block" id="Scenario.get_instructions"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.Scenario.html#atomica.scenarios.Scenario.get_instructions">[docs]</a>    <span class="k">def</span> <span class="nf">get_instructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progset</span><span class="p">:</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProgramInstructions</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get scenario instructions</span>
+
+<span class="sd">        If the derived scenario class produces  program instructions, return</span>
+<span class="sd">        them here.</span>
+
+<span class="sd">        :param progset: Input :class:`ProgramSet`</span>
+<span class="sd">        :return: :class:`ProgramInstructions` instance, or None if no instructions (in which case, programs will not be used)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Scenario.run"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.Scenario.html#atomica.scenarios.Scenario.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">parset</span><span class="p">:</span> <span class="n">ParameterSet</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">progset</span><span class="p">:</span> <span class="n">ProgramSet</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">store_results</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Result</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run scenario</span>
+
+<span class="sd">        :param project: A :class:`Project` instance</span>
+<span class="sd">        :param parset: Optionally a :class:`ParameterSet` instance, otherwise will use ``self.parsetname``</span>
+<span class="sd">        :param progset: Optionally a :class:`ProgramSet` instance, otherwise will use ``self.progsetname``</span>
+<span class="sd">        :param store_results: If True, the results will be copied into the project</span>
+<span class="sd">        :return: A :class:`Result` object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">parset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parset</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parsetname</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parset</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">parset</span><span class="p">(</span><span class="n">parset</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">progset</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">progsetname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">progset</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">progsets</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">progsetname</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">progset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">progset</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">progset</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
+
+        <span class="n">parset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parset</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span>
+        <span class="n">progset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_progset</span><span class="p">(</span><span class="n">progset</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span>
+        <span class="n">instructions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_instructions</span><span class="p">(</span><span class="n">progset</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">progset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">instructions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;If using programs, the scenario must contain instructions specifying at minimum the program start year&quot;</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="n">progset</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="o">=</span><span class="n">instructions</span><span class="p">,</span> <span class="n">result_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="n">store_results</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">parset</span><span class="p">,</span> <span class="n">result_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="n">store_results</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span></div></div>
+
+
+<div class="viewcode-block" id="CombinedScenario"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.CombinedScenario.html#atomica.scenarios.CombinedScenario">[docs]</a><span class="k">class</span> <span class="nc">CombinedScenario</span><span class="p">(</span><span class="n">Scenario</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Define combined (budget+program) scenario</span>
+
+<span class="sd">    This object stores both a set of scenario values and a set of program instructions.</span>
+<span class="sd">    This allows it to simultaneously apply parameter, budget, and coverage overwrites.</span>
+
+<span class="sd">    As usual, parameter values from programs take precedence over parameter values from parsets, and</span>
+<span class="sd">    within programs, coverage takes precedence ovetoxr budgets.</span>
+
+<span class="sd">    :param name: The name of the scenario. This will also be used to name the result</span>
+<span class="sd">    :param active: If running via ``Project.run_scenarios`` this flags whether to run the scenario</span>
+<span class="sd">    :param parsetname: If running via ``Project.run_scenarios`` this identifies which parset to use from the project</span>
+<span class="sd">    :param progsetname: If running via ``Project.run_scenarios`` this identifies which progset to use. If set to ``None`` then programs will not be used</span>
+<span class="sd">    :param scenario_values: Parameter value overwrites, used as input to :class:`ParameterScenario`</span>
+<span class="sd">    :param instructions: A :class`ProgramInstructions` instance containing required program overwrites (budget, capacity, coverage)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">parsetname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">progsetname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scenario_values</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instructions</span><span class="p">:</span> <span class="n">ProgramInstructions</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">active</span><span class="p">,</span> <span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span> <span class="o">=</span> <span class="n">scenario_values</span>  <span class="c1">#: Parameter scenario values (see :class:`ParameterScenario`)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="n">interpolation</span>  <span class="c1">#: Interpolation method to use for parameter overwrite</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructions</span> <span class="o">=</span> <span class="n">instructions</span>  <span class="c1"># : Program instructions for budget scenario (should already contain required overwrites)</span>
+
+<div class="viewcode-block" id="CombinedScenario.get_parset"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.CombinedScenario.html#atomica.scenarios.CombinedScenario.get_parset">[docs]</a>    <span class="k">def</span> <span class="nf">get_parset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterSet</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">scenario_parset</span> <span class="o">=</span> <span class="n">ParameterScenario</span><span class="p">(</span><span class="n">scenario_values</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">)</span><span class="o">.</span><span class="n">get_parset</span><span class="p">(</span><span class="n">parset</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scenario_parset</span> <span class="o">=</span> <span class="n">parset</span>
+        <span class="k">return</span> <span class="n">scenario_parset</span></div>
+
+<div class="viewcode-block" id="CombinedScenario.get_instructions"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.CombinedScenario.html#atomica.scenarios.CombinedScenario.get_instructions">[docs]</a>    <span class="k">def</span> <span class="nf">get_instructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progset</span><span class="p">:</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProgramInstructions</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">instructions</span></div></div>
+
+
+<div class="viewcode-block" id="BudgetScenario"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.BudgetScenario.html#atomica.scenarios.BudgetScenario">[docs]</a><span class="k">class</span> <span class="nc">BudgetScenario</span><span class="p">(</span><span class="n">Scenario</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">parsetname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">progsetname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">alloc</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2019</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">active</span><span class="p">,</span> <span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_year</span> <span class="o">=</span> <span class="n">start_year</span>  <span class="c1"># Program start year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alloc</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">alloc</span><span class="p">)</span> <span class="k">if</span> <span class="n">alloc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+
+<div class="viewcode-block" id="BudgetScenario.get_instructions"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.BudgetScenario.html#atomica.scenarios.BudgetScenario.get_instructions">[docs]</a>    <span class="k">def</span> <span class="nf">get_instructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progset</span><span class="p">:</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProgramInstructions</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ProgramInstructions</span><span class="p">(</span><span class="n">start_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">start_year</span><span class="p">,</span> <span class="n">alloc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alloc</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CoverageScenario"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.CoverageScenario.html#atomica.scenarios.CoverageScenario">[docs]</a><span class="k">class</span> <span class="nc">CoverageScenario</span><span class="p">(</span><span class="n">Scenario</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">parsetname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">progsetname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">coverage</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2019</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">active</span><span class="p">,</span> <span class="n">parsetname</span><span class="p">,</span> <span class="n">progsetname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_year</span> <span class="o">=</span> <span class="n">start_year</span>  <span class="c1"># Program start year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">coverage</span><span class="p">)</span> <span class="k">if</span> <span class="n">coverage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CoverageScenario.get_instructions"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.CoverageScenario.html#atomica.scenarios.CoverageScenario.get_instructions">[docs]</a>    <span class="k">def</span> <span class="nf">get_instructions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progset</span><span class="p">:</span> <span class="n">ProgramSet</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProgramInstructions</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ProgramInstructions</span><span class="p">(</span><span class="n">start_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">start_year</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ParameterScenario"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.ParameterScenario.html#atomica.scenarios.ParameterScenario">[docs]</a><span class="k">class</span> <span class="nc">ParameterScenario</span><span class="p">(</span><span class="n">Scenario</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Define and run parameter scenarios</span>
+
+<span class="sd">    This object stores overwrites to parameter values that are used to modify</span>
+<span class="sd">    a :class:`ParameterSet` instance before running a simulation.</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    &gt;&gt;&gt; scvalues = dict()</span>
+<span class="sd">    &gt;&gt;&gt; param = &#39;birth_transit&#39;</span>
+<span class="sd">    &gt;&gt;&gt; scvalues[param] = dict()</span>
+<span class="sd">    &gt;&gt;&gt; scvalues[param][&#39;Pop1&#39;] = dict()</span>
+<span class="sd">    &gt;&gt;&gt; scvalues[param][&#39;Pop1&#39;][&#39;y&#39;] = [3e6, 1e4, 1e4, 2e6]</span>
+<span class="sd">    &gt;&gt;&gt; scvalues[param][&#39;Pop1&#39;][&#39;t&#39;] = [2003.,2004.,2014.,2015.]</span>
+<span class="sd">    &gt;&gt;&gt; pscenario = ParameterScenario(name=&quot;examplePS&quot;,scenario_values=scvalues)</span>
+
+<span class="sd">    :param name: The name of the scenario. This will also be used to name the result</span>
+<span class="sd">    :param scenario_values: A dict of overwrites to parameter values. The structure is</span>
+<span class="sd">        ``{parameter_label: {pop_identifier: dict o}`` where the overwrite ``o`` contains keys</span>
+<span class="sd">         - ``t`` : np.array or list with year values</span>
+<span class="sd">         - ``y`` : np.array or list with corresponding parameter values</span>
+<span class="sd">         The ``pop_identifier`` is a single population name if the ``parameter_label`` corresponds to a Framework parameter</span>
+<span class="sd">         or it should be a tuple/list ``(from_pop,to_pop)`` if the ``parameter_label`` corresponds to an interaction or transfer.</span>
+<span class="sd">    :param active: If running via ``Project.run_scenarios`` this flags whether to run the scenario</span>
+<span class="sd">    :param parsetname: If running via ``Project.run_scenarios`` this identifies which parset to use from the project</span>
+<span class="sd">    :param interpolation: The specified interpolation method will be used to interpolate scenario values onto simulation times. Common options are &#39;linear&#39; (smoothly change) and &#39;previous&#39; (stepped)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scenario_values</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">parsetname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">active</span><span class="p">,</span> <span class="n">parsetname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">scenario_values</span><span class="p">)</span> <span class="k">if</span> <span class="n">scenario_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>  <span class="c1">#: Store dictionary containing the overwrite values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span> <span class="o">=</span> <span class="n">interpolation</span>  <span class="c1">#: Stores the name of a supported interpolation method</span>
+
+<div class="viewcode-block" id="ParameterScenario.add"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.ParameterScenario.html#atomica.scenarios.ParameterScenario.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">par_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add overwrite to scenario</span>
+
+<span class="sd">        This method adds a TimeSeries with parameter overwrite values to the</span>
+<span class="sd">        ParameterSet</span>
+
+<span class="sd">        Example usage:</span>
+
+<span class="sd">        &gt;&gt;&gt; pscenario = ParameterScenario(name=&quot;examplePS&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; pscenario.add(&#39;rec_rate&#39;,&#39;Pop1&#39;,[2004.,2014],[3e6, 1e4])</span>
+<span class="sd">        &gt;&gt;&gt; pscenario.add(&#39;aging&#39;,(&#39;Pop1&#39;,&#39;Pop2&#39;),[2004.,2014],[0.05,0.06])</span>
+
+<span class="sd">        This can provide a more readable way to define a parameter scenario, without having to</span>
+<span class="sd">        assemble a dict of the overwrites in advance.</span>
+
+<span class="sd">        :param par_name: Name of the parameter to overwrite. This can also be the code name of a transfer or interaction</span>
+<span class="sd">        :param pop_name: Population to overwrite values for. If the ``par_name`` is a transfer or interaction, this</span>
+<span class="sd">                         should be a tuple containing ``(from_pop,to_pop)``</span>
+<span class="sd">        :param t: scalar, list, or array of times</span>
+<span class="sd">        :param y: scalar, list, or array of overwrite values</span>
+<span class="sd">        :param end_overwrite: If True, after the final overwrite, the parameter will revert to its baseline value</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="s2">&quot;To add an overwrite, the same number of time points and values must be provided&quot;</span>
+
+        <span class="k">if</span> <span class="n">par_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">pop_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_name</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_name</span><span class="p">][</span><span class="n">pop_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_name</span><span class="p">][</span><span class="n">pop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span></div>
+
+<div class="viewcode-block" id="ParameterScenario.get_parset"><a class="viewcode-back" href="../../_autosummary/atomica.scenarios.ParameterScenario.html#atomica.scenarios.ParameterScenario.get_parset">[docs]</a>    <span class="k">def</span> <span class="nf">get_parset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="p">:</span> <span class="n">ParameterSet</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return modified parset</span>
+
+<span class="sd">        This method takes in a :class:`ParameterSet` and modifies it by applying the overwrites</span>
+<span class="sd">        present in the scenario. This can thus be used to return the :class:`ParameterSet` for use in</span>
+<span class="sd">        other simulations that are manually run, or to do things like perform a budget scenario simulation</span>
+<span class="sd">        in conjunction with a parameter scenario.</span>
+
+<span class="sd">        The returned :class:`ParameterSet` will have been pre-interpolated onto the simulation times.</span>
+
+<span class="sd">        :param parset: A :class:`ParameterSet` instance</span>
+<span class="sd">        :param project: A :class:`Project` instance (required for simulation times and to identify function parameters)</span>
+<span class="sd">        :return: A new :class:`ParameterSet` object</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">new_parset</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">parset</span><span class="p">)</span>
+        <span class="n">new_parset</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">parset</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">tvec</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">tvec</span>  <span class="c1"># Simulation times</span>
+
+        <span class="k">for</span> <span class="n">par_label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="n">par_label</span> <span class="ow">in</span> <span class="n">new_parset</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+                <span class="n">has_function</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">par_label</span><span class="p">,</span> <span class="s2">&quot;function&quot;</span><span class="p">]</span>  <span class="c1"># Flag whether this is a function parameter in the framework</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">has_function</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Interactions and transfers do not have functions</span>
+
+            <span class="k">for</span> <span class="n">pop_specifier</span><span class="p">,</span> <span class="n">overwrite</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenario_values</span><span class="p">[</span><span class="n">par_label</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">pop_specifier</span><span class="p">):</span>
+                    <span class="n">par</span> <span class="o">=</span> <span class="n">new_parset</span><span class="o">.</span><span class="n">get_par</span><span class="p">(</span><span class="n">par_label</span><span class="p">)</span>
+                    <span class="n">pop_label</span> <span class="o">=</span> <span class="n">pop_specifier</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">par</span> <span class="o">=</span> <span class="n">new_parset</span><span class="o">.</span><span class="n">get_par</span><span class="p">(</span><span class="n">par_label</span><span class="p">,</span> <span class="n">pop_specifier</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">pop_label</span> <span class="o">=</span> <span class="n">pop_specifier</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="c1"># Sanitize the overwrite values</span>
+                <span class="n">overwrite</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">overwrite</span><span class="p">)</span>
+                <span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>  <span class="c1"># astype(&#39;float&#39;) converts None to np.nan</span>
+                <span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># Expand out the baseline values and remove any other values</span>
+                <span class="n">scen_start</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">])</span>
+                <span class="n">vals</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">tvec</span><span class="p">[</span><span class="n">tvec</span> <span class="o">&lt;</span> <span class="n">scen_start</span><span class="p">],</span> <span class="n">pop_label</span><span class="p">)</span>  <span class="c1"># Interpolate parameter onto valid sim times, using default interpolation. To override this, interpolate the parameter before calling ``ParameterScenario.get_parset()``</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop_label</span><span class="p">]</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">tvec</span><span class="p">[</span><span class="n">tvec</span> <span class="o">&lt;</span> <span class="n">scen_start</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop_label</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+                <span class="c1"># Insert the overwrites</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]),</span> <span class="s2">&quot;Number of time points in overwrite does not match number of values&quot;</span>
+                <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">],</span> <span class="n">overwrite</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]):</span>
+                    <span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop_label</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">smooth</span><span class="p">(</span><span class="n">tvec</span><span class="p">[</span><span class="n">tvec</span> <span class="o">&gt;=</span> <span class="n">scen_start</span><span class="p">],</span> <span class="n">pop_names</span><span class="o">=</span><span class="n">pop_label</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolation</span><span class="p">)</span>
+
+                <span class="c1"># Disable parameter function during scenario</span>
+                <span class="k">if</span> <span class="n">has_function</span><span class="p">:</span>
+                    <span class="n">par</span><span class="o">.</span><span class="n">skip_function</span><span class="p">[</span><span class="n">pop_label</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">scen_start</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">new_parset</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

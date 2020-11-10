@@ -1,0 +1,422 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.excel.TimeDependentConnections &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.excel.TimeDependentValuesEntry" href="atomica.excel.TimeDependentValuesEntry.html" />
+    <link rel="prev" title="atomica.excel.validate_category" href="atomica.excel.validate_category.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.23.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.excel.html">atomica.excel</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.apply_widths.html">atomica.excel.apply_widths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.cell_get_number.html">atomica.excel.cell_get_number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.cell_get_string.html">atomica.excel.cell_get_string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.copy_sheet.html">atomica.excel.copy_sheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.read_dataframes.html">atomica.excel.read_dataframes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.read_tables.html">atomica.excel.read_tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.standard_formats.html">atomica.excel.standard_formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.transfer_comments.html">atomica.excel.transfer_comments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.update_widths.html">atomica.excel.update_widths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.validate_category.html">atomica.excel.validate_category</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.excel.TimeDependentConnections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.excel.TimeDependentValuesEntry.html">atomica.excel.TimeDependentValuesEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.model.html">atomica.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.programs.html">atomica.programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.excel.html">atomica.excel</a> &raquo;</li>
+        
+      <li>atomica.excel.TimeDependentConnections</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-excel-timedependentconnections">
+<h1>atomica.excel.TimeDependentConnections<a class="headerlink" href="#atomica-excel-timedependentconnections" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="atomica.excel.TimeDependentConnections">
+<em class="property">class </em><code class="sig-prename descclassname">atomica.excel.</code><code class="sig-name descname">TimeDependentConnections</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">code_name</span></em>, <em class="sig-param"><span class="n">full_name</span></em>, <em class="sig-param"><span class="n">tvec</span></em>, <em class="sig-param"><span class="n">from_pops</span></em>, <em class="sig-param"><span class="n">to_pops</span></em>, <em class="sig-param"><span class="n">interpop_type</span></em>, <em class="sig-param"><span class="n">ts</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">from_pop_type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_pop_type</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#TimeDependentConnections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.TimeDependentConnections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Structure for reading/writing interactions</p>
+<p>A <a class="reference internal" href="#atomica.excel.TimeDependentConnections" title="atomica.excel.TimeDependentConnections"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code></a> object is suitable when there are time dependent interactions between two quantities
+This class is used for both transfers and interactions. The content that it writes consists of</p>
+<ul class="simple">
+<li><p>A connection matrix table that has Y/N selection of which interactions are present between two things</p></li>
+<li><p>A set of pairwise connections specifying to, from, units, assumption, and time</p></li>
+</ul>
+<p>Interactions can have a diagonal, whereas transfers cannot (e.g. a population can infect itself but cannot transfer to itself).</p>
+<p>In Excel, a <a class="reference internal" href="#atomica.excel.TimeDependentConnections" title="atomica.excel.TimeDependentConnections"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code></a> maps to three tables</p>
+<ol class="arabic simple">
+<li><p>A table to enter the code name and full name</p></li>
+<li><p>An interactions matrix with Y/N indicating whether an interaction between two populations exists</p></li>
+<li><p>A set of rows for entering time varying data for each pair of populations</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – the code name of this quantity e.g. ‘aging’</p></li>
+<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – the full name of this quantity e.g. ‘Aging’</p></li>
+<li><p><strong>tvec</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>) – time values for the time-dependent rows</p></li>
+<li><p><strong>pops</strong> – list of strings to use as the rows and columns - these are typically lists of population code names</p></li>
+<li><p><strong>type</strong> – ‘transfer’ or ‘interaction’. A transfer cannot have diagonal entries, and can have Number or Probability formats. An Interaction can have
+diagonal entries and only has N.A. formats</p></li>
+<li><p><strong>ts</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]) – Optionally specify a dict containing all of the non-empty TimeSeries objects used. The format is <code class="docutils literal notranslate"><span class="pre">{(from_pop,</span> <span class="pre">to_pop):TimeSeries}</span></code>.
+An interaction can only be Y/N for clarity, if it is Y then a row is displayed for the TimeSeries. Actually, the Y/N can be
+decided in the first instance based on the provided TimeSeries i.e. if a TimeSeries is provided for an interaction, then the
+interaction must have been marked with Y</p></li>
+<li><p><strong>pop_type</strong> – Specify pop_type, which is used by <code class="xref py py-meth docutils literal notranslate"><span class="pre">ProjectData.add_pop()</span></code> to determine which TDCs to add new populations to</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.excel.TimeDependentConnections.from_tables" title="atomica.excel.TimeDependentConnections.from_tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_tables</span></code></a></p></td>
+<td><p>Instantiate based on list of tables</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.excel.TimeDependentConnections.write" title="atomica.excel.TimeDependentConnections.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a></p></td>
+<td><p>Write to cells in a worksheet</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="atomica.excel.TimeDependentConnections.assumption_heading">
+<code class="sig-name descname">assumption_heading</code><a class="headerlink" href="#atomica.excel.TimeDependentConnections.assumption_heading" title="Permalink to this definition">¶</a></dt>
+<dd><p>Heading to use for assumption column</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.excel.TimeDependentConnections.attributes">
+<code class="sig-name descname">attributes</code><a class="headerlink" href="#atomica.excel.TimeDependentConnections.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attributes associated with the table</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.excel.TimeDependentConnections.from_tables">
+<em class="property">static </em><code class="sig-name descname">from_tables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tables</span></em>, <em class="sig-param"><span class="n">interaction_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#TimeDependentConnections.from_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.TimeDependentConnections.from_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate based on list of tables</p>
+<p>This method instantiates and initializes a new <a class="reference internal" href="#atomica.excel.TimeDependentConnections" title="atomica.excel.TimeDependentConnections"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code></a> object from
+tables that have been read in using <a class="reference internal" href="atomica.excel.read_tables.html#atomica.excel.read_tables" title="atomica.excel.read_tables"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_tables()</span></code></a>. Note that the parent object
+such as <code class="xref py py-class docutils literal notranslate"><span class="pre">ProjectData</span></code> is responsible for extracting the tables and passing them
+to this function. For instance, the transfers sheet might contain more than one set of
+tables, so it is the calling function’s responsibility to split those tables up into
+the groups of three expected by this method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tables</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>) – A list of tables. A table here is a list of rows, and a row is a list of cells.</p></li>
+<li><p><strong>interaction_type</strong> – A string identifying the interaction type - either ‘transfer’ or ‘interaction’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new <a class="reference internal" href="#atomica.excel.TimeDependentConnections" title="atomica.excel.TimeDependentConnections"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code></a> instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.excel.TimeDependentConnections.ts_attributes">
+<code class="sig-name descname">ts_attributes</code><a class="headerlink" href="#atomica.excel.TimeDependentConnections.ts_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attributes associated with each TimeSeries row</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.excel.TimeDependentConnections.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">worksheet</span></em>, <em class="sig-param"><span class="n">start_row</span></em>, <em class="sig-param"><span class="n">formats</span></em>, <em class="sig-param"><span class="n">references</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">widths</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/excel.html#TimeDependentConnections.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.excel.TimeDependentConnections.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write to cells in a worksheet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>worksheet</strong> – An xlsxwriter worksheet instance</p></li>
+<li><p><strong>start_row</strong> – The first row in which to write values</p></li>
+<li><p><strong>formats</strong> – Format dict for the opened workbook - typically the return value of <a class="reference internal" href="atomica.excel.standard_formats.html#atomica.excel.standard_formats" title="atomica.excel.standard_formats"><code class="xref py py-func docutils literal notranslate"><span class="pre">standard_formats()</span></code></a> when the workbook was opened</p></li>
+<li><p><strong>references</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]) – References dict containing cell references for strings in the current workbook</p></li>
+<li><p><strong>widths</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]) – <code class="docutils literal notranslate"><span class="pre">dict</span></code> storing column widths</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The row index for the next available row for writing in the spreadsheet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.excel.TimeDependentConnections.write_assumption">
+<code class="sig-name descname">write_assumption</code><a class="headerlink" href="#atomica.excel.TimeDependentConnections.write_assumption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a column for units (if None, units will be written if any of the TimeSeries have an assumption)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.excel.TimeDependentConnections.write_uncertainty">
+<code class="sig-name descname">write_uncertainty</code><a class="headerlink" href="#atomica.excel.TimeDependentConnections.write_uncertainty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a column for units (if None, units will be written if any of the TimeSeries have uncertainty)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.excel.TimeDependentConnections.write_units">
+<code class="sig-name descname">write_units</code><a class="headerlink" href="#atomica.excel.TimeDependentConnections.write_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a column for units (if None, units will be written if any of the TimeSeries have units)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="atomica.excel.TimeDependentValuesEntry.html" class="btn btn-neutral float-right" title="atomica.excel.TimeDependentValuesEntry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="atomica.excel.validate_category.html" class="btn btn-neutral float-left" title="atomica.excel.validate_category" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
