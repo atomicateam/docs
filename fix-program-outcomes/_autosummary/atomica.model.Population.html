@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>atomica.model.Population &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.model.ResidualJunctionCompartment" href="atomica.model.ResidualJunctionCompartment.html" />
+    <link rel="prev" title="atomica.model.Parameter" href="atomica.model.Parameter.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.23.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.model.html">atomica.model</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.run_model.html">atomica.model.run_model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Characteristic.html">atomica.model.Characteristic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Compartment.html">atomica.model.Compartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.JunctionCompartment.html">atomica.model.JunctionCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Link.html">atomica.model.Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Model.html">atomica.model.Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Parameter.html">atomica.model.Parameter</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.model.Population</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.ResidualJunctionCompartment.html">atomica.model.ResidualJunctionCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.SinkCompartment.html">atomica.model.SinkCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.SourceCompartment.html">atomica.model.SourceCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.TimedCompartment.html">atomica.model.TimedCompartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.TimedLink.html">atomica.model.TimedLink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.Variable.html">atomica.model.Variable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.BadInitialization.html">atomica.model.BadInitialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.model.ModelError.html">atomica.model.ModelError</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.programs.html">atomica.programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.model.html">atomica.model</a> &raquo;</li>
+        
+      <li>atomica.model.Population</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-model-population">
+<h1>atomica.model.Population<a class="headerlink" href="#atomica-model-population" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="atomica.model.Population">
+<em class="property">class </em><code class="sig-prename descclassname">atomica.model.</code><code class="sig-name descname">Population</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">framework</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">progset</span></em>, <em class="sig-param"><span class="n">pop_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Population"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A class to wrap up data for one population within model.
+Each model population must contain a set of compartments with equivalent names.</p>
+<p>Construct a Population</p>
+<p>This function constructs a population instance. Aside from creating the Population, it also
+instantiates all of the integration objects defined in the Framework. Note that transfers
+and interactions aren’t added at this point - because they transcend populations, they are
+instantiated one level higher up, in <code class="docutils literal notranslate"><span class="pre">model.build()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>framework</strong> – A ProjectFramework</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name of the population</p></li>
+<li><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The full name of the population</p></li>
+<li><p><strong>progset</strong> (<a class="reference internal" href="atomica.programs.ProgramSet.html#atomica.programs.ProgramSet" title="atomica.programs.ProgramSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code></a>) – A ProgramSet instance</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.Population.build" title="atomica.model.Population.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a></p></td>
+<td><p>Generate a compartmental cascade as defined in a settings object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.Population.get_charac" title="atomica.model.Population.get_charac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_charac</span></code></a></p></td>
+<td><p>Allow dependencies to be retrieved by name rather than index.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.Population.get_comp" title="atomica.model.Population.get_comp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_comp</span></code></a></p></td>
+<td><p>Allow compartments to be retrieved by name rather than index.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.Population.get_links" title="atomica.model.Population.get_links"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_links</span></code></a></p></td>
+<td><p>Retrieve Links.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.Population.get_par" title="atomica.model.Population.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a></p></td>
+<td><p>Allow dependencies to be retrieved by name rather than index.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.Population.get_variable" title="atomica.model.Population.get_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_variable</span></code></a></p></td>
+<td><p>Return list of variables given code name</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.model.Population.initialize_compartments" title="atomica.model.Population.initialize_compartments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialize_compartments</span></code></a></p></td>
+<td><p>Set compartment sizes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.model.Population.popsize" title="atomica.model.Population.popsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popsize</span></code></a></p></td>
+<td><p>Return population size</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">relink</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unlink</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="atomica.model.Population.build">
+<code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">framework</span></em>, <em class="sig-param"><span class="n">progset</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Population.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Population.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a compartmental cascade as defined in a settings object.
+Fill out the compartment, transition and dependency lists within the model population object.
+Maintaining order as defined in a cascade workbook is crucial due to cross-referencing.</p>
+<p>The progset is required so that Parameter instances with functions can correctly identify dynamic quantities
+if they are only dynamic due to program overwrites.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.charac_lookup">
+<code class="sig-name descname">charac_lookup</code><a class="headerlink" href="#atomica.model.Population.charac_lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps name of a compartment to a Characteristic</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.characs">
+<code class="sig-name descname">characs</code><a class="headerlink" href="#atomica.model.Population.characs" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of Characteristic objects</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.comp_lookup">
+<code class="sig-name descname">comp_lookup</code><a class="headerlink" href="#atomica.model.Population.comp_lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps name of a compartment to a Compartment</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.comps">
+<code class="sig-name descname">comps</code><a class="headerlink" href="#atomica.model.Population.comps" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of Compartment objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Population.get_charac">
+<code class="sig-name descname">get_charac</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">charac_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Population.get_charac"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Population.get_charac" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow dependencies to be retrieved by name rather than index. Returns a Variable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Population.get_comp">
+<code class="sig-name descname">get_comp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">comp_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Population.get_comp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Population.get_comp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow compartments to be retrieved by name rather than index. Returns a Compartment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Population.get_links">
+<code class="sig-name descname">get_links</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Population.get_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Population.get_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve Links.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Population.get_par">
+<code class="sig-name descname">get_par</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">par_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Population.get_par"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Population.get_par" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow dependencies to be retrieved by name rather than index. Returns a Variable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Population.get_variable">
+<code class="sig-name descname">get_variable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Population.get_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Population.get_variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of variables given code name</p>
+<p>At the moment, names are unique across object types and within object
+types except for links, but if that logic changes, simple modifications can
+be made here</p>
+<p>Link names in Atomica end in ‘par_name:flow’ so passing in a code name of this form
+will return links. Links can also be identified by the compartments that they connect.
+Allowed syntax is:
+- ‘source_name:’ - All links going out from source
+- ‘:dest_name’ - All links going into destination
+- ‘source_name:dest_name’ - All links from Source to Dest
+- ‘source_name:dest_name:par_name’ - All links from Source to Dest belonging to a given Parameter
+- ‘:dest:par_name’
+- ‘source::par_name’ - As per above
+- ‘::par_name’ - All links with specified par_name (less efficient than ‘par_name:flow’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name to search for</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of Variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Population.initialize_compartments">
+<code class="sig-name descname">initialize_compartments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parset</span></em>, <em class="sig-param"><span class="n">framework</span></em>, <em class="sig-param"><span class="n">t_init</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Population.initialize_compartments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Population.initialize_compartments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set compartment sizes</p>
+<p>This method takes the databook values for compartments and characteristics, and uses them to
+compute the initial compartment sizes at <code class="docutils literal notranslate"><span class="pre">ti=0</span></code>. The computation is carried out by solving
+the linear matrix equation mapping characteristics to compartments. For this purpose,
+both compartments and characteristics in the databook are treated in the same way i.e. a databook
+compartment is treated like a characteristic containing only that compartment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parset</strong> (<a class="reference internal" href="atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet" title="atomica.parameters.ParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code></a>) – A py:class:<cite>ParameterSet</cite> instance with initial values for compartments/characteristics</p></li>
+<li><p><strong>framework</strong> – A py:class:<cite>ProjectFramework</cite> instance, used to identify and retrieve interaction terms</p></li>
+<li><p><strong>t_init</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – The year to use for initialization. This should generally be set to the sim start year</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.label">
+<code class="sig-name descname">label</code><a class="headerlink" href="#atomica.model.Population.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>The full name/label of the population</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.link_lookup">
+<code class="sig-name descname">link_lookup</code><a class="headerlink" href="#atomica.model.Population.link_lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps name of link to a list of Links with that name</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.links">
+<code class="sig-name descname">links</code><a class="headerlink" href="#atomica.model.Population.links" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of Link objects</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#atomica.model.Population.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The code name of the population</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.par_lookup">
+<code class="sig-name descname">par_lookup</code><a class="headerlink" href="#atomica.model.Population.par_lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps name of a parameter to a Parameter</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.pars">
+<code class="sig-name descname">pars</code><a class="headerlink" href="#atomica.model.Population.pars" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of Parameter objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.model.Population.popsize">
+<code class="sig-name descname">popsize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ti</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/model.html#Population.popsize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#atomica.model.Population.popsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return population size</p>
+<p>A population’s size is the sum of all of the people in its compartments, excluding
+birth and death compartments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – Optionally specify a scalar time index to retrieve popsize for. <code class="docutils literal notranslate"><span class="pre">`None</span></code> corresponds to all times</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If <code class="docutils literal notranslate"><span class="pre">ti</span></code> is specified, returns a scalar population size. If <code class="docutils literal notranslate"><span class="pre">ti</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, return a numpy array the same size as the simulation time vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.model.Population.type">
+<code class="sig-name descname">type</code><a class="headerlink" href="#atomica.model.Population.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The population’s type</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="atomica.model.ResidualJunctionCompartment.html" class="btn btn-neutral float-right" title="atomica.model.ResidualJunctionCompartment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="atomica.model.Parameter.html" class="btn btn-neutral float-left" title="atomica.model.Parameter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Atomica Team
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
