@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.23.3
+                1.23.4
               </div>
             
           
@@ -160,7 +160,15 @@
            <div itemprop="articleBody">
             
   <h1>Source code for sciris.sc_odict</h1><div class="highlight"><pre>
-<span></span><span class="c1">##############################################################################</span>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">The &#39;odict&#39; class, combining features from an OrderedDict and a list/array.</span>
+
+<span class="sd">Highlights:</span>
+<span class="sd">    - ``sc.odict()``: flexible container representing the best-of-all-worlds across lists, dicts, and arrays</span>
+<span class="sd">    - ``sc.objdict()``: like an odict, but allows get/set via e.g. ``foo.bar`` instead of ``foo[&#39;bar&#39;]``</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1">##############################################################################</span>
 <span class="c1">### ODICT CLASS</span>
 <span class="c1">##############################################################################</span>
 
@@ -170,30 +178,39 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">sc_utils</span> <span class="k">as</span> <span class="n">ut</span>
 
 <span class="c1"># Restrict imports to user-facing modules</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;odict&#39;</span><span class="p">,</span> <span class="s1">&#39;objdict&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;odict&#39;</span><span class="p">,</span> <span class="s1">&#39;objdict&#39;</span><span class="p">,</span> <span class="s1">&#39;asobj&#39;</span><span class="p">]</span>
 
 <span class="k">class</span> <span class="nc">odict</span><span class="p">(</span><span class="n">OD</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    An ordered dictionary, like the OrderedDict class, but supporting list methods like integer</span>
-<span class="sd">    referencing, slicing, and appending.</span>
+<span class="sd">    An ordered dictionary, like the OrderedDict class, but supports list methods like integer</span>
+<span class="sd">    indexing, key slicing, and item inserting.</span>
 
-<span class="sd">    Examples:</span>
-<span class="sd">        foo = odict({&#39;ah&#39;:3,&#39;boo&#39;:4, &#39;cough&#39;:6, &#39;dill&#39;: 8}) # Create odict</span>
-<span class="sd">        bar = foo.sorted() # Sort the list</span>
-<span class="sd">        assert(bar[&#39;boo&#39;] == 4) # Show get item by value</span>
-<span class="sd">        assert(bar[1] == 4) # Show get item by index</span>
-<span class="sd">        assert((bar[0:2] == [3,4]).all()) # Show get item by slice</span>
-<span class="sd">        assert((bar[&#39;cough&#39;:&#39;dill&#39;] == [6,8]).all()) # Show alternate slice notation</span>
-<span class="sd">        assert((bar[[2,1]] == [6,4]).all()) # Show get item by list</span>
-<span class="sd">        assert((bar[:] == [3,4,6,8]).all()) # Show slice with everything</span>
-<span class="sd">        assert((bar[2:] == [6,8]).all()) # Show slice without end</span>
+<span class="sd">    **Examples**::</span>
+
+<span class="sd">        # Simple example</span>
+<span class="sd">        mydict = sc.odict(foo=[1,2,3], bar=[4,5,6]) # Assignment is the same as ordinary dictionaries</span>
+<span class="sd">        mydict[&#39;foo&#39;] == mydict[0] # Access by key or by index</span>
+<span class="sd">        mydict[:].sum() == 21 # Slices are returned as numpy arrays by default</span>
+<span class="sd">        for i,key,value in mydict.enumitems(): # Additional methods for iteration</span>
+<span class="sd">            print(f&#39;Item {i} is named {key} and has value {value}&#39;)</span>
+
+<span class="sd">        # Detailed example</span>
+<span class="sd">        foo = sc.odict({&#39;ant&#39;:3,&#39;bear&#39;:4, &#39;clam&#39;:6, &#39;donkey&#39;: 8}) # Create odict</span>
+<span class="sd">        bar = foo.sorted() # Sort the dict</span>
+<span class="sd">        assert bar[&#39;bear&#39;] == 4 # Show get item by value</span>
+<span class="sd">        assert bar[1] == 4 # Show get item by index</span>
+<span class="sd">        assert (bar[0:2] == [3,4]).all() # Show get item by slice</span>
+<span class="sd">        assert (bar[&#39;clam&#39;:&#39;donkey&#39;] == [6,8]).all() # Show alternate slice notation</span>
+<span class="sd">        assert (bar[np.array([2,1])] == [6,4]).all() # Show get item by list</span>
+<span class="sd">        assert (bar[:] == [3,4,6,8]).all() # Show slice with everything</span>
+<span class="sd">        assert (bar[2:] == [6,8]).all() # Show slice without end</span>
 <span class="sd">        bar[3] = [3,4,5] # Show assignment by item</span>
-<span class="sd">        bar[0:2] = [&#39;the&#39;, &#39;power&#39;] # Show assignment by slice -- NOTE, inclusive slice!!</span>
-<span class="sd">        bar[[0,2]] = [&#39;cat&#39;, &#39;trip&#39;] # Show assignment by list</span>
-<span class="sd">        bar.rename(&#39;cough&#39;,&#39;chill&#39;) # Show rename</span>
+<span class="sd">        bar[0:2] = [&#39;the&#39;, &#39;power&#39;] # Show assignment by slice</span>
+<span class="sd">        bar[[0,3]] = [&#39;hill&#39;, &#39;trip&#39;] # Show assignment by list</span>
+<span class="sd">        bar.rename(&#39;clam&#39;,&#39;oyster&#39;) # Show rename</span>
 <span class="sd">        print(bar) # Print results</span>
 
-<span class="sd">    Version: 2018jun25</span>
+<span class="sd">    Version: 2020nov30</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -431,7 +448,8 @@
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Print out flexible representation, short by default.</span>
 
-<span class="sd">        Example:</span>
+<span class="sd">        **Example**::</span>
+
 <span class="sd">            import pylab as pl</span>
 <span class="sd">            z = odict().make(keys=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;], vals=(10*pl.rand(3)).tolist())</span>
 <span class="sd">            z.disp(sigfigs=3)</span>
@@ -581,7 +599,8 @@
 <span class="sd">        Returns the key(s) that match a given value -- reverse of findbykey, except here</span>
 <span class="sd">        uses exact matches to the value or values provided.</span>
 
-<span class="sd">        Example:</span>
+<span class="sd">        **Example**::</span>
+
 <span class="sd">            z = odict({&#39;dog&#39;:[2,3], &#39;cat&#39;:[4,6], &#39;mongoose&#39;:[4,6]})</span>
 <span class="sd">            z.findvals([4,6]) # returns &#39;cat&#39;</span>
 <span class="sd">            z.findvals([4,6], first=False) # returns [&#39;cat&#39;, &#39;mongoose&#39;]</span>
@@ -644,14 +663,15 @@
 
     <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Stupid, slow function to do insert -- WARNING, should be able to use approach more like rename...</span>
+<span class="sd">        Function to do insert a key -- note, computationally inefficient.</span>
 
-<span class="sd">        Usage:</span>
+<span class="sd">        **Example**::</span>
+
 <span class="sd">            z = odict()</span>
 <span class="sd">            z[&#39;foo&#39;] = 1492</span>
 <span class="sd">            z.insert(1604)</span>
 <span class="sd">            z.insert(0, &#39;ganges&#39;, 1444)</span>
-<span class="sd">            z.insert(2, &#39;midway&#39;, 1234)</span>
+<span class="sd">            z.insert(2, &#39;meikang&#39;, 1234)</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Handle inputs</span>
@@ -745,7 +765,6 @@
                     <span class="n">warningmsg</span> <span class="o">=</span> <span class="s1">&#39;Warning: list to sort by &quot;</span><span class="si">%s</span><span class="s1">&quot; has different length than odict &quot;</span><span class="si">%i</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sortby</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">warningmsg</span><span class="p">)</span>
                 <span class="n">allkeys</span> <span class="o">=</span> <span class="p">[</span><span class="n">origkeys</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">sortby</span><span class="p">]</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">allkeys</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cannot figure out how to sort by &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">sortby</span><span class="p">)</span>
         <span class="n">tmpdict</span> <span class="o">=</span> <span class="n">odict</span><span class="p">()</span>
@@ -780,7 +799,10 @@
 
     <span class="k">def</span> <span class="nf">make</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keys3</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        An alternate way of making or adding to an odict. Examples:</span>
+<span class="sd">        An alternate way of making or adding to an odict.</span>
+
+<span class="sd">        **Examples**::</span>
+
 <span class="sd">            a = odict().make(5) # Make an odict of length 5, populated with Nones and default key names</span>
 <span class="sd">            b = odict().make(&#39;foo&#39;,34) # Make an odict with a single key &#39;foo&#39; of value 34</span>
 <span class="sd">            c = odict().make([&#39;a&#39;,&#39;b&#39;]) # Make an odict with keys &#39;a&#39; and &#39;b&#39;</span>
@@ -836,7 +858,8 @@
 <span class="sd">        Create an odict from entries in another dictionary. If keys is None, then</span>
 <span class="sd">        use all keys from the current dictionary.</span>
 
-<span class="sd">        Examples:</span>
+<span class="sd">        **Examples**::</span>
+
 <span class="sd">            a = &#39;cat&#39;; b = &#39;dog&#39;; o = odict().makefrom(source=locals(), keys=[&#39;a&#39;,&#39;b&#39;]) # Make use of fact that variables are stored in a dictionary</span>
 <span class="sd">            d = {&#39;a&#39;:&#39;cat&#39;, &#39;b&#39;:&#39;dog&#39;}; o = odict().makefrom(d) # Same as odict(d)</span>
 <span class="sd">            l = [&#39;cat&#39;, &#39;monkey&#39;, &#39;dog&#39;]; o = odict().makefrom(source=l, keys=[0,2], keynames=[&#39;a&#39;,&#39;b&#39;])</span>
@@ -875,7 +898,8 @@
 <span class="sd">        Apply a function to each element of the odict, returning</span>
 <span class="sd">        a new odict with the same keys.</span>
 
-<span class="sd">        Example:</span>
+<span class="sd">        **Example**::</span>
+
 <span class="sd">            cat = odict({&#39;a&#39;:[1,2], &#39;b&#39;:[3,4]})</span>
 <span class="sd">            def myfunc(mylist): return [i**2 for i in mylist]</span>
 <span class="sd">            dog = cat.map(myfunc) # Returns odict({&#39;a&#39;:[1,4], &#39;b&#39;:[9,16]})</span>
@@ -892,7 +916,8 @@
 <span class="sd">        operation to entry. The simplest usage is just to pick an index.</span>
 <span class="sd">        However, you can also use it to apply a function to each key.</span>
 
-<span class="sd">        Example:</span>
+<span class="sd">        **Example**::</span>
+
 <span class="sd">            z = odict({&#39;a&#39;:array([1,2,3,4]), &#39;b&#39;:array([5,6,7,8])})</span>
 <span class="sd">            z.fromeach(2) # Returns array([3,7])</span>
 <span class="sd">            z.fromeach(ind=[1,3], asdict=True) # Returns odict({&#39;a&#39;:array([2,4]), &#39;b&#39;:array([6,8])})</span>
@@ -909,7 +934,8 @@
 <span class="sd">        The inverse of fromeach: partially reset elements within</span>
 <span class="sd">        each odict key.</span>
 
-<span class="sd">        Example:</span>
+<span class="sd">        **Example**::</span>
+
 <span class="sd">            z = odict({&#39;a&#39;:[1,2,3,4], &#39;b&#39;:[5,6,7,8]})</span>
 <span class="sd">            z.toeach(2, [10,20])    # z is now odict({&#39;a&#39;:[1,2,10,4], &#39;b&#39;:[5,6,20,8]})</span>
 <span class="sd">            z.toeach(ind=3,val=666) #  z is now odict({&#39;a&#39;:[1,2,10,666], &#39;b&#39;:[5,6,20,666]})</span>
@@ -948,7 +974,10 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">promote</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Like promotetolist, but for odicts. Example:</span>
+<span class="sd">        Like promotetolist, but for odicts.</span>
+
+<span class="sd">        **Example**::</span>
+
 <span class="sd">            od = sc.odict.promote([&#39;There&#39;,&#39;are&#39;,4,&#39;keys&#39;])</span>
 
 <span class="sd">        Note, in most cases odict(obj) or odict().make(obj) can be used instead.</span>
@@ -965,37 +994,36 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">odict</span><span class="p">({</span><span class="s1">&#39;Key&#39;</span><span class="p">:</span><span class="n">obj</span><span class="p">})</span>
 
-    <span class="c1"># Python 3 compatibility</span>
     <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Method to get a list of keys as in Python 2. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Return a list of keys (as in Python 2), not a dict_keys object. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Method to get a list of values as in Python 2. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Return a list of values (as in Python 2). &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Method to generate an item iterator as in Python 2. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Return a list of items, as in Python 2. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Method to generate an item iterator as in Python 2. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Alias to items() &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
 
 <span class="k">class</span> <span class="nc">objdict</span><span class="p">(</span><span class="n">odict</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Exactly the same as an odict, but allows keys to be set/retrieved by object</span>
-<span class="sd">    notiation.</span>
+<span class="sd">    notation.</span>
 
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
 <span class="sd">    &gt;&gt;&gt; import sciris as sc</span>
 <span class="sd">    &gt;&gt;&gt; od = sc.objdict({&#39;height&#39;:1.65, &#39;mass&#39;:59})</span>
 <span class="sd">    &gt;&gt;&gt; od.bmi = od.mass/od.height**2</span>
-<span class="sd">    &gt;&gt;&gt; od.keys = 3 # This will return an exception since od.keys already exists</span>
+<span class="sd">    &gt;&gt;&gt; od[&#39;bmi&#39;] = od[&#39;mass&#39;]/od[&#39;height&#39;]**2 # Vanilla syntax still works</span>
+<span class="sd">    &gt;&gt;&gt; od.keys = 3 # This raises an exception (you can&#39;t overwrite the keys() method)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-
 
     <span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span> <span class="c1"># First, try to get the attribute as an attribute</span>
@@ -1025,6 +1053,66 @@
     <span class="k">def</span> <span class="nf">setattribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Set attribute if truly desired &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">asobj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Convert any object for which you would normally do a[&#39;b&#39;] to one where you</span>
+<span class="sd">    can do a.b.</span>
+
+<span class="sd">    Note: this may lead to unexpected behavior in some cases. Use at your own risk.</span>
+<span class="sd">    At minimum, objects created using this function have an extremely odd type -- namely</span>
+<span class="sd">    &quot;sciris.sc_odict.asobj.&lt;locals&gt;.objobj&quot;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        obj (anything): the object you want to convert</span>
+<span class="sd">        strict (bool): whether to raise an exception if an attribute is being set (instead of a key)</span>
+
+<span class="sd">    **Example**::</span>
+
+<span class="sd">        d = dict(foo=1, bar=2)</span>
+<span class="sd">        d_obj = sc.asobj(d)</span>
+<span class="sd">        d_obj.foo = 10</span>
+
+<span class="sd">    New in version 1.0.0.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">objtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">objobj</span><span class="p">(</span><span class="n">objtype</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span> <span class="c1"># First, try to get the attribute as an attribute</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="n">objtype</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">output</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># If that fails, try to get it as a dict item</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">objtype</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">output</span>
+                <span class="k">except</span><span class="p">:</span> <span class="c1"># If that fails, raise the original exception</span>
+                    <span class="k">raise</span> <span class="n">E</span>
+
+        <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39; Set key in dict, not attribute! &#39;&#39;&#39;</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">objtype</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="c1"># Try retrieving this as an attribute, expect AttributeError...</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">objtype</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1"># If so, simply return</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">strict</span><span class="p">:</span> <span class="c1"># Let the attribute be set anyway</span>
+                <span class="n">objtype</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># Otherwise, raise an exception</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot; exists as an attribute, so cannot be set as key; use setattribute() instead&#39;</span> <span class="o">%</span> <span class="n">name</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+
+            <span class="k">return</span>
+
+        <span class="k">def</span> <span class="nf">setattribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39; Set attribute if truly desired &#39;&#39;&#39;</span>
+            <span class="k">return</span> <span class="n">objtype</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">objobj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 </pre></div>
 
            </div>
