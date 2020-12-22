@@ -29,7 +29,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
@@ -62,7 +61,7 @@
             
             
               <div class="version">
-                1.23.3
+                1.23.4
               </div>
             
           
@@ -366,7 +365,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">prog</span><span class="p">]</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
                 <span class="n">cap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">prog</span><span class="p">]</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
                 <span class="c1"># If prop_covered is higher than the capacity constraint then set it to nan as it wouldn&#39;t be possible to reach that coverage</span>
-                <span class="n">pc</span><span class="p">[</span><span class="n">pc</span> <span class="o">*</span> <span class="n">num_eligible</span><span class="p">[</span><span class="n">prog</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cap</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">pc</span><span class="p">[</span><span class="n">pc</span> <span class="o">*</span> <span class="n">num_eligible</span><span class="p">[</span><span class="n">prog</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">cap</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
             <span class="c1"># multiply the proportion of naively costed coverage by the number of actually eligible people (catching the case where number covered would be higher than the number eligible)</span>
             <span class="n">num_costed_coverage</span> <span class="o">=</span> <span class="n">pc</span> <span class="o">*</span> <span class="n">num_eligible</span><span class="p">[</span><span class="n">prog</span><span class="p">]</span>
