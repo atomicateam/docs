@@ -1,0 +1,1249 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>atomica.utils &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.24.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>atomica.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for atomica.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Define utility classes used throughout Atomica</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+<span class="kn">from</span> <span class="nn">bisect</span> <span class="kn">import</span> <span class="n">bisect_right</span><span class="p">,</span> <span class="n">bisect_left</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.interpolate</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;NamedItem&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NDict&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TimeSeries&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Quiet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;parent_dir&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;evaluate_plot_string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;format_duration&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nested_loop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fast_gitinfo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;datetime_to_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;parallel_progress&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;start_logging&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;stop_logging&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="parent_dir"><a class="viewcode-back" href="../../_autosummary/atomica.utils.parent_dir.html#atomica.utils.parent_dir">[docs]</a><span class="k">def</span> <span class="nf">parent_dir</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the parent directory of current file</span>
+
+<span class="sd">    This function returns a Path object for the folder containing the file that called this function</span>
+<span class="sd">    e.g. if the file on disk is `foo/bar/baz.py` and `baz.py` contains `x = at.parent_dir()` then</span>
+<span class="sd">    `x` would be an absolute path corresponding to `Path(&#39;foo/bar&#39;)`</span>
+
+<span class="sd">    :return: Path object to the directory containing calling file</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">parent</span></div>
+
+
+<div class="viewcode-block" id="NamedItem"><a class="viewcode-back" href="../../_autosummary/atomica.utils.NamedItem.html#atomica.utils.NamedItem">[docs]</a><span class="k">class</span> <span class="nc">NamedItem</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        NamedItem constructor</span>
+
+<span class="sd">        A name must be a string</span>
+
+<span class="sd">        :param name:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&lt;unnamed&gt;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modified</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">prepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NDict"><a class="viewcode-back" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict">[docs]</a><span class="k">class</span> <span class="nc">NDict</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Store and sync items with a name property</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="c1"># Store an item in the NDict with an explicitly provided key. If the item is a NamedItem</span>
+        <span class="c1"># then the name of the item will be automatically synchronized - otherwise, it will just behave</span>
+        <span class="c1"># like a normal odict</span>
+        <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+        <span class="c1"># If it is a NamedItem, then synchronize the name of the object with the specified string key</span>
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">NamedItem</span><span class="p">):</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">key</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">modified</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="NDict.append"><a class="viewcode-back" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c1"># Insert a NamedItem into the NDict by using the name of the item as the key. Of course this only</span>
+        <span class="c1"># works for NamedItems, otherwise you have to explicitly provide the key</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">NamedItem</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Can only automatically get the name from NamedItems. Instead of `x.append(y)` you need `x[&quot;name&quot;]=y`&#39;</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="NDict.copy"><a class="viewcode-back" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Copy an item and return the copy</span>
+
+<span class="sd">        :param old: The key of the existing item</span>
+<span class="sd">        :param new: The new name for the item</span>
+<span class="sd">        :return: The copied item</span>
+
+<span class="sd">        Example usage:</span>
+<span class="sd">        &gt;&gt;&gt; new_parset = proj.parsets.copy(&#39;old_name&#39;,&#39;new_name&#39;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">new</span><span class="p">],</span> <span class="n">NamedItem</span><span class="p">):</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">new</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">new</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">new</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="TimeSeries"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries">[docs]</a><span class="k">class</span> <span class="nc">TimeSeries</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to store time-series data</span>
+
+<span class="sd">    Internally values are stored as lists rather than numpy arrays because</span>
+<span class="sd">    insert/remove operations on lists tend to be faster (and working with sparse</span>
+<span class="sd">    data is a key role of TimeSeries objects). Note that methods like :meth:`interpolate()`</span>
+<span class="sd">    return numpy arrays, so the output types from such functions should generally match up</span>
+<span class="sd">    with what is required by the calling function.</span>
+
+<span class="sd">    :param t: Optionally specify a scalar, list, or array of time values</span>
+<span class="sd">    :param vals: Optionally specify a scalar, list, or array of values (must be same size as ``t``)</span>
+<span class="sd">    :param units: Optionally specify units (as a string)</span>
+<span class="sd">    :param assumption: Optionally specify a scalar assumption</span>
+<span class="sd">    :param sigma: Optionally specify a scalar uncertainty</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Use slots here to guarantee that __deepcopy__() and __eq__() only have to check these</span>
+    <span class="c1"># specific fields - otherwise, would need to do a more complex recursive dict comparison</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="s2">&quot;vals&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="s2">&quot;assumption&quot;</span><span class="p">,</span> <span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="s2">&quot;_sampled&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">assumption</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1">#: Sorted array of time points. Normally interacted with via methods like :meth:`insert()`</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1">#: Time-specific values - indices correspond to ``self.t``</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">units</span>  <span class="c1">#: The units of the quantity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">assumption</span>  <span class="c1">#: The time-independent scalar assumption</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma</span>  <span class="c1">#: Uncertainty value, assumed to be a standard deviation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sampled</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1">#: Flag to indicate whether sampling has been performed. Once sampling has been performed, cannot sample again</span>
+
+        <span class="c1"># Using insert() means that array/list inputs containing None or duplicate entries will</span>
+        <span class="c1"># be sanitized via insert()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">vals</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">prepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check TimeSeries equality</span>
+
+<span class="sd">        Two TimeSeries instances are equal if all of their attributes are equal. This is easy to</span>
+<span class="sd">        implement because `==` is directly defined for all of the attribute types (lists and scalars)</span>
+<span class="sd">        and due to `__slots__` there are guaranteed not to be any other attributes</span>
+
+<span class="sd">        :param other:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memodict</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">TimeSeries</span><span class="p">)</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assumption</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span>
+        <span class="n">new</span><span class="o">.</span><span class="n">_sampled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampled</span>
+        <span class="k">return</span> <span class="n">new</span>
+
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="s2">&quot;format&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="c1"># &#39;format&#39; was changed to &#39;units&#39; but the attribute was not dropped, however now this is a</span>
+            <span class="c1"># hard error because of the switch to __slots__ so we need to make sure it gets removed.</span>
+            <span class="c1"># This can&#39;t be done as a Migration because a Migration expects an instance of the</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;units&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+    <span class="c1"># The operators for + and * below are prototypes but haven&#39;t been added</span>
+    <span class="c1"># The reason is because they add a lot of complexity to the usage of the class</span>
+    <span class="c1"># but it&#39;s not clear whether that complexity is worth it for the benefits it brings.</span>
+    <span class="c1"># Part of the problem is also that propagation of uncertainty requires the time series</span>
+    <span class="c1"># values which means that propagation of uncertainty is time dependent. So it&#39;s hard</span>
+    <span class="c1"># to come up with intuitive behaviour for them.</span>
+    <span class="c1">#</span>
+    <span class="c1"># def __add__(self, other):</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     Add a constant or TimeSeries</span>
+    <span class="c1">#</span>
+    <span class="c1">#     If adding a constant, it is simply added onto the assumption and time values.</span>
+    <span class="c1">#</span>
+    <span class="c1">#     If adding another TimeSeries:</span>
+    <span class="c1">#</span>
+    <span class="c1">#         - The units must match</span>
+    <span class="c1">#         - The assumption will be None if either TimeSeries has no assumption</span>
+    <span class="c1">#         - The output times will be the union of times in both TimeSeries and they will</span>
+    <span class="c1">#           be interpolated onto those times before adding. This preserves commutativity</span>
+    <span class="c1">#           of addition</span>
+    <span class="c1">#         - Uncertainties will be formally propagated</span>
+    <span class="c1">#</span>
+    <span class="c1">#     :param other: A TimeSeries or a scalar (float)</span>
+    <span class="c1">#     :return: A new TimeSeries</span>
+    <span class="c1">#</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if type(other) == type(self):</span>
+    <span class="c1">#         # If we are operating on another TimeSeries</span>
+    <span class="c1">#         if self.units is None:</span>
+    <span class="c1">#             assert other.units is None, &#39;TimeSeries units must match for addition&#39;</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             assert self.units == other.units, &#39;TimeSeries units must match for addition&#39;</span>
+    <span class="c1">#</span>
+    <span class="c1">#         new = self.copy()</span>
+    <span class="c1">#</span>
+    <span class="c1">#         # Add time values</span>
+    <span class="c1">#         if self.t == other.t:</span>
+    <span class="c1">#             new.t = [x+y for x,y in zip(self.vals, other.vals)]</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             # Interpolate and add the time values</span>
+    <span class="c1">#             t_out = sorted(set(self.t).union(set(other.t)))</span>
+    <span class="c1">#             new.t = t_out</span>
+    <span class="c1">#             new.vals = (self.interpolate(t_out) + other.interpolate(t_out)).tolist()</span>
+    <span class="c1">#</span>
+    <span class="c1">#         # Add the assumption</span>
+    <span class="c1">#         if (self.assumption is None) or (other.assumption is None):</span>
+    <span class="c1">#             new.assumption = None</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             new.assumption = self.assumption + other.assumption</span>
+    <span class="c1">#</span>
+    <span class="c1">#         # Propagate uncertainty</span>
+    <span class="c1">#         self_sigma = self.sigma if self.sigma else 0</span>
+    <span class="c1">#         other_sigma = other.sigma if other.sigma else 0</span>
+    <span class="c1">#</span>
+    <span class="c1">#         if self_sigma or other_sigma:</span>
+    <span class="c1">#             new.sigma = np.sqrt(self_sigma**2 + other_sigma**2)</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         # Should be a numeric type</span>
+    <span class="c1">#         new = self.copy()</span>
+    <span class="c1">#         new.vals = [x+other for x in self.vals]</span>
+    <span class="c1">#         new.assumption = self.assumption+other if self.assumption is not None else None</span>
+    <span class="c1">#</span>
+    <span class="c1">#     return new</span>
+    <span class="c1">#</span>
+    <span class="c1"># def __mul__(self, other):</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     Multiply by a constant or TimeSeries</span>
+    <span class="c1">#</span>
+    <span class="c1">#     If multiplying by a constant, it is simply operated on the assumption,</span>
+    <span class="c1">#     values, and uncertainty.</span>
+    <span class="c1">#</span>
+    <span class="c1">#     If adding another TimeSeries:</span>
+    <span class="c1">#</span>
+    <span class="c1">#         - The units must match</span>
+    <span class="c1">#         - The assumption will be None if either TimeSeries has no assumption</span>
+    <span class="c1">#         - The output times will be the union of times in both TimeSeries and they will</span>
+    <span class="c1">#           be interpolated onto those times before multiplying. This preserves commutativity</span>
+    <span class="c1">#           of multiplication</span>
+    <span class="c1">#         - Uncertainties will be formally propagated</span>
+    <span class="c1">#</span>
+    <span class="c1">#     :param other: A TimeSeries or a scalar (float)</span>
+    <span class="c1">#     :return: A new TimeSeries</span>
+    <span class="c1">#</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if type(other) == type(self):</span>
+    <span class="c1">#         # If we are operating on another TimeSeries</span>
+    <span class="c1">#         if self.units is None:</span>
+    <span class="c1">#             assert other.units is None, &#39;TimeSeries units must match for addition&#39;</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             assert self.units == other.units, &#39;TimeSeries units must match for addition&#39;</span>
+    <span class="c1">#</span>
+    <span class="c1">#         new = self.copy()</span>
+    <span class="c1">#</span>
+    <span class="c1">#         # Add time values</span>
+    <span class="c1">#         if self.t == other.t:</span>
+    <span class="c1">#             new.t = [x+y for x,y in zip(self.vals, other.vals)]</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             # Interpolate and add the time values</span>
+    <span class="c1">#             t_out = sorted(set(self.t).union(set(other.t)))</span>
+    <span class="c1">#             new.t = t_out</span>
+    <span class="c1">#             new.vals = (self.interpolate(t_out) * other.interpolate(t_out)).tolist()</span>
+    <span class="c1">#</span>
+    <span class="c1">#         # Add the assumption</span>
+    <span class="c1">#         if (self.assumption is None) or (other.assumption is None):</span>
+    <span class="c1">#             new.assumption = None</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             new.assumption = self.assumption * other.assumption</span>
+    <span class="c1">#</span>
+    <span class="c1">#         # Propagate uncertainty</span>
+    <span class="c1">#         if (self.sigma is None) or (other.sigma is None):</span>
+    <span class="c1">#             new.sigma = None</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             raise NotImplementedError # Proper propagation is time dependent</span>
+    <span class="c1">#</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         # Should be a numeric type</span>
+    <span class="c1">#         new = self.copy()</span>
+    <span class="c1">#         new.vals = [x*other for x in self.vals]</span>
+    <span class="c1">#         new.assumption = self.assumption*other if self.assumption is not None else None</span>
+    <span class="c1">#         new.assumption = self.sigma*other if self.sigma is not None else None</span>
+    <span class="c1">#</span>
+    <span class="c1">#     return new</span>
+
+<div class="viewcode-block" id="TimeSeries.copy"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a copy of the ``TimeSeries``</span>
+
+<span class="sd">        :return: An independent copy of the ``TimeSeries``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">has_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if any data has been provided</span>
+
+<span class="sd">        :return: ``True`` if any data has been entered (assumption or time-specific)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">assumption</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_time_data</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">has_time_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if time-specific data has been provided</span>
+
+<span class="sd">        Unlike ``has_data``, this will return ``False`` if only an assumption has been entered</span>
+
+<span class="sd">        :return: ``True`` if any time-specific data has been entered</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Returns true if any time-specific data has been entered (not just an assumption)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="TimeSeries.insert"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Insert a value or list of at a particular time</span>
+
+<span class="sd">        If the value already exists in the ``TimeSeries``, it will be overwritten/updated.</span>
+<span class="sd">        The arrays are internally sorted by time value, and this order will be maintained.</span>
+
+<span class="sd">        :param t: Time value to insert or update. If ``None``, the value will be assigned to the assumption</span>
+<span class="sd">        :param v: Value to insert. If ``None``, this function will return immediately without doing anything</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Check if inputs are iterable</span>
+        <span class="n">iterable_input</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="s2">&quot;Cannot insert non-matching lengths or types of time and values </span><span class="si">%s</span><span class="s2"> and </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">iterable_input</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># If inputs are iterable, call insert() for each zipped item</span>
+        <span class="k">if</span> <span class="n">iterable_input</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ti</span><span class="p">,</span> <span class="n">vi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">ti</span><span class="p">,</span> <span class="n">vi</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Can&#39;t cast a None to a float, so just skip it</span>
+            <span class="k">return</span>
+
+        <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1"># Convert input to float</span>
+
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Store the value in the assumption</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="k">return</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">t</span><span class="p">:</span>
+            <span class="c1"># Overwrite an existing entry</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimeSeries.get"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve value at a particular time</span>
+
+<span class="sd">        This function will automatically retrieve the value of the assumption if</span>
+<span class="sd">        no time specific values have been provided, or if any time specific values</span>
+<span class="sd">        are provided, will return the value entered at that time. If time specific</span>
+<span class="sd">        values have been entered and the requested time is not explicitly present,</span>
+<span class="sd">        an error will be raised.</span>
+
+<span class="sd">        This function may be deprecated in future because generally it is more useful</span>
+<span class="sd">        to either call ``TimeSeries.interpolate()`` if interested in getting values at</span>
+<span class="sd">        arbitrary times, or ``TimeSeries.get_arrays()`` if interested in retrieving</span>
+<span class="sd">        values that have been entered.</span>
+
+<span class="sd">        :param t: A time value. If ``None``, will return assumption regardless of whether</span>
+<span class="sd">                  time data has been entered or not</span>
+<span class="sd">        :return: The value at the corresponding time. Returns None if the value no value present</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">assumption</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="TimeSeries.get_arrays"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.get_arrays">[docs]</a>    <span class="k">def</span> <span class="nf">get_arrays</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return arrays with the contents of this TimeSeries</span>
+
+<span class="sd">        The TimeSeries instance may have time values, or may simply have</span>
+<span class="sd">        an assumption. If obtaining raw arrays is desired, this function will</span>
+<span class="sd">        return arrays with values extracted from the appropriate attribute of the</span>
+<span class="sd">        TimeSeries. However, in general, it is usually `.interpolate()` that is</span>
+<span class="sd">        desired, rather than `.get_arrays()`</span>
+
+<span class="sd">        :return: Tuple with two arrays - the first item is times (with a single NaN if</span>
+<span class="sd">                 the TimeSeries only has an assumption) and the second item is values</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">assumption</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span></div>
+
+<div class="viewcode-block" id="TimeSeries.remove"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove single time point</span>
+
+<span class="sd">        :param t: Time value to remove. Set to ``None`` to remove the assumption</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># To remove the assumption, set t=None</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Item not found&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimeSeries.remove_before"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.remove_before">[docs]</a>    <span class="k">def</span> <span class="nf">remove_before</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_remove</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove times from start</span>
+
+<span class="sd">        :param tval: Remove times up to but not including this time</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">tval</span> <span class="ow">in</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tval</span> <span class="o">&lt;</span> <span class="n">t_remove</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tval</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimeSeries.remove_after"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.remove_after">[docs]</a>    <span class="k">def</span> <span class="nf">remove_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_remove</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove times from start</span>
+
+<span class="sd">        :param tval: Remove times up to but not including this time</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">tval</span> <span class="ow">in</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tval</span> <span class="o">&gt;</span> <span class="n">t_remove</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tval</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimeSeries.remove_between"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.remove_between">[docs]</a>    <span class="k">def</span> <span class="nf">remove_between</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_remove</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a range of times</span>
+
+<span class="sd">        Note that the endpoints are not included</span>
+
+<span class="sd">        :param t_remove: two element iterable e.g. array, with [min,max] times</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">tval</span> <span class="ow">in</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">t_remove</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">tval</span> <span class="o">&lt;</span> <span class="n">t_remove</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tval</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimeSeries.interpolate"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.interpolate">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return interpolated values</span>
+
+<span class="sd">        This method returns interpolated values from the time series at time points `t2`</span>
+<span class="sd">        according to a given interpolation method. There are 4 possibilities for the method</span>
+
+<span class="sd">        - &#39;linear&#39; - normal linear interpolation (with constant, zero-gradient extrapolation)</span>
+<span class="sd">        - &#39;pchip&#39; - legacy interpolation with some curvature between points (with constant, zero-gradient extrapolation)</span>
+<span class="sd">        - &#39;previous&#39; - stepped interpolation, maintain value until the next timepoint is reached (with constant, zero-gradient extrapolation)</span>
+<span class="sd">        - Interpolation class or generator function</span>
+
+<span class="sd">        That final option allows the use of arbitrary interpolation methods. The underlying call will be</span>
+
+<span class="sd">            c = method(t1, v1, **kwargs)</span>
+<span class="sd">            return c(t2)</span>
+
+<span class="sd">        so for example, if you wanted to use the base Scipy pchip method with no extrapolation, then could pass in</span>
+
+<span class="sd">        &gt;&gt;&gt; TimeSeries.interpolate(...,method=scipy.interpolate.PchipInterpolator)</span>
+
+<span class="sd">        Note that the following special behaviours apply:</span>
+
+<span class="sd">        - If there is no data at all, this function will return ``np.nan`` for all requested time points</span>
+<span class="sd">        - If only an assumption exists, this assumption will be returned for all requested time points</span>
+<span class="sd">        - Otherwise, arrays will be formed with all finite time values</span>
+<span class="sd">            - If no finite time values remain, an error will be raised (in general, a TimeSeries should not store such values anyway)</span>
+<span class="sd">            - If only one finite time value remains, then that value will be returned for all requested time points</span>
+<span class="sd">            - Otherwise, the specified interpolation method will be used</span>
+
+<span class="sd">        :param t2: float, list, or array, with times</span>
+<span class="sd">        :param method: A string &#39;linear&#39;, &#39;pchip&#39; or &#39;previous&#39; OR a callable item that returns an Interpolator</span>
+<span class="sd">        :return: array the same length as t2, with interpolated values</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>  <span class="c1"># Deal with case where user prompts for single time point</span>
+
+        <span class="c1"># Deal with not having time-specific data first</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">t2</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_time_data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">t2</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">assumption</span><span class="p">)</span>
+
+        <span class="c1"># Then, deal with having only 0 or 1 valid time points</span>
+        <span class="n">t1</span><span class="p">,</span> <span class="n">v1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_arrays</span><span class="p">()</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+        <span class="n">t1</span><span class="p">,</span> <span class="n">v1</span> <span class="o">=</span> <span class="n">t1</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">t1</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No time points remained after removing NaNs from the TimeSeries&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">t1</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">t2</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># # Finally, perform interpolation</span>
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;linear&quot;</span><span class="p">:</span>
+                <span class="c1"># Default linear interpolation</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">right</span><span class="o">=</span><span class="n">v1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;pchip&quot;</span><span class="p">:</span>
+                <span class="c1"># Legacy pchip interpolation</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">PchipInterpolator</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">extrapolate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">y2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">t2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                <span class="n">y2</span><span class="p">[(</span><span class="n">t2</span> <span class="o">&gt;=</span> <span class="n">t1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">t2</span> <span class="o">&lt;=</span> <span class="n">t1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">t2</span><span class="p">[(</span><span class="n">t2</span> <span class="o">&gt;=</span> <span class="n">t1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">t2</span> <span class="o">&lt;=</span> <span class="n">t1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])])</span>
+                <span class="n">y2</span><span class="p">[</span><span class="n">t2</span> <span class="o">&lt;</span> <span class="n">t1</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">y2</span><span class="p">[</span><span class="n">t2</span> <span class="o">&gt;</span> <span class="n">t1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">v1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">y2</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;previous&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;previous&quot;</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="p">(</span><span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))(</span><span class="n">t2</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unknown interpolation type - must be one of &quot;linear&quot;, &quot;pchip&quot;, or &quot;previous&quot;&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Otherwise, `method` is a callable (class instance e.g. `scipy.interpolate.PchipInterpolator` or generating function) that</span>
+        <span class="c1"># produces a callable function representation of the interpolation. This function is then called with the new time points</span>
+        <span class="n">interpolator</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimeSeries.sample"><a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a sampled copy of the TimeSeries</span>
+
+<span class="sd">        This method returns a copy of the TimeSeries in which the values have been</span>
+<span class="sd">        perturbed based on the uncertainty value.</span>
+
+<span class="sd">        :param constant: If True, time series will be perturbed by a single constant offset. If False,</span>
+<span class="sd">                         an different perturbation will be applied to each time specific value independently.</span>
+<span class="sd">        :return: A copied ``TimeSeries`` with perturbed values</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampled</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Sampling has already been performed - can only sample once&quot;</span><span class="p">)</span>
+
+        <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">assumption</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">new</span><span class="o">.</span><span class="n">assumption</span> <span class="o">+=</span> <span class="n">delta</span>
+
+            <span class="k">if</span> <span class="n">constant</span><span class="p">:</span>
+                <span class="c1"># Use the same delta for all data points</span>
+                <span class="n">new</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="o">+</span> <span class="n">delta</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">new</span><span class="o">.</span><span class="n">vals</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Sample again for each data point</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">vals</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">vals</span><span class="p">)))):</span>
+                    <span class="n">new</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span> <span class="o">+</span> <span class="n">delta</span>
+
+        <span class="c1"># Sampling flag only needs to be set if the TimeSeries had data to change</span>
+        <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
+            <span class="n">new</span><span class="o">.</span><span class="n">_sampled</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">new</span></div></div>
+
+
+<div class="viewcode-block" id="evaluate_plot_string"><a class="viewcode-back" href="../../_autosummary/atomica.utils.evaluate_plot_string.html#atomica.utils.evaluate_plot_string">[docs]</a><span class="k">def</span> <span class="nf">evaluate_plot_string</span><span class="p">(</span><span class="n">plot_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluate a plotting output specification</span>
+
+<span class="sd">    The plots in the framework are specified as strings - for example,</span>
+
+<span class="sd">    &gt;&gt;&gt; plot_string = &quot;{&#39;New active DS-TB&#39;:[&#39;pd_div:flow&#39;,&#39;nd_div:flow&#39;]}&quot;</span>
+
+<span class="sd">    This needs to be (safely) evaluated so that the actual dict can be</span>
+<span class="sd">    used. This function evaluates a string like this and returns a</span>
+<span class="sd">    variable accordingly. For example</span>
+
+<span class="sd">    &gt;&gt;&gt; x = evaluate_plot_string(&quot;{&#39;New active DS-TB&#39;:[&#39;pd_div:flow&#39;,&#39;nd_div:flow&#39;]}&quot;)</span>
+
+<span class="sd">    is the same as</span>
+
+<span class="sd">    &gt;&gt;&gt; x = {&#39;New active DS-TB&#39;:[&#39;pd_div:flow&#39;,&#39;nd_div:flow&#39;]}</span>
+
+<span class="sd">    This will only happen if tokens associated with dicts and lists are present -</span>
+<span class="sd">    otherwise the original string will just be returned directly</span>
+
+<span class="sd">    :param plot_string: A string representation of Python structures (e.g., lists, dicts)</span>
+<span class="sd">    :return: Evaluated expression, the same as if it has originally been entered in a .py file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s2">&quot;{&quot;</span> <span class="ow">in</span> <span class="n">plot_string</span> <span class="ow">or</span> <span class="s2">&quot;[&quot;</span> <span class="ow">in</span> <span class="n">plot_string</span><span class="p">:</span>
+        <span class="c1"># Evaluate the string to set lists and dicts - do at least a little validation</span>
+        <span class="k">assert</span> <span class="s2">&quot;__&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plot_string</span><span class="p">,</span> <span class="s2">&quot;Cannot use double underscores in functions&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">plot_string</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1800</span>  <span class="c1"># Function string must be less than 1800 characters</span>
+        <span class="n">fcn_ast</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">plot_string</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;eval&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">fcn_ast</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">node</span> <span class="ow">is</span> <span class="n">fcn_ast</span><span class="p">):</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Load</span><span class="p">),</span> <span class="s2">&quot;Only allowed to initialize lists and dicts of strings here&quot;</span>
+        <span class="n">compiled_code</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="n">fcn_ast</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;&lt;ast&gt;&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;eval&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">eval</span><span class="p">(</span><span class="n">compiled_code</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">plot_string</span></div>
+
+
+<div class="viewcode-block" id="format_duration"><a class="viewcode-back" href="../../_autosummary/atomica.utils.format_duration.html#atomica.utils.format_duration">[docs]</a><span class="k">def</span> <span class="nf">format_duration</span><span class="p">(</span><span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">pluralize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    User-friendly string format of a duration</span>
+
+<span class="sd">    This helper function is used when displaying durations in plots. It takes in</span>
+<span class="sd">    a duration in units of years, and returns a string representation in user-friendly</span>
+<span class="sd">    units. This function is mainly intended to be used to format denominators</span>
+<span class="sd">    e.g., going from &#39;probability&#39; and &#39;1/365&#39; to &#39;probability/day&#39;</span>
+
+<span class="sd">    :param t: A duration in units of years</span>
+<span class="sd">    :param pluralize: Always return a plural suffix</span>
+<span class="sd">    :return: A string</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    &gt;&gt;&gt; format_duration(1)</span>
+<span class="sd">    &#39;year&#39;</span>
+<span class="sd">    &gt;&gt;&gt; format_duration(1, pluralize=True)</span>
+<span class="sd">    &#39;years&#39;</span>
+<span class="sd">    &gt;&gt;&gt; format_duration(1/365)</span>
+<span class="sd">    &#39;day&#39;</span>
+<span class="sd">    &gt;&gt;&gt; format_duration(2/365)</span>
+<span class="sd">    &#39;2 days&#39;</span>
+<span class="sd">    &gt;&gt;&gt; format_duration(1.5/52)</span>
+<span class="sd">    &#39;1.5 weeks&#39;</span>
+<span class="sd">    &gt;&gt;&gt; format_duration(2/52)</span>
+<span class="sd">    &#39;fortnight&#39;</span>
+<span class="sd">    &gt;&gt;&gt; format_duration(2.5/12)</span>
+<span class="sd">    &#39;2.5 months&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># First decide the base units</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="n">base_scale</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">timescale</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span>
+    <span class="k">elif</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">12</span><span class="p">:</span>
+        <span class="n">base_scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">12</span>
+        <span class="n">timescale</span> <span class="o">=</span> <span class="s2">&quot;month&quot;</span>
+    <span class="k">elif</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">26</span><span class="p">:</span>
+        <span class="n">base_scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">26</span>
+        <span class="n">timescale</span> <span class="o">=</span> <span class="s2">&quot;fortnight&quot;</span>
+    <span class="k">elif</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">52</span><span class="p">:</span>
+        <span class="n">base_scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">52</span>
+        <span class="n">timescale</span> <span class="o">=</span> <span class="s2">&quot;week&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">base_scale</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">365</span>
+        <span class="n">timescale</span> <span class="o">=</span> <span class="s2">&quot;day&quot;</span>
+
+    <span class="c1"># Then, work out how many of the base unit there are</span>
+    <span class="n">converted_t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">/</span> <span class="n">base_scale</span>
+
+    <span class="c1"># If there is only one of the base unit, then return the timescale as the final string</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">converted_t</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-5</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">timescale</span> <span class="o">+</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">pluralize</span> <span class="k">else</span> <span class="n">timescale</span>
+    <span class="k">elif</span> <span class="n">converted_t</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">:</span>  <span class="c1"># If it&#39;s sufficiently close to an integer, show it as an integer</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> </span><span class="si">%s</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">converted_t</span><span class="p">,</span> <span class="n">timescale</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">sigfig</span><span class="p">(</span><span class="n">converted_t</span><span class="p">,</span> <span class="n">keepints</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">timescale</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="nested_loop"><a class="viewcode-back" href="../../_autosummary/atomica.utils.nested_loop.html#atomica.utils.nested_loop">[docs]</a><span class="k">def</span> <span class="nf">nested_loop</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">loop_order</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Zip list of lists in order</span>
+
+<span class="sd">    This is used in :func:`plot_bars` to control whether &#39;times&#39; or &#39;results&#39; are the</span>
+<span class="sd">    outer grouping. This function takes in a list of lists to iterate over, and their</span>
+<span class="sd">    nesting order. It then yields tuples of items in the given order. Only tested</span>
+<span class="sd">    for two levels (which are all that get used in :func:`plot_bars` but in theory</span>
+<span class="sd">    supports an arbitrary number of items.</span>
+
+<span class="sd">    :param inputs: List of lists. All lists should have the same length</span>
+<span class="sd">    :param loop_order: Nesting order for the lists</span>
+<span class="sd">    :return: Generator yielding tuples of items, one for each list</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    &gt;&gt;&gt; list(nested_loop([[&#39;a&#39;,&#39;b&#39;],[1,2]],[0,1]))</span>
+<span class="sd">    [[&#39;a&#39;, 1], [&#39;a&#39;, 2], [&#39;b&#39;, 1], [&#39;b&#39;, 2]]</span>
+
+<span class="sd">    Notice how the first two items have the same value for the first list</span>
+<span class="sd">    while the items from the second list vary. If the `loop_order` is</span>
+<span class="sd">    reversed, then:</span>
+
+<span class="sd">    &gt;&gt;&gt; list(nested_loop([[&#39;a&#39;,&#39;b&#39;],[1,2]],[1,0]))</span>
+<span class="sd">    [[&#39;a&#39;, 1], [&#39;b&#39;, 1], [&#39;a&#39;, 2], [&#39;b&#39;, 2]]</span>
+
+<span class="sd">    Notice now how now the first two items have different values from the</span>
+<span class="sd">    first list but the same items from the second list.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">loop_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">loop_order</span><span class="p">)</span>  <span class="c1"># Convert to list, in case loop order was passed in as a generator e.g. from map()</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">loop_order</span><span class="p">]</span>
+    <span class="n">iterator</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">)</span>  <span class="c1"># This is in the loop order</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">loop_order</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">loop_order</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="fast_gitinfo"><a class="viewcode-back" href="../../_autosummary/atomica.utils.fast_gitinfo.html#atomica.utils.fast_gitinfo">[docs]</a><span class="k">def</span> <span class="nf">fast_gitinfo</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve git info</span>
+
+<span class="sd">    This function reads git branch and commit information from a .git directory.</span>
+<span class="sd">    Given a path, it will check for a `.git` directory. If the path doesn&#39;t contain</span>
+<span class="sd">    that directory, it will search parent directories for `.git` until it finds one.</span>
+<span class="sd">    Then, the current information will be parsed.</span>
+
+<span class="sd">    :param path: A folder either containing a ``.git`` directory, or with a parent that contains a ``.git`` directory</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># First, get the .git directory</span>
+        <span class="n">curpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">curpath</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">curpath</span><span class="p">,</span> <span class="s2">&quot;.git&quot;</span><span class="p">)):</span>
+                <span class="n">gitdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">curpath</span><span class="p">,</span> <span class="s2">&quot;.git&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parent</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">curpath</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">curpath</span><span class="p">:</span>
+                    <span class="n">curpath</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">curpath</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find .git directory&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Then, get the branch and commit</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gitdir</span><span class="p">,</span> <span class="s2">&quot;HEAD&quot;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f1</span><span class="p">:</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">f1</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">ref</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ref:&quot;</span><span class="p">):</span>
+                <span class="n">refdir</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># The path to the file with the commit</span>
+                <span class="n">gitbranch</span> <span class="o">=</span> <span class="n">refdir</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;refs/heads/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># / is always used (not os.sep)</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gitdir</span><span class="p">,</span> <span class="n">refdir</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f2</span><span class="p">:</span>
+                    <span class="n">githash</span> <span class="o">=</span> <span class="n">f2</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># The hash of the commit</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">gitbranch</span> <span class="o">=</span> <span class="s2">&quot;Detached head (no branch)&quot;</span>
+                <span class="n">githash</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># Now read the time from the commit</span>
+        <span class="n">compressed_contents</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gitdir</span><span class="p">,</span> <span class="s2">&quot;objects&quot;</span><span class="p">,</span> <span class="n">githash</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">githash</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">decompressed_contents</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">compressed_contents</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">decompressed_contents</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">):</span>
+                <span class="n">_re_actor_epoch</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^.+? (.*) (\d+) ([+-]\d+).*$&quot;</span><span class="p">)</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">_re_actor_epoch</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">actor</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">epoch</span><span class="p">))</span>
+                <span class="n">gitdate</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S UTC&quot;</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">gitbranch</span> <span class="o">=</span> <span class="s2">&quot;Git branch N/A&quot;</span>
+        <span class="n">githash</span> <span class="o">=</span> <span class="s2">&quot;Git hash N/A&quot;</span>
+        <span class="n">gitdate</span> <span class="o">=</span> <span class="s2">&quot;Git date N/A&quot;</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">gitbranch</span><span class="p">,</span> <span class="s2">&quot;hash&quot;</span><span class="p">:</span> <span class="n">githash</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">gitdate</span><span class="p">}</span>  <span class="c1"># Assemble outupt</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+<div class="viewcode-block" id="datetime_to_year"><a class="viewcode-back" href="../../_autosummary/atomica.utils.datetime_to_year.html#atomica.utils.datetime_to_year">[docs]</a><span class="k">def</span> <span class="nf">datetime_to_year</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a DateTime instance to decimal year</span>
+
+<span class="sd">    For example, 1/7/2010 would be approximately 2010.5</span>
+
+<span class="sd">    :param dt: The datetime instance to convert</span>
+<span class="sd">    :return: Equivalent decimal year</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># By Luke Davis from https://stackoverflow.com/a/42424261</span>
+    <span class="n">year_part</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">-</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">year_length</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">year_part</span> <span class="o">/</span> <span class="n">year_length</span></div>
+
+
+<span class="k">def</span> <span class="nf">_worker_init</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Suppress output on parallel workers</span>
+
+<span class="sd">    A parallel worker should only ever print out warning output or higher</span>
+<span class="sd">    This function gets passed as an initializer to `multiprocessing.Pool`</span>
+<span class="sd">    to set the logger level locally on the workers</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="parallel_progress"><a class="viewcode-back" href="../../_autosummary/atomica.utils.parallel_progress.html#atomica.utils.parallel_progress">[docs]</a><span class="k">def</span> <span class="nf">parallel_progress</span><span class="p">(</span><span class="n">fcn</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run a function in parallel with a optional single progress bar</span>
+
+<span class="sd">    The result is essentially equivalent to</span>
+
+<span class="sd">    &gt;&gt;&gt; list(map(fcn, inputs))</span>
+
+<span class="sd">    But with execution in parallel and with a single progress bar being shown.</span>
+<span class="sd">    The Atomica logger level will be changed to hide output below the</span>
+<span class="sd">    WARNING level.</span>
+
+<span class="sd">    :param fcn: Function object to call, accepting one argument, OR a function with zero arguments in which</span>
+<span class="sd">                case inputs should be an integer</span>
+<span class="sd">    :param inputs: A collection of inputs that will each be passed to (list, array, etc.)</span>
+<span class="sd">                    OR a number, if the fcn() has no input arguments</span>
+<span class="sd">    :param num_workers: Number of processes, defaults to the number of CPUs</span>
+<span class="sd">    :return: An list of outputs</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">pool</span>
+
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">num_workers</span><span class="p">,</span> <span class="n">initializer</span><span class="o">=</span><span class="n">_worker_init</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isnumber</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+        <span class="n">results</span> <span class="o">*=</span> <span class="n">inputs</span>
+        <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">inputs</span><span class="p">)</span> <span class="k">if</span> <span class="n">show_progress</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">*=</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span> <span class="k">if</span> <span class="n">show_progress</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="n">results</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">if</span> <span class="n">show_progress</span><span class="p">:</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isnumber</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+            <span class="n">pool</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">fcn</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="n">i</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+            <span class="n">pool</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">fcn</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,),</span> <span class="n">callback</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="n">i</span><span class="p">))</span>
+
+    <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">show_progress</span><span class="p">:</span>
+        <span class="n">pbar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="Quiet"><a class="viewcode-back" href="../../_autosummary/atomica.utils.Quiet.html#atomica.utils.Quiet">[docs]</a><span class="k">class</span> <span class="nc">Quiet</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Atomica quiet context</span>
+
+<span class="sd">    This object can be used in a `with/as` block to temporarily suppress</span>
+<span class="sd">    Atomica output, with the logger level reset at the end of the block</span>
+
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    &gt;&gt;&gt; with at.Quiet():</span>
+<span class="sd">    &gt;&gt;&gt;     res = P.run_sim()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_warnings</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize standard context</span>
+
+<span class="sd">        Initialization captures the current logger level at the time the context is created.</span>
+
+<span class="sd">        :param show_warnings: If True, logger will be temporarily set at WARNING level. If</span>
+<span class="sd">                              False, all output will be suppressed by setting logger above CRITICAL</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous_level</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_warnings</span> <span class="o">=</span> <span class="n">show_warnings</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_warnings</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">previous_level</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="start_logging"><a class="viewcode-back" href="../../_autosummary/atomica.utils.start_logging.html#atomica.utils.start_logging">[docs]</a><span class="k">def</span> <span class="nf">start_logging</span><span class="p">(</span><span class="n">fname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Log Atomica output to a file</span>
+
+<span class="sd">    This function automatically starts the file with a version record.</span>
+
+<span class="sd">    The file logger will potentially handle any log level, from 0 upwards.</span>
+<span class="sd">    Therefore both stdout and stderr can potentially be logged. The stdout</span>
+<span class="sd">    messages will be gated by the log level of `at.logger`. In practice,</span>
+<span class="sd">    this means that the log file generated here will replicate whatever is</span>
+<span class="sd">    being printed to the screen by the main Atomica process.</span>
+
+<span class="sd">    The key items that will NOT be captured in this file log are</span>
+<span class="sd">        - Output generated by a `print` statement. Instead of using `print`, use</span>
+<span class="sd">          `at.logger.info(&#39;message&#39;)` which will both print and log the output</span>
+<span class="sd">        - Output generated by worker processes e.g. if using `run_sampled_sims(parallel=True)`</span>
+<span class="sd">          This is because the workers can&#39;t all write to the same log file without overwriting</span>
+<span class="sd">          each other. Normal log output is typically suppressed anyway - however, stderr messages</span>
+<span class="sd">          from the workers will be printed to the console but not logged in the file. These messages</span>
+<span class="sd">          would typically corrupt the progress bar in the console anyway.</span>
+
+<span class="sd">    :param fname: File name to write log file to</span>
+<span class="sd">    :param reset: If True, the previous file handler will be cleared and a new one opened. If the new log file</span>
+<span class="sd">                  has the same name as the old log file, the file will be cleared.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">reset</span><span class="p">:</span>
+        <span class="n">stop_logging</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;atomica_file_handler&quot;</span><span class="p">:</span>
+            <span class="c1"># Logging has already been started, so we can return immediately</span>
+            <span class="c1"># Otherwise, output could be logged multiple times</span>
+            <span class="k">return</span>
+
+    <span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">gitinfo</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="n">versiondate</span>  <span class="c1"># Avoid circular import</span>
+
+    <span class="n">sc</span><span class="o">.</span><span class="n">makefilepath</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">h</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="s2">&quot;atomica_file_handler&quot;</span><span class="p">)</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(asctime)-20s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%y %H:%M:%S&quot;</span><span class="p">)</span>
+    <span class="n">h</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Atomica log file: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Atomica </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) -- (c) the Atomica development team&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">versiondate</span><span class="p">))</span>  <span class="c1"># Log with the highest level to make sure it appears in the log</span>
+    <span class="k">if</span> <span class="n">gitinfo</span><span class="p">[</span><span class="s2">&quot;branch&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;N/A&quot;</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;git branch: </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gitinfo</span><span class="p">[</span><span class="s2">&quot;branch&quot;</span><span class="p">],</span> <span class="n">gitinfo</span><span class="p">[</span><span class="s2">&quot;hash&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">8</span><span class="p">]))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+
+    <span class="c1"># We also want uncaught exceptions (in the main process) to appear in the log</span>
+    <span class="c1"># Based on https://stackoverflow.com/a/57587758 by Nabs</span>
+    <span class="k">def</span> <span class="nf">log_exception</span><span class="p">(</span><span class="n">exctype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;UNCAUGHT EXCEPTION&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="p">(</span><span class="n">exctype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">attach_hook</span><span class="p">(</span><span class="n">hook_func</span><span class="p">,</span> <span class="n">run_func</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">local_args</span> <span class="o">=</span> <span class="n">run_func</span><span class="p">()</span>
+            <span class="n">hook_func</span><span class="p">(</span><span class="o">*</span><span class="n">local_args</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">run_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">inner</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">reset</span><span class="p">:</span>  <span class="c1"># do not double up on error messages</span>
+        <span class="kn">import</span> <span class="nn">sys</span>
+
+        <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span> <span class="o">=</span> <span class="n">attach_hook</span><span class="p">(</span><span class="n">log_exception</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span> <span class="o">=</span> <span class="n">log_exception</span></div>
+
+
+<div class="viewcode-block" id="stop_logging"><a class="viewcode-back" href="../../_autosummary/atomica.utils.stop_logging.html#atomica.utils.stop_logging">[docs]</a><span class="k">def</span> <span class="nf">stop_logging</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stop logging output to file</span>
+
+<span class="sd">    This function will clear the `atomica_file_handler` and close</span>
+<span class="sd">    the last-opened log file. If file logging has not started, this</span>
+<span class="sd">    function will return normally without raising an error</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;atomica_file_handler&quot;</span><span class="p">:</span>
+            <span class="n">handler</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">removeHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span></div>
+            <span class="c1"># Don&#39;t terminate the loop, if by some change there is more than one handler</span>
+            <span class="c1"># (not supposed to happen though) then we would want to close them all</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Atomica Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
