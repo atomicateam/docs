@@ -480,7 +480,7 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 <p>Parameter values from the <em>databook</em> are stored in a <em>ParameterSet</em> which is used to produce results for any given databook and calibration. Similarly, program-specific inputs are read in from the <em>program book</em> which maps to a <em>ProgramSet</em>. A ProgramSet together with a set of <em>program instructions</em> is used to generate results incorporating the effect of programs. A schematic overview of how these inputs relate to results is shown below:</p>
 <p><img alt="t6-model-structure" src="../_images/t6_model_structure.png" /></p>
 <p>We will now implement the SIR model with a treatment program described above, to see how these different components are instantiated and used within Atomica. First, we will load in a framework and databook for a simple SIR model:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -491,16 +491,6 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 <span class="n">P</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update_time_vector</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Compartment &#34;birth&#34; has a databook order, but no databook page
-Compartment &#34;rec&#34; has a databook order, but no databook page
-Compartment &#34;death&#34; has a databook order, but no databook page
-</pre></div></div>
 </div>
 <p>This framework is much the same as the SIR framework in previous tutorials, except that on the parameters sheet, an additional column called ‘Targetable’ is present. This column specifies whether certain parameters should appear in program books. Since we know that the treatment program is going to change the value of the disease recovery rate, this parameter has a ‘y’ in the ‘Targetable’ column:</p>
 <p><img alt="t6-framework-targetable" src="../_images/t6_framework_targetable.png" /></p>
@@ -525,7 +515,7 @@ Compartment &#34;death&#34; has a databook order, but no databook page
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00818s
+Elapsed time for running &#34;default&#34;: 0.00880s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -670,8 +660,8 @@ for that program, and <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00895s
-Elapsed time for running &#34;default&#34;: 0.00873s
+Elapsed time for running &#34;default&#34;: 0.00826s
+Elapsed time for running &#34;default&#34;: 0.00988s
 </pre></div></div>
 </div>
 <p>We can now plot the recovery rate parameter and the resulting number of people flowing into the ‘recovered’ state each year.</p>
@@ -753,7 +743,7 @@ match this scenario.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00906s
+Elapsed time for running &#34;default&#34;: 0.00953s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -795,7 +785,7 @@ Reconcilation when parameter is in number units not fully tested
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Program set &#39;default&#39; will be ignored while running project &#39;default&#39; due to the absence of program set instructions
-Elapsed time for running &#34;default&#34;: 0.00831s
+Elapsed time for running &#34;default&#34;: 0.00848s
 Reconciling in 2020.00, evaluating from 2020.00 up to 2021.00
      step 1 (0.0 s) ++ (orig: 0.012100 | best:0.012100 | new:0.010000 | diff:-0.0021000)
      step 2 (0.0 s) -- (orig: 0.012100 | best:0.010000 | new:0.012100 | diff:0.0021000)
@@ -803,21 +793,21 @@ Reconciling in 2020.00, evaluating from 2020.00 up to 2021.00
      step 4 (0.0 s) -- (orig: 0.012100 | best:0.0051020 | new:0.010000 | diff:0.0048980)
      step 5 (0.0 s) ++ (orig: 0.012100 | best:0.0051020 | new:0.00040000 | diff:-0.0047020)
      step 6 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.49000 | diff:0.48960)
-     step 7 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.010000 | diff:0.0096000)
-     step 8 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.00062500 | diff:0.00022500)
-     step 9 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.0013223 | diff:0.00092231)
+     step 7 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.0013223 | diff:0.00092231)
+     step 8 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.010000 | diff:0.0096000)
+     step 9 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.00062500 | diff:0.00022500)
      step 10 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.00081633 | diff:0.00041633)
      step 11 (0.0 s) ++ (orig: 0.012100 | best:0.00040000 | new:0.00000000000000000000000000000000077037 | diff:-0.00040000)
      step 12 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0032653 | diff:0.0032653)
      step 13 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00062500 | diff:0.00062500)
-     step 14 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00013841 | diff:0.00013841)
-     step 15 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000029218 | diff:0.000029218)
-     step 16 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000075061 | diff:0.0000075061)
-     step 17 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000032653 | diff:0.000032653)
-     step 18 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000079349 | diff:0.0000079349)
+     step 14 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000029218 | diff:0.000029218)
+     step 15 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00013841 | diff:0.00013841)
+     step 16 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000032653 | diff:0.000032653)
+     step 17 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000079349 | diff:0.0000079349)
+     step 18 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000075061 | diff:0.0000075061)
      step 19 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019561 | diff:0.0000019561)
-     step 20 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00000048562 | diff:0.00000048562)
-     step 21 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019025 | diff:0.0000019025)
+     step 20 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019025 | diff:0.0000019025)
+     step 21 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00000048562 | diff:0.00000048562)
 ===  Absolute improvement too small (0 &lt; 0.0000010000) (21 steps, orig: 0.012100 | best: 0 | ratio: 0) ===
 </pre></div></div>
 </div>

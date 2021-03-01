@@ -552,7 +552,7 @@ required, depending on what layout would be most logical and useful for users fi
 </div>
 </div>
 <p>Next, load the framework file. A framework file gets loaded into a <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> object. When loading the framework file, it will automatically be checked for validity.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
@@ -560,16 +560,6 @@ required, depending on what layout would be most logical and useful for users fi
 <span></span><span class="n">F</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProjectFramework</span><span class="p">(</span><span class="s1">&#39;assets/T1/t1_framework_1.xlsx&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Compartment &#34;birth&#34; has a databook order, but no databook page
-Compartment &#34;rec&#34; has a databook order, but no databook page
-Compartment &#34;death&#34; has a databook order, but no databook page
-</pre></div></div>
 </div>
 <p>The warning about the characteristics being underdetermined is because we have three compartments, but the databook only contains information for two compartments, so this is warning that Atomica will make assumptions to initialize compartments where required. We will examine this in more detail in a subsequent tutorial when looking at characteristics in more detail.</p>
 <p>Now that we have the framework loaded in, we can make a <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> object, which is the Python representation of the databook. We use the <code class="docutils literal notranslate"><span class="pre">ProjectData.new()</span></code> function to instantiate it, passing in the <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code>. We also need to specify the years that we want to enter data for, and the number of populations that we want to have. The <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> constructor also prompts for the number of transfers - which we will set to <code class="docutils literal notranslate"><span class="pre">0</span></code> for now, and examine in more detail in the next
@@ -644,7 +634,7 @@ blank row is required.</p></li>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0109s
+Elapsed time for running &#34;default&#34;: 0.0118s
 </pre></div></div>
 </div>
 <p>When the project is loaded, a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> is automatically created, under <code class="docutils literal notranslate"><span class="pre">P.parsets</span></code></p>
@@ -663,20 +653,20 @@ Elapsed time for running &#34;default&#34;: 0.0109s
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #0: &#34;default&#34;:
-&lt;atomica.parameters.ParameterSet at 0x7f88a459d7d0&gt;
+&lt;atomica.parameters.ParameterSet at 0x7f7ce48a8ad0&gt;
 ————————————————————————————————————————————————————————————
 Methods:
   all_pars()          get_par()           copy()
   sample()
 ————————————————————————————————————————————————————————————
-     created: datetime.datetime(2021, 3, 1, 5, 0, 49, 491577,
+     created: datetime.datetime(2021, 3, 1, 10, 12, 21, 903745,
               tzinfo=tzutc())
 interactions: odict()
-    modified: datetime.datetime(2021, 3, 1, 5, 0, 49, 495272,
+    modified: datetime.datetime(2021, 3, 1, 10, 12, 21, 908239,
               tzinfo=tzutc())
         name: &#39;default&#39;
         pars: #0: &#34;sus&#34;:
-              &lt;atomica.parameters.Parameter at 0x7f886da9c750&gt;
+              &lt;atomica.parameters.Parameter at 0x7f7ce4461110&gt;
               ———————— [...]
   pop_labels: [&#39;Adults&#39;]
    pop_names: [&#39;adults&#39;]
@@ -710,7 +700,7 @@ interactions: odict()
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0102s
+Elapsed time for running &#34;default&#34;: 0.0124s
 </pre></div></div>
 </div>
 <p>We can now plot some results from this model:</p>
