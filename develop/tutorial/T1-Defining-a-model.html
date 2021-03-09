@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>T1 - Defining a model &mdash; Atomica  documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+            <a href="../index.html" class="icon icon-home"> Atomica
           
 
           
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.23.4
+                1.24.1
               </div>
             
           
@@ -150,6 +150,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -163,7 +165,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -466,11 +468,11 @@ div.rendered_html tbody tr:hover {
 <p>Typically, simple cascade models looking at comparing intervention modalities over short timeframes can use the former approach, while transmission models examining longer timeframes would use the latter approach. We will implement the SIR model using the latter approach here, which can be trivially simplified into the former approach if required.</p>
 <p>Atomica enforces a separation between the sequence of disease states (the states that an individual can be in) and population groups, which are effectively copies of the set of disease sets. Different population groups tend to be used for</p>
 <ul class="simple">
-<li><p>Age stratification (e.g. children vs adults)</p></li>
-<li><p>Risk stratification (e.g. PLHIV, prisoners)</p></li>
+<li><p>Age stratification (e.g. children vs adults)</p></li>
+<li><p>Risk stratification (e.g. PLHIV, prisoners)</p></li>
 </ul>
-<p>The main point to keep in mind at the initial stage of designing the compartment structure of the disease is that the structure is replicated across populations. In the second stage of model design, we think about interactions between populations and movement of people between populations (e.g. aging, HIV infection, incarceration), but at the initial stage, we focus on the flow of the disease itself.</p>
-<p>Thus, the first step in model development is to design the compartment structure representing individual stages. For the SIR model, this corresponds to ‘susceptible, ‘infected’, and ‘recovered’. These are all of the states that we would need in order to implement a simple cohort model.</p>
+<p>The main point to keep in mind at the initial stage of designing the compartment structure of the disease is that the structure is replicated across populations. In the second stage of model design, we think about interactions between populations and movement of people between populations (e.g. aging, HIV infection, incarceration), but at the initial stage, we focus on the flow of the disease itself.</p>
+<p>Thus, the first step in model development is to design the compartment structure representing individual stages. For the SIR model, this corresponds to ‘susceptible, ’infected’, and ‘recovered’. These are all of the states that we would need in order to implement a simple cohort model.</p>
 <p><img alt="t1-schematic-1" src="../_images/t1_schematic_1.png" /></p>
 <p>For a fully dynamic model, we need to also account for births and deaths. These are implemented as special compartments. Source compartments (used to model births, and external migration) have an inexhaustible supply of people, and people in sink compartments (used to model deaths, emigration) do not count towards to the total population size. Transitions into source compartments are prohibited, as are transitions out of sink compartments.</p>
 <p><img alt="t1-schematic-2" src="../_images/t1_schematic_2.png" /></p>
@@ -517,8 +519,8 @@ of the disease, which the user would need to enter.</p>
 <p>If a parameter (or other quantity) needs to appear in the databook, we need to assign it to a sheet in the databook. In the framework file, the ‘Databook Pages’ sheet specifies which sheets should be generated in the databook. Then, on the parameters sheet, you can enter the name of a databook page to have a quantity appear on that page. By default, the databook pages are ‘stocks’ and ‘flows’, intended for compartments and parameters respectively. However, you can have as many or as few pages as
 required, depending on what layout would be most logical and useful for users filling out the databook. Some common choices would be</p>
 <ul class="simple">
-<li><p>Grouping related quantities (e.g. quantities relating to latent infection, quantities related to active infection)</p></li>
-<li><p>Separating quantities that the user is more or less likely to need to edit (e.g. a separate sheet for constants they are unlikely to need to change)</p></li>
+<li><p>Grouping related quantities (e.g. quantities relating to latent infection, quantities related to active infection)</p></li>
+<li><p>Separating quantities that the user is more or less likely to need to edit (e.g. a separate sheet for constants they are unlikely to need to change)</p></li>
 </ul>
 <p>If you specify a ‘default value’ for a quantity in the framework, then that quantity will be pre-filled in the databook. This can be useful for constants that the user is likely to need to modify. We will introduce an ‘infectiousness’ parameter, and assign databook pages for all of the quantities that need to appear in the databook. We will also enter default values for infectiousness and the background death rate, to illustrate how these are pre-filled. The parameters sheet now reads:</p>
 <p><img alt="t1-framework-4" src="../_images/t1_framework_4.png" /></p>
@@ -632,7 +634,7 @@ blank row is required.</p></li>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00970s
+Elapsed time for running &#34;default&#34;: 0.0109s
 </pre></div></div>
 </div>
 <p>When the project is loaded, a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> is automatically created, under <code class="docutils literal notranslate"><span class="pre">P.parsets</span></code></p>
@@ -651,20 +653,20 @@ Elapsed time for running &#34;default&#34;: 0.00970s
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #0: &#34;default&#34;:
-&lt;atomica.parameters.ParameterSet at 0x7fdfd4ed1590&gt;
+&lt;atomica.parameters.ParameterSet at 0x7f6089c99d50&gt;
 ————————————————————————————————————————————————————————————
 Methods:
   all_pars()          get_par()           copy()
   sample()
 ————————————————————————————————————————————————————————————
-     created: datetime.datetime(2020, 12, 14, 11, 20, 15, 767939,
+     created: datetime.datetime(2021, 3, 9, 6, 16, 35, 594436,
               tzinfo=tzutc())
 interactions: odict()
-    modified: datetime.datetime(2020, 12, 14, 11, 20, 15, 770458,
+    modified: datetime.datetime(2021, 3, 9, 6, 16, 35, 598260,
               tzinfo=tzutc())
         name: &#39;default&#39;
         pars: #0: &#34;sus&#34;:
-              &lt;atomica.parameters.Parameter at 0x7fdfd4e29690&gt;
+              &lt;atomica.parameters.Parameter at 0x7f6089c99b10&gt;
               ———————— [...]
   pop_labels: [&#39;Adults&#39;]
    pop_names: [&#39;adults&#39;]
@@ -698,7 +700,7 @@ interactions: odict()
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00853s
+Elapsed time for running &#34;default&#34;: 0.0109s
 </pre></div></div>
 </div>
 <p>We can now plot some results from this model:</p>
@@ -735,37 +737,29 @@ Elapsed time for running &#34;default&#34;: 0.00853s
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="T2-Calibration.html" class="btn btn-neutral float-right" title="T2 - Calibration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="index.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="T2-Calibration.html" class="btn btn-neutral float-right" title="T2 - Calibration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Atomica Team
+        &#169; Copyright 2020, Atomica Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>atomica.data &mdash; Atomica  documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+            <a href="../../index.html" class="icon icon-home"> Atomica
           
 
           
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.23.4
+                1.24.1
               </div>
             
           
@@ -121,6 +121,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -439,7 +441,7 @@
 
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">framework</span><span class="o">.</span><span class="n">interactions</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">interpop</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">add_interaction</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;display name&quot;</span><span class="p">],</span> <span class="n">from_pop_type</span><span class="o">=</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;from population type&quot;</span><span class="p">],</span> <span class="n">to_pop_type</span><span class="o">=</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;to population type&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="s2">&quot;default value&quot;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default value&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s2">&quot;default value&quot;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default value&quot;</span><span class="p">]):</span>
                 <span class="k">for</span> <span class="n">from_pop</span> <span class="ow">in</span> <span class="n">interpop</span><span class="o">.</span><span class="n">from_pops</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">to_pop</span> <span class="ow">in</span> <span class="n">interpop</span><span class="o">.</span><span class="n">to_pops</span><span class="p">:</span>
                         <span class="n">ts</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">interpop</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -453,7 +455,7 @@
                 <span class="c1"># In order to write a default value</span>
                 <span class="c1"># - The default value should be present and not None</span>
                 <span class="c1"># - The quantity should appear in the databook</span>
-                <span class="k">if</span> <span class="s2">&quot;default value&quot;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default value&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="s2">&quot;default value&quot;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default value&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]:</span>
                     <span class="n">tdve</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
                     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                         <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default value&quot;</span><span class="p">])</span>
@@ -565,12 +567,12 @@
                     <span class="c1"># Store the TDVE on the page it was actually on, rather than the one in the framework. Then, if users move anything around, the change will persist</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">tdve_pages</span><span class="p">[</span><span class="n">sheet</span><span class="o">.</span><span class="n">title</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code_name</span><span class="p">)</span>
 
-        <span class="c1"># Set the ProjectData&#39;s tvec based on the first TDVE table</span>
-        <span class="c1"># 99.9% of the time, all of the tables will have the same values and so this is generally safe</span>
-        <span class="c1"># The only time unexpected behaviour might occur is if the first TDVE table has exotic data points</span>
-        <span class="c1"># and the user loads the databook, then adds a new transfer/interpop, the new table will have those same</span>
-        <span class="c1"># modified data points. But what does the user expect, if the databook has mixed times</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tdve_pages</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">tvec</span>
+        <span class="n">tvals</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">tdve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">tvals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tdve</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">tdc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpops</span><span class="p">:</span>
+            <span class="n">tvals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tdc</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">tvals</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -616,7 +618,7 @@
 
                 <span class="k">if</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">spec_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default value&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;default value&quot;</span><span class="p">]):</span>
                             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The databook did not contain a required TDVE table named &quot;</span><span class="si">%s</span><span class="s1">&quot; (code name &quot;</span><span class="si">%s</span><span class="s1">&quot;)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;display name&quot;</span><span class="p">],</span> <span class="n">spec_name</span><span class="p">))</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;TDVE table &quot;</span><span class="si">%s</span><span class="s1">&quot; (code name &quot;</span><span class="si">%s</span><span class="s1">&quot;) is missing from the databook. Using default values from the framework&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;display name&quot;</span><span class="p">],</span> <span class="n">spec_name</span><span class="p">))</span>
@@ -1126,28 +1128,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Atomica Team
+        &#169; Copyright 2020, Atomica Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

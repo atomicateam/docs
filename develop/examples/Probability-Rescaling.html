@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Probability rescaling &mdash; Atomica  documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
@@ -54,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+            <a href="../index.html" class="icon icon-home"> Atomica
           
 
           
@@ -64,7 +66,7 @@
             
             
               <div class="version">
-                1.23.4
+                1.24.1
               </div>
             
           
@@ -157,6 +159,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -170,7 +174,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -551,7 +555,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Now, people immediately start flowing from <span class="math notranslate nohighlight">\(c_1\)</span> to <span class="math notranslate nohighlight">\(c_2\)</span> so the system converges to its steady state with dynamics that are different to the model with normally-distributed durations. However, the end result is the same.</p>
 <p>Note that this is a proper continuous system - we have imposed no constraints as to when transitions can occur, so the idea is that the figures above are what our discrete system should approximate, subject to conditions like sufficiently small time steps (and indeed, we would expect that the steady state solution above is converged to in the limit of small time steps).</p>
-<p>Suppose then that we are setting up a discrete system of ODEs an an approximation to this system (i.e. moving from an agent-based model to a compartment model). First, we implement a basic Euler-type solver to integrate an ODE, defined by the <code class="docutils literal notranslate"><span class="pre">rhs</span></code> function which returns the derivative</p>
+<p>Suppose then that we are setting up a discrete system of ODEs an an approximation to this system (i.e. moving from an agent-based model to a compartment model). First, we implement a basic Euler-type solver to integrate an ODE, defined by the <code class="docutils literal notranslate"><span class="pre">rhs</span></code> function which returns the derivative</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -568,7 +572,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Note that the stepping in this integrator is governed by <code class="docutils literal notranslate"><span class="pre">y[:,i+1]</span> <span class="pre">=</span> <span class="pre">y[:,i]</span> <span class="pre">+</span> <span class="pre">rhs(y[:,i],t[i])</span></code> <em>not</em> <code class="docutils literal notranslate"><span class="pre">y[:,i+1]</span> <span class="pre">=</span> <span class="pre">y[:,i]</span> <span class="pre">+</span> <span class="pre">dt*rhs(y[:,i],t[i])</span></code>. That is, the RHS function is returning a number of people to transfer at each time step (e.g. <code class="docutils literal notranslate"><span class="pre">dx</span></code>), not per unit time (e.g. <code class="docutils literal notranslate"><span class="pre">dx/dt</span></code>). This matches the integration setup in Atomica, where we compute the flow values at each time step, rather than the flow rate.</p>
+<p>Note that the stepping in this integrator is governed by <code class="docutils literal notranslate"><span class="pre">y[:,i+1]</span> <span class="pre">=</span> <span class="pre">y[:,i]</span> <span class="pre">+</span> <span class="pre">rhs(y[:,i],t[i])</span></code> <em>not</em> <code class="docutils literal notranslate"><span class="pre">y[:,i+1]</span> <span class="pre">=</span> <span class="pre">y[:,i]</span> <span class="pre">+</span> <span class="pre">dt*rhs(y[:,i],t[i])</span></code>. That is, the RHS function is returning a number of people to transfer at each time step (e.g. <code class="docutils literal notranslate"><span class="pre">dx</span></code>), not per unit time (e.g. <code class="docutils literal notranslate"><span class="pre">dx/dt</span></code>). This matches the integration setup in Atomica, where we compute the flow values at each time step, rather than the flow rate.</p>
 <p>The setup is now framed in terms of transition probabilities, so our system of ODEs has</p>
 <ul class="simple">
 <li><p>A first stage, where people have a probability of departure of <span class="math notranslate nohighlight">\(p_1\)</span> per year</p></li>
@@ -971,7 +975,7 @@ predicted compartment sizes under this approximation will not remain the same as
 <div class="math notranslate nohighlight">
 \[\begin{split}1-(1-p_2)^{k} = 1-(1-p_1)\\
 p_2 = (1-p_1)^{1/k}\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(k\)</span> is the number of steps per year e.g. if <code class="docutils literal notranslate"><span class="pre">dt=0.25</span></code> then <code class="docutils literal notranslate"><span class="pre">k=4</span></code>. Clearly <span class="math notranslate nohighlight">\(p_2 \neq p_1/k\)</span> but the mean number of samples (the mean of the geometric distribution) is <code class="docutils literal notranslate"><span class="pre">1/p</span></code>, so if both distributions had the same mean, then we would require <span class="math notranslate nohighlight">\(p_2 = p_1/k\)</span>. Preserving the annual flow (under the no-inflow approximation) is exclusive of preserving the duration even with no inflows.</p>
+<p>where <span class="math notranslate nohighlight">\(k\)</span> is the number of steps per year e.g. if <code class="docutils literal notranslate"><span class="pre">dt=0.25</span></code> then <code class="docutils literal notranslate"><span class="pre">k=4</span></code>. Clearly <span class="math notranslate nohighlight">\(p_2 \neq p_1/k\)</span> but the mean number of samples (the mean of the geometric distribution) is <code class="docutils literal notranslate"><span class="pre">1/p</span></code>, so if both distributions had the same mean, then we would require <span class="math notranslate nohighlight">\(p_2 = p_1/k\)</span>. Preserving the annual flow (under the no-inflow approximation) is exclusive of preserving the duration even with no inflows.</p>
 <p>Finally, an argument for the geometric scaling can be made based on the probabilities in the steady state. In equilibrium, a compartment contains people that are uniformly distributed over time spent in the compartment. For example, with annual timesteps, in a compartment with a duration of 4 years, 25% of the compartment would be eligible to transition out at the next timestep. Thus, at each timestep, we should move <code class="docutils literal notranslate"><span class="pre">0.25</span></code> of the compartment. If the timestep was quarterly, then 1/16th of the
 compartment would be due to transition out at the next timestep, so the transition fraction should be <code class="docutils literal notranslate"><span class="pre">0.0625</span></code>. This corresponds to the mean of the distribution for a geometric distribution, which is the operation that is actually performed by the model.</p>
 </div>
@@ -1129,37 +1133,29 @@ compartment would be due to transition out at the next timestep, so the transiti
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="Scenarios.html" class="btn btn-neutral float-right" title="Scenarios" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="Plot-Units.html" class="btn btn-neutral float-left" title="Plot unit conversions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="Scenarios.html" class="btn btn-neutral float-right" title="Scenarios" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Plot-Units.html" class="btn btn-neutral float-left" title="Plot unit conversions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Atomica Team
+        &#169; Copyright 2020, Atomica Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

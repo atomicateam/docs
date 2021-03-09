@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>T2 - Calibration &mdash; Atomica  documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+            <a href="../index.html" class="icon icon-home"> Atomica
           
 
           
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.23.4
+                1.24.1
               </div>
             
           
@@ -149,6 +149,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -162,7 +164,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -447,7 +449,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="T2---Calibration">
 <h1>T2 - Calibration<a class="headerlink" href="#T2---Calibration" title="Permalink to this headline">¶</a></h1>
 <p>Models are simplifications of the real world, and quantities in the model (like the force of infection) represent the aggregation of many different factors. As a result, there can be uncertainty as to what value of the parameters most accurately reflects the real world - for instance, the population force of infection varies with the average number of contacts per person per day, but this quantity may not be well constrained. The first step in running a model is to improve estimates of the
-parameter values for a particular setting, using data from that setting. Typically, the model is started off at some point in the past (e.g. 2000), such that the initial compartment sizes correspond to the data in the simulation start year. The model is then run up to the current year, with the compartment sizes changing due to the model parameters. The model predictions can then be compared to the actual data for those same years. This allows model parameters to be adjusted to best match the
+parameter values for a particular setting, using data from that setting. Typically, the model is started off at some point in the past (e.g. 2000), such that the initial compartment sizes correspond to the data in the simulation start year. The model is then run up to the current year, with the compartment sizes changing due to the model parameters. The model predictions can then be compared to the actual data for those same years. This allows model parameters to be adjusted to best match the
 existing data. These same parameters are then used for future projections.</p>
 <p>To see calibration in effect, consider the following simple example:</p>
 <div class="nbinput nblast docutils container">
@@ -477,7 +479,7 @@ existing data. These same parameters are then used for future projections.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0101s
+Elapsed time for running &#34;default&#34;: 0.0138s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -551,7 +553,7 @@ methods.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0105s
+Elapsed time for running &#34;default&#34;: 0.0133s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -588,7 +590,7 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-#0: &#34;adults&#34;: 1.318705612095073
+#0: &#34;adults&#34;: 1.318715465068817
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -617,7 +619,7 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0114s
+Elapsed time for running &#34;default&#34;: 0.0124s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -670,7 +672,7 @@ changing the rate at which people are infected and changing the rate at which pe
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00989s
+Elapsed time for running &#34;default&#34;: 0.0122s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -699,7 +701,7 @@ Elapsed time for running &#34;default&#34;: 0.00989s
 </div>
 <p>There are a few major dangers in calibration, including but not limited to:</p>
 <p><strong>1. Solution-rich spaces</strong></p>
-<p>Often multiple input parameters can be adjusted and they might superficially produce the same historical trend lines. For example if modelled prevalence is far lower than data points from epidemiological surveys, a better calibration might be achieved in a number of different ways: increased force of infection (calibration parameter), increased behavioural risk factors (e.g. number of shared injections for HIV), increased duration of infection, reduced treatment success rate, or any number of
+<p>Often multiple input parameters can be adjusted and they might superficially produce the same historical trend lines. For example if modelled prevalence is far lower than data points from epidemiological surveys, a better calibration might be achieved in a number of different ways: increased force of infection (calibration parameter), increased behavioural risk factors (e.g. number of shared injections for HIV), increased duration of infection, reduced treatment success rate, or any number of
 other subtle data inputs. Where possible calibrate to include data from multiple other outputs, and even if this is not possible <em>review</em> other outputs as a sanity check. In addition, consult country experts to determine which solution better explains the trend where it is not clear from the data.</p>
 <p><strong>2. Overfitting</strong></p>
 <p>Don’t try to exactly match every historical data point such as by adjusting ‘force of infection’ precisely for every historical year. Often there is year to year variation in diagnostic capacity, reporting, or natural fluctation based on behaviour or external circumstances. It is more important to accurately capture the trend and the <em>reasons</em> for that trend in the model than to match data from every year exactly, and this will lead to more reasonable future projections as well as a more useful
@@ -727,18 +729,18 @@ child incidence through mother-to-child transmission.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-b_rate: y_factor = 1.0
-doth_rate: y_factor = 0.18473582178354253
-foi: y_factor = 1.3327400660726612
-rec_rate: y_factor = 0.12279420476034086
-m_rate: y_factor = 0.12434020042048066
+b_rate: y_factor = 0.9594955444335939
+doth_rate: y_factor = 0.14875147141023526
+foi: y_factor = 1.367842855946943
+rec_rate: y_factor = 0.13058903717280612
+m_rate: y_factor = 0.12459227546224234
 </pre></div></div>
 </div>
 <p>Some of these values are low at around 0.15, and this can be attributed to the high value for prevalence (<code class="docutils literal notranslate"><span class="pre">inf</span></code>) in the databook requiring a low value for each of <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code>, <code class="docutils literal notranslate"><span class="pre">rec_rate</span></code>, and <code class="docutils literal notranslate"><span class="pre">m_rate</span></code>. Individually these are not outside of a ‘reasonable’ range for calibration <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> but as they are all needed to fit a single data point this might suggest a second look at the reliability of original data values for prevalence in this project.</p>
 <p><strong>5. Missing model features</strong> Calibration at its best accounts for factors outside of a model in order to focus on what is in the model. Sometimes those factors have too big an impact on the model to be ignored, and the right solution is to add depth to the model as the only other solution is to force outcomes with extreme <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> or unrealistic values for other parameters.</p>
 <p>In the example above, it is impossible to match both the 2010 and 2020 data points for number of deaths (<code class="docutils literal notranslate"><span class="pre">m_num</span></code>) as they are not consistent with increasing prevalence. Perhaps it is necessary to calibrate a changing <code class="docutils literal notranslate"><span class="pre">m_rate</span></code> over time in the databook, or even add diagnosis and treatment to the model?</p>
 <p><strong>6. ‘Burn-in’ period</strong> Often with more complex models, there may be too many parameters to initialize each and every one of them accurately in the first time step of the model via databook entry, such as tracking compartments for many different stages of a disease or stages of treatment. In these cases, it may be best to initialize just using key databook values such as ‘number on treatment’, ‘number infected’ and make assumptions for compartments within these categories. This will typically
-result in strange model behaviour for a number of time steps during a ‘burn-in’ period before the proportions at different stages of treatment settle down to an equilibrium, so it may be necessary to exclude these burn-in years from exported results in general, and not try to match these in calibration. Ideally, the model should either initialize a model earlier (e.g. several years in models with long time steps) and/or calibrate to the years for which data exists, and exclude those burn-in
+result in strange model behaviour for a number of time steps during a ‘burn-in’ period before the proportions at different stages of treatment settle down to an equilibrium, so it may be necessary to exclude these burn-in years from exported results in general, and not try to match these in calibration. Ideally, the model should either initialize a model earlier (e.g. several years in models with long time steps) and/or calibrate to the years for which data exists, and exclude those burn-in
 years from exported results in general.</p>
 </div>
 </div>
@@ -748,37 +750,29 @@ years from exported results in general.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="T3-Multiple-populations.html" class="btn btn-neutral float-right" title="T3 - Multiple populations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="T1-Defining-a-model.html" class="btn btn-neutral float-left" title="T1 - Defining a model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="T3-Multiple-populations.html" class="btn btn-neutral float-right" title="T3 - Multiple populations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="T1-Defining-a-model.html" class="btn btn-neutral float-left" title="T1 - Defining a model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Atomica Team
+        &#169; Copyright 2020, Atomica Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

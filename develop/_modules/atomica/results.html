@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>atomica.results &mdash; Atomica  documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+            <a href="../../index.html" class="icon icon-home"> Atomica
           
 
           
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.23.4
+                1.24.1
               </div>
             
           
@@ -121,6 +121,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -366,7 +368,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">prog</span><span class="p">]</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
                 <span class="n">cap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">prog</span><span class="p">]</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
                 <span class="c1"># If prop_covered is higher than the capacity constraint then set it to nan as it wouldn&#39;t be possible to reach that coverage</span>
-                <span class="n">pc</span><span class="p">[</span><span class="n">pc</span> <span class="o">*</span> <span class="n">num_eligible</span><span class="p">[</span><span class="n">prog</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cap</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">pc</span><span class="p">[</span><span class="n">pc</span> <span class="o">*</span> <span class="n">num_eligible</span><span class="p">[</span><span class="n">prog</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">cap</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
             <span class="c1"># multiply the proportion of naively costed coverage by the number of actually eligible people (catching the case where number covered would be higher than the number eligible)</span>
             <span class="n">num_costed_coverage</span> <span class="o">=</span> <span class="n">pc</span> <span class="o">*</span> <span class="n">num_eligible</span><span class="p">[</span><span class="n">prog</span><span class="p">]</span>
@@ -746,20 +748,22 @@
 
     <span class="c1"># Write the plots sheet if any plots are available</span>
     <span class="k">if</span> <span class="s2">&quot;plots&quot;</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">sheets</span><span class="p">:</span>
-        <span class="n">plot_df</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">plots_available</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;plots&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">plots_available</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-            <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bar&quot;</span><span class="p">:</span>
-                <span class="k">continue</span>  <span class="c1"># For now, don&#39;t do bars - not implemented yet</span>
-            <span class="n">plot_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_output_to_df</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">output_name</span><span class="o">=</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="n">evaluate_plot_string</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;quantities&quot;</span><span class="p">]),</span> <span class="n">tvals</span><span class="o">=</span><span class="n">new_tvals</span><span class="p">,</span> <span class="n">time_aggregate</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-        <span class="n">_write_df</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="s2">&quot;Plot data annualized&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">plot_df</span><span class="p">),</span> <span class="n">output_ordering</span><span class="p">)</span>
 
-        <span class="n">plot_df</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">plots_available</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-            <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bar&quot;</span><span class="p">:</span>
-                <span class="k">continue</span>  <span class="c1"># For now, don&#39;t do bars - not implemented yet</span>
-            <span class="n">plot_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_output_to_df</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">output_name</span><span class="o">=</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="n">evaluate_plot_string</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;quantities&quot;</span><span class="p">]),</span> <span class="n">tvals</span><span class="o">=</span><span class="n">new_tvals</span><span class="p">,</span> <span class="n">time_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-        <span class="n">_write_df</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="s2">&quot;Plot data annual aggregated&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">plot_df</span><span class="p">),</span> <span class="n">output_ordering</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">plots_available</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="n">plot_df</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">plots_available</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bar&quot;</span><span class="p">:</span>
+                    <span class="k">continue</span>  <span class="c1"># For now, don&#39;t do bars - not implemented yet</span>
+                <span class="n">plot_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_output_to_df</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">output_name</span><span class="o">=</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="n">evaluate_plot_string</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;quantities&quot;</span><span class="p">]),</span> <span class="n">tvals</span><span class="o">=</span><span class="n">new_tvals</span><span class="p">,</span> <span class="n">time_aggregate</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+            <span class="n">_write_df</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="s2">&quot;Plot data annualized&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">plot_df</span><span class="p">),</span> <span class="n">output_ordering</span><span class="p">)</span>
+
+            <span class="n">plot_df</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">plots_available</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">spec</span> <span class="ow">and</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bar&quot;</span><span class="p">:</span>
+                    <span class="k">continue</span>  <span class="c1"># For now, don&#39;t do bars - not implemented yet</span>
+                <span class="n">plot_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_output_to_df</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">output_name</span><span class="o">=</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="n">evaluate_plot_string</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;quantities&quot;</span><span class="p">]),</span> <span class="n">tvals</span><span class="o">=</span><span class="n">new_tvals</span><span class="p">,</span> <span class="n">time_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="n">_write_df</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="s2">&quot;Plot data annual aggregated&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">plot_df</span><span class="p">),</span> <span class="n">output_ordering</span><span class="p">)</span>
 
     <span class="c1"># Write cascades into separate sheets</span>
     <span class="n">cascade_df</span> <span class="o">=</span> <span class="p">[]</span>
@@ -798,7 +802,6 @@
             <span class="n">prog_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_programs_to_df</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">prog_name</span><span class="p">,</span> <span class="n">new_tvals</span><span class="p">,</span> <span class="n">time_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="n">_write_df</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="s2">&quot;Programs annual aggregated&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">prog_df</span><span class="p">),</span> <span class="n">program_ordering</span><span class="p">)</span>
 
-    <span class="n">writer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
     <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">output_fname</span>
@@ -1730,28 +1733,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Atomica Team
+        &#169; Copyright 2020, Atomica Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

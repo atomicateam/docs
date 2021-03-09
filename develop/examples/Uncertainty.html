@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Uncertainty &mdash; Atomica  documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
@@ -54,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+            <a href="../index.html" class="icon icon-home"> Atomica
           
 
           
@@ -64,7 +66,7 @@
             
             
               <div class="version">
-                1.23.4
+                1.24.1
               </div>
             
           
@@ -168,6 +170,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -181,7 +185,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -474,12 +478,12 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Specifying-uncertainty">
 <h2>Specifying uncertainty<a class="headerlink" href="#Specifying-uncertainty" title="Permalink to this headline">¶</a></h2>
 <p>Fundmentally, uncertainty enters Atomica via the data entry spreadsheets. Both the databook and program book have columns that can be used to enter uncertainty.</p>
-<p>In the databook, uncertainty can be added to any TDVE table - that is, any of the sub-tables within the databook for each quantity. By default, those columns are not produced when the databook is written e.g. with</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;databook.xlsx&#39;</span><span class="p">)</span>
+<p>In the databook, uncertainty can be added to any TDVE table - that is, any of the sub-tables within the databook for each quantity. By default, those columns are not produced when the databook is written e.g. with</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>proj.data.save(&#39;databook.xlsx&#39;)
 </pre></div>
 </div>
 <p>If you want to include those columns, use the <code class="docutils literal notranslate"><span class="pre">write_uncertainty</span></code> options:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;databook.xlsx&#39;</span><span class="p">,</span><span class="n">write_uncertainty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>proj.data.save(&#39;databook.xlsx&#39;,write_uncertainty=True)
 </pre></div>
 </div>
 <p>This will add an ‘uncertainty’ column to all tables in the databook. If you only want to add uncertainty to a small number of quantities, you can simply insert an extra column for the tables that you want to add uncertainty to, by selecting the other cells and moving them over. The example below shows how an uncertainty column has been added to the ‘Screened people’ table and not to the ‘All people with condition’ table:</p>
@@ -549,7 +553,7 @@ Parameter &#34;fail_rate&#34; is in rate units and a maximum value of &#34;1&#34
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0274s
+Elapsed time for running &#34;default&#34;: 0.0403s
 </pre></div></div>
 </div>
 <p>Above, we have loaded in a databook with uncertainty values, and also loaded in two different program books, one with low uncertainty, and one with high uncertainty. We can inspect the objects to see how the uncertainty entered in the spreadsheets is reflected in code.</p>
@@ -568,7 +572,7 @@ Elapsed time for running &#34;default&#34;: 0.0274s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.utils.TimeSeries at 0x7f1b9107e0b0&gt;
+&lt;atomica.utils.TimeSeries at 0x7fc505fee050&gt;
 ————————————————————————————————————————————————————————————
 Methods:
   copy()              interpolate()       remove_between()
@@ -606,7 +610,7 @@ assumption: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0293s
+Elapsed time for running &#34;default&#34;: 0.0373s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -684,7 +688,7 @@ Sampling has already been performed - can only sample once
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0277s
+Elapsed time for running &#34;default&#34;: 0.0368s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -712,8 +716,8 @@ Elapsed time for running &#34;default&#34;: 0.0277s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0359s
-Elapsed time for running &#34;default&#34;: 0.0382s
+Elapsed time for running &#34;default&#34;: 0.0454s
+Elapsed time for running &#34;default&#34;: 0.0454s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -739,7 +743,7 @@ Elapsed time for running &#34;default&#34;: 0.0382s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.118s
+Elapsed time for running &#34;default&#34;: 0.107s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -801,8 +805,8 @@ Characteristic &#39;all_screened&#39;: Target value = [470.76487173]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0275s
-[[&lt;atomica.results.Result at 0x7f1b889c8a90&gt;
+Elapsed time for running &#34;default&#34;: 0.0368s
+[[&lt;atomica.results.Result at 0x7fc503bb5590&gt;
 ————————————————————————————————————————————————————————————
 Methods:
   charac_names()      export_raw()        get_variable()
@@ -814,18 +818,18 @@ Properties:
   dt                  pop_labels          used_programs
   framework           t
 ————————————————————————————————————————————————————————————
-    created: datetime.datetime(2020, 12, 14, 11, 23, 7, 207116,
+    created: datetime.datetime(2021, 3, 9, 6, 20, 6, 20718,
              tzinfo=tzutc())
     gitinfo: {&#39;branch&#39;: &#39;Git branch N/A&#39;, &#39;hash&#39;: &#39;Git hash N/A&#39;,
              &#39;date&#39;: &#39;Git dat [...]
-      model: &lt;atomica.model.Model object at 0x7f1b889c8810&gt;
-   modified: datetime.datetime(2020, 12, 14, 11, 23, 7, 207149,
+      model: &lt;atomica.model.Model object at 0x7fc51f021f90&gt;
+   modified: datetime.datetime(2021, 3, 9, 6, 20, 6, 20739,
              tzinfo=tzutc())
        name: &#39;default&#39;
 parset_name: &#39;default&#39;
   pop_names: [&#39;m_rural&#39;, &#39;f_rural&#39;, &#39;m_urban&#39;, &#39;f_urban&#39;]
-        uid: UUID(&#39;f2e999ae-c136-40c8-a7fc-53b590d94259&#39;)
-    version: &#39;1.23.4&#39;
+        uid: UUID(&#39;ec6c97ce-9cdc-498a-bba4-734871fd1e6c&#39;)
+    version: &#39;1.24.1&#39;
 ————————————————————————————————————————————————————————————
 ]]
 </pre></div></div>
@@ -846,7 +850,7 @@ parset_name: &#39;default&#39;
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 5/5 [00:00&lt;00:00, 27.29it/s]
+100%|██████████| 5/5 [00:00&lt;00:00, 20.82it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -884,7 +888,7 @@ parset_name: &#39;default&#39;
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:04&lt;00:00, 21.48it/s]
+100%|██████████| 100/100 [00:05&lt;00:00, 17.08it/s]
 </pre></div></div>
 </div>
 <p>For comparison, we will also run a ‘baseline’ simulation with no sampling. A plot of the baseline results looks like this:</p>
@@ -904,7 +908,7 @@ parset_name: &#39;default&#39;
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0302s
+Elapsed time for running &#34;default&#34;: 0.0365s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -920,8 +924,8 @@ Elapsed time for running &#34;default&#34;: 0.0302s
 <li><p>Instantiate a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object with the quantities to plot. Effectively, this operation is mapping a <code class="docutils literal notranslate"><span class="pre">Result</span></code> to a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code></p></li>
 <li><p>Call a plotting library function to generate the plot</p></li>
 </ol>
-<p>Plots generated with the plotting library compare multiple results (e.g. different scenarios) rather than showing uncertainty computed over an ensemble of results. Further, they only take in a single <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instance where the results to compare have been included in the same <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object.</p>
-<p>To work with uncertainty, instead of plotting a single <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object, we instead plot a collection of <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> objects. And plots are generated using a different set of plotting functions that take in multiple <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instances and use them to compute and display uncertainties (e.g. as error bars or as shaded areas).</p>
+<p>Plots generated with the plotting library compare multiple results (e.g. different scenarios) rather than showing uncertainty computed over an ensemble of results. Further, they only take in a single <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instance where the results to compare have been included in the same <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object.</p>
+<p>To work with uncertainty, instead of plotting a single <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object, we instead plot a collection of <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> objects. And plots are generated using a different set of plotting functions that take in multiple <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instances and use them to compute and display uncertainties (e.g. as error bars or as shaded areas).</p>
 <p>This functionality is accessed via the <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> class. The <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> class is designed to store and plot ensembles of results. Internally, it stores a list of <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> objects - one for each sample. It also contains a ‘mapping function’ that takes in results and returns a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instance. To use an Ensemble, first we need to define a mapping function. In the simplest case, this looks just like a normal call to <code class="docutils literal notranslate"><span class="pre">PlotData()</span></code>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -1288,8 +1292,8 @@ expected that the labels may need to be edited afterwards depending on usage.</p
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0365s
-Elapsed time for running &#34;default&#34;: 0.0428s
+Elapsed time for running &#34;default&#34;: 0.0475s
+Elapsed time for running &#34;default&#34;: 0.0473s
 </pre></div></div>
 </div>
 <p>Comparing results across budget scenarios is extremely common, so Atomica has built-in functionality to facilitate this. You can pass multiple instructions and result names to <code class="docutils literal notranslate"><span class="pre">Project.run_sampled_sims()</span></code> to generate results as shown above</p>
@@ -1308,7 +1312,7 @@ Elapsed time for running &#34;default&#34;: 0.0428s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:09&lt;00:00, 10.35it/s]
+100%|██████████| 100/100 [00:12&lt;00:00,  7.99it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -1342,7 +1346,7 @@ Elapsed time for running &#34;default&#34;: 0.0428s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:10&lt;00:00,  9.91it/s]
+100%|██████████| 100/100 [00:12&lt;00:00,  8.07it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1458,8 +1462,11 @@ Elapsed time for running &#34;default&#34;: 0.0428s
 <li><p>Comparing multiple results</p></li>
 </ul>
 </li>
-<li><p>Across Ensembles</p></li>
+<li><p>Across Ensembles</p>
+<ul>
 <li><p>Typically would be comparing corresponding outputs/pops</p></li>
+</ul>
+</li>
 </ul>
 <p>To cater for the former, if a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> instance contains multiple years, results, outputs, or pops, they will all be shown on the distribution figure unless filtered using arguments to <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_distribution</span></code>. For the latter, subsequent calls to <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_distribution</span></code> can pass in a Figure, which will superimpose the distributions onto the existing figure. For example:</p>
 <div class="nbinput docutils container">
@@ -1618,13 +1625,13 @@ generate the plot via <code class="docutils literal notranslate"><span class="pr
 <div class="output_area docutils container">
 <img alt="../_images/examples_Uncertainty_90_0.svg" src="../_images/examples_Uncertainty_90_0.svg" /></div>
 </div>
-<div class="alert alert-success"><p>Notice that because the model outputs are converted to <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> on a per-sample basis, uncertainty is automatically propagated to the derived quantity (i.e. ‘pre-diagnosed’ has uncertainty even though it was defined on the fly). This would be the case for any <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> operation.</p>
+<div class="alert alert-success"><p>Notice that because the model outputs are converted to <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> on a per-sample basis, uncertainty is automatically propagated to the derived quantity (i.e. ‘pre-diagnosed’ has uncertainty even though it was defined on the fly). This would be the case for any <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> operation.</p>
 </div></div>
 </div>
 <div class="section" id="Memory-limited-environments">
 <h2>Memory-limited environments<a class="headerlink" href="#Memory-limited-environments" title="Permalink to this headline">¶</a></h2>
 <p>A common issue that may occur when sampling large models is that there may be insufficient RAM to store all of the <code class="docutils literal notranslate"><span class="pre">Result</span></code> objects in memory prior to adding them to an <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code>. The <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> stored within an <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> is typically orders of magnitude smaller than the raw results - in the first instance, it only contains a small subset of the model outputs. A large model might have on the order of 150 parameters, 50 compartments, and 150 links. A typical <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> may have track
-5-10 quantities, which represents a ~50x reduction in size. Further, the raw output has values at every timestep, which could be on the order of 100 values (e.g. a 25 year simulation with quarterly timesteps) but it may only be desired to compare simulations for a few time points - which could provide another ~20x reduction in size.</p>
+5-10 quantities, which represents a ~50x reduction in size. Further, the raw output has values at every timestep, which could be on the order of 100 values (e.g. a 25 year simulation with quarterly timesteps) but it may only be desired to compare simulations for a few time points - which could provide another ~20x reduction in size.</p>
 <p>In sum, the strategy for dealing with this situation is</p>
 <ol class="arabic simple">
 <li><p>Define a mapping function that leads to a sufficient reduction in size of the outputs</p></li>
@@ -1658,106 +1665,106 @@ generate the plot via <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0342s
-Elapsed time for running &#34;default&#34;: 0.0341s
-Elapsed time for running &#34;default&#34;: 0.0340s
-Elapsed time for running &#34;default&#34;: 0.0344s
-Elapsed time for running &#34;default&#34;: 0.0362s
-Elapsed time for running &#34;default&#34;: 0.0346s
-Elapsed time for running &#34;default&#34;: 0.0320s
-Elapsed time for running &#34;default&#34;: 0.0352s
-Elapsed time for running &#34;default&#34;: 0.0374s
-Elapsed time for running &#34;default&#34;: 0.0333s
-Elapsed time for running &#34;default&#34;: 0.0389s
-Elapsed time for running &#34;default&#34;: 0.0353s
-Elapsed time for running &#34;default&#34;: 0.0353s
-Elapsed time for running &#34;default&#34;: 0.0326s
-Elapsed time for running &#34;default&#34;: 0.0359s
-Elapsed time for running &#34;default&#34;: 0.0338s
-Elapsed time for running &#34;default&#34;: 0.0362s
-Elapsed time for running &#34;default&#34;: 0.0370s
-Elapsed time for running &#34;default&#34;: 0.0375s
-Elapsed time for running &#34;default&#34;: 0.0347s
-Elapsed time for running &#34;default&#34;: 0.0354s
-Elapsed time for running &#34;default&#34;: 0.0355s
-Elapsed time for running &#34;default&#34;: 0.0341s
-Elapsed time for running &#34;default&#34;: 0.0346s
-Elapsed time for running &#34;default&#34;: 0.0356s
-Elapsed time for running &#34;default&#34;: 0.0347s
-Elapsed time for running &#34;default&#34;: 0.0353s
-Elapsed time for running &#34;default&#34;: 0.0335s
-Elapsed time for running &#34;default&#34;: 0.0351s
-Elapsed time for running &#34;default&#34;: 0.0349s
-Elapsed time for running &#34;default&#34;: 0.0365s
-Elapsed time for running &#34;default&#34;: 0.0342s
-Elapsed time for running &#34;default&#34;: 0.0361s
-Elapsed time for running &#34;default&#34;: 0.0347s
-Elapsed time for running &#34;default&#34;: 0.0379s
-Elapsed time for running &#34;default&#34;: 0.0367s
-Elapsed time for running &#34;default&#34;: 0.0366s
-Elapsed time for running &#34;default&#34;: 0.0349s
-Elapsed time for running &#34;default&#34;: 0.0372s
-Elapsed time for running &#34;default&#34;: 0.0346s
-Elapsed time for running &#34;default&#34;: 0.0332s
-Elapsed time for running &#34;default&#34;: 0.0338s
-Elapsed time for running &#34;default&#34;: 0.0337s
-Elapsed time for running &#34;default&#34;: 0.0354s
-Elapsed time for running &#34;default&#34;: 0.0362s
-Elapsed time for running &#34;default&#34;: 0.0354s
-Elapsed time for running &#34;default&#34;: 0.0363s
-Elapsed time for running &#34;default&#34;: 0.0374s
-Elapsed time for running &#34;default&#34;: 0.0352s
-Elapsed time for running &#34;default&#34;: 0.0334s
-Elapsed time for running &#34;default&#34;: 0.0335s
-Elapsed time for running &#34;default&#34;: 0.0354s
-Elapsed time for running &#34;default&#34;: 0.0347s
-Elapsed time for running &#34;default&#34;: 0.0371s
-Elapsed time for running &#34;default&#34;: 0.0354s
-Elapsed time for running &#34;default&#34;: 0.0357s
-Elapsed time for running &#34;default&#34;: 0.0353s
-Elapsed time for running &#34;default&#34;: 0.0354s
-Elapsed time for running &#34;default&#34;: 0.0385s
-Elapsed time for running &#34;default&#34;: 0.0350s
-Elapsed time for running &#34;default&#34;: 0.0350s
-Elapsed time for running &#34;default&#34;: 0.0351s
-Elapsed time for running &#34;default&#34;: 0.0339s
-Elapsed time for running &#34;default&#34;: 0.0348s
-Elapsed time for running &#34;default&#34;: 0.0354s
-Elapsed time for running &#34;default&#34;: 0.0345s
-Elapsed time for running &#34;default&#34;: 0.0335s
-Elapsed time for running &#34;default&#34;: 0.0371s
-Elapsed time for running &#34;default&#34;: 0.0350s
-Elapsed time for running &#34;default&#34;: 0.0379s
-Elapsed time for running &#34;default&#34;: 0.0377s
-Elapsed time for running &#34;default&#34;: 0.0347s
-Elapsed time for running &#34;default&#34;: 0.0358s
-Elapsed time for running &#34;default&#34;: 0.0349s
-Elapsed time for running &#34;default&#34;: 0.0342s
-Elapsed time for running &#34;default&#34;: 0.0385s
-Elapsed time for running &#34;default&#34;: 0.0344s
-Elapsed time for running &#34;default&#34;: 0.0376s
-Elapsed time for running &#34;default&#34;: 0.0326s
-Elapsed time for running &#34;default&#34;: 0.0345s
-Elapsed time for running &#34;default&#34;: 0.0340s
-Elapsed time for running &#34;default&#34;: 0.0359s
-Elapsed time for running &#34;default&#34;: 0.0356s
-Elapsed time for running &#34;default&#34;: 0.0375s
-Elapsed time for running &#34;default&#34;: 0.0352s
-Elapsed time for running &#34;default&#34;: 0.0373s
-Elapsed time for running &#34;default&#34;: 0.0354s
-Elapsed time for running &#34;default&#34;: 0.0359s
-Elapsed time for running &#34;default&#34;: 0.0404s
-Elapsed time for running &#34;default&#34;: 0.0362s
-Elapsed time for running &#34;default&#34;: 0.0382s
-Elapsed time for running &#34;default&#34;: 0.0354s
-Elapsed time for running &#34;default&#34;: 0.0351s
-Elapsed time for running &#34;default&#34;: 0.0360s
-Elapsed time for running &#34;default&#34;: 0.0376s
-Elapsed time for running &#34;default&#34;: 0.0349s
-Elapsed time for running &#34;default&#34;: 0.0380s
-Elapsed time for running &#34;default&#34;: 0.0351s
-Elapsed time for running &#34;default&#34;: 0.0356s
-Elapsed time for running &#34;default&#34;: 0.0360s
+Elapsed time for running &#34;default&#34;: 0.0460s
+Elapsed time for running &#34;default&#34;: 0.0464s
+Elapsed time for running &#34;default&#34;: 0.0446s
+Elapsed time for running &#34;default&#34;: 0.0444s
+Elapsed time for running &#34;default&#34;: 0.0477s
+Elapsed time for running &#34;default&#34;: 0.0469s
+Elapsed time for running &#34;default&#34;: 0.0510s
+Elapsed time for running &#34;default&#34;: 0.0470s
+Elapsed time for running &#34;default&#34;: 0.0470s
+Elapsed time for running &#34;default&#34;: 0.0490s
+Elapsed time for running &#34;default&#34;: 0.0464s
+Elapsed time for running &#34;default&#34;: 0.0469s
+Elapsed time for running &#34;default&#34;: 0.0462s
+Elapsed time for running &#34;default&#34;: 0.0476s
+Elapsed time for running &#34;default&#34;: 0.0460s
+Elapsed time for running &#34;default&#34;: 0.0477s
+Elapsed time for running &#34;default&#34;: 0.0471s
+Elapsed time for running &#34;default&#34;: 0.0453s
+Elapsed time for running &#34;default&#34;: 0.0452s
+Elapsed time for running &#34;default&#34;: 0.0454s
+Elapsed time for running &#34;default&#34;: 0.0451s
+Elapsed time for running &#34;default&#34;: 0.0487s
+Elapsed time for running &#34;default&#34;: 0.0466s
+Elapsed time for running &#34;default&#34;: 0.0457s
+Elapsed time for running &#34;default&#34;: 0.0483s
+Elapsed time for running &#34;default&#34;: 0.0453s
+Elapsed time for running &#34;default&#34;: 0.0465s
+Elapsed time for running &#34;default&#34;: 0.0483s
+Elapsed time for running &#34;default&#34;: 0.0462s
+Elapsed time for running &#34;default&#34;: 0.0467s
+Elapsed time for running &#34;default&#34;: 0.0465s
+Elapsed time for running &#34;default&#34;: 0.0456s
+Elapsed time for running &#34;default&#34;: 0.0449s
+Elapsed time for running &#34;default&#34;: 0.0481s
+Elapsed time for running &#34;default&#34;: 0.0481s
+Elapsed time for running &#34;default&#34;: 0.0456s
+Elapsed time for running &#34;default&#34;: 0.0470s
+Elapsed time for running &#34;default&#34;: 0.0452s
+Elapsed time for running &#34;default&#34;: 0.0482s
+Elapsed time for running &#34;default&#34;: 0.0448s
+Elapsed time for running &#34;default&#34;: 0.0460s
+Elapsed time for running &#34;default&#34;: 0.0442s
+Elapsed time for running &#34;default&#34;: 0.0480s
+Elapsed time for running &#34;default&#34;: 0.0452s
+Elapsed time for running &#34;default&#34;: 0.0453s
+Elapsed time for running &#34;default&#34;: 0.0450s
+Elapsed time for running &#34;default&#34;: 0.0447s
+Elapsed time for running &#34;default&#34;: 0.0439s
+Elapsed time for running &#34;default&#34;: 0.0439s
+Elapsed time for running &#34;default&#34;: 0.0444s
+Elapsed time for running &#34;default&#34;: 0.0445s
+Elapsed time for running &#34;default&#34;: 0.0445s
+Elapsed time for running &#34;default&#34;: 0.0464s
+Elapsed time for running &#34;default&#34;: 0.0445s
+Elapsed time for running &#34;default&#34;: 0.0516s
+Elapsed time for running &#34;default&#34;: 0.0493s
+Elapsed time for running &#34;default&#34;: 0.0481s
+Elapsed time for running &#34;default&#34;: 0.0468s
+Elapsed time for running &#34;default&#34;: 0.0503s
+Elapsed time for running &#34;default&#34;: 0.0485s
+Elapsed time for running &#34;default&#34;: 0.0488s
+Elapsed time for running &#34;default&#34;: 0.0471s
+Elapsed time for running &#34;default&#34;: 0.0438s
+Elapsed time for running &#34;default&#34;: 0.0440s
+Elapsed time for running &#34;default&#34;: 0.0438s
+Elapsed time for running &#34;default&#34;: 0.0473s
+Elapsed time for running &#34;default&#34;: 0.0457s
+Elapsed time for running &#34;default&#34;: 0.0517s
+Elapsed time for running &#34;default&#34;: 0.0466s
+Elapsed time for running &#34;default&#34;: 0.0461s
+Elapsed time for running &#34;default&#34;: 0.0447s
+Elapsed time for running &#34;default&#34;: 0.0461s
+Elapsed time for running &#34;default&#34;: 0.0471s
+Elapsed time for running &#34;default&#34;: 0.0498s
+Elapsed time for running &#34;default&#34;: 0.0480s
+Elapsed time for running &#34;default&#34;: 0.0496s
+Elapsed time for running &#34;default&#34;: 0.0452s
+Elapsed time for running &#34;default&#34;: 0.0454s
+Elapsed time for running &#34;default&#34;: 0.0469s
+Elapsed time for running &#34;default&#34;: 0.0490s
+Elapsed time for running &#34;default&#34;: 0.0470s
+Elapsed time for running &#34;default&#34;: 0.0443s
+Elapsed time for running &#34;default&#34;: 0.0444s
+Elapsed time for running &#34;default&#34;: 0.0451s
+Elapsed time for running &#34;default&#34;: 0.0532s
+Elapsed time for running &#34;default&#34;: 0.0446s
+Elapsed time for running &#34;default&#34;: 0.0445s
+Elapsed time for running &#34;default&#34;: 0.0453s
+Elapsed time for running &#34;default&#34;: 0.0448s
+Elapsed time for running &#34;default&#34;: 0.0438s
+Elapsed time for running &#34;default&#34;: 0.0474s
+Elapsed time for running &#34;default&#34;: 0.0459s
+Elapsed time for running &#34;default&#34;: 0.0563s
+Elapsed time for running &#34;default&#34;: 0.0462s
+Elapsed time for running &#34;default&#34;: 0.0448s
+Elapsed time for running &#34;default&#34;: 0.0463s
+Elapsed time for running &#34;default&#34;: 0.0463s
+Elapsed time for running &#34;default&#34;: 0.0456s
+Elapsed time for running &#34;default&#34;: 0.0446s
+Elapsed time for running &#34;default&#34;: 0.0469s
 </pre></div></div>
 </div>
 <p>Now, the peak amount of memory required is only that of 1 simulation. We can then plot the ensemble as usual:</p>
@@ -1793,7 +1800,7 @@ Elapsed time for running &#34;default&#34;: 0.0360s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:05&lt;00:00, 19.01it/s]
+100%|██████████| 100/100 [00:07&lt;00:00, 14.19it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1829,7 +1836,7 @@ Elapsed time for running &#34;default&#34;: 0.0360s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/results.py:1539: UserWarning: To output multiple subplots, the figure containing the passed axes is being cleared
+/home/vsts/work/1/s/atomica/results.py:1540: UserWarning: To output multiple subplots, the figure containing the passed axes is being cleared
   pd.plotting.scatter_matrix(df, ax=ax, c=[colormap[x] for x in df[&#34;result&#34;].values], diagonal=&#34;kde&#34;)
 </pre></div></div>
 </div>
@@ -1878,37 +1885,29 @@ Elapsed time for running &#34;default&#34;: 0.0360s
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../tutorial/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="Scenarios.html" class="btn btn-neutral float-left" title="Scenarios" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="../tutorial/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Scenarios.html" class="btn btn-neutral float-left" title="Scenarios" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Atomica Team
+        &#169; Copyright 2020, Atomica Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
