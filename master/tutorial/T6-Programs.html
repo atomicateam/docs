@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>T6 - Programs &mdash; Atomica  documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
@@ -54,7 +56,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+            <a href="../index.html" class="icon icon-home"> Atomica
           
 
           
@@ -64,7 +66,7 @@
             
             
               <div class="version">
-                1.23.2
+                1.24.1
               </div>
             
           
@@ -159,6 +161,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -172,7 +176,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -463,8 +467,8 @@ div.rendered_html tbody tr:hover {
 </ul>
 <p>However, a key function of Atomica is to model the impact of interventions. These interventions are typically framed in the following way:</p>
 <ul class="simple">
-<li><p>The intervention has a unit cost associated with it (e.g. a treatment that costs $100/person)</p></li>
-<li><p>A specified amount of money is made available for the intervention (e.g. $1000/year)</p></li>
+<li><p>The intervention has a unit cost associated with it (e.g. a treatment that costs $100/person)</p></li>
+<li><p>A specified amount of money is made available for the intervention (e.g. $1000/year)</p></li>
 <li><p>The intervention defines a parameter value (matching a parameter in the Framework) for people reached by the intervention. For example, the natural recovery rate for an rate for individuals on treatment may be 20%, but if someone is on treatment, they have a 90% chance of recovery</p></li>
 </ul>
 <p>At a high level, the calculation we wish to implement is as follows. Suppose we have an SIR model and there are 100 people infected and diagnosed at the start of the year. The $1000 of available funding means that 10 people can be treated that year. Of those 10 people, 90% of them recover, leading to 9 people moving to the ‘Recovered’ state. For the remaining 90 people, 20% of them recover, leading to 18 natural recoveries. So that year, a total of 27 people will move from ‘Infected’ to
@@ -511,7 +515,7 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0535s
+Elapsed time for running &#34;default&#34;: 0.00655s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -539,7 +543,7 @@ Elapsed time for running &#34;default&#34;: 0.0535s
 <li><p>Individuals that are treated have a 90% recovery rate</p></li>
 </ul>
 <p>Within each of these three main areas are various additional options for more sophisticated programs - for example, programs targeted only at particular sub-populations, programs that can only be scaled up to a finite limit, and programs interacting with other programs. These are discussed in more detail in the full program documentation <a class="reference external" href="http://atomica.tools/docs/master/general/programs/Programs.html">here</a>.</p>
-<p>Notice that program targeting needs to specify which disease states are targeted (e.g. ‘Infected’) and which populations are targeted (e.g. ‘Adults’). These are defined in the framework and databook, respectively. Therefore, while the databook depends only on the framework, the program book depends on both the framework and the databook. This is reflected in the command to create a new program set, which takes in both a framework and a databook:</p>
+<p>Notice that program targeting needs to specify which disease states are targeted (e.g. ‘Infected’) and which populations are targeted (e.g. ‘Adults’). These are defined in the framework and databook, respectively. Therefore, while the databook depends only on the framework, the program book depends on both the framework and the databook. This is reflected in the command to create a new program set, which takes in both a framework and a databook:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -594,7 +598,7 @@ Object saved to /home/vsts/work/1/s/docs/tutorial/temp.xlsx.
 <p>Analogous to the databook, the program book should contain actual data values or future projections not dependent on the model. Typically, this would mean that</p>
 <ul class="simple">
 <li><p>The spending values would only correspond to past years, reflecting actual investment in the program</p></li>
-<li><p>The unit cost could contain future values if there are expected to be changes in the cost of the program e.g. if drug prices are expected to drop in the future</p></li>
+<li><p>The unit cost could contain future values if there are expected to be changes in the cost of the program e.g. if drug prices are expected to drop in the future</p></li>
 </ul>
 <p>The capacity constraint and saturation constraint are discussed in detail in the full programs documentation. However, to a good approximation, the <em>coverage</em> of a program during a timestep is given by dividing the number of people the program has funding for (the annual spending rate divided by the unit cost) by the number of people currently in targeted compartments. For example, if the simulation step size was <code class="docutils literal notranslate"><span class="pre">0.25</span></code> years, then</p>
 <ul class="simple">
@@ -656,8 +660,8 @@ for that program, and <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00494s
-Elapsed time for running &#34;default&#34;: 0.00608s
+Elapsed time for running &#34;default&#34;: 0.00615s
+Elapsed time for running &#34;default&#34;: 0.00757s
 </pre></div></div>
 </div>
 <p>We can now plot the recovery rate parameter and the resulting number of people flowing into the ‘recovered’ state each year.</p>
@@ -739,7 +743,7 @@ match this scenario.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00615s
+Elapsed time for running &#34;default&#34;: 0.00765s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -781,30 +785,28 @@ Reconcilation when parameter is in number units not fully tested
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Program set &#39;default&#39; will be ignored while running project &#39;default&#39; due to the absence of program set instructions
-Elapsed time for running &#34;default&#34;: 0.00556s
+Elapsed time for running &#34;default&#34;: 0.00678s
 Reconciling in 2020.00, evaluating from 2020.00 up to 2021.00
-     step 1 (0.0 s) -- (orig: 0.012100 | best:0.012100 | new:0.013967 | diff:0.0018669)
-     step 2 (0.0 s) -- (orig: 0.012100 | best:0.012100 | new:0.013061 | diff:0.00096122)
-     step 3 (0.0 s) ++ (orig: 0.012100 | best:0.012100 | new:0.010000 | diff:-0.0021000)
-     step 4 (0.0 s) ++ (orig: 0.012100 | best:0.010000 | new:0.0051020 | diff:-0.0048980)
-     step 5 (0.0 s) -- (orig: 0.012100 | best:0.0051020 | new:0.010000 | diff:0.0048980)
-     step 6 (0.0 s) ++ (orig: 0.012100 | best:0.0051020 | new:0.00040000 | diff:-0.0047020)
-     step 7 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.49000 | diff:0.48960)
-     step 8 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.010000 | diff:0.0096000)
-     step 9 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.00081633 | diff:0.00041633)
-     step 10 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.00062500 | diff:0.00022500)
-     step 11 (0.0 s) ++ (orig: 0.012100 | best:0.00040000 | new:0.00000000000000000000000000000000077037 | diff:-0.00040000)
-     step 12 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0032653 | diff:0.0032653)
-     step 13 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00062500 | diff:0.00062500)
-     step 14 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00013841 | diff:0.00013841)
-     step 15 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000032653 | diff:0.000032653)
-     step 16 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000029218 | diff:0.000029218)
-     step 17 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000079349 | diff:0.0000079349)
-     step 18 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000075061 | diff:0.0000075061)
-     step 19 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019025 | diff:0.0000019025)
-     step 20 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019561 | diff:0.0000019561)
-     step 21 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00000048562 | diff:0.00000048562)
-===  Absolute improvement too small (0 &lt; 0.0000010000) (21 steps, orig: 0.012100 | best: 0 | ratio: 0) ===
+     step 1 (0.0 s) ++ (orig: 0.012100 | best:0.012100 | new:0.010000 | diff:-0.0021000)
+     step 2 (0.0 s) -- (orig: 0.012100 | best:0.010000 | new:0.012100 | diff:0.0021000)
+     step 3 (0.0 s) ++ (orig: 0.012100 | best:0.010000 | new:0.0051020 | diff:-0.0048980)
+     step 4 (0.0 s) -- (orig: 0.012100 | best:0.0051020 | new:0.010000 | diff:0.0048980)
+     step 5 (0.0 s) ++ (orig: 0.012100 | best:0.0051020 | new:0.00040000 | diff:-0.0047020)
+     step 6 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.49000 | diff:0.48960)
+     step 7 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.010000 | diff:0.0096000)
+     step 8 (0.0 s) -- (orig: 0.012100 | best:0.00040000 | new:0.00062500 | diff:0.00022500)
+     step 9 (0.0 s) ++ (orig: 0.012100 | best:0.00040000 | new:0.00000000000000000000000000000000077037 | diff:-0.00040000)
+     step 10 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0032653 | diff:0.0032653)
+     step 11 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00040000 | diff:0.00040000)
+     step 12 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00062500 | diff:0.00062500)
+     step 13 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00013841 | diff:0.00013841)
+     step 14 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00011080 | diff:0.00011080)
+     step 15 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000029218 | diff:0.000029218)
+     step 16 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000075061 | diff:0.0000075061)
+     step 17 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000032653 | diff:0.000032653)
+     step 18 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019025 | diff:0.0000019025)
+     step 19 (0.0 s) -- (orig: 0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000079349 | diff:0.0000079349)
+===  Absolute improvement too small (0 &lt; 0.0000010000) (19 steps, orig: 0.012100 | best: 0 | ratio: 0) ===
 </pre></div></div>
 </div>
 <p>Regardless of how reconciliation is performed, the idea is that the result of reconciliation is a <em>reconciled progset</em> that provides a better match to a given parameter set in the program start year. We expected based on the un-reconciled result that reconciliation based on unit cost should result in decreasing the unit cost to achieve an increase in recovery rate. We can look at the reconciled unit cost to confirm this is what the automatic reconciliation has done:</p>
@@ -846,7 +848,7 @@ not be possible to reach the target recovery rate.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00610s
+Elapsed time for running &#34;default&#34;: 0.00758s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -869,7 +871,7 @@ book. There are examples of how to set up different kinds of programs in the Ato
 <ul class="simple">
 <li><p>Framework contains a vaccine compartment, and a targetable vaccination rate parameter</p></li>
 <li><p>The program targets the susceptible compartment and overwrites the vaccination rate parameter</p></li>
-<li><p>For infant and child vaccination programs, the program only targets the appropriate populations (e.g. only targets a <code class="docutils literal notranslate"><span class="pre">0-4</span></code> population</p></li>
+<li><p>For infant and child vaccination programs, the program only targets the appropriate populations (e.g. only targets a <code class="docutils literal notranslate"><span class="pre">0-4</span></code> population</p></li>
 </ul>
 </div>
 <div class="section" id="Diagnosis-screening-program">
@@ -885,7 +887,7 @@ book. There are examples of how to set up different kinds of programs in the Ato
 <ul class="simple">
 <li><p>The framework contains states for susceptible, undiagnosed, and diagnosed. The latter two states would both be considered infected. A diagnosis parameter moves people from undiagnosed to diagnosed</p></li>
 <li><p>The program targets only undiagnosed people, and overwrites the diagnosis parameter</p></li>
-<li><p>The sensitivity of the diagnosis test corresponds to the program’s effect (i.e. a test with low sensitivity would return a negative result for someone that is true positive, so a program effect less than 1 would mean that an affected individual that gets reached by the diagnosis program does not actually become diagnosed).</p></li>
+<li><p>The sensitivity of the diagnosis test corresponds to the program’s effect (i.e. a test with low sensitivity would return a negative result for someone that is true positive, so a program effect less than 1 would mean that an affected individual that gets reached by the diagnosis program does not actually become diagnosed).</p></li>
 </ul>
 </div>
 <div class="section" id="Screening-with-confirmatory-test">
@@ -907,7 +909,7 @@ book. There are examples of how to set up different kinds of programs in the Ato
 <p>Without an explicit treatment state:</p>
 <ul class="simple">
 <li><p>The framework contains compartments for being diagnosed, and for a successfully treated outcome</p></li>
-<li><p>The treatment program moves people from being diagnosed to being successfully treated (e.g. recovered)</p></li>
+<li><p>The treatment program moves people from being diagnosed to being successfully treated (e.g. recovered)</p></li>
 <li><p>The treatment program’s effect is the treatment efficacy</p></li>
 </ul>
 </div>
@@ -916,7 +918,7 @@ book. There are examples of how to set up different kinds of programs in the Ato
 <p>Some treatment programs involve being continuously on treatment without ever changing compartments - for example, ART for HIV treatment. These programs typically have a cost per year of treatment associated with them (rather than a cost for a one-off course of treatment)</p>
 <ul class="simple">
 <li><p>The framework defines a targetable parameter for the proportion of people on treatment</p></li>
-<li><p>The program unit cost is entered in units of ‘\:math:<cite>/person/year’ rather than ‘\</cite>/person’</p></li>
+<li><p>The program unit cost is entered in units of ‘\<span class="math notranslate nohighlight">\(\/person\/year' rather than '\\\)</span>/person’</p></li>
 <li><p>The program effect is entered as 1</p></li>
 <li><p>The framework defines other parameters whose value depends on the proportion on treatment parameter</p></li>
 </ul>
@@ -926,7 +928,7 @@ book. There are examples of how to set up different kinds of programs in the Ato
 <div class="section" id="Exercise">
 <h2>Exercise<a class="headerlink" href="#Exercise" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li><p>Add a ‘Diagnosed’ compartment to the SIR model, such that an individual must be diagnosed before they can recover. The flow in the model should be set up as <code class="docutils literal notranslate"><span class="pre">S</span> <span class="pre">-&gt;</span> <span class="pre">I</span> <span class="pre">-&gt;</span> <span class="pre">D</span> <span class="pre">-&gt;</span> <span class="pre">R</span></code> (with death flows due to background deaths and disease-related death set up accordingly. Set up your model so that there is no natural recovery rate (i.e. people must be diagnosed or eventually die from the ‘Infected’ compartment, and people must be treated or eventually die from the ‘Diagnosed’ compartment).</p></li>
+<li><p>Add a ‘Diagnosed’ compartment to the SIR model, such that an individual must be diagnosed before they can recover. The flow in the model should be set up as <code class="docutils literal notranslate"><span class="pre">S</span> <span class="pre">-&gt;</span> <span class="pre">I</span> <span class="pre">-&gt;</span> <span class="pre">D</span> <span class="pre">-&gt;</span> <span class="pre">R</span></code> (with death flows due to background deaths and disease-related death set up accordingly. Set up your model so that there is no natural recovery rate (i.e. people must be diagnosed or eventually die from the ‘Infected’ compartment, and people must be treated or eventually die from the ‘Diagnosed’ compartment).</p></li>
 <li><p>Implement a diagnosis program that moves people from ‘Infected’ to ‘Diagnosed’</p></li>
 </ol>
 </div>
@@ -937,37 +939,29 @@ book. There are examples of how to set up different kinds of programs in the Ato
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../library/index.html" class="btn btn-neutral float-right" title="Model library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="T5-Junctions.html" class="btn btn-neutral float-left" title="T5 - Junctions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="../library/index.html" class="btn btn-neutral float-right" title="Model library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="T5-Junctions.html" class="btn btn-neutral float-left" title="T5 - Junctions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Atomica Team
+        &#169; Copyright 2020, Atomica Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

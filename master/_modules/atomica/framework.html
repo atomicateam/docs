@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>atomica.framework &mdash; Atomica  documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+            <a href="../../index.html" class="icon icon-home"> Atomica
           
 
           
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.23.2
+                1.24.1
               </div>
             
           
@@ -136,6 +136,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -180,7 +182,8 @@
 <span class="kn">from</span> <span class="nn">.function_parser</span> <span class="kn">import</span> <span class="n">parse_function</span>
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">NotFoundError</span><span class="p">,</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">format_duration</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">format_duration</span><span class="p">,</span> <span class="n">evaluate_plot_string</span>
+<span class="kn">from</span> <span class="nn">.plotting</span> <span class="kn">import</span> <span class="n">_extract_labels</span>
 <span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;InvalidFramework&quot;</span><span class="p">,</span> <span class="s2">&quot;ProjectFramework&quot;</span><span class="p">,</span> <span class="s2">&quot;generate_framework_doc&quot;</span><span class="p">]</span>
@@ -198,10 +201,12 @@
 
 <span class="sd">    :param inputs: A string (which will load an Excel file from disk) or an sc.Spreadsheet. If not provided, the internal sheets will be set to an empty dict ready for content</span>
 <span class="sd">    :param name: Optionally explicitly set the framework name. Otherwise, it will be assigned from the &#39;about&#39; sheet, if present</span>
+<span class="sd">    :param validate: If True (default) then the framework will be validated upon loading. This can be overridden if operating on invalid/partial frameworks is required. However,</span>
+<span class="sd">                     the framework should still be validated before it is used.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">validate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">openpyxl</span>
 
         <span class="c1"># Define metadata</span>
@@ -248,10 +253,15 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
                         <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Print object &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">prepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>
 
     <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">.migration</span> <span class="kn">import</span> <span class="n">migrate</span>
@@ -575,7 +585,7 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;transitions&quot;</span><span class="p">]):</span>
             <span class="c1"># If the population type isn&#39;t set (in the top left of the matrix) then assign the matrix to the first pop type</span>
             <span class="n">cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;transition matrix&quot;</span><span class="p">:</span>  <span class="c1"># The template for single population type frameworks has &#39;Transition matrix&#39; where the population type would normally go</span>
+            <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;transition matrix&quot;</span><span class="p">:</span>  <span class="c1"># The template for single population type frameworks has &#39;Transition matrix&#39; where the population type would normally go</span>
                 <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_types</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">cols</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -590,10 +600,7 @@
                 <span class="k">elif</span> <span class="n">comps</span><span class="p">[</span><span class="n">comp</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="s1">&#39;Compartment &quot;</span><span class="si">%s</span><span class="s1">&quot; belongs to pop type &quot;</span><span class="si">%s</span><span class="s1">&quot; but it appears in the transition matrix for &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="n">comps</span><span class="p">[</span><span class="n">comp</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;transitions&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
-
-        <span class="c1"># Next, import each dataframe</span>
-        <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;transitions&quot;</span><span class="p">]:</span>
+            <span class="c1"># Next, import each dataframe</span>
             <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">from_row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>  <span class="c1"># For each row in the transition matrix</span>
                 <span class="n">from_row</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="n">from_comp</span> <span class="o">=</span> <span class="n">from_row</span><span class="o">.</span><span class="n">name</span>
@@ -698,9 +705,10 @@
             <span class="s2">&quot;is source&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">},</span>
             <span class="s2">&quot;is junction&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">},</span>
         <span class="p">}</span>
+        <span class="n">numeric_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;databook order&quot;</span><span class="p">,</span> <span class="s2">&quot;default value&quot;</span><span class="p">]</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">comps</span> <span class="o">=</span> <span class="n">_sanitize_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="p">,</span> <span class="n">required_columns</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">valid_content</span><span class="p">,</span> <span class="n">set_index</span><span class="o">=</span><span class="s2">&quot;code name&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comps</span> <span class="o">=</span> <span class="n">_sanitize_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="p">,</span> <span class="n">required_columns</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">valid_content</span><span class="p">,</span> <span class="n">set_index</span><span class="o">=</span><span class="s2">&quot;code name&quot;</span><span class="p">,</span> <span class="n">numeric_columns</span><span class="o">=</span><span class="n">numeric_columns</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;An error was detected on the &quot;Compartments&quot; sheet in the Framework file&#39;</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
@@ -726,12 +734,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s2">&quot;calibrate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s2">&quot;calibrate&quot;</span><span class="p">][</span><span class="n">default_calibrate</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;y&quot;</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s2">&quot;databook order&quot;</span><span class="p">])</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;An error was detected on the &quot;Compartments&quot; sheet in the Framework file - databook order must be a number&#39;</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
-
         <span class="c1"># VALIDATE COMPARTMENTS</span>
         <span class="k">for</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)):</span>
 
@@ -741,21 +743,21 @@
             <span class="k">if</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;setup weight&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;is source&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;is sink&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="s1">&#39;Compartment &quot;</span><span class="si">%s</span><span class="s1">&quot; is a source or a sink, but has a nonzero setup weight&#39;</span> <span class="o">%</span> <span class="n">comp_name</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;setup weight&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;setup weight&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">])):</span>
                 <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="s1">&#39;Compartment &quot;</span><span class="si">%s</span><span class="s1">&quot; has a nonzero setup weight, but does not appear in the databook&#39;</span> <span class="o">%</span> <span class="n">comp_name</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;is source&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;is sink&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;is source&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;is sink&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="s1">&#39;Compartment &quot;</span><span class="si">%s</span><span class="s1">&quot; is a source or a sink, but has a databook page&#39;</span> <span class="o">%</span> <span class="n">comp_name</span><span class="p">)</span>
 
             <span class="c1"># It only makes sense to calibrate comps and characs that appear in the databook, because these are the only ones that</span>
             <span class="c1"># will appear in the parset</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;calibrate&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;calibrate&quot;</span><span class="p">])):</span>
                 <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="s1">&#39;Compartment &quot;</span><span class="si">%s</span><span class="s1">&quot; is marked as being eligible for calibration, but it does not appear in the databook&#39;</span> <span class="o">%</span> <span class="n">comp_name</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook order&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Compartment &quot;</span><span class="si">%s</span><span class="s1">&quot; has a databook order, but no databook page&#39;</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook order&quot;</span><span class="p">]):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Compartment &quot;</span><span class="si">%s</span><span class="s1">&quot; has a databook order (</span><span class="si">%s</span><span class="s1">), but no databook page&#39;</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook order&quot;</span><span class="p">])</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;databook pages&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;datasheet code name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;databook pages&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;datasheet code name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="s1">&#39;Compartment &quot;</span><span class="si">%s</span><span class="s1">&quot; has databook page &quot;</span><span class="si">%s</span><span class="s1">&quot; but that page does not appear on the &quot;databook pages&quot; sheet&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]))</span>
 
             <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;population type&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">available_pop_types</span><span class="p">:</span>
@@ -771,21 +773,16 @@
             <span class="s2">&quot;display name&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;components&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="n">numeric_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;databook order&quot;</span><span class="p">,</span> <span class="s2">&quot;default value&quot;</span><span class="p">]</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">characs</span> <span class="o">=</span> <span class="n">_sanitize_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">characs</span><span class="p">,</span> <span class="n">required_columns</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">valid_content</span><span class="p">,</span> <span class="n">set_index</span><span class="o">=</span><span class="s2">&quot;code name&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">characs</span> <span class="o">=</span> <span class="n">_sanitize_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">characs</span><span class="p">,</span> <span class="n">required_columns</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">valid_content</span><span class="p">,</span> <span class="n">set_index</span><span class="o">=</span><span class="s2">&quot;code name&quot;</span><span class="p">,</span> <span class="n">numeric_columns</span><span class="o">=</span><span class="n">numeric_columns</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;An error was detected on the &quot;Characteristics&quot; sheet in the Framework file&#39;</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
 
         <span class="c1"># Assign first population type to any empty population types</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">characs</span><span class="p">[</span><span class="s2">&quot;population type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">characs</span><span class="p">[</span><span class="s2">&quot;population type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">available_pop_types</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">characs</span><span class="p">[</span><span class="s2">&quot;databook order&quot;</span><span class="p">])</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;An error was detected on the &quot;Characteristics&quot; sheet in the Framework file - databook order must be a number&#39;</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
 
         <span class="k">if</span> <span class="s2">&quot;setup weight&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">characs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">characs</span><span class="p">[</span><span class="s2">&quot;setup weight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">characs</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">())</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
@@ -888,9 +885,10 @@
             <span class="s2">&quot;is derivative&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">},</span>
             <span class="s2">&quot;timed&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">},</span>
         <span class="p">}</span>
+        <span class="n">numeric_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;databook order&quot;</span><span class="p">,</span> <span class="s2">&quot;default value&quot;</span><span class="p">,</span> <span class="s2">&quot;minimum value&quot;</span><span class="p">,</span> <span class="s2">&quot;maximum value&quot;</span><span class="p">,</span> <span class="s2">&quot;timescale&quot;</span><span class="p">]</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pars</span> <span class="o">=</span> <span class="n">_sanitize_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">,</span> <span class="n">required_columns</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">valid_content</span><span class="p">,</span> <span class="n">set_index</span><span class="o">=</span><span class="s2">&quot;code name&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pars</span> <span class="o">=</span> <span class="n">_sanitize_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">,</span> <span class="n">required_columns</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">valid_content</span><span class="p">,</span> <span class="n">set_index</span><span class="o">=</span><span class="s2">&quot;code name&quot;</span><span class="p">,</span> <span class="n">numeric_columns</span><span class="o">=</span><span class="n">numeric_columns</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;An error was detected on the &quot;Parameters&quot; sheet in the Framework file&#39;</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
@@ -898,11 +896,6 @@
         <span class="c1"># Assign first population type to any empty population types</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;population type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;population type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">available_pop_types</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;databook order&quot;</span><span class="p">])</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;An error was detected on the &quot;Parameters&quot; sheet in the Framework file - databook order must be a number&#39;</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
 
         <span class="k">if</span> <span class="s2">&quot;calibrate&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
             <span class="n">default_calibrate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s2">&quot;targetable&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span>
@@ -940,16 +933,16 @@
             <span class="k">if</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;is derivative&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span> <span class="ow">and</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="s1">&#39;Parameter &quot;</span><span class="si">%s</span><span class="s1">&quot; is marked &quot;is derivative&quot; but it does not have a databook page - it needs to appear in the databook so that an initial value can be provided.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">par_name</span><span class="p">))</span>
 
-            <span class="k">if</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;timescale&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">par</span><span class="p">[</span><span class="s2">&quot;timescale&quot;</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_DURATION</span><span class="p">}:</span>
                     <span class="c1"># Durations should always have a timescale, assumed to be annual by default</span>
                     <span class="c1"># This ensures the time units get printed in the databook, even for non-transition parameters</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">par_name</span><span class="p">,</span> <span class="s2">&quot;timescale&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># Assign default timescale for probability and duration (but not number, since a number might be absolute rather than annual for non-transition parameters)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span> <span class="ow">and</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;timescale&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_NUMBER</span><span class="p">,</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span><span class="p">,</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_RATE</span><span class="p">}:</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">par</span><span class="p">[</span><span class="s2">&quot;timescale&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_NUMBER</span><span class="p">,</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROBABILITY</span><span class="p">,</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_RATE</span><span class="p">}:</span>
                     <span class="c1"># For number and probability, non-transition parameters might not be be in units per time period, therefore having a timescale</span>
                     <span class="c1"># is optional *unless* it is a transition parameter</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">par_name</span><span class="p">,</span> <span class="s2">&quot;timescale&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-                <span class="k">elif</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;timescale&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROPORTION</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">par</span><span class="p">[</span><span class="s2">&quot;timescale&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_PROPORTION</span><span class="p">:</span>
                     <span class="c1"># Proportion units should never have a timescale since they are time-invariant</span>
                     <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="s2">&quot;Parameter </span><span class="si">%s</span><span class="s2"> is in proportion units, therefore it cannot have a timescale entered for it&quot;</span> <span class="o">%</span> <span class="n">par_name</span><span class="p">)</span>
 
@@ -1231,6 +1224,35 @@
         <span class="k">for</span> <span class="n">cascade_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cascades</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">validate_cascade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cascade_name</span><span class="p">,</span> <span class="n">fallback_used</span><span class="o">=</span><span class="n">used_fallback_cascade</span><span class="p">)</span>
 
+        <span class="c1"># VALIDATE PLOTS</span>
+        <span class="k">if</span> <span class="s2">&quot;plots&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;plots&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;plots&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;plots&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;quantities&quot;</span><span class="p">,</span> <span class="s2">&quot;plot group&quot;</span><span class="p">])]</span>
+
+        <span class="n">required_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;quantities&quot;</span><span class="p">]</span>
+        <span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;series&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;plot group&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;plots&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">_sanitize_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;plots&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">required_columns</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="n">defaults</span><span class="p">,</span> <span class="n">valid_content</span><span class="o">=</span><span class="p">{})</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;An error was detected on the &quot;Plots&quot; sheet in the Framework file&#39;</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="k">for</span> <span class="n">quantity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;plots&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;quantities&quot;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">variables</span> <span class="ow">in</span> <span class="n">_extract_labels</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">promotetolist</span><span class="p">(</span><span class="n">evaluate_plot_string</span><span class="p">(</span><span class="n">quantity</span><span class="p">))):</span>
+                <span class="k">if</span> <span class="n">variables</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;:flow&quot;</span><span class="p">):</span>
+                    <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">variables</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:flow&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)]</span>
+                <span class="k">elif</span> <span class="s2">&quot;:&quot;</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
+                    <span class="n">variables</span> <span class="o">=</span> <span class="n">variables</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">variables</span><span class="p">]</span>
+
+                <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">variable</span> <span class="ow">and</span> <span class="n">variable</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error on &quot;Plots&quot; sheet -&gt; quantity &quot;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s1">&quot; is referenced on the plots sheet but is not defined in the framework&#39;</span><span class="p">)</span>
+
         <span class="c1"># VALIDATE INITIALIZATION</span>
         <span class="k">for</span> <span class="n">pop_type</span> <span class="ow">in</span> <span class="n">available_pop_types</span><span class="p">:</span>
 
@@ -1251,27 +1273,17 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">comps</span><span class="p">:</span>
                 <span class="c1"># If this population type has no compartments, then no need to initialize anything</span>
                 <span class="k">continue</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">characs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># If there are compartments but no characs (i.e. characteristics OR compartments that appear in the databook) then initialize with zeros</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;No compartments or characteristics appear in the databook. All compartments will be assigned an initial value of 0&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">characs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">comps</span><span class="p">)))</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">charac</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">characs</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">include</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_charac_includes</span><span class="p">(</span><span class="n">charac</span><span class="p">):</span>
+                        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">comps</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">include</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-            <span class="c1"># Note - the underdetermined initialization logic means that it _is_ well defined to</span>
-            <span class="c1"># have no characteristics/compartments in the databook - this would simply initialize all compartments</span>
-            <span class="c1"># with zeros. However, although this is a valid use case, it is more likely that a missing initialization</span>
-            <span class="c1"># would occur by accident, and require a warning/error to be raised. Therefore, if the user does</span>
-            <span class="c1"># want to initialize everything as zero, they do still have to explicitly initialize at least one of the</span>
-            <span class="c1"># non-source/sink compartments.</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">characs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
-                    <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;No compartments or characteristics appear in the databook, which means it is not possible to initialize the simulation. Please assign at least some of the compartments and/or characteristics to a databook page.&quot;</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;No compartments or characteristics have a setup weight (either because they do not appear in the databook, or the setup weight has been explicitly set to zero) - cannot initialize simulation. Please change some of the setup weights to be nonzero&quot;</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-
-            <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">characs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">comps</span><span class="p">)))</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">charac</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">characs</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">include</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_charac_includes</span><span class="p">(</span><span class="n">charac</span><span class="p">):</span>
-                    <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">comps</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">include</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.0</span>
-
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">comps</span><span class="p">):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Initialization characteristics are underdetermined - this may be intentional, but check the initial compartment sizes carefully&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">comps</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Initialization characteristics are underdetermined - this may be intentional, but check the initial compartment sizes carefully&quot;</span><span class="p">)</span>
 
         <span class="c1"># ASSIGN DURATION GROUPS</span>
         <span class="c1"># This needs to be done for compartments, as well as junctions</span>
@@ -1281,18 +1293,13 @@
             <span class="c1"># For each junction, work out if there are any upstream or downstream timed compartments</span>
             <span class="k">for</span> <span class="n">junc_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s2">&quot;is junction&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">]:</span>
 
-                <span class="c1"># TODO - This won&#39;t work for split transition matrices with duration groups if the duration group</span>
-                <span class="c1"># is split up. Instead, the duration groups need to be assigned based on self.transitions</span>
-
-                <span class="c1"># Retrieve the transition matrix for the given population type</span>
-                <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;transitions&quot;</span><span class="p">]:</span>
-                    <span class="k">if</span> <span class="n">junc_name</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
-                        <span class="n">transition_matrix</span> <span class="o">=</span> <span class="n">s</span>
-                        <span class="k">break</span>
+                <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">par</span><span class="p">,</span> <span class="n">edges</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transitions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">par</span><span class="o">=</span><span class="n">par</span><span class="p">)</span>
 
                 <span class="c1"># We are a member of the duration group if there is a path to a timed compartment</span>
                 <span class="c1"># that does not go via a timed parameter</span>
-                <span class="k">def</span> <span class="nf">get_attached_comps</span><span class="p">(</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">comps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attachments</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                <span class="k">def</span> <span class="nf">get_attached_comps</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">comps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attachments</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
                     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                    Return attached compartments, groups, and attachments</span>
 
@@ -1337,27 +1344,28 @@
                         <span class="n">attachments</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
                     <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;upstream&quot;</span><span class="p">:</span>
-                        <span class="n">items</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">transition_matrix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">transition_matrix</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+                        <span class="n">edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">in_edges</span><span class="p">(</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="n">items</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s2">&quot;par&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span>
                     <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;downstream&quot;</span><span class="p">:</span>
-                        <span class="n">items</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">transition_matrix</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">transition_matrix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">comp_name</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+                        <span class="n">edges</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">out_edges</span><span class="p">(</span><span class="n">comp_name</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="n">items</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s2">&quot;par&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span>
 
-                    <span class="k">for</span> <span class="n">inflow_comp</span><span class="p">,</span> <span class="n">inflow_par</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">inflow_par</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">comp</span><span class="p">,</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">par</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                             <span class="k">continue</span>
-                        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">inflow_comp</span><span class="p">,</span> <span class="s2">&quot;is junction&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
-                            <span class="n">get_attached_comps</span><span class="p">(</span><span class="n">inflow_comp</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">comps</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">attachments</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">comp</span><span class="p">,</span> <span class="s2">&quot;is junction&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+                            <span class="n">get_attached_comps</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">comps</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">attachments</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="n">comps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">inflow_comp</span><span class="p">)</span>  <span class="c1"># Add the inflow comp regardless of how it&#39;s connected</span>
-                            <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">inflow_comp</span><span class="p">,</span> <span class="s2">&quot;duration group&quot;</span><span class="p">]</span>
+                            <span class="n">comps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span>  <span class="c1"># Add the inflow comp regardless of how it&#39;s connected</span>
+                            <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">comp</span><span class="p">,</span> <span class="s2">&quot;duration group&quot;</span><span class="p">]</span>
                             <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                                 <span class="n">groups</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
-                                <span class="c1"># TODO - is there a cleaner way to check for &#39;&gt;&#39; being the special symbol for a residual transition?</span>
-                                <span class="k">if</span> <span class="n">inflow_par</span> <span class="o">==</span> <span class="s2">&quot;&gt;&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">inflow_par</span><span class="p">,</span> <span class="s2">&quot;timed&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">par</span> <span class="o">==</span> <span class="s2">&quot;&gt;&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">par</span><span class="p">,</span> <span class="s2">&quot;timed&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
                                     <span class="n">attachments</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
                     <span class="k">return</span> <span class="n">comps</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">attachments</span>
 
-                <span class="n">upstream_comps</span><span class="p">,</span> <span class="n">upstream_groups</span><span class="p">,</span> <span class="n">upstream_attachments</span> <span class="o">=</span> <span class="n">get_attached_comps</span><span class="p">(</span><span class="n">junc_name</span><span class="p">,</span> <span class="s2">&quot;upstream&quot;</span><span class="p">)</span>
-                <span class="n">downstream_comps</span><span class="p">,</span> <span class="n">downstream_groups</span><span class="p">,</span> <span class="n">downstream_attachments</span> <span class="o">=</span> <span class="n">get_attached_comps</span><span class="p">(</span><span class="n">junc_name</span><span class="p">,</span> <span class="s2">&quot;downstream&quot;</span><span class="p">)</span>
+                <span class="n">upstream_comps</span><span class="p">,</span> <span class="n">upstream_groups</span><span class="p">,</span> <span class="n">upstream_attachments</span> <span class="o">=</span> <span class="n">get_attached_comps</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">junc_name</span><span class="p">,</span> <span class="s2">&quot;upstream&quot;</span><span class="p">)</span>
+                <span class="n">downstream_comps</span><span class="p">,</span> <span class="n">downstream_groups</span><span class="p">,</span> <span class="n">downstream_attachments</span> <span class="o">=</span> <span class="n">get_attached_comps</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">junc_name</span><span class="p">,</span> <span class="s2">&quot;downstream&quot;</span><span class="p">)</span>
 
                 <span class="c1"># The logic is</span>
                 <span class="c1"># - If there is more than one upstream or downstream group, the junction doesn&#39;t belong to the duration group</span>
@@ -1371,7 +1379,7 @@
                 <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">upstream_attachments</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">downstream_attachments</span><span class="p">):</span>
                     <span class="c1"># If there is at least one upstream or downstream attachment, then there can be no overlap between the upstream and downstream groups.</span>
                     <span class="k">if</span> <span class="n">downstream_groups</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">upstream_groups</span><span class="p">):</span>
-                        <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Junction &quot;</span><span class="si">{</span><span class="n">junc_name</span><span class="si">}</span><span class="s1">&quot; has inputs and outputs to multiple duration groups. As these are untimed flows, there can be no overlap in the upstream and downstream groups. Upstream compartments are </span><span class="si">{</span><span class="n">upstream_comps</span><span class="si">}</span><span class="s1"> with groups </span><span class="si">{</span><span class="n">upstream_groups</span><span class="si">}</span><span class="s1">. Downstream compartments are </span><span class="si">{</span><span class="n">downstream_comps</span><span class="si">}</span><span class="s1"> with groups </span><span class="si">{</span><span class="n">upstream_groups</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Junction &quot;</span><span class="si">{</span><span class="n">junc_name</span><span class="si">}</span><span class="s1">&quot; has inputs and outputs to multiple duration groups. As these are untimed flows, there can be no overlap in the upstream and downstream groups. Upstream compartments are </span><span class="si">{</span><span class="n">upstream_comps</span><span class="si">}</span><span class="s1"> with groups </span><span class="si">{</span><span class="n">upstream_groups</span><span class="si">}</span><span class="s1">. Downstream compartments are </span><span class="si">{</span><span class="n">downstream_comps</span><span class="si">}</span><span class="s1"> with groups </span><span class="si">{</span><span class="n">downstream_groups</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ProjectFramework.get_databook_units"><a class="viewcode-back" href="../../_autosummary/atomica.framework.ProjectFramework.html#atomica.framework.ProjectFramework.get_databook_units">[docs]</a>    <span class="k">def</span> <span class="nf">get_databook_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1410,7 +1418,7 @@
                 <span class="k">return</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_NUMBER</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">item_type</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">KEY_PARAMETER</span><span class="p">:</span>
             <span class="n">units</span> <span class="o">=</span> <span class="n">item_spec</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">item_spec</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">item_spec</span><span class="p">[</span><span class="s2">&quot;timescale&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">item_spec</span><span class="p">[</span><span class="s2">&quot;timescale&quot;</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="n">units</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A timescale was provided for Framework quantity </span><span class="si">{</span><span class="n">code_name</span><span class="si">}</span><span class="s2"> but no units were provided&quot;</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_DURATION</span><span class="p">:</span>
@@ -1474,7 +1482,6 @@
                 <span class="n">row</span> <span class="o">+=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span>
 
         <span class="c1"># Close the workbook</span>
-        <span class="n">writer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
         <span class="c1"># Dump the file content into a ScirisSpreadsheet</span>
@@ -1500,7 +1507,7 @@
         <span class="n">ss</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">_sanitize_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">required_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">defaults</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">valid_content</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">set_index</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_sanitize_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">required_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">defaults</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">valid_content</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">set_index</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">numeric_columns</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Take in a DataFrame and sanitize it</span>
 
@@ -1514,9 +1521,16 @@
 <span class="sd">    :param valid_content: A dict mapping column names to valid content. If specified, all elements of the column must be members of the iterable (normally this would be a set)</span>
 <span class="sd">                      If &#39;valid_content&#39; is None, then instead it will be checked that all of the values are NOT null i.e. use valid_content=None to specify it cannot be empty</span>
 <span class="sd">    :param set_index: Optional, if provided, sets the dataframe&#39;s index to this column. This column should *not* be in the list of ``required_columns`` as it will not be present after the index is changed</span>
+<span class="sd">    :param numeric_columns: A list of column names that should be cast to a numeric type</span>
 <span class="sd">    :return: Sanitized dataframe</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">set_index</span><span class="p">:</span>
+        <span class="c1"># If a dataframe has been sanitized and an index column was set, then the index needs to be</span>
+        <span class="c1"># restored first before re-sanitizing. If no index was assigned, then attempting to reset</span>
+        <span class="c1"># the index will keep creating new columns, so we do not want to reset the index in that case</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># First check if there are any duplicate columns in the heading</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
@@ -1564,6 +1578,14 @@
         <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="s2">&quot;There cannot be any empty cells in the header row&quot;</span><span class="p">)</span>
     <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
 
+    <span class="k">if</span> <span class="n">numeric_columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">numeric_columns</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; must contain numeric values. Invalid values are </span><span class="si">{</span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">sc</span><span class="o">.</span><span class="n">isnumber</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">E</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">InvalidFramework</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error validating column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; when checking that it only contains numeric values&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">E</span>
     <span class="k">return</span> <span class="n">df</span>
 
 
@@ -1780,28 +1802,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Atomica Team
+        &#169; Copyright 2020, Atomica Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

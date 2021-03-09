@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Plotting Documentation &mdash; Atomica  documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,10 +32,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Atomica
+            <a href="../index.html" class="icon icon-home"> Atomica
           
 
           
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.23.2
+                1.24.1
               </div>
             
           
@@ -198,6 +198,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -211,7 +213,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -510,14 +512,14 @@ div.rendered_html tbody tr:hover {
 <li><p>Saving output figures</p></li>
 </ul>
 <p>This notebook provides documentation for the plotting library, providing an overview of available functions and examples of how to perform common tasks.</p>
-<p>Note that this plotting library serves as the foundation for accessing and plotting outputs - it is expected that plots will require context-dependent customization after creation to suit specific uses e.g. frontend, reports, presentations, and a number of helper scripts are also provided to assist with these customizations. The default behaviours in the plotting library reflect the lowest common denominator of usage, maximizing the information displayed and minimizing information loss.</p>
+<p>Note that this plotting library serves as the foundation for accessing and plotting outputs - it is expected that plots will require context-dependent customization after creation to suit specific uses e.g. frontend, reports, presentations, and a number of helper scripts are also provided to assist with these customizations. The default behaviours in the plotting library reflect the lowest common denominator of usage, maximizing the information displayed and minimizing information loss.</p>
 <div class="section" id="Quick-Reference">
 <h2>Quick Reference<a class="headerlink" href="#Quick-Reference" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="Just-give-me-a-plot">
 <h3>Just give me a plot<a class="headerlink" href="#Just-give-me-a-plot" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">proj</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">],</span><span class="n">project</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
-<span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>result = proj.run_sim(...)
+d = at.PlotData(result,pops=[&#39;0-4&#39;],outputs=[&#39;sus&#39;,&#39;vac&#39;],project=proj)
+figs = at.plot_series(d,data=proj.data)
 </pre></div>
 </div>
 </div>
@@ -662,8 +664,8 @@ Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.573s
-Elapsed time for running &#34;default&#34;: 0.560s
+Elapsed time for running &#34;default&#34;: 0.615s
+Elapsed time for running &#34;default&#34;: 0.656s
 </pre></div></div>
 </div>
 </div>
@@ -673,7 +675,7 @@ Elapsed time for running &#34;default&#34;: 0.560s
 <h2>Plotting system design<a class="headerlink" href="#Plotting-system-design" title="Permalink to this headline">¶</a></h2>
 <p>Conceptually, there are 4 stages of plotting</p>
 <ol class="arabic simple">
-<li><p>Preparing data for plotting by aggregating e.g. summation, averaging</p></li>
+<li><p>Preparing data for plotting by aggregating e.g. summation, averaging</p></li>
 <li><p>Rendering a standard plot</p></li>
 <li><p>Applying customizations such as changing axis limits, modifying titles etc.</p></li>
 <li><p>Saving an image of the plot to disk</p></li>
@@ -1000,7 +1002,7 @@ Output &#39;ac_prev&#39; is not in number units, so population aggregation proba
 <p>One final comment regards the units of the plot data. The plotting functions will automatically display the units on the y-axis if the units for all of the data being plotted are the same. The possible units for various quantities are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Compartment</span></code> : ‘Number of people’</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> : ‘Number of people’ if no denominator, or ‘’ (dimensionless) if there is a denominator</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> : ‘Number of people’ if no denominator, or ’’ (dimensionless) if there is a denominator</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Parameter</span></code> : ‘unknown’ if not a transition parameter, otherwise ‘probability’, ‘proportion’, or ‘number’</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Link</span></code> : ‘Number of people/year’ if not time aggregated, ‘Number of people’ otherwise</p></li>
 </ul>
@@ -1121,11 +1123,20 @@ Output &#39;ac_prev&#39; is not in number units, so population aggregation proba
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/utils.py:722: RuntimeWarning: invalid value encountered in double_scalars
+  elif converted_t % 1 &lt; 1e-3:  # If it&#39;s sufficiently close to an integer, show it as an integer
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_43_0.svg" src="../_images/examples_Plotting_43_0.svg" /></div>
+<img alt="../_images/examples_Plotting_43_1.svg" src="../_images/examples_Plotting_43_1.svg" /></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
@@ -1248,7 +1259,7 @@ Aggregation for output &#39;Mix&#39; is mixing timescales, this is almost certai
 <div class="section" id="Flow-rate-aggregations-and-disaggregations">
 <h3>Flow rate aggregations and disaggregations<a class="headerlink" href="#Flow-rate-aggregations-and-disaggregations" title="Permalink to this headline">¶</a></h3>
 <p>A common task is to plot aggregations and disaggregations of flow rates. We have already seen that a transition tag can be used to refer to the aggregated set of all links sharing that tag. For instance, the parameter <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code> governs ‘death by other causes’ and it provides values for a number of links, since most compartments have a flow into the <code class="docutils literal notranslate"><span class="pre">doth</span></code> compartment. If we plot the transition tag <code class="docutils literal notranslate"><span class="pre">doth_rate:flow</span></code> then we will be getting the entire flow associated with the parameter
-<code class="docutils literal notranslate"><span class="pre">doth_rate</span></code> i.e. the flow summed over all of these links.</p>
+<code class="docutils literal notranslate"><span class="pre">doth_rate</span></code> i.e. the flow summed over all of these links.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
@@ -1730,7 +1741,7 @@ and data points for the next quantity in the stack. Thus, while the plotting lib
 </div>
 <div class="section" id="Plotting-transition-parameters-and-flow-rates">
 <h3>Plotting transition parameters and flow rates<a class="headerlink" href="#Plotting-transition-parameters-and-flow-rates" title="Permalink to this headline">¶</a></h3>
-<p>Every transition in the model is governed by a <code class="docutils literal notranslate"><span class="pre">Link</span></code> object, which derives its value from a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code>. A <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> object may supply values for multiple <code class="docutils literal notranslate"><span class="pre">Links</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code> supplies death by other causes for multiple compartments). A <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> may be in units of fraction or number, while a <code class="docutils literal notranslate"><span class="pre">Link</span></code> is always in units of <code class="docutils literal notranslate"><span class="pre">number</span></code>. A <code class="docutils literal notranslate"><span class="pre">Link</span></code> can be identified by its name, which is the name of the parameter that it derives its values from, but with <code class="docutils literal notranslate"><span class="pre">':flow'</span></code> appended
+<p>Every transition in the model is governed by a <code class="docutils literal notranslate"><span class="pre">Link</span></code> object, which derives its value from a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code>. A <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> object may supply values for multiple <code class="docutils literal notranslate"><span class="pre">Links</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code> supplies death by other causes for multiple compartments). A <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> may be in units of fraction or number, while a <code class="docutils literal notranslate"><span class="pre">Link</span></code> is always in units of <code class="docutils literal notranslate"><span class="pre">number</span></code>. A <code class="docutils literal notranslate"><span class="pre">Link</span></code> can be identified by its name, which is the name of the parameter that it derives its values from, but with <code class="docutils literal notranslate"><span class="pre">':flow'</span></code> appended
 to the end.</p>
 <p>If you want to plot a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code>, the <code class="docutils literal notranslate"><span class="pre">output</span></code> label should be the parameter’s label, while if you want to plot an actual flow rate, then you should append <code class="docutils literal notranslate"><span class="pre">':flow'</span></code> to the name. If you specify that you are plotting links, <strong>the values will automatically be summed over duplicate links and annualized</strong>. In both cases, if you specify that data should be plotted, the data will be accessed based on the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> label, if the units match. This is illustrated below:</p>
 <div class="nbinput docutils container">
@@ -2297,7 +2308,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 </pre></div></div>
 </div>
 <p>The above example illustrates a key aspect of time aggregation - consistent with all other Python functions, the time aggregation includes times <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> the lower value, and <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> the upper value. So for example, if the data contains time points</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2000</span><span class="p">,</span><span class="mf">2000.25</span><span class="p">,</span><span class="mf">2000.50</span><span class="p">,</span><span class="mf">2000.75</span><span class="p">,</span><span class="mi">2001</span><span class="p">]</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>t = [2000,2000.25,2000.50,2000.75,2001]
 </pre></div>
 </div>
 <p>Then a time bin <code class="docutils literal notranslate"><span class="pre">[2000</span> <span class="pre">2001]</span></code> would aggregate the first 4 values, but not include <code class="docutils literal notranslate"><span class="pre">t=2001</span></code>. For a typical model run with integer start and finish years, this means that the last data point would typically not be included, because it corresponds to only a partial year. If a bin extends to times before or after the simulation, then the series value will be set to <code class="docutils literal notranslate"><span class="pre">nan</span></code> to reflect the fact that data did not exist for part of the requested bin.</p>
@@ -2307,11 +2318,11 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <li><p><code class="docutils literal notranslate"><span class="pre">np.arange(2005,2040,5)</span> <span class="pre">=</span> <span class="pre">array([2005,</span> <span class="pre">2010,</span> <span class="pre">2015,</span> <span class="pre">2020,</span> <span class="pre">2025,</span> <span class="pre">2030,</span> <span class="pre">2035])</span></code> so the last bin is correct</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">np.arange(2005,2045,5)</span> <span class="pre">=</span> <span class="pre">array([2005,</span> <span class="pre">2010,</span> <span class="pre">2015,</span> <span class="pre">2020,</span> <span class="pre">2025,</span> <span class="pre">2030,</span> <span class="pre">2035,</span> <span class="pre">2040])</span></code> so the final bin is out of bounds</p></li>
 </ul>
-<p>If you simply specify the bin size, e.g. <code class="docutils literal notranslate"><span class="pre">t_bins</span> <span class="pre">=</span> <span class="pre">5</span></code> then the middle example will automatically be used.</p>
+<p>If you simply specify the bin size, e.g. <code class="docutils literal notranslate"><span class="pre">t_bins</span> <span class="pre">=</span> <span class="pre">5</span></code> then the middle example will automatically be used.</p>
 <div class="admonition note">
 <p>In general, it is easiest to only specify the bin width, as long as you are happy for the bins to start from the first simulation year</p>
 </div>
-<p>Finally, note that because time aggregation is implemented by <code class="docutils literal notranslate"><span class="pre">PlotData</span></code>, you can apply time aggregation to <code class="docutils literal notranslate"><span class="pre">plot_series</span></code> as well as <code class="docutils literal notranslate"><span class="pre">plot_bars</span></code> e.g. if you want to plot actual annual values.</p>
+<p>Finally, note that because time aggregation is implemented by <code class="docutils literal notranslate"><span class="pre">PlotData</span></code>, you can apply time aggregation to <code class="docutils literal notranslate"><span class="pre">plot_series</span></code> as well as <code class="docutils literal notranslate"><span class="pre">plot_bars</span></code> e.g. if you want to plot actual annual values.</p>
 <p>So, to make our bar graph, we first select the results, pops, and outputs using the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> constructor, then perform any necessary time aggregation, and finally render the plot using <code class="docutils literal notranslate"><span class="pre">plotBars</span></code>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
@@ -2710,7 +2721,7 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="output_area docutils container">
 <img alt="../_images/examples_Plotting_180_0.svg" src="../_images/examples_Plotting_180_0.svg" /></div>
 </div>
-<p>Notice how the order of the legend is exactly reversed compared to the original plot. However, you might want a more complex reordering e.g. to have the populations appear together in the legend. To achieve this, you can explicitly specify a new ordering for the legend. The input argument is a list, where the index represents the new legend order, and the value indicates the original position. For example, the original plot had the items in the order
+<p>Notice how the order of the legend is exactly reversed compared to the original plot. However, you might want a more complex reordering e.g. to have the populations appear together in the legend. To achieve this, you can explicitly specify a new ordering for the legend. The input argument is a list, where the index represents the new legend order, and the value indicates the original position. For example, the original plot had the items in the order
 <code class="docutils literal notranslate"><span class="pre">[5-14-vac,0-4-vac,5-14-lt_inf,5-14-sus,0-4-lt_inf,0-4-sus]</span></code>. If we want the new order to be <code class="docutils literal notranslate"><span class="pre">[0-4-sus,0-4-vac,0-4-lt_inf,5-14-vac,5-14-sus,5-14-lt_inf]</span></code> then we need to specify a list with the original indices of those labels. The first item in that list would be 5, because we want <code class="docutils literal notranslate"><span class="pre">0-4-sus</span></code> to appear first, and its index in the original order was 5. You will need to render and examine the plot first to determine the original index order. So the final order list would be <code class="docutils literal notranslate"><span class="pre">[5,1,4,3,0,2]</span></code></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
@@ -3297,37 +3308,29 @@ some examples.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="Plot-Programs.html" class="btn btn-neutral float-right" title="Plotting programs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="Model-user.html" class="btn btn-neutral float-left" title="Results and Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="Plot-Programs.html" class="btn btn-neutral float-right" title="Plotting programs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Model-user.html" class="btn btn-neutral float-left" title="Results and Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Atomica Team
+        &#169; Copyright 2020, Atomica Team.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
