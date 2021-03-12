@@ -1,0 +1,739 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>atomica.programs.ProgramSet &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.project" href="atomica.project.html" />
+    <link rel="prev" title="atomica.programs.ProgramInstructions" href="atomica.programs.ProgramInstructions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.24.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.model.html">atomica.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.programs.html">atomica.programs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.programs.Covout.html">atomica.programs.Covout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.programs.Program.html">atomica.programs.Program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.programs.ProgramInstructions.html">atomica.programs.ProgramInstructions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.programs.ProgramSet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.programs.html">atomica.programs</a> &raquo;</li>
+        
+      <li>atomica.programs.ProgramSet</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-programs-programset">
+<h1>atomica.programs.ProgramSet<a class="headerlink" href="#atomica-programs-programset" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="atomica.programs.ProgramSet">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">atomica.programs.</span></code><code class="sig-name descname"><span class="pre">ProgramSet</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">framework</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tvec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="atomica.utils.NamedItem.html#atomica.utils.NamedItem" title="atomica.utils.NamedItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">atomica.utils.NamedItem</span></code></a></p>
+<p>Representation of a single program</p>
+<p>A ProgramSet object is the code representation of a program book. It provides an interface for reading and
+writing the program book, as well as retrieving program outcomes (due to interactions between programs, they
+must be computed using the entire collection of programs).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Optionally specify the name of the ProgramSet</p></li>
+<li><p><strong>tvec</strong> – Optionally specify the years for data entry</p></li>
+</ul>
+</dd>
+</dl>
+<p>NamedItem constructor</p>
+<p>A name must be a string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – </p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.add_comp" title="atomica.programs.ProgramSet.add_comp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_comp</span></code></a></p></td>
+<td><p>Add a compartment</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.add_par" title="atomica.programs.ProgramSet.add_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_par</span></code></a></p></td>
+<td><p>Add a parameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.add_pop" title="atomica.programs.ProgramSet.add_pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_pop</span></code></a></p></td>
+<td><p>Add a population to the <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.add_program" title="atomica.programs.ProgramSet.add_program"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_program</span></code></a></p></td>
+<td><p>Add a program to the ProgramSet</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.from_spreadsheet" title="atomica.programs.ProgramSet.from_spreadsheet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_spreadsheet</span></code></a></p></td>
+<td><p>Instantiate a ProgramSet from a spreadsheet</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.get_alloc" title="atomica.programs.ProgramSet.get_alloc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_alloc</span></code></a></p></td>
+<td><p>Return the spending allocation for each program</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.get_capacities" title="atomica.programs.ProgramSet.get_capacities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_capacities</span></code></a></p></td>
+<td><p>Return timestep capacity for all programs</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.get_outcomes" title="atomica.programs.ProgramSet.get_outcomes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_outcomes</span></code></a></p></td>
+<td><p>Get program outcomes given fractional coverage</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.get_prop_coverage" title="atomica.programs.ProgramSet.get_prop_coverage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_prop_coverage</span></code></a></p></td>
+<td><p>Return fractional coverage</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.new" title="atomica.programs.ProgramSet.new"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new</span></code></a></p></td>
+<td><p>Generate a new progset with blank data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.remove_comp" title="atomica.programs.ProgramSet.remove_comp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_comp</span></code></a></p></td>
+<td><p>Remove a compartment</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.remove_par" title="atomica.programs.ProgramSet.remove_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_par</span></code></a></p></td>
+<td><p>Remove a parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.remove_pop" title="atomica.programs.ProgramSet.remove_pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_pop</span></code></a></p></td>
+<td><p>Remove a population from the <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.remove_program" title="atomica.programs.ProgramSet.remove_program"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_program</span></code></a></p></td>
+<td><p>Remove a program from the ProgramSet</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.sample" title="atomica.programs.ProgramSet.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample</span></code></a></p></td>
+<td><p>Perturb programs based on uncertainties</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.to_spreadsheet" title="atomica.programs.ProgramSet.to_spreadsheet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_spreadsheet</span></code></a></p></td>
+<td><p>Return content as a Sciris Spreadsheet</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.to_workbook" title="atomica.programs.ProgramSet.to_workbook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_workbook</span></code></a></p></td>
+<td><p>Return an open workbook for the ProgramSet</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.ProgramSet.validate" title="atomica.programs.ProgramSet.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a></p></td>
+<td><p>Perform basic validation checks</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.add_comp">
+<code class="sig-name descname"><span class="pre">add_comp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.add_comp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.add_comp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a compartment</p>
+<p>The primary use case would be when an existing project has a change made to the framework and it’s
+desired to update an already filled out program book.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of the compartment to add</p></li>
+<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Full name of the compartment to add</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.add_par">
+<code class="sig-name descname"><span class="pre">add_par</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.add_par"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.add_par" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a parameter</p>
+<p>The primary use case would be when an existing project has a change made to the framework and it’s
+desired to update an already filled out program book.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of the parameter to add</p></li>
+<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Full name of the parameter to add</p></li>
+<li><p><strong>pop_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Code name of the population type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.add_pop">
+<code class="sig-name descname"><span class="pre">add_pop</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.add_pop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.add_pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a population to the <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code></p>
+<p>At this level, we can add any arbitrarily named population. When the progbook is loaded in,
+the populations contained in the <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> will be validated against the specified ProjectData
+instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name of the new population</p></li>
+<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The full name of the new population</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.add_program">
+<code class="sig-name descname"><span class="pre">add_program</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.add_program"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.add_program" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a program to the ProgramSet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name of the new program</p></li>
+<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The full name of the new program</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.from_spreadsheet">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">from_spreadsheet</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spreadsheet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">framework</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_allow_missing_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.from_spreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.from_spreadsheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate a ProgramSet from a spreadsheet</p>
+<p>To load a spreadsheet, need to either pass in</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A Project containing a framework and data</p></li>
+<li><p>ProjectFramework and ProjectData instances without a project</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spreadsheet</strong> – A string file path, or an sc.Spreadsheet</p></li>
+<li><p><strong>framework</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">ProjectFramework</span></code> instance</p></li>
+<li><p><strong>data</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">ProjectData</span></code> instance</p></li>
+<li><p><strong>project</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code> instance</p></li>
+<li><p><strong>name</strong> – Optionally specify the name of the ProgramSet to create</p></li>
+<li><p><strong>_allow_missing_data</strong> – Internal only - optionally allow missing unit costs and spending (used for loading template progbook files)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#atomica.programs.ProgramSet" title="atomica.programs.ProgramSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.get_alloc">
+<code class="sig-name descname"><span class="pre">get_alloc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.get_alloc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.get_alloc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the spending allocation for each program</p>
+<p>This method fuses the spending data entered in the program book with
+any overwrites that are present in the instructions. The spending values
+returned by this method thus reflect any budget scenarios that may be
+present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tvec</strong> – array of times (in years) - this is required to interpolate time-varying spending values</p></li>
+<li><p><strong>instructions</strong> – optionally specify instructions, which can supply a spending overwrite</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dict like <code class="docutils literal notranslate"><span class="pre">{prog_name:</span> <span class="pre">np.array()}</span></code> with spending on each program (in units of ‘$/year’ or currency equivalent)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.get_capacities">
+<code class="sig-name descname"><span class="pre">get_capacities</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.get_capacities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.get_capacities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return timestep capacity for all programs</p>
+<p>For convenience, this method automatically calls <a class="reference internal" href="#atomica.programs.ProgramSet.get_alloc" title="atomica.programs.ProgramSet.get_alloc"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ProgramSet.get_alloc()</span></code></a> to
+retrieve the spending values that are used to compute capacity. Thus, this method
+fuses the program capacity computed with the inclusion of any budget scenarios, with
+any capacity overwrites that are present in the instructions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tvec</strong> – array of times (in years) - this is required to interpolate time-varying unit costs and capacity_constraint constraints</p></li>
+<li><p><strong>dt</strong> – scalar timestep size - this is required to adjust spending on incidence-type programs</p></li>
+<li><p><strong>instructions</strong> – optionally specify instructions, which can supply a spending overwrite</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dict like <code class="docutils literal notranslate"><span class="pre">{prog_name:</span> <span class="pre">np.array()}</span></code> with program capacity at each timestep (in units of people)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.get_outcomes">
+<code class="sig-name descname"><span class="pre">get_outcomes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop_coverage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.get_outcomes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.get_outcomes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get program outcomes given fractional coverage</p>
+<p>Since the modality interactions in Covout.get_outcome() assume that the coverage is scalar, this function
+will also only work for scalar coverage. Therefore, the prop coverage would normally come from
+ProgramSet.get_prop_coverage(tvec,…) where tvec was only one year.</p>
+<p>Note that this function is mainly aimed at internal usage. Typically, the program-provided
+parameter values would be best accessed by examining the appropriate output in the <code class="docutils literal notranslate"><span class="pre">Result</span></code>.
+For example, if the programs system overwrites the screening rate <code class="docutils literal notranslate"><span class="pre">screen</span></code> then it would
+normally be easiest to run a simulation and then use <code class="docutils literal notranslate"><span class="pre">Result.get_variable(popname,'screen')</span></code></p>
+<p>For computational efficiency, this method returns a flat dictionary keyed by
+parameter-population pairs that then gets inserted into the appropriate integration objects
+by <code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.update_pars()</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>prop_coverage</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) – dict with coverage values <code class="docutils literal notranslate"><span class="pre">{prog_name:val}</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict <code class="docutils literal notranslate"><span class="pre">{(par,pop):val}</span></code> containing parameter value overwrites</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.get_prop_coverage">
+<code class="sig-name descname"><span class="pre">get_prop_coverage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capacities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_eligible</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.get_prop_coverage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.get_prop_coverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return fractional coverage</p>
+<p>Note that this function is primarily for internal usage (i.e. during
+model integration or reconciliation). Since the proportion covered depends
+on the number of people eligible for the program (the coverage denominator),
+retrieving fractional coverage after running the model is best accomplished
+via <code class="docutils literal notranslate"><span class="pre">Result.get_coverage('fraction')</span></code> whereas this method is called automatically
+during integration.</p>
+<p>Evaluating the proportion coverage for a ProgramSet is not a straight division because</p>
+<ul class="simple">
+<li><p>instructions can override the coverage (for coverage scenarios)</p></li>
+<li><p>Programs can contain saturation constraints</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tvec</strong> – scalar year, or array of years - this is required to interpolate time-varying saturation values</p></li>
+<li><p><strong>capacities</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) – dict of program coverages, should match the available programs (typically the output of <code class="docutils literal notranslate"><span class="pre">ProgramSet.get_capacities()</span></code>)
+Note that since the capacity and eligible compartment sizes are being compared here,
+the capacity needs to be in units of ‘people’ (not ‘people/year’) at this point</p></li>
+<li><p><strong>num_eligible</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) – dict of number of people covered by each program, computed externally and with one entry for each program</p></li>
+<li><p><strong>dt</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – simulation timestep</p></li>
+<li><p><strong>instructions</strong> – optionally specify instructions, which can supply a coverage overwrite</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dict like <code class="docutils literal notranslate"><span class="pre">{prog_name:</span> <span class="pre">np.array()}</span></code> with fractional coverage values (dimensionless)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.new">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">new</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tvec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">framework</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.new"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a new progset with blank data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – the name for the progset</p></li>
+<li><p><strong>tvec</strong> – an np.array() with the time values to write</p></li>
+<li><p><strong>progs</strong> – This can be
+- A number of progs
+- An odict of {code_name:display name} programs</p></li>
+<li><p><strong>project</strong> – specify a project to use the project’s framework and data to initialize the comps, pars, and pops</p></li>
+<li><p><strong>framework</strong> – specify a framework to use the framework’s comps and pars</p></li>
+<li><p><strong>data</strong> – specify a data to use the data’s pops</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new <a class="reference internal" href="#atomica.programs.ProgramSet" title="atomica.programs.ProgramSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code></a> instances</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.remove_comp">
+<code class="sig-name descname"><span class="pre">remove_comp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.remove_comp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.remove_comp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a compartment</p>
+<p>The primary use case would be when an existing project has a change made to the framework and it’s
+desired to update an already filled out program book.</p>
+<p>Note that removing a compartment also requires removing it as a target compartment from all
+programs, which is automatically handled by this method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code_name</strong> – Code name or full name of the compartment to remove</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.remove_par">
+<code class="sig-name descname"><span class="pre">remove_par</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.remove_par"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.remove_par" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a parameter</p>
+<p>The primary use case would be when an existing project has a change made to the framework and it’s
+desired to update an already filled out program book.</p>
+<p>Note that removing a parameter also requires removing all of the <a class="reference internal" href="atomica.programs.Covout.html#atomica.programs.Covout" title="atomica.programs.Covout"><code class="xref py py-class docutils literal notranslate"><span class="pre">Covout</span></code></a> instances associated with it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name or full name of the parameter to remove</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.remove_pop">
+<code class="sig-name descname"><span class="pre">remove_pop</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.remove_pop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.remove_pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a population from the <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code></p>
+<p>This method will remove the population from the ProgramSet, as well as
+from all program target pops and will also remove the covout objects
+for the affected population.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name or full name of the population to remove</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.remove_program">
+<code class="sig-name descname"><span class="pre">remove_program</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.remove_program"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.remove_program" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a program from the ProgramSet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name or full name of the program to remove</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.sample">
+<code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perturb programs based on uncertainties</p>
+<p>The covout objects contained within the ProgramSet cache the program outcomes. At construction,
+the cache corresponds to the values entered in the databook. Calling this function will perturb
+the caches based on the sigma values. A simulation subsequently run using the ProgramSet will
+use the perturbed outcomes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>constant</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If True, time series will be perturbed by a single constant offset. If False,
+an different perturbation will be applied to each time specific value independently.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> with values perturbed by sampling</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.to_spreadsheet">
+<code class="sig-name descname"><span class="pre">to_spreadsheet</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.to_spreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.to_spreadsheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return content as a Sciris Spreadsheet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.0.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.Spreadsheet</span></code> instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.to_workbook">
+<code class="sig-name descname"><span class="pre">to_workbook</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.to_workbook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.to_workbook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an open workbook for the ProgramSet</p>
+<p>This allows the xlsxwriter workbook to be manipulated prior to closing the
+filestream e.g. to append extra sheets. This prevents issues related to cached
+data values when reloading a workbook to append or modify content</p>
+<p>Warning - the workbook is backed by a BytesIO instance and needs to be closed.
+See the usage of this method in the :meth`to_spreadsheet` function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple (bytes, workbook) with a BytesIO instance and a corresponding <em>open</em> xlsxwriter workbook instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.ProgramSet.validate">
+<code class="sig-name descname"><span class="pre">validate</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#ProgramSet.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.ProgramSet.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform basic validation checks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p>Exception if anything is invalid</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="atomica.project.html" class="btn btn-neutral float-right" title="atomica.project" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="atomica.programs.ProgramInstructions.html" class="btn btn-neutral float-left" title="atomica.programs.ProgramInstructions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Atomica Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
