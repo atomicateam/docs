@@ -233,9 +233,9 @@
 <dl class="py class">
 <dt id="atomica.utils.NDict">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">atomica.utils.</span></code><code class="sig-name descname"><span class="pre">NDict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/utils.html#NDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.utils.NDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v1.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.sc_odict.odict</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.sc_odict.odict</span></code></a></p>
 <p>Store and sync items with a name property</p>
-<p>See collections.py</p>
+<p>Combine the init properties of both OrderedDict and defaultdict</p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -398,7 +398,7 @@
 
 <dl class="py method">
 <dt id="atomica.utils.NDict.disp">
-<code class="sig-name descname"><span class="pre">disp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showmultilines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">divider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dividerthresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numindents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigfigs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numformat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atomica.utils.NDict.disp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">disp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maxlen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">showmultilines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">divider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dividerthresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numindents</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigfigs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numformat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxitems</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#atomica.utils.NDict.disp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out flexible representation, short by default.</p>
 <p><strong>Example</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span> <span class="k">as</span> <span class="nn">pl</span>
@@ -612,7 +612,7 @@ a new odict with the same keys.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">od</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="n">promote</span><span class="p">([</span><span class="s1">&#39;There&#39;</span><span class="p">,</span><span class="s1">&#39;are&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="s1">&#39;keys&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Note, in most cases odict(obj) or odict().make(obj) can be used instead.</p>
+<p>Note, in most cases sc.odict(obj) or sc.odict().make(obj) can be used instead.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -652,7 +652,6 @@ a new odict with the same keys.</p>
 <dd><p>Create a sorted version of the odict. Sorts by order of sortby, if provided, otherwise alphabetical.
 If copy is True, then returns a copy (like sorted()).</p>
 <p>Note that you can also use this to do filtering.</p>
-<p>Note: slow, do not use for time-limited computations!!</p>
 </dd></dl>
 
 <dl class="py method">
