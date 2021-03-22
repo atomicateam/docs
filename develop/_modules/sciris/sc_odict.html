@@ -174,9 +174,9 @@
 <span class="c1">### ODICT CLASS</span>
 <span class="c1">##############################################################################</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span> <span class="k">as</span> <span class="n">OD</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span> <span class="k">as</span> <span class="n">OD</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">sc_utils</span> <span class="k">as</span> <span class="n">ut</span>
 
 <span class="c1"># Restrict imports to user-facing modules</span>
@@ -185,7 +185,8 @@
 <span class="k">class</span> <span class="nc">odict</span><span class="p">(</span><span class="n">OD</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    An ordered dictionary, like the OrderedDict class, but supports list methods like integer</span>
-<span class="sd">    indexing, key slicing, and item inserting.</span>
+<span class="sd">    indexing, key slicing, and item inserting. It can also replicate defaultdict behavior</span>
+<span class="sd">    via the ``defaultdict`` argument.</span>
 
 <span class="sd">    **Examples**::</span>
 
@@ -212,93 +213,98 @@
 <span class="sd">        bar.rename(&#39;clam&#39;,&#39;oyster&#39;) # Show rename</span>
 <span class="sd">        print(bar) # Print results</span>
 
-<span class="sd">    Version: 2020nov30</span>
+<span class="sd">        # Defaultdict examples</span>
+<span class="sd">        dd = sc.odict(a=[1,2,3], defaultdict=list)</span>
+<span class="sd">        dd[&#39;c&#39;].append(4)</span>
+
+<span class="sd">        nested = sc.objdict(a=0, defaultdict=&#39;nested&#39;) # Create a infinitely nested dictionary (NB: may behave strangely on IPython)</span>
+<span class="sd">        nested.b.c.d = 2</span>
+
+<span class="sd">    New in version 1.1.0: &quot;defaultdict&quot; argument</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; See collections.py &#39;&#39;&#39;</span>
-        <span class="c1"># Standard OrderedDictionary initialization</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">defaultdict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Combine the init properties of both OrderedDict and defaultdict &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Remove a None argument</span>
         <span class="n">OD</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c1"># Standard init</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span> <span class="nf">__slicekey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">slice_end</span><span class="p">):</span>
-        <span class="n">shift</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">slice_end</span><span class="o">==</span><span class="s1">&#39;stop&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ut</span><span class="o">.</span><span class="n">_numtype</span><span class="p">):</span> <span class="k">return</span> <span class="n">key</span>
-        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">+</span><span class="n">shift</span> <span class="c1"># +1 since otherwise confusing with names (CK)</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="n">shift</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;To use a slice, </span><span class="si">%s</span><span class="s1"> must be either int or str (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">slice_end</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">defaultdict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">defaultdict</span> <span class="o">!=</span> <span class="s1">&#39;nested&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">defaultdict</span><span class="p">):</span> <span class="c1"># pragma: no cover</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;The defaultdict argument must be either &quot;nested&quot; or callable, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">defaultdict</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+            <span class="n">OD</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_defaultdict&#39;</span><span class="p">,</span> <span class="n">defaultdict</span><span class="p">)</span> <span class="c1"># Use OD.__setattr__() since setattr() is overridden by sc.objdict()</span>
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">__isODict_iterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Check to see whether the &quot;key&quot; is actually an iterable &#39;&#39;&#39;</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">==</span><span class="nb">list</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">==</span><span class="nb">type</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span> <span class="c1"># Do *not* include dict, since that would be recursive</span>
-        <span class="k">return</span> <span class="n">output</span>
-
-
-    <span class="k">def</span> <span class="nf">__sanitize_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Try to convert the output of a slice to an array, but give up easily and return a list &#39;&#39;&#39;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="c1"># Try standard Numpy array...</span>
-            <span class="k">if</span> <span class="s1">&#39;S&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">dtype</span><span class="p">):</span> <span class="c1"># ...but instead of converting to string, convert to object array for Python 2 or 3 -- WARNING, fragile!</span>
-                <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="n">items</span> <span class="c1"># If that fails, just give up and return the list</span>
-        <span class="k">return</span> <span class="n">output</span>
-
-
-
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">allow_default</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Allows getitem to support strings, integers, slices, lists, or arrays &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ut</span><span class="o">.</span><span class="n">_stringtypes</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ut</span><span class="o">.</span><span class="n">_stringtypes</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span> <span class="c1"># Normal use case: just use a string key</span>
+            <span class="k">try</span><span class="p">:</span> <span class="c1"># Initially, try just retrieving the key normally</span>
                 <span class="n">output</span> <span class="o">=</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">output</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># WARNING, should be KeyError, but this can&#39;t print newlines!!!</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span> <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s1">odict key &quot;</span><span class="si">%s</span><span class="s1">&quot; not found; available keys are:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">E</span><span class="p">),</span> <span class="n">ut</span><span class="o">.</span><span class="n">flexstr</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">ut</span><span class="o">.</span><span class="n">flexstr</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()]))</span>
-                <span class="k">else</span><span class="p">:</span>                <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Key &quot;</span><span class="si">%s</span><span class="s1">&quot; not found since odict is empty&#39;</span><span class="o">%</span> <span class="n">key</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ut</span><span class="o">.</span><span class="n">_numtype</span><span class="p">):</span> <span class="c1"># Convert automatically from float...dangerous?</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span> <span class="c1"># Handle defaultdict behavior by first checking if it exists</span>
+                    <span class="n">_defaultdict</span> <span class="o">=</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_defaultdict&#39;</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">_defaultdict</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">_defaultdict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">allow_default</span><span class="p">:</span> <span class="c1"># If it does, use it, then get the key again</span>
+                    <span class="k">if</span> <span class="n">_defaultdict</span> <span class="o">==</span> <span class="s1">&#39;nested&#39;</span><span class="p">:</span>
+                        <span class="n">_defaultdict</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">defaultdict</span><span class="o">=</span><span class="n">_defaultdict</span><span class="p">)</span> <span class="c1"># Make recursive</span>
+                    <span class="n">dd</span> <span class="o">=</span> <span class="n">_defaultdict</span><span class="p">()</span> <span class="c1"># Create the new object</span>
+                    <span class="n">OD</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">dd</span><span class="p">)</span> <span class="c1"># Add it to the dictionary</span>
+                    <span class="k">return</span> <span class="n">dd</span> <span class="c1"># Return</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span> <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;odict key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; not found; available keys are:</span><span class="se">\n</span><span class="si">{</span><span class="n">ut</span><span class="o">.</span><span class="n">newlinejoin</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="k">else</span><span class="p">:</span>         <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> not found since odict is empty&#39;</span>
+                    <span class="k">raise</span> <span class="n">ut</span><span class="o">.</span><span class="n">KeyNotFoundError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ut</span><span class="o">.</span><span class="n">_numtype</span><span class="p">):</span> <span class="c1"># Convert automatically from float</span>
             <span class="n">thiskey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
-            <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">thiskey</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thiskey</span><span class="p">)</span> <span class="c1"># Note that defaultdict behavior isn&#39;t supported for non-string lookup</span>
+
         <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">==</span><span class="nb">slice</span><span class="p">:</span> <span class="c1"># Handle a slice -- complicated</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">startind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">)</span>
-                <span class="n">stopind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">stopind</span><span class="o">&lt;</span><span class="n">startind</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stop index must be &gt;= start index (start=</span><span class="si">%i</span><span class="s1">, stop=</span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">startind</span><span class="p">,</span> <span class="n">stopind</span><span class="p">))</span>
-                    <span class="k">raise</span> <span class="ne">Exception</span>
+                <span class="n">startind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">)</span>
+                <span class="n">stopind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">stopind</span><span class="o">&lt;</span><span class="n">startind</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                    <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Stop index must be &gt;= start index (start=</span><span class="si">{</span><span class="n">startind</span><span class="si">}</span><span class="s1">, stop=</span><span class="si">{</span><span class="n">stopind</span><span class="si">}</span><span class="s1">)&#39;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
                 <span class="n">slicevals</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">startind</span><span class="p">,</span><span class="n">stopind</span><span class="p">)]</span>
-                <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sanitize_items</span><span class="p">(</span><span class="n">slicevals</span><span class="p">)</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_items</span><span class="p">(</span><span class="n">slicevals</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">output</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Invalid odict slice... returning empty list...&#39;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="p">[]</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isODict_iterable</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="c1"># Iterate over items</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Invalid odict slice&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">E</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_odict_iterable</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="c1"># Iterate over items</span>
             <span class="n">listvals</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">key</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="c1"># If the user supplied the keys as a list, assume they want the output as a list</span>
                 <span class="n">output</span> <span class="o">=</span> <span class="n">listvals</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sanitize_items</span><span class="p">(</span><span class="n">listvals</span><span class="p">)</span> <span class="c1"># Otherwise, assume as an array</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_items</span><span class="p">(</span><span class="n">listvals</span><span class="p">)</span> <span class="c1"># Otherwise, assume as an array</span>
             <span class="k">return</span> <span class="n">output</span>
-        <span class="k">else</span><span class="p">:</span> <span class="c1"># Handle everything else</span>
+
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover # Handle everything else (rare)</span>
             <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">key</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Allows setitem to support strings, integers, slices, lists, or arrays &#39;&#39;&#39;</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">tuple</span><span class="p">)):</span>
             <span class="n">OD</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ut</span><span class="o">.</span><span class="n">_numtype</span><span class="p">):</span> <span class="c1"># Convert automatically from float...dangerous?</span>
             <span class="n">thiskey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
             <span class="n">OD</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thiskey</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
         <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">==</span><span class="nb">slice</span><span class="p">:</span>
-            <span class="n">startind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">)</span>
-            <span class="n">stopind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">stopind</span><span class="o">&lt;</span><span class="n">startind</span><span class="p">:</span>
-                <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Stop index must be &gt;= start index (start=</span><span class="si">%i</span><span class="s1">, stop=</span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">startind</span><span class="p">,</span> <span class="n">stopind</span><span class="p">)</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+            <span class="n">startind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">)</span>
+            <span class="n">stopind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">stopind</span><span class="o">&lt;</span><span class="n">startind</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Stop index must be &gt;= start index (start=</span><span class="si">{</span><span class="n">startind</span><span class="si">}</span><span class="s1">, stop=</span><span class="si">{</span><span class="n">stopind</span><span class="si">}</span><span class="s1">)&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
             <span class="n">slicerange</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">startind</span><span class="p">,</span><span class="n">stopind</span><span class="p">)</span>
             <span class="n">enumerator</span> <span class="o">=</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">slicerange</span><span class="p">)</span>
             <span class="n">slicelen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">slicerange</span><span class="p">)</span>
@@ -306,28 +312,31 @@
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">==</span><span class="n">slicelen</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">valind</span><span class="p">,</span><span class="n">index</span> <span class="ow">in</span> <span class="n">enumerator</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="n">valind</span><span class="p">])</span>  <span class="c1"># e.g. odict[:] = arr[:]</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Slice &quot;</span><span class="si">%s</span><span class="s1">&quot; and values &quot;</span><span class="si">%s</span><span class="s1">&quot; have different lengths! (</span><span class="si">%i</span><span class="s1">, </span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">slicerange</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">slicelen</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                    <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Slice &quot;</span><span class="si">{</span><span class="n">slicerange</span><span class="si">}</span><span class="s1">&quot; and values &quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&quot; have different lengths! (</span><span class="si">{</span><span class="n">slicelen</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">valind</span><span class="p">,</span><span class="n">index</span> <span class="ow">in</span> <span class="n">enumerator</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1"># e.g. odict[:] = 4</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isODict_iterable</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span> <span class="c1"># Iterate over items</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_odict_iterable</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span> <span class="c1"># Iterate over items</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">valind</span><span class="p">,</span><span class="n">thiskey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">thiskey</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="n">valind</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Keys &quot;</span><span class="si">%s</span><span class="s1">&quot; and values &quot;</span><span class="si">%s</span><span class="s1">&quot; have different lengths! (</span><span class="si">%i</span><span class="s1">, </span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Keys &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; and values &quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&quot; have different lengths! (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
             <span class="n">OD</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">showmultilines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">divider</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dividerthresh</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">numindents</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">recursionlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">numformat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxitems</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">classname</span><span class="o">=</span><span class="s1">&#39;odict()&#39;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="n">keysep</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">showmultilines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">divider</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dividerthresh</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">numindents</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">recursionlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">numformat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxitems</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">classname</span><span class="o">=</span><span class="s1">&#39;odict()&#39;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="n">numsep</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">keysep</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Print a meaningful representation of the odict &#39;&#39;&#39;</span>
 
-        <span class="c1"># Set primitives for display.</span>
+        <span class="c1"># Set non-customizable primitives for display</span>
         <span class="n">toolong</span>      <span class="o">=</span> <span class="s1">&#39; [...]&#39;</span>    <span class="c1"># String to display at end of line when maximum value character length is overrun.</span>
         <span class="n">dividerstr</span>   <span class="o">=</span> <span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">40</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="c1"># String to use as an inter-item divider.</span>
         <span class="n">indentstr</span>    <span class="o">=</span> <span class="s1">&#39;    &#39;</span>      <span class="c1"># Create string to use to indent.</span>
@@ -376,7 +385,7 @@
                             <span class="n">thisvalstr</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">flexstr</span><span class="p">(</span><span class="n">thisval</span><span class="p">)</span> <span class="c1"># To avoid numpy&#39;s stupid 0.4999999999945</span>
                     <span class="k">else</span><span class="p">:</span> <span class="c1"># Otherwise, do the normal repr() read.</span>
                         <span class="n">thisvalstr</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">thisval</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
                     <span class="n">thisvalstr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ut</span><span class="o">.</span><span class="n">objectid</span><span class="p">(</span><span class="n">thisval</span><span class="p">)</span><span class="si">}</span><span class="s1"> read failed: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
 
                 <span class="c1"># Add information to the lists to retrace afterwards.</span>
@@ -414,9 +423,9 @@
                 <span class="c1"># Create the the text to add, apply the indent, and add to the output</span>
                 <span class="n">spacer</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="p">(</span><span class="n">maxkeylen</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">keystr</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">vallinecount</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">showmultilines</span><span class="p">:</span>
-                    <span class="n">rawoutput</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;#</span><span class="si">{</span><span class="n">ind</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">quote</span><span class="si">}{</span><span class="n">keystr</span><span class="si">}{</span><span class="n">quote</span><span class="si">}{</span><span class="n">keysep</span><span class="si">}{</span><span class="n">spacer</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">valstr</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="n">rawoutput</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;#</span><span class="si">{</span><span class="n">ind</span><span class="si">:</span><span class="s1">d</span><span class="si">}{</span><span class="n">numsep</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">quote</span><span class="si">}{</span><span class="n">keystr</span><span class="si">}{</span><span class="n">quote</span><span class="si">}{</span><span class="n">keysep</span><span class="si">}{</span><span class="n">spacer</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">valstr</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">rawoutput</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;#</span><span class="si">{</span><span class="n">ind</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">quote</span><span class="si">}{</span><span class="n">keystr</span><span class="si">}{</span><span class="n">quote</span><span class="si">}{</span><span class="n">keysep</span><span class="si">}{</span><span class="n">spacer</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="si">{</span><span class="n">valstr</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="n">rawoutput</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;#</span><span class="si">{</span><span class="n">ind</span><span class="si">:</span><span class="s1">d</span><span class="si">}{</span><span class="n">numsep</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">quote</span><span class="si">}{</span><span class="n">keystr</span><span class="si">}{</span><span class="n">quote</span><span class="si">}{</span><span class="n">keysep</span><span class="si">}{</span><span class="n">spacer</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="si">{</span><span class="n">valstr</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
 
                 <span class="c1"># Perform the indentation.</span>
                 <span class="n">newoutput</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">theprefix</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">rawoutput</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
@@ -441,12 +450,12 @@
         <span class="k">return</span> <span class="n">output</span>
 
 
-    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c1"># pragma: no cover</span>
         <span class="sd">&#39;&#39;&#39; Function to fix __repr__ in IPython&#39;&#39;&#39;</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
 
 
-    <span class="k">def</span> <span class="nf">disp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">showmultilines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">divider</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dividerthresh</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">numindents</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">numformat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">disp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">showmultilines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">divider</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dividerthresh</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">numindents</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">numformat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxitems</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Print out flexible representation, short by default.</span>
 
@@ -457,8 +466,75 @@
 <span class="sd">            z.disp(sigfigs=3)</span>
 <span class="sd">            z.disp(numformat=&#39;%0.6f&#39;)</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span><span class="p">,</span> <span class="n">showmultilines</span><span class="o">=</span><span class="n">showmultilines</span><span class="p">,</span> <span class="n">divider</span><span class="o">=</span><span class="n">divider</span><span class="p">,</span> <span class="n">dividerthresh</span><span class="o">=</span><span class="n">dividerthresh</span><span class="p">,</span> <span class="n">numindents</span><span class="o">=</span><span class="n">numindents</span><span class="p">,</span> <span class="n">recursionlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="n">sigfigs</span><span class="p">,</span> <span class="n">numformat</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">maxlen</span><span class="p">,</span> <span class="n">showmultilines</span><span class="o">=</span><span class="n">showmultilines</span><span class="p">,</span> <span class="n">divider</span><span class="o">=</span><span class="n">divider</span><span class="p">,</span> <span class="n">dividerthresh</span><span class="o">=</span><span class="n">dividerthresh</span><span class="p">,</span> <span class="n">numindents</span><span class="o">=</span><span class="n">numindents</span><span class="p">,</span> <span class="n">recursionlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="n">sigfigs</span><span class="p">,</span> <span class="n">numformat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxitems</span><span class="o">=</span><span class="n">maxitems</span><span class="p">),</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="k">return</span> <span class="kc">None</span>
+
+
+    <span class="k">def</span> <span class="nf">_slicekey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">slice_end</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Validate a key supplied as a slice object &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">slice_end</span> <span class="o">==</span> <span class="s1">&#39;stop&#39;</span><span class="p">:</span>
+            <span class="n">shift</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">default</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shift</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">default</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ut</span><span class="o">.</span><span class="n">_numtype</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span> <span class="n">key</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="n">shift</span> <span class="c1"># +1 since otherwise confusing with names (CK)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;To use a slice, </span><span class="si">{</span><span class="n">slice_end</span><span class="si">}</span><span class="s1"> must be either int or str (</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">)&#39;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output</span>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_matchkey</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Helper function for findkeys &#39;&#39;&#39;</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">odict</span><span class="o">.</span><span class="n">_matchkey</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># For everything except a tuple, treat it as a string</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ut</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="c1"># Try to cast it to a string</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                    <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Could not convert odict key of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s1"> to a string: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+            <span class="k">if</span>   <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;re&#39;</span><span class="p">:</span>         <span class="n">match</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;in&#39;</span><span class="p">:</span>         <span class="n">match</span> <span class="o">=</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">key</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;startswith&#39;</span><span class="p">:</span> <span class="n">match</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;endswith&#39;</span><span class="p">:</span>   <span class="n">match</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Method &quot;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s1">&quot; not found; must be &quot;re&quot;, &quot;in&quot;, &quot;startswith&quot;, or &quot;endswith&quot;&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">match</span>
+
+
+    <span class="k">def</span> <span class="nf">_is_odict_iterable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Check to see whether the &quot;key&quot; is actually an iterable &#39;&#39;&#39;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+
+    <span class="k">def</span> <span class="nf">_sanitize_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Try to convert the output of a slice to an array, but give up easily and return a list &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="c1"># Try standard Numpy array...</span>
+            <span class="k">if</span> <span class="s1">&#39;S&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">dtype</span><span class="p">):</span> <span class="c1"># ...but instead of converting to string, convert to object array for Python 2 or 3 -- WARNING, fragile!</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">items</span> <span class="c1"># If that fails, just give up and return the list</span>
+        <span class="k">return</span> <span class="n">output</span>
 
 
     <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doprint</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -497,30 +573,35 @@
             <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thiskey</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">==</span><span class="nb">slice</span><span class="p">:</span> <span class="c1"># Handle a slice -- complicated</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">startind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">)</span>
-                <span class="n">stopind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">stopind</span><span class="o">&lt;</span><span class="n">startind</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stop index must be &gt;= start index (start=</span><span class="si">%i</span><span class="s1">, stop=</span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">startind</span><span class="p">,</span> <span class="n">stopind</span><span class="p">))</span>
-                    <span class="k">raise</span> <span class="ne">Exception</span>
+                <span class="n">startind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">)</span>
+                <span class="n">stopind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slicekey</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span> <span class="s1">&#39;stop&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">stopind</span><span class="o">&lt;</span><span class="n">startind</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                    <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Stop index must be &gt;= start index (start=</span><span class="si">{</span><span class="n">startind</span><span class="si">}</span><span class="s1">, stop=</span><span class="si">{</span><span class="n">stopind</span><span class="si">}</span><span class="s1">)&#39;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
                 <span class="n">slicevals</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">startind</span><span class="p">,</span><span class="n">stopind</span><span class="p">)]</span> <span class="c1"># WARNING, not tested</span>
-                <span class="k">try</span><span class="p">:</span> <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">slicevals</span><span class="p">)</span> <span class="c1"># Try to convert to an array</span>
-                <span class="k">except</span><span class="p">:</span> <span class="k">return</span> <span class="n">slicevals</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Invalid odict slice... returning empty list...&#39;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="p">[]</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__isODict_iterable</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="c1"># Iterate over items</span>
-            <span class="n">listvals</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">key</span><span class="p">]</span>
-            <span class="k">try</span><span class="p">:</span> <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">listvals</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span> <span class="k">return</span> <span class="n">listvals</span>
-        <span class="k">else</span><span class="p">:</span> <span class="c1"># Handle string but also everything else</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">slicevals</span><span class="p">)</span> <span class="c1"># Try to convert to an array</span>
+                <span class="k">except</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                    <span class="k">return</span> <span class="n">slicevals</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Invalid odict slice&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">E</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_odict_iterable</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="c1"># Iterate over items</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="n">poplist</span> <span class="o">=</span> <span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">ut</span><span class="o">.</span><span class="n">_numtype</span><span class="p">)</span> <span class="k">else</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">key</span><span class="p">]</span> <span class="c1"># Convert to text keys, because indices change</span>
+            <span class="n">listvals</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">poplist</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">listvals</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                <span class="k">return</span> <span class="n">listvals</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover # Handle string but also everything else</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span> <span class="c1"># WARNING, should be KeyError, but this can&#39;t print newlines!!!</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-                    <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;odict key &quot;</span><span class="si">%s</span><span class="s1">&quot; not found; available keys are:</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">flexstr</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-                        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">ut</span><span class="o">.</span><span class="n">flexstr</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()]))</span>
-                <span class="k">else</span><span class="p">:</span> <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Key &quot;</span><span class="si">%s</span><span class="s1">&quot; not found since odict is empty&#39;</span><span class="o">%</span> <span class="n">key</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span> <span class="c1"># Duplicated from __getitem__</span>
+                <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span> <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;odict key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; not found; available keys are:</span><span class="se">\n</span><span class="si">{</span><span class="n">ut</span><span class="o">.</span><span class="n">newlinejoin</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="k">else</span><span class="p">:</span>         <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> not found since odict is empty&#39;</span>
+                <span class="k">raise</span> <span class="n">ut</span><span class="o">.</span><span class="n">KeyNotFoundError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -544,31 +625,6 @@
     <span class="k">def</span> <span class="nf">valind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Return the index of a given value &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_matchkey</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Helper function for findkeys &#39;&#39;&#39;</span>
-        <span class="n">match</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">odict</span><span class="o">.</span><span class="n">_matchkey</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">else</span><span class="p">:</span> <span class="c1"># For everything except a tuple, treat it as a string</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">ut</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="c1"># Try to cast it to a string</span>
-                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
-                    <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Could not convert odict key of type </span><span class="si">%s</span><span class="s1"> to a string: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
-                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
-            <span class="k">if</span>   <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;re&#39;</span><span class="p">:</span>         <span class="n">match</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;in&#39;</span><span class="p">:</span>         <span class="n">match</span> <span class="o">=</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">key</span>
-            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;startswith&#39;</span><span class="p">:</span> <span class="n">match</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;endswith&#39;</span><span class="p">:</span>   <span class="n">match</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Method &quot;</span><span class="si">%s</span><span class="s1">&quot; not found; must be &quot;re&quot;, &quot;in&quot;, &quot;startswith&quot;, or &quot;endswith&quot;&#39;</span> <span class="o">%</span> <span class="n">method</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">match</span>
 
 
     <span class="k">def</span> <span class="nf">findkeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -688,9 +744,9 @@
             <span class="n">realpos</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">realpos</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">if</span> <span class="n">realpos</span><span class="o">&gt;</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Cannot insert </span><span class="si">%s</span><span class="s1"> at position </span><span class="si">%i</span><span class="s1"> since length of odict is </span><span class="si">%i</span><span class="s1"> &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">realpos</span><span class="o">&gt;</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># pragma: no cover</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot insert </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> at position </span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s1"> since length of odict is </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
 
         <span class="c1"># Create a temporary dictionary to hold all of the items after the insertion point</span>
         <span class="n">tmpdict</span> <span class="o">=</span> <span class="n">odict</span><span class="p">()</span>
@@ -699,10 +755,11 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">originds</span><span class="p">)</span> <span class="ow">or</span> <span class="n">realpos</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">originds</span><span class="p">):</span> <span class="c1"># It&#39;s empty or in the final position, just append</span>
             <span class="bp">self</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">realkey</span><span class="p">,</span> <span class="n">realvalue</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span> <span class="c1"># Main usage case, it&#39;s not empty</span>
-            <span class="k">try</span><span class="p">:</span> <span class="n">insertind</span> <span class="o">=</span> <span class="n">originds</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">realpos</span><span class="p">)</span> <span class="c1"># Figure out which index we&#39;re inseting at</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Could not insert item at position </span><span class="si">%i</span><span class="s1"> in odict with </span><span class="si">%i</span><span class="s1"> items&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">realpos</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">originds</span><span class="p">))</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">insertind</span> <span class="o">=</span> <span class="n">originds</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">realpos</span><span class="p">)</span> <span class="c1"># Figure out which index we&#39;re inseting at</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Could not insert item at position </span><span class="si">{</span><span class="n">realpos</span><span class="si">}</span><span class="s1"> in odict with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">originds</span><span class="p">)</span><span class="si">}</span><span class="s1"> items&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">E</span>
             <span class="n">keystopop</span> <span class="o">=</span> <span class="n">origkeys</span><span class="p">[</span><span class="n">insertind</span><span class="p">:]</span> <span class="c1"># Pop these keys until we get far enough back</span>
             <span class="k">for</span> <span class="n">keytopop</span> <span class="ow">in</span> <span class="n">keystopop</span><span class="p">:</span>
                 <span class="n">tmpdict</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">keytopop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">keytopop</span><span class="p">))</span>
@@ -744,8 +801,6 @@
 <span class="sd">        If copy is True, then returns a copy (like sorted()).</span>
 
 <span class="sd">        Note that you can also use this to do filtering.</span>
-
-<span class="sd">        Note: slow, do not use for time-limited computations!!</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">origkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">sortby</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">sortby</span> <span class="o">==</span> <span class="s1">&#39;keys&#39;</span><span class="p">:</span>
@@ -754,7 +809,7 @@
             <span class="k">if</span> <span class="n">sortby</span> <span class="o">==</span> <span class="s1">&#39;values&#39;</span><span class="p">:</span>
                 <span class="n">origvals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
                 <span class="n">sortby</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">origvals</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="n">origvals</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">)</span> <span class="c1"># Reset sortby based on https://stackoverflow.com/questions/3382352/equivalent-of-numpy-argsort-in-basic-python</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">ut</span><span class="o">.</span><span class="n">isiterable</span><span class="p">(</span><span class="n">sortby</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ut</span><span class="o">.</span><span class="n">isiterable</span><span class="p">(</span><span class="n">sortby</span><span class="p">):</span> <span class="c1"># pragma: no cover</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Please provide a list to determine the sort order.&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ut</span><span class="o">.</span><span class="n">_stringtypes</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sortby</span><span class="p">]):</span> <span class="c1"># Going to sort by keys</span>
                 <span class="n">allkeys</span> <span class="o">=</span> <span class="n">sortby</span> <span class="c1"># Assume the user knows what s/he is doing</span>
@@ -763,12 +818,13 @@
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sortby</span><span class="p">):</span>
                      <span class="k">if</span> <span class="n">x</span><span class="p">:</span> <span class="n">allkeys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origkeys</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ut</span><span class="o">.</span><span class="n">_numtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sortby</span><span class="p">]):</span> <span class="c1"># Going to sort by numbers</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">sortby</span><span class="p">)</span><span class="o">==</span><span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))):</span>
-                    <span class="n">warningmsg</span> <span class="o">=</span> <span class="s1">&#39;Warning: list to sort by &quot;</span><span class="si">%s</span><span class="s1">&quot; has different length than odict &quot;</span><span class="si">%i</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sortby</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">sortby</span><span class="p">)</span><span class="o">==</span><span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))):</span> <span class="c1"># pragma: no cover</span>
+                    <span class="n">warningmsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Warning: list to sort by &quot;</span><span class="si">{</span><span class="n">sortby</span><span class="si">}</span><span class="s1">&quot; has different length than odict &quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
                     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">warningmsg</span><span class="p">)</span>
                 <span class="n">allkeys</span> <span class="o">=</span> <span class="p">[</span><span class="n">origkeys</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">sortby</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cannot figure out how to sort by &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">sortby</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot figure out how to sort by &quot;</span><span class="si">{</span><span class="n">sortby</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
         <span class="n">tmpdict</span> <span class="o">=</span> <span class="n">odict</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">reverse</span><span class="p">:</span>
             <span class="n">allkeys</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span> <span class="c1"># If requested, reverse order</span>
@@ -825,9 +881,9 @@
             <span class="n">keylist</span> <span class="o">=</span> <span class="p">[</span><span class="n">ut</span><span class="o">.</span><span class="n">flexstr</span><span class="p">(</span><span class="n">keys</span><span class="p">)]</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="c1"># It&#39;s a list: use directly</span>
             <span class="n">keylist</span> <span class="o">=</span> <span class="n">keys</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Could not understand keys &quot;</span><span class="si">%s</span><span class="s1">&quot;: must be number, string, or list&#39;</span> <span class="o">%</span> <span class="n">keys</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Could not understand keys &quot;</span><span class="si">{</span><span class="n">keys</span><span class="si">}</span><span class="s1">&quot;: must be number, string, or list&#39;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
         <span class="n">nkeys</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">keylist</span><span class="p">)</span>
 
         <span class="c1"># Handle values</span>
@@ -839,9 +895,9 @@
             <span class="n">vallist</span> <span class="o">=</span> <span class="p">[</span><span class="n">ut</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nkeys</span><span class="p">)]</span>
         <span class="k">elif</span> <span class="n">nvals</span><span class="o">==</span><span class="n">nkeys</span><span class="p">:</span> <span class="c1"># Lengths match, can use directly</span>
             <span class="n">vallist</span> <span class="o">=</span> <span class="n">vals</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Must supply either a single value or a list of same length as the keys (</span><span class="si">%i</span><span class="s1"> keys, </span><span class="si">%i</span><span class="s1"> values supplied)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nkeys</span><span class="p">,</span> <span class="n">nvals</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Must supply either a single value or a list of same length as the keys (</span><span class="si">{</span><span class="n">nkeys</span><span class="si">}</span><span class="s1"> keys, </span><span class="si">{</span><span class="n">nvals</span><span class="si">}</span><span class="s1"> values supplied)&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
 
         <span class="c1"># Handle nested keys -- warning, would be better to not hard-code this, but does the brain in as it is!</span>
         <span class="k">if</span> <span class="n">keys2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">keys3</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># Doubly nested</span>
@@ -881,7 +937,7 @@
                 <span class="k">if</span> <span class="n">keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">if</span>   <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>   <span class="n">keys</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
                     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>            <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                    <span class="k">else</span><span class="p">:</span>                                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unable to guess keys for object of type </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>                                     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to guess keys for object of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="n">keys</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">promotetolist</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="c1"># Make sure it&#39;s a list -- note, does not convert other iterables to a list!</span>
                 <span class="k">if</span> <span class="n">keynames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">keynames</span> <span class="o">=</span> <span class="n">keys</span> <span class="c1"># Use key names</span>
 
@@ -889,8 +945,9 @@
                 <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">keyname</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span><span class="n">keynames</span><span class="p">):</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">keyname</span><span class="p">),</span> <span class="n">source</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Key &quot;</span><span class="si">%s</span><span class="s1">&quot; not found: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">E</span><span class="p">)))</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+                        <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; not found: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="k">raise</span> <span class="n">ut</span><span class="o">.</span><span class="n">KeyNotFoundError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span> <span class="c1"># As with make()</span>
 
@@ -945,32 +1002,47 @@
         <span class="n">nkeys</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">isiterable</span><span class="p">(</span><span class="n">val</span><span class="p">)):</span> <span class="c1"># Assume it&#39;s meant to be populated in each</span>
             <span class="n">val</span> <span class="o">=</span> <span class="p">[</span><span class="n">val</span><span class="p">]</span><span class="o">*</span><span class="n">nkeys</span> <span class="c1"># Duplicated</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">!=</span><span class="n">nkeys</span><span class="p">:</span>
-            <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;To map values onto each key, they must be the same length (</span><span class="si">%i</span><span class="s1"> vs. </span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="n">nkeys</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">!=</span><span class="n">nkeys</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;To map values onto each key, they must be the same length (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s1"> vs. </span><span class="si">{</span><span class="n">nkeys</span><span class="si">}</span><span class="s1">)&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">enumkeys</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">enumkeys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Shortcut for enumerate(odict.keys()) &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">enumkeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Shortcut for enumerate(odict.keys()).</span>
+
+<span class="sd">        If transpose=True, return a tuple of lists rather than a list of tuples.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span> <span class="n">iterator</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">transposelist</span><span class="p">(</span><span class="n">iterator</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">iterator</span>
 
 
-    <span class="k">def</span> <span class="nf">enumvals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Shortcut for enumerate(odict.values()) &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">enumvals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Shortcut for enumerate(odict.values())</span>
+
+<span class="sd">        If transpose=True, return a tuple of lists rather than a list of tuples.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span> <span class="n">iterator</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">transposelist</span><span class="p">(</span><span class="n">iterator</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">iterator</span>
 
 
-    <span class="k">def</span> <span class="nf">enumitems</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Returns tuple of 3 things: index, key, value &#39;&#39;&#39;</span>
-        <span class="n">iterator</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Would be better to not pre-allocate but what can you do...</span>
+    <span class="k">def</span> <span class="nf">enumitems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns tuple of 3 things: index, key, value.</span>
+
+<span class="sd">        If transpose=True, return a tuple of lists rather than a list of tuples.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">ind</span><span class="p">,</span><span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="n">thistuple</span> <span class="o">=</span> <span class="p">(</span><span class="n">ind</span><span class="p">,)</span><span class="o">+</span><span class="n">item</span> <span class="c1"># Combine into one tuple</span>
             <span class="n">iterator</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thistuple</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span> <span class="n">iterator</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">transposelist</span><span class="p">(</span><span class="n">iterator</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">iterator</span>
 
     <span class="nd">@staticmethod</span>
@@ -982,7 +1054,7 @@
 
 <span class="sd">            od = sc.odict.promote([&#39;There&#39;,&#39;are&#39;,4,&#39;keys&#39;])</span>
 
-<span class="sd">        Note, in most cases odict(obj) or odict().make(obj) can be used instead.</span>
+<span class="sd">        Note, in most cases sc.odict(obj) or sc.odict().make(obj) can be used instead.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">odict</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">obj</span> <span class="c1"># Don&#39;t need to do anything</span>
@@ -1004,13 +1076,15 @@
         <span class="sd">&quot;&quot;&quot; Return a list of values (as in Python 2). &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a list of items, as in Python 2. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span> <span class="n">iterator</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">transposelist</span><span class="p">(</span><span class="n">iterator</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">iterator</span>
 
-    <span class="k">def</span> <span class="nf">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Alias to items() &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="n">transpose</span><span class="o">=</span><span class="n">transpose</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">objdict</span><span class="p">(</span><span class="n">odict</span><span class="p">):</span>
@@ -1025,39 +1099,101 @@
 <span class="sd">    &gt;&gt;&gt; od.bmi = od.mass/od.height**2</span>
 <span class="sd">    &gt;&gt;&gt; od[&#39;bmi&#39;] = od[&#39;mass&#39;]/od[&#39;height&#39;]**2 # Vanilla syntax still works</span>
 <span class="sd">    &gt;&gt;&gt; od.keys = 3 # This raises an exception (you can&#39;t overwrite the keys() method)</span>
+
+<span class="sd">    Nested logic based in part on addict: https://github.com/mewwts/addict</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">nested_parent</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;_nested_parent&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">nested_attr</span>  <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;_nested_attr&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nested_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">odict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_nested_parent&#39;</span><span class="p">,</span> <span class="n">nested_parent</span><span class="p">)</span>
+            <span class="n">odict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_nested_attr&#39;</span><span class="p">,</span> <span class="n">nested_attr</span><span class="p">)</span>
+        <span class="n">odict</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c1"># Standard init</span>
+        <span class="k">return</span>
+
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Use odict repr, but with a custom class name and no quotes &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="n">quote</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">keysep</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">classname</span><span class="o">=</span><span class="s1">&#39;objdict()&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">numsep</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">classname</span><span class="o">=</span><span class="s1">&#39;objdict()&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Handle as attributes first, then as dict keys &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span> <span class="c1"># First, try to get the attribute as an attribute</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">output</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># If that fails, try to get it as a dict item</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">output</span> <span class="o">=</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">output</span>
-            <span class="k">except</span><span class="p">:</span> <span class="c1"># If that fails, raise the original exception</span>
-                <span class="k">raise</span> <span class="n">E</span>
+            <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># If that fails, try to get it as a dict item, but pass along the original exception</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">exception</span><span class="o">=</span><span class="n">E</span><span class="p">)</span>
+
 
     <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Set key in dict, not attribute! &#39;&#39;&#39;</span>
-
         <span class="k">try</span><span class="p">:</span>
             <span class="n">odict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="c1"># Try retrieving this as an attribute, expect AttributeError...</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; exists as an attribute, so cannot be set as key; use setattribute() instead&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1"># If so, simply return</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1"># If so, simply return</span>
 
-        <span class="c1"># Otherwise, raise an exception</span>
-        <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot; exists as an attribute, so cannot be set as key; use setattribute() instead&#39;</span> <span class="o">%</span> <span class="n">name</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">exception</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Handle dict keys, including nested defaultdict logic &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span> <span class="c1"># Try retrieving normally</span>
+            <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">allow_default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Do not allow odict to handle default</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E2</span><span class="p">:</span> <span class="c1"># If that fails, raise the original exception</span>
+            <span class="k">try</span><span class="p">:</span> <span class="c1"># Handle defaultdict behavior by first checking if it exists</span>
+                <span class="n">_defaultdict</span> <span class="o">=</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_defaultdict&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">_defaultdict</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">_defaultdict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># If it does, use it, then get the key again</span>
+                <span class="k">if</span> <span class="n">_defaultdict</span> <span class="o">==</span> <span class="s1">&#39;nested&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">defaultdict</span><span class="o">=</span><span class="s1">&#39;nested&#39;</span><span class="p">,</span> <span class="n">_nested_parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_nested_attr</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span> <span class="c1"># Create a recursive object with links back to the ultimate parent</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dd</span> <span class="o">=</span> <span class="n">_defaultdict</span><span class="p">()</span> <span class="c1"># Create the new object</span>
+                    <span class="bp">self</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">dd</span> <span class="c1"># Since we don&#39;t know what this object is, we can&#39;t be clever about recursion</span>
+                    <span class="k">return</span> <span class="n">dd</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">exception</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">exception</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">E2</span>
+
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Set as a dict item &#39;&#39;&#39;</span>
+        <span class="n">odict</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_nested_parent&#39;</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_nested_attr&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">p</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_nested_parent&#39;</span><span class="p">)</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_nested_attr&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+
+    <span class="k">def</span> <span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Delete dict key before deleting actual attribute &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">odict</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span>
+
+
+    <span class="k">def</span> <span class="nf">getattribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Get attribute if truly desired &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">setattribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39; Set attribute if truly desired &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;objdict attribute &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is read-only&#39;</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 
@@ -1091,7 +1227,7 @@
             <span class="k">try</span><span class="p">:</span> <span class="c1"># First, try to get the attribute as an attribute</span>
                 <span class="n">output</span> <span class="o">=</span> <span class="n">objtype</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">output</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># If that fails, try to get it as a dict item</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># pragma: no cover # If that fails, try to get it as a dict item</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">output</span> <span class="o">=</span> <span class="n">objtype</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
                     <span class="k">return</span> <span class="n">output</span>
@@ -1100,7 +1236,6 @@
 
         <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
             <span class="sd">&#39;&#39;&#39; Set key in dict, not attribute! &#39;&#39;&#39;</span>
-
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">objtype</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="c1"># Try retrieving this as an attribute, expect AttributeError...</span>
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
@@ -1108,11 +1243,15 @@
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">strict</span><span class="p">:</span> <span class="c1"># Let the attribute be set anyway</span>
                 <span class="n">objtype</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span> <span class="c1"># Otherwise, raise an exception</span>
-                <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot; exists as an attribute, so cannot be set as key; use setattribute() instead&#39;</span> <span class="o">%</span> <span class="n">name</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover # Otherwise, raise an exception</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; exists as an attribute, so cannot be set as key; use setattribute() instead&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
 
             <span class="k">return</span>
+
+        <span class="k">def</span> <span class="nf">getattribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39; Get attribute if truly desired &#39;&#39;&#39;</span>
+            <span class="k">return</span> <span class="n">objtype</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">setattribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
             <span class="sd">&#39;&#39;&#39; Set attribute if truly desired &#39;&#39;&#39;</span>
