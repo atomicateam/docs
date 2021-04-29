@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>atomica.framework.ProjectFramework &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.framework.InvalidFramework" href="atomica.framework.InvalidFramework.html" />
+    <link rel="prev" title="atomica.framework.generate_framework_doc" href="atomica.framework.generate_framework_doc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.24.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.framework.html">atomica.framework</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.framework.generate_framework_doc.html">atomica.framework.generate_framework_doc</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.framework.ProjectFramework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.framework.InvalidFramework.html">atomica.framework.InvalidFramework</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.model.html">atomica.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.programs.html">atomica.programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.framework.html">atomica.framework</a> &raquo;</li>
+        
+      <li>atomica.framework.ProjectFramework</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-framework-projectframework">
+<h1>atomica.framework.ProjectFramework<a class="headerlink" href="#atomica-framework-projectframework" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="atomica.framework.ProjectFramework">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">atomica.framework.</span></code><code class="sig-name descname"><span class="pre">ProjectFramework</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base Framework class</p>
+<p>The object that defines the transition-network structure of models generated by a project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> – A string (which will load an Excel file from disk) or an sc.Spreadsheet. If not provided, the internal sheets will be set to an empty dict ready for content</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Optionally explicitly set the framework name. Otherwise, it will be assigned from the ‘about’ sheet, if present</p></li>
+<li><p><strong>validate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If True (default) then the framework will be validated upon loading. This can be overridden if operating on invalid/partial frameworks is required. However,
+the framework should still be validated before it is used.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.cascades" title="atomica.framework.ProjectFramework.cascades"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cascades</span></code></a></p></td>
+<td><p>Return dict with all cascades</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.characs" title="atomica.framework.ProjectFramework.characs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">characs</span></code></a></p></td>
+<td><p>Return characteristics dataframe</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.comps" title="atomica.framework.ProjectFramework.comps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">comps</span></code></a></p></td>
+<td><p>Return compartments dataframe</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.interactions" title="atomica.framework.ProjectFramework.interactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interactions</span></code></a></p></td>
+<td><p>Return interactions dataframe</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.name" title="atomica.framework.ProjectFramework.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Return framework name</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.pars" title="atomica.framework.ProjectFramework.pars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pars</span></code></a></p></td>
+<td><p>Return parameters dataframe</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.pop_types" title="atomica.framework.ProjectFramework.pop_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop_types</span></code></a></p></td>
+<td><p>Return available population types</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.get_charac" title="atomica.framework.ProjectFramework.get_charac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_charac</span></code></a></p></td>
+<td><p>Retrieve characteristic by code name</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.get_charac_includes" title="atomica.framework.ProjectFramework.get_charac_includes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_charac_includes</span></code></a></p></td>
+<td><p>Expand characteristics into compartments</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.get_comp" title="atomica.framework.ProjectFramework.get_comp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_comp</span></code></a></p></td>
+<td><p>Retrieve compartment by code name</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.get_databook_units" title="atomica.framework.ProjectFramework.get_databook_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_databook_units</span></code></a></p></td>
+<td><p>Return the user-facing units for a quantity given a code name</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.get_interaction" title="atomica.framework.ProjectFramework.get_interaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_interaction</span></code></a></p></td>
+<td><p>Retrieve interaction by code name</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.get_label" title="atomica.framework.ProjectFramework.get_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_label</span></code></a></p></td>
+<td><p>Get full name/label from code name</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.get_par" title="atomica.framework.ProjectFramework.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a></p></td>
+<td><p>Retrieve parameter by code name</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.get_variable" title="atomica.framework.ProjectFramework.get_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_variable</span></code></a></p></td>
+<td><p>Retrieve variable from framework</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.save" title="atomica.framework.ProjectFramework.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a></p></td>
+<td><p>Save framework to disk</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.to_spreadsheet" title="atomica.framework.ProjectFramework.to_spreadsheet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_spreadsheet</span></code></a></p></td>
+<td><p>Return content as a Sciris Spreadsheet</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.cascades">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">cascades</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.cascades" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return dict with all cascades</p>
+<p>If the Cascades sheet is present, return an odict where the key is the name of the cascade
+and the value is the corresponding dataframe.</p>
+<p>Note that the fallback cascade (automatically produced if no cascades are present in the original
+Excel file) is also included here. Therefore, downstream code does not need to differentiate between
+explicitly defined cascades or automatically generated cascades.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">odict</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dict keyed by cascade name, containing a <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> with the definition of each cascade from the framework</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.characs">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">characs</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.characs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return characteristics dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dataframe containing all characteristics</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.comps">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">comps</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.comps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return compartments dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dataframe containing all compartments</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.framework.ProjectFramework.created">
+<code class="sig-name descname"><span class="pre">created</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.created" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creation time</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.get_charac">
+<code class="sig-name descname"><span class="pre">get_charac</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">charac_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.get_charac"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.get_charac" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve characteristic by code name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>charac_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of an characteristic</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The row of the characteristics dataframe corresponding to the requested characteristic</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.get_charac_includes">
+<code class="sig-name descname"><span class="pre">get_charac_includes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">includes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.get_charac_includes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.get_charac_includes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand characteristics into compartments</p>
+<p>To initialize the model, it is necessary to map characteristics to the compartments they contain.
+Characteristics may contain other characteristics, but eventually all characteristics can be represented
+as a collection of compartments. This method takes in either a single code name, or a list of code names.
+It then goes through all of the code names, and recursively replaces any characteristic code names with
+the compartments contained in the characteristic.</p>
+<p>The final return value is then a list of all of the compartment names that are included in the original
+<code class="docutils literal notranslate"><span class="pre">includes</span></code>. Typical usage of this function is to pass in a single characteristic name e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Framework</span><span class="o">.</span><span class="n">get_charac_includes</span><span class="p">(</span><span class="s1">&#39;alive&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>includes</strong> – A single code name, or list of codenames, containing only compartments and/or characteristics</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of compartment names</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.get_comp">
+<code class="sig-name descname"><span class="pre">get_comp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comp_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.get_comp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.get_comp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve compartment by code name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>comp_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of an compartment</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The row of the compartments dataframe corresponding to the requested compartment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.get_databook_units">
+<code class="sig-name descname"><span class="pre">get_databook_units</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.get_databook_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.get_databook_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the user-facing units for a quantity given a code name</p>
+<p>This function returns the units specified in the Framework for quantities defined in the Framework.
+The units for a quantity are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>For compartments, number</p></li>
+<li><p>For characteristics, number or fraction depending on whether a denominator is present</p></li>
+<li><p>For parameters, return either the explicitly specified units plus a timescale, or an empty string</p></li>
+<li><p>Otherwise, return the inapplicable string (e.g. ‘N.A.’)</p></li>
+</ul>
+</div></blockquote>
+<p>This function computes the units dynamically based on the content of the DataFrames. This ensures that
+it stays in sync with the actual content - for example, if a denominator is programatically added to
+a characteristic, the units don’t also need to be manually updated.</p>
+<p>Note that at this stage in computation, the units are mainly for managing presentation in the databook.
+For example, a characteristic with a denominator is technically dimensionless, but we need it to be
+reported in the databook as a fraction for data entry. Similarly, while the Framework stores the
+internal units and timescale for a parameter (e.g. ‘probability’ and ‘1/365’) this function will
+return ‘probability (per day)’ for use in the databook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of a quantity supported by <code class="docutils literal notranslate"><span class="pre">ProjectFramework.get_variable()</span></code></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>String containing the units of the quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.get_interaction">
+<code class="sig-name descname"><span class="pre">get_interaction</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interaction_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.get_interaction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.get_interaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve interaction by code name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>interaction_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of an interaction</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The row of the interactions dataframe corresponding to the requested interaction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.get_label">
+<code class="sig-name descname"><span class="pre">get_label</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.get_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.get_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get full name/label from code name</p>
+<p>This method converts a code name into a full name. If the name is already a full name,
+then it will be returned unchanged. Thus this function can be used to normalize inputs
+and guarantee full names.</p>
+<p>Example usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Framework</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s1">&#39;b_rate&#39;</span><span class="p">)</span>
+<span class="go">&#39;Number of births&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Framework</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="s1">&#39;Number of births&#39;</span><span class="p">)</span>
+<span class="go">&#39;Number of births&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – A code name or full name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The corresponding full name/label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.get_par">
+<code class="sig-name descname"><span class="pre">get_par</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">par_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.get_par"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.get_par" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve parameter by code name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>par_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of an parameter</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The row of the parameters dataframe corresponding to the requested parameter</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.get_variable">
+<code class="sig-name descname"><span class="pre">get_variable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.get_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.get_variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve variable from framework</p>
+<p>This method retrieves compartments, characteristics, parameters, and interactions based on
+code names or full names. The entire row from the framework file is returned. This method can be
+used when accessing attributes of quantities defined in the framework.</p>
+<p>In general, the more specialized methods <cite>Framework.get_comp()</cite>, <cite>Framework.get_charac()</cite>,
+<cite>Framework.get_par()</cite> and <cite>Framework.get_interaction()</cite> should be used if you know in advance which
+of these variables is desired, and are happy to look up by code name only. These methods are faster
+and will return errors if a variable of the incorrect type is requested.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name or full name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p>A tuple containing (<code class="docutils literal notranslate"><span class="pre">Series</span></code>,type) where
+- <code class="docutils literal notranslate"><span class="pre">Series</span></code> is a Pandas Series corresponding to the row in the framework defining the requested variable
+- <code class="docutils literal notranslate"><span class="pre">type</span></code> is a string identifying the type of variable that was returned e.g. ‘comp’ for compartment. The</p>
+<blockquote>
+<div><p>strings match <code class="docutils literal notranslate"><span class="pre">FS.KEY_COMPARTMENT</span></code> etc.</p>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.framework.ProjectFramework.gitinfo">
+<code class="sig-name descname"><span class="pre">gitinfo</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.gitinfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Atomica Git version information, if being run in a Git repository</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.interactions">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">interactions</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.interactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return interactions dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dataframe containing all interactions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.framework.ProjectFramework.modified">
+<code class="sig-name descname"><span class="pre">modified</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.modified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Last modified time</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return framework name</p>
+<p>The framework name is returned from the ‘about’ sheet
+in the framework file rather than being stored separately.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the framework</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.pars">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pars</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.pars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return parameters dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dataframe containing all parameters</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.pop_types">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pop_types</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.pop_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return available population types</p>
+<p>This returns a dictionary representation of the dataframe on the ‘Population types’ sheet
+of the framework, where the key is the population type code name, and the value is a dictionary
+with all of the attributes (columns) in the dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">odict</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary with the population types defined in the framework</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save framework to disk</p>
+<p>This function writes a spreadsheet based on the actual dataframes present. This allows programmatic modifications to
+frameworks to be viewed in Excel.</p>
+<p>To save the original framework file (if one was loaded in) use <cite>ProjectFramework.original.save()</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> – File name to write on disk</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.framework.ProjectFramework.sheets">
+<code class="sig-name descname"><span class="pre">sheets</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.sheets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a dict of Pandas dataframes organized by sheet from the Excel file</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.framework.ProjectFramework.spreadsheet">
+<code class="sig-name descname"><span class="pre">spreadsheet</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.spreadsheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <code class="docutils literal notranslate"><span class="pre">sc.Spreadsheet</span></code> object containing the original Excel file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.framework.ProjectFramework.to_spreadsheet">
+<code class="sig-name descname"><span class="pre">to_spreadsheet</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.to_spreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.to_spreadsheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return content as a Sciris Spreadsheet</p>
+<p>This
+:rtype: <a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a>
+:return: A <code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.Spreadsheet</span></code> instance</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.framework.ProjectFramework.uid">
+<code class="sig-name descname"><span class="pre">uid</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.uid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unique identifier</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.framework.ProjectFramework.version">
+<code class="sig-name descname"><span class="pre">version</span></code><a class="headerlink" href="#atomica.framework.ProjectFramework.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current Atomica version</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="atomica.framework.InvalidFramework.html" class="btn btn-neutral float-right" title="atomica.framework.InvalidFramework" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="atomica.framework.generate_framework_doc.html" class="btn btn-neutral float-left" title="atomica.framework.generate_framework_doc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Atomica Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
