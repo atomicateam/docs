@@ -1,0 +1,518 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>atomica.programs.Program &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.programs.ProgramInstructions" href="atomica.programs.ProgramInstructions.html" />
+    <link rel="prev" title="atomica.programs.Covout" href="atomica.programs.Covout.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.25.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.model.html">atomica.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.programs.html">atomica.programs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.programs.Covout.html">atomica.programs.Covout</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.programs.Program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.programs.ProgramInstructions.html">atomica.programs.ProgramInstructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.programs.ProgramSet.html">atomica.programs.ProgramSet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.programs.html">atomica.programs</a> &raquo;</li>
+        
+      <li>atomica.programs.Program</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-programs-program">
+<h1>atomica.programs.Program<a class="headerlink" href="#atomica-programs-program" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="atomica.programs.Program">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">atomica.programs.</span></code><code class="sig-name descname"><span class="pre">Program</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_pops</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_comps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">currency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'$'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#Program"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.Program" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="atomica.utils.NamedItem.html#atomica.utils.NamedItem" title="atomica.utils.NamedItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">atomica.utils.NamedItem</span></code></a></p>
+<p>Representation of a single program</p>
+<p>A <a class="reference internal" href="#atomica.programs.Program" title="atomica.programs.Program"><code class="xref py py-class docutils literal notranslate"><span class="pre">Program</span></code></a> object is instantiated for every program listed on the ‘Program Targeting’
+sheet in the program book. The <a class="reference internal" href="#atomica.programs.Program" title="atomica.programs.Program"><code class="xref py py-class docutils literal notranslate"><span class="pre">Program</span></code></a> object contains</p>
+<ul class="simple">
+<li><p>Collections of targeted populations and compartments from the targeting sheet in the program book</p></li>
+<li><p>The time-dependent program properties on the spending data sheet (such as total spend and unit cost)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – Short name of the program</p></li>
+<li><p><strong>label</strong> – Full name of the program</p></li>
+<li><p><strong>target_pops</strong> – List of population code names for pops targeted by the program</p></li>
+<li><p><strong>target_comps</strong> – List of compartment code names for compartments targeted by the program</p></li>
+<li><p><strong>currency</strong> – The currency to use (for display purposes only) - normally this would be set to <code class="docutils literal notranslate"><span class="pre">ProgramSet.currency</span></code> by <code class="docutils literal notranslate"><span class="pre">ProgramSet.add_program()</span></code></p></li>
+<li><p><strong>name</strong> – Short name of the program</p></li>
+<li><p><strong>label</strong> – Full name of the program</p></li>
+<li><p><strong>target_pops</strong> – List of population code names for pops targeted by the program</p></li>
+<li><p><strong>target_comps</strong> – List of compartment code names for compartments targeted by the program</p></li>
+<li><p><strong>currency</strong> – The currency to use (for display purposes only) - normally this would be set to <code class="docutils literal notranslate"><span class="pre">ProgramSet.currency</span></code> by <code class="docutils literal notranslate"><span class="pre">ProgramSet.add_program()</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p>NamedItem constructor</p>
+<p>A name must be a string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – </p>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.Program.is_one_off" title="atomica.programs.Program.is_one_off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_one_off</span></code></a></p></td>
+<td><p>Flag for one-off programs</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.Program.get_capacity" title="atomica.programs.Program.get_capacity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_capacity</span></code></a></p></td>
+<td><p>Return timestep capacity</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.Program.get_prop_covered" title="atomica.programs.Program.get_prop_covered"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_prop_covered</span></code></a></p></td>
+<td><p>Return proportion of people covered</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.programs.Program.get_spend" title="atomica.programs.Program.get_spend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_spend</span></code></a></p></td>
+<td><p>Retrieve program spending</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.programs.Program.sample" title="atomica.programs.Program.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample</span></code></a></p></td>
+<td><p>Perturb program values based on uncertainties</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="atomica.programs.Program.baseline_spend">
+<code class="sig-name descname"><span class="pre">baseline_spend</span></code><a class="headerlink" href="#atomica.programs.Program.baseline_spend" title="Permalink to this definition">¶</a></dt>
+<dd><p>A TimeSeries with any baseline spending data - currently not exposed in progbook</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.programs.Program.capacity_constraint">
+<code class="sig-name descname"><span class="pre">capacity_constraint</span></code><a class="headerlink" href="#atomica.programs.Program.capacity_constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>TimeSeries with capacity constraint for the program</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.programs.Program.coverage">
+<code class="sig-name descname"><span class="pre">coverage</span></code><a class="headerlink" href="#atomica.programs.Program.coverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>TimeSeries with capacity of program - optional - if not supplied, cost function is assumed to be linear</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.Program.get_capacity">
+<code class="sig-name descname"><span class="pre">get_capacity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spending</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#Program.get_capacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.Program.get_capacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return timestep capacity</p>
+<p>This method returns the number of people covered at each timestep. For one-off
+programs, this means the annual capacity is multiplied by the timestep size.
+Whether timestep scaling takes place or not is determined based on the units
+of the unit cost ($/person or $/person/year where the former is used for one-off programs).</p>
+<p>The method takes in the spending value to support overwrites in spending value by program
+instructions (in which case, spending should be drawn from the instructions rather than
+the program’s spending data). This is handled in <a class="reference internal" href="atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_capacities" title="atomica.programs.ProgramSet.get_capacities"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ProgramSet.get_capacities()</span></code></a></p>
+<p>This method returns the program’s timestep capacity - that is, the capacity of the program per
+timestep, at specified points in time. The spending and capacity constraint are automatically
+adjusted depending on the units of the unit cost and capacity constraint such that the
+calculation returns capacity in units of ‘people’ (<em>not</em> ‘people/year’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tvec</strong> – A scalar, list, or array of times</p></li>
+<li><p><strong>spending</strong> – A vector of spending values (in units of ‘$/year’), the same size as <code class="docutils literal notranslate"><span class="pre">tvec</span></code></p></li>
+<li><p><strong>dt</strong> – The time step size (required because the number covered at each time step potentially depends on the spending per-timestep)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array the same size as <code class="docutils literal notranslate"><span class="pre">tvec</span></code>, with capacity in units of ‘people’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.Program.get_prop_covered">
+<code class="sig-name descname"><span class="pre">get_prop_covered</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capacity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eligible</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#Program.get_prop_covered"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.Program.get_prop_covered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return proportion of people covered</p>
+<p>The time vector <code class="docutils literal notranslate"><span class="pre">tvec</span></code> is required to interpolate the saturation values. The
+<code class="docutils literal notranslate"><span class="pre">capacity</span></code> and <code class="docutils literal notranslate"><span class="pre">eligible</span></code> variables are assumed to correspond to the same time points
+and thus the array sizes should match the size of the time array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tvec</strong> – An array of times</p></li>
+<li><p><strong>capacity</strong> – An array of number of people covered (e.g. the output of <code class="docutils literal notranslate"><span class="pre">Program.get_capacity()</span></code>)
+This should be in units of ‘people’, rather than ‘people/year’ although it may be a
+timestep-sensitive value if the capacity follows from a timestep-adjusted spend.</p></li>
+<li><p><strong>eligible</strong> – The number of people eligible for the program (computed from a model object or a Result)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The fractional coverage (used to compute outcomes)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.Program.get_spend">
+<code class="sig-name descname"><span class="pre">get_spend</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#Program.get_spend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.Program.get_spend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve program spending</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> – Scalar, list, or array of years to retrieve spending in</p></li>
+<li><p><strong>total</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If True, the baseline spend will be added to the spending data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of spending values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.Program.is_one_off">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">is_one_off</span></code><a class="headerlink" href="#atomica.programs.Program.is_one_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag for one-off programs</p>
+<p>A one-off program is a program where the cost is incurred once, per person impacted. For example, a treatment
+program where after treatment the person is no longer eligible for treatment. In contrast, a non-one-off program
+(a continuous program) is one where a person reached by the program remains eligible - for example, ART. In addition,
+one-off programs are typically linked to transition parameters, while continuous programs are typically linked to
+non-transition parameters.</p>
+<p>Whether a program is one-off or not depends on whether the unit cost is specified as
+- Cost per person (one-off)
+- Cost per person per year (continuous)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if program is a one-off program</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.programs.Program.label">
+<code class="sig-name descname"><span class="pre">label</span></code><a class="headerlink" href="#atomica.programs.Program.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full name of the program</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.programs.Program.name">
+<code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#atomica.programs.Program.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Short name of program</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.programs.Program.sample">
+<code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constant</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/programs.html#Program.sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.programs.Program.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perturb program values based on uncertainties</p>
+<p>Calling this function will perturb the original values based on their uncertainties. The
+values will change in-place. Normally, this method would be called by
+<a class="reference internal" href="atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.sample" title="atomica.programs.ProgramSet.sample"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ProgramSet.sample()</span></code></a> which will copy the <code class="docutils literal notranslate"><span class="pre">Program</span></code> instance first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>constant</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If True, time series will be perturbed by a single constant offset. If False,
+an different perturbation will be applied to each time specific value independently.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.programs.Program.saturation">
+<code class="sig-name descname"><span class="pre">saturation</span></code><a class="headerlink" href="#atomica.programs.Program.saturation" title="Permalink to this definition">¶</a></dt>
+<dd><p>TimeSeries with saturation constraint that is applied to fractional coverage</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.programs.Program.spend_data">
+<code class="sig-name descname"><span class="pre">spend_data</span></code><a class="headerlink" href="#atomica.programs.Program.spend_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>TimeSeries with spending data for the program</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.programs.Program.target_comps">
+<code class="sig-name descname"><span class="pre">target_comps</span></code><a class="headerlink" href="#atomica.programs.Program.target_comps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compartments targeted by the program - used for calculating coverage denominators</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.programs.Program.target_pops">
+<code class="sig-name descname"><span class="pre">target_pops</span></code><a class="headerlink" href="#atomica.programs.Program.target_pops" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of populations targeted by the program</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.programs.Program.unit_cost">
+<code class="sig-name descname"><span class="pre">unit_cost</span></code><a class="headerlink" href="#atomica.programs.Program.unit_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>TimeSeries with unit cost of the program</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="atomica.programs.ProgramInstructions.html" class="btn btn-neutral float-right" title="atomica.programs.ProgramInstructions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="atomica.programs.Covout.html" class="btn btn-neutral float-left" title="atomica.programs.Covout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Atomica Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

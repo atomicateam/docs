@@ -1,0 +1,527 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>atomica.optimization.Optimization &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="atomica.optimization.PairedLinearSpendingAdjustment" href="atomica.optimization.PairedLinearSpendingAdjustment.html" />
+    <link rel="prev" title="atomica.optimization.MinimizeMeasurable" href="atomica.optimization.MinimizeMeasurable.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.25.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.cascade.html">atomica.cascade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.data.html">atomica.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.demos.html">atomica.demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.excel.html">atomica.excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.framework.html">atomica.framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.function_parser.html">atomica.function_parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.migration.html">atomica.migration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.model.html">atomica.model</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="atomica.optimization.html">atomica.optimization</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.optimize.html">atomica.optimization.optimize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.Adjustable.html">atomica.optimization.Adjustable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.Adjustment.html">atomica.optimization.Adjustment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.AtLeastMeasurable.html">atomica.optimization.AtLeastMeasurable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.AtMostMeasurable.html">atomica.optimization.AtMostMeasurable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.Constraint.html">atomica.optimization.Constraint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.DecreaseByMeasurable.html">atomica.optimization.DecreaseByMeasurable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.ExponentialSpendingAdjustment.html">atomica.optimization.ExponentialSpendingAdjustment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.IncreaseByMeasurable.html">atomica.optimization.IncreaseByMeasurable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.MaximizeCascadeConversionRate.html">atomica.optimization.MaximizeCascadeConversionRate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.MaximizeCascadeStage.html">atomica.optimization.MaximizeCascadeStage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.MaximizeMeasurable.html">atomica.optimization.MaximizeMeasurable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.Measurable.html">atomica.optimization.Measurable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.MinimizeMeasurable.html">atomica.optimization.MinimizeMeasurable</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.optimization.Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.PairedLinearSpendingAdjustment.html">atomica.optimization.PairedLinearSpendingAdjustment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.SpendingAdjustment.html">atomica.optimization.SpendingAdjustment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.SpendingPackageAdjustment.html">atomica.optimization.SpendingPackageAdjustment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.StartTimeAdjustment.html">atomica.optimization.StartTimeAdjustment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.TotalSpendConstraint.html">atomica.optimization.TotalSpendConstraint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.FailedConstraint.html">atomica.optimization.FailedConstraint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.InvalidInitialConditions.html">atomica.optimization.InvalidInitialConditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.optimization.UnresolvableConstraint.html">atomica.optimization.UnresolvableConstraint</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.plotting.html">atomica.plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.programs.html">atomica.programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.reconciliation.html">atomica.reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.results.html">atomica.results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.scenarios.html">atomica.scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.system.html">atomica.system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.utils.html">atomica.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atomica.version.html">atomica.version</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="atomica.html">atomica</a> &raquo;</li>
+        
+          <li><a href="atomica.optimization.html">atomica.optimization</a> &raquo;</li>
+        
+      <li>atomica.optimization.Optimization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="atomica-optimization-optimization">
+<h1>atomica.optimization.Optimization<a class="headerlink" href="#atomica-optimization-optimization" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="atomica.optimization.Optimization">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">atomica.optimization.</span></code><code class="sig-name descname"><span class="pre">Optimization</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adjustments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxtime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxiters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'asd'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Optimization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.optimization.Optimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="atomica.utils.NamedItem.html#atomica.utils.NamedItem" title="atomica.utils.NamedItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">atomica.utils.NamedItem</span></code></a></p>
+<p>Instructions on how to perform an optimization</p>
+<p>The Optimization object stores the information that defines an optimization operation.
+Optimization can be thought of as a function mapping one set of program instructions
+to another set of program instructions. The parameters of that function are stored in the
+Optimization object, and amount to</p>
+<ul class="simple">
+<li><p>A definition of optimality</p></li>
+<li><p>A specification of allowed changes to the program instructions</p></li>
+<li><p>Any additional information required by a particular optimization algorithm e.g. ASD</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – </p></li>
+<li><p><strong>adjustments</strong> – An <cite>Adjustment</cite> or list of <cite>Adjustment</cite> objects</p></li>
+<li><p><strong>measurables</strong> – A <cite>Measurable</cite> or list of <cite>Measurable</cite> objects</p></li>
+<li><p><strong>constraints</strong> – Optionally provide a <cite>Constraint</cite> or list of <cite>Constraint</cite> objects</p></li>
+<li><p><strong>maxtime</strong> – Optionally specify maximum ASD time</p></li>
+<li><p><strong>maxiters</strong> – Optionally specify maximum number of ASD iterations or hyperopt evaluations</p></li>
+<li><p><strong>method</strong> – One of [‘asd’,’pso’,’hyperopt’] to use
+- asd (to use normal ASD)
+- pso (to use particle swarm optimization from pyswarm)
+- hyperopt (to use hyperopt’s Bayesian optimization function)</p></li>
+</ul>
+</dd>
+</dl>
+<p>NamedItem constructor</p>
+<p>A name must be a string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – </p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.optimization.Optimization.compute_objective" title="atomica.optimization.Optimization.compute_objective"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_objective</span></code></a></p></td>
+<td><p>Return total objective function</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.optimization.Optimization.constrain_instructions" title="atomica.optimization.Optimization.constrain_instructions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constrain_instructions</span></code></a></p></td>
+<td><p>Apply all constraints in-place, return penalty</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.optimization.Optimization.get_baselines" title="atomica.optimization.Optimization.get_baselines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_baselines</span></code></a></p></td>
+<td><p>Return Measurable baseline values</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.optimization.Optimization.get_hard_constraints" title="atomica.optimization.Optimization.get_hard_constraints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_hard_constraints</span></code></a></p></td>
+<td><p>Get hard constraints</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.optimization.Optimization.get_initialization" title="atomica.optimization.Optimization.get_initialization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_initialization</span></code></a></p></td>
+<td><p>Get initial values for each adjustment</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.optimization.Optimization.update_instructions" title="atomica.optimization.Optimization.update_instructions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_instructions</span></code></a></p></td>
+<td><p>Apply all Adjustments</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="atomica.optimization.Optimization.compute_objective">
+<code class="sig-name descname"><span class="pre">compute_objective</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baselines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Optimization.compute_objective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.optimization.Optimization.compute_objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return total objective function</p>
+<p>This method accumulates the objective values returned by each <code class="docutils literal notranslate"><span class="pre">Measurable</span></code>, passing in
+the corresponding baseline values where required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – A simulated <code class="docutils literal notranslate"><span class="pre">Model</span></code> object</p></li>
+<li><p><strong>baselines</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>) – List of baseline values the same length as the number of <code class="docutils literal notranslate"><span class="pre">Measurables</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The total/net objective value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.optimization.Optimization.constrain_instructions">
+<code class="sig-name descname"><span class="pre">constrain_instructions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hard_constraints</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Optimization.constrain_instructions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.optimization.Optimization.constrain_instructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply all constraints in-place, return penalty</p>
+<p>This method takes in the proposed instructions, and a list of hard constraints. Each constraint is
+applied to the instructions iteratively, passing in that constraint’s own hard constraint, and the
+penalty is accumulated and returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instructions</strong> (<a class="reference internal" href="atomica.programs.ProgramInstructions.html#atomica.programs.ProgramInstructions" title="atomica.programs.ProgramInstructions"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramInstructions</span></code></a>) – The current proposed <code class="docutils literal notranslate"><span class="pre">ProgramInstructions</span></code></p></li>
+<li><p><strong>hard_constraints</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>) – A list of hard constraints the same length as the number of constraints</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The total penalty value (if not finite, model integration will be skipped and the parameters will be rejected)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.optimization.Optimization.get_baselines">
+<code class="sig-name descname"><span class="pre">get_baselines</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pickled_model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Optimization.get_baselines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.optimization.Optimization.get_baselines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return Measurable baseline values</p>
+<p>This method is run at the start of the <cite>optimize</cite> script, and is used to
+retrieve the baseline values for the Measurable. Note that the baseline values are obtained
+based on the original instructions (stored in the pickled model), independent of the initial
+parameters used for optimization. The logic is that the initial parameters for the optimization
+are a choice dictated by the numerics of optimization (e.g. needing to start from a particular
+part of the parameter space) rather than anything intrinsic to the problem, whereas the
+initial instructions reflect the actual baseline conditions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pickled_model</strong> – </p></li>
+<li><p><strong>x0</strong> – The initial parameter values</p></li>
+<li><p><strong>hard_constraints</strong> – List of hard constraint values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of Measurable baseline values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.optimization.Optimization.get_hard_constraints">
+<code class="sig-name descname"><span class="pre">get_hard_constraints</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Optimization.get_hard_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.optimization.Optimization.get_hard_constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get hard constraints</p>
+<p>This method calls <code class="docutils literal notranslate"><span class="pre">get_hard_constraint</span></code> on each <code class="docutils literal notranslate"><span class="pre">Constraint</span></code> in the <code class="docutils literal notranslate"><span class="pre">Optimization</span></code>
+iteratively, and returns them as a list.</p>
+<p>Note that the initial optimization values <code class="docutils literal notranslate"><span class="pre">x0</span></code> are applied _before_ the hard constraint is computed.
+This ensures that the hard constraints are relative to the initial conditions in the optimization, not
+the initial instructions. For example, if a parametric overwrite is present, the hard constraint will
+be relative to whatever spending is produced by the initial values of the parametric overwrite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> – The initial values for optimization - these are applied to the instructions prior to extracting hard constraints</p></li>
+<li><p><strong>instructions</strong> (<a class="reference internal" href="atomica.programs.ProgramInstructions.html#atomica.programs.ProgramInstructions" title="atomica.programs.ProgramInstructions"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramInstructions</span></code></a>) – The initial instructions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of hard constraints, as many items as there are constraints</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.optimization.Optimization.get_initialization">
+<code class="sig-name descname"><span class="pre">get_initialization</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Optimization.get_initialization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.optimization.Optimization.get_initialization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get initial values for each adjustment</p>
+<p>The initial conditions depend nontrivially on both the progset and the instructions. Spending is
+present in the progset and optionally overwritten in the instructions. Therefore, it is necessary
+to check both when determining initial spending. Extraction of the initial values for each
+<code class="docutils literal notranslate"><span class="pre">Adjustment</span></code> is delegated to the <code class="docutils literal notranslate"><span class="pre">Adjustment</span></code> itself.</p>
+<p>Note also that the return arrays have length equal to the number of <code class="docutils literal notranslate"><span class="pre">Adjustables</span></code>
+(since an <code class="docutils literal notranslate"><span class="pre">Adjustment</span></code> may contain several <code class="docutils literal notranslate"><span class="pre">Adjustables</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>progset</strong> (<a class="reference internal" href="atomica.programs.ProgramSet.html#atomica.programs.ProgramSet" title="atomica.programs.ProgramSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code></a>) – The program set to extract initial conditions from</p></li>
+<li><p><strong>instructions</strong> (<a class="reference internal" href="atomica.programs.ProgramInstructions.html#atomica.programs.ProgramInstructions" title="atomica.programs.ProgramInstructions"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramInstructions</span></code></a>) – Instructions to extract initial conditions from</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Tuple containing <code class="docutils literal notranslate"><span class="pre">(initial,low,high)</span></code> with arrays for
+- The initial value of each adjustable
+- The lower limit for each adjustable
+- The upper limit for each adjustable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.optimization.Optimization.maxiters">
+<code class="sig-name descname"><span class="pre">maxiters</span></code><a class="headerlink" href="#atomica.optimization.Optimization.maxiters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum number of ASD iterations or hyperopt evaluations</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.optimization.Optimization.maxtime">
+<code class="sig-name descname"><span class="pre">maxtime</span></code><a class="headerlink" href="#atomica.optimization.Optimization.maxtime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum ASD time</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="atomica.optimization.Optimization.method">
+<code class="sig-name descname"><span class="pre">method</span></code><a class="headerlink" href="#atomica.optimization.Optimization.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimization method name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="atomica.optimization.Optimization.update_instructions">
+<code class="sig-name descname"><span class="pre">update_instructions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">asd_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/optimization.html#Optimization.update_instructions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.optimization.Optimization.update_instructions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply all Adjustments</p>
+<p>This method takes in a list of values (same length as number of adjustables) and iteratively
+calls each <code class="docutils literal notranslate"><span class="pre">Adjustment</span></code> in the optimization to update the instructions (in place)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asd_values</strong> – A list of values</p></li>
+<li><p><strong>instructions</strong> (<a class="reference internal" href="atomica.programs.ProgramInstructions.html#atomica.programs.ProgramInstructions" title="atomica.programs.ProgramInstructions"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramInstructions</span></code></a>) – The <code class="docutils literal notranslate"><span class="pre">ProgramInstructions</span></code> instance to update</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="atomica.optimization.PairedLinearSpendingAdjustment.html" class="btn btn-neutral float-right" title="atomica.optimization.PairedLinearSpendingAdjustment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="atomica.optimization.MinimizeMeasurable.html" class="btn btn-neutral float-left" title="atomica.optimization.MinimizeMeasurable" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Atomica Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

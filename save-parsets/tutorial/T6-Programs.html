@@ -1,0 +1,986 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>T6 - Programs &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Model library" href="../library/index.html" />
+    <link rel="prev" title="T5 - Junctions" href="T5-Junctions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.25.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="T1-Defining-a-model.html">T1 - Defining a model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T2-Calibration.html">T2 - Calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T3-Multiple-populations.html">T3 - Multiple populations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T4-Characteristics.html">T4 - Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="T5-Junctions.html">T5 - Junctions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">T6 - Programs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Reconciliation">Reconciliation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Common-intervention-types">Common intervention types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Vaccines">Vaccines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Diagnosis-screening-program">Diagnosis screening program</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Diagnosis">Diagnosis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Screening-with-confirmatory-test">Screening with confirmatory test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#One-off-treatment">One-off treatment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Sustained-treatment">Sustained treatment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Exercise">Exercise</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>T6 - Programs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="T6---Programs">
+<h1>T6 - Programs<a class="headerlink" href="#T6---Programs" title="Permalink to this headline">¶</a></h1>
+<p>We have seen in previous tutorials how the flow rates between compartments are specified using <em>parameters</em>. Thus far, we have considered parameter values being specified in two ways</p>
+<ul class="simple">
+<li><p>Directly specified via the databook</p></li>
+<li><p>Computed as a function of other parameters</p></li>
+</ul>
+<p>However, a key function of Atomica is to model the impact of interventions. These interventions are typically framed in the following way:</p>
+<ul class="simple">
+<li><p>The intervention has a unit cost associated with it (e.g. a treatment that costs $100/person)</p></li>
+<li><p>A specified amount of money is made available for the intervention (e.g. $1000/year)</p></li>
+<li><p>The intervention defines a parameter value (matching a parameter in the Framework) for people reached by the intervention. For example, the natural recovery rate for a rate for individuals on treatment may be 20%, but if someone is on treatment, they have a 90% chance of recovery</p></li>
+</ul>
+<p>At a high level, the calculation we wish to implement is as follows. Suppose we have an SIR model and there are 100 people infected and diagnosed at the start of the year. The $1000 of available funding means that 10 people can be treated that year. Of those 10 people, 90% of them recover, leading to 9 people moving to the ‘Recovered’ state. For the remaining 90 people, 20% of them recover, leading to 18 natural recoveries. So that year, a total of 27 people will move from ‘Infected’ to
+‘Recovered’.</p>
+<p>In the calculation above, the natural recovery rate of 20% is readily entered in the databook. However, we wish to parametrize the effect of the intervention in terms of spending, unit cost, and the impact of the intervention for those it reaches. Although it would be possible to implement the calculation via parameter functions, it quickly becomes cumbersome if there are multiple interventions affecting the same model parameter. Therefore, we introduce a second pathway for calculating parameter
+values, using <strong>‘Programs’</strong>. A schematic overview of how programs relate to model parameter values is shown below:</p>
+<p><img alt="t6-parameter-overview" src="../_images/t6_parameter_overwrite.png" /></p>
+<p>The role of programs is to generate parameter values as a function of spending and coverage. These parameter values then replace the parameter values from the databook during a simulation.</p>
+<p>Parameter values from the <em>databook</em> are stored in a <em>ParameterSet</em> which is used to produce results for any given databook and calibration. Similarly, program-specific inputs are read in from the <em>program book</em> which maps to a <em>ProgramSet</em>. A ProgramSet together with a set of <em>program instructions</em> is used to generate results incorporating the effect of programs. A schematic overview of how these inputs relate to results is shown below:</p>
+<p><img alt="t6-model-structure" src="../_images/t6_model_structure.png" /></p>
+<p>We will now implement the SIR model with a treatment program described above, to see how these different components are instantiated and used within Atomica. First, we will load in a framework and databook for a simple SIR model:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="s1">&#39;assets/T6/t6_framework_1.xlsx&#39;</span><span class="p">,</span><span class="n">databook</span><span class="o">=</span><span class="s1">&#39;assets/T6/t6_databook_1.xlsx&#39;</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">P</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update_time_vector</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>This framework is much the same as the SIR framework in previous tutorials, except that on the parameters sheet, an additional column called ‘Targetable’ is present. This column specifies whether certain parameters should appear in program books. Since we know that the treatment program is going to change the value of the disease recovery rate, this parameter has a ‘y’ in the ‘Targetable’ column:</p>
+<p><img alt="t6-framework-targetable" src="../_images/t6_framework_targetable.png" /></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">res</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">res</span><span class="p">,[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;inf&#39;</span><span class="p">,</span><span class="s1">&#39;rec&#39;</span><span class="p">])</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;stacked&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Population disease state breakdown&#39;</span><span class="p">);</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="s1">&#39;inf:rec&#39;</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Recovery flow (people/year)&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0172s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T6-Programs_3_1.svg" src="../_images/tutorial_T6-Programs_3_1.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T6-Programs_3_2.svg" src="../_images/tutorial_T6-Programs_3_2.svg" /></div>
+</div>
+<p>We will now produce a ‘Program book’ (sometimes referred to as a ‘Progbook’) to define our treatment program. The key attributes that we need to capture for the program are</p>
+<ul class="simple">
+<li><p><em>Who</em> is eligible to receive the program - this is referred to as the program targeting</p></li>
+<li><p><em>How much</em> the program costs per person</p></li>
+<li><p><em>What</em> is the effect of the program on parameter values</p></li>
+</ul>
+<p>The example earlier in this tutorial corresponds to the following</p>
+<ul class="simple">
+<li><p>Everyone who is infected is eligible for the program</p></li>
+<li><p>The program costs $100/person</p></li>
+<li><p>Individuals that are treated have a 90% recovery rate</p></li>
+</ul>
+<p>Within each of these three main areas are various additional options for more sophisticated programs - for example, programs targeted only at particular sub-populations, programs that can only be scaled up to a finite limit, and programs interacting with other programs. These are discussed in more detail in the full program documentation <a class="reference external" href="http://atomica.tools/docs/master/general/programs/Programs.html">here</a>.</p>
+<p>Notice that program targeting needs to specify which disease states are targeted (e.g. ‘Infected’) and which populations are targeted (e.g. ‘Adults’). These are defined in the framework and databook, respectively. Therefore, while the databook depends only on the framework, the program book depends on both the framework and the databook. This is reflected in the command to create a new program set, which takes in both a framework and a databook:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">progset</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProgramSet</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">tvec</span><span class="o">=</span><span class="p">[</span><span class="mi">2020</span><span class="p">],</span> <span class="n">progs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>In the same way that databook and a <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> object are interchangable and can be thought of as different representations of the same data, the same is true for a program book and a <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code>. Therefore, the command above is used to produce a new <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> which can then be written to a file using the <code class="docutils literal notranslate"><span class="pre">save</span></code> method:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">progset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;temp.xlsx&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Object saved to /home/vsts/work/1/s/docs/tutorial/temp.xlsx.
+</pre></div></div>
+</div>
+<p>Alternatively, a program book can be created for a given project by using the project’s <code class="docutils literal notranslate"><span class="pre">make_progbook</span></code> method, which will automatically pass in the project’s framework and data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">P</span><span class="o">.</span><span class="n">make_progbook</span><span class="p">(</span><span class="s1">&#39;temp.xlsx&#39;</span><span class="p">,</span><span class="n">progs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">data_start</span><span class="o">=</span><span class="mi">2020</span><span class="p">,</span><span class="n">data_end</span><span class="o">=</span><span class="mi">2021</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Object saved to /home/vsts/work/1/s/docs/tutorial/temp.xlsx.
+</pre></div></div>
+</div>
+<p>The program book contains three sheets, corresponding to the three key attributes being captured. On the ‘Program targeting’ sheet, the populations and compartments reached by the program are entered. For the treatment program here, we select only the ‘Infected’ compartment. We also need to enter ‘Y’ for the ‘Adults’ population.</p>
+<p><img alt="t6-sheet-targeting" src="../_images/t6_sheet_targeting.png" /></p>
+<div class="alert alert-block alert-info"><p>Note that this is essentially specifying the coverage denominator for the program - the denominator at any point in time is the sum of the number of people in all selected compartments within all selected populations</p>
+</div><p>This sheet should also be used to set the name of the programs. To add and remove programs, it is easiest to use the corresponding methods of the ‘ProgramSet’ object, rather than manually editing the program book.</p>
+<p>On the spending data sheet, we enter the unit cost of the program, and also spending on the program.</p>
+<p><img alt="t6-sheet-spending" src="../_images/t6_sheet_spending.png" /></p>
+<p>Analogous to the databook, the program book should contain actual data values or future projections not dependent on the model. Typically, this would mean that</p>
+<ul class="simple">
+<li><p>The spending values would only correspond to past years, reflecting actual investment in the program</p></li>
+<li><p>The unit cost could contain future values if there are expected to be changes in the cost of the program e.g. if drug prices are expected to drop in the future</p></li>
+</ul>
+<p>The capacity constraint and saturation constraint are discussed in detail in the full ‘programs’ documentation. However, to a good approximation, the <em>coverage</em> of a program during a timestep is given by dividing the number of people the program has funding for (the annual spending rate divided by the unit cost) by the number of people currently in targeted compartments. For example, if the simulation step size was <code class="docutils literal notranslate"><span class="pre">0.25</span></code> years, then</p>
+<ul class="simple">
+<li><p>$250 would be spent between 2020 and 2020.25</p></li>
+<li><p>$250 /($100/person)=2.5 people would be covered between 2020 and 2020.25</p></li>
+<li><p>If there were 100 people infected, the <em>coverage</em> would be 0.025</p></li>
+</ul>
+<p>Therefore, outside of coverage scenarios (discussed in Tutorial 7), the number of people and fraction covered is an <em>output</em> resulting from spending input and the compartment sizes during a simulation.</p>
+<div class="alert alert-block alert-danger"><p>The ‘coverage’ row on the ‘Spending data’ sheet is for entering real-world reference coverage values only. This allows the computed coverage in the model to be readily compared to existing data. The values entered on this row do not affect the simulation in any way.</p>
+</div><p>Finally, the impact of the program is entered on the ‘Program effects’ sheet:</p>
+<p><img alt="t6-sheet-effects" src="../_images/t6_sheet_effects.png" /></p>
+<p>This sheet consists of a set of sub-tables. Each sub-table corresponds to a parameter in the model - any parameter marked as ‘Targetable’ in the framework will appear on this sheet. There are input cells provided for the baseline value for the parameter in the absence of any programs. Then there are columns for each program specifying the parameter value that applies to individuals covered by the program (or equivalently, the parameter value that would apply if the program coverage was <code class="docutils literal notranslate"><span class="pre">1.0</span></code>
+for that program, and <code class="docutils literal notranslate"><span class="pre">0</span></code> for all other programs). If nobody receives the treatment intervention, then the parameter value that should apply is the natural recovery rate. Therefore, we enter a value of 0.2 in the ‘baseline’ column. Then, the treatment program is defined to have a 90% treatment success rate so we enter 0.9 as the program effect.</p>
+<div class="alert alert-block alert-info"><p>For single programs in isolation, the final parameter value is equal to the baseline value, plus the coverage multiplied by the program’s effect value. If there are multiple programs, the results are qualitatively similar, but see the full program documentation for details on how to capture interactions between programs.</p>
+</div><p>We are now almost able to run a simulation with programs. We can start by loading in the program book, which creates a program set</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pset</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProgramSet</span><span class="o">.</span><span class="n">from_spreadsheet</span><span class="p">(</span><span class="s1">&#39;assets/T6/t6_progbook_1.xlsx&#39;</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">load_progbook</span></code> Project method can be used to load a program book using the project’s framework and data, and then store it within the project.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pset</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">load_progbook</span><span class="p">(</span><span class="s1">&#39;assets/T6/t6_progbook_1.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>As discussed above, the workflow for programs is that the program set supplies parameter values that replace the values specified in the databook. To facilitate calibration, the databook is typically used for historical values, and then the programs system is used starting from the current year, for all future projections. So the final missing piece of information is the year at which this overwriting should begin, referred to as the ‘program start year’. This is specified in a
+<code class="docutils literal notranslate"><span class="pre">ProgramInstructions</span></code> object (which we will examine in more detail in Tutorials 7 and 8).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">instructions</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProgramInstructions</span><span class="p">(</span><span class="n">start_year</span><span class="o">=</span><span class="mi">2020</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We can now run a simulation using programs. For a simulation without programs, we need only specify the parameter set to use. For a simulation with programs, we need to specify a parameter set, a program set, and a set of program instructions. This exactly matches the schematic at the start of this tutorial illustrating the inputs for results with and without programs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">res_baseline</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">result_name</span><span class="o">=</span><span class="s1">&#39;Baseline&#39;</span><span class="p">)</span>
+<span class="n">res_programs</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">progset</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">progsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">progset_instructions</span><span class="o">=</span><span class="n">instructions</span><span class="p">,</span><span class="n">result_name</span><span class="o">=</span><span class="s1">&#39;Programs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.00593s
+Elapsed time for running &#34;default&#34;: 0.00785s
+</pre></div></div>
+</div>
+<p>We can now plot the recovery rate parameter and the resulting number of people flowing into the ‘recovered’ state each year.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">res_baseline</span><span class="p">,</span> <span class="n">res_programs</span><span class="p">],</span><span class="s1">&#39;rec_rate&#39;</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Recovery rate&#39;</span><span class="p">);</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">res_baseline</span><span class="p">,</span> <span class="n">res_programs</span><span class="p">],</span><span class="s1">&#39;inf:rec&#39;</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Recovery flow (people/year)&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T6-Programs_19_0.svg" src="../_images/tutorial_T6-Programs_19_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T6-Programs_19_1.svg" src="../_images/tutorial_T6-Programs_19_1.svg" /></div>
+</div>
+<p>As expected, the recovery rate with the addition of the treatment program is considerably higher than the baseline simulation. However, the flow of people from infected to recovered is initially high, but then drops below the baseline results after around 2022. The program is set up to transfer a fixed number of people per year. If the epidemic is decreasing, then each year fewer and fewer people are infected. Thus the fixed number of people per year is a larger and larger proportion of the
+total number infected (resulting in the recovery rate increasing over time) and the number of people recovering each year decrease (resulting in a decreasing recovery flow over time). We can verify this by examining the overall proportion of the population infected under the baseline results and with the addition of the treatment program:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">res_baseline</span><span class="p">,</span> <span class="n">res_programs</span><span class="p">],[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;inf&#39;</span><span class="p">,</span><span class="s1">&#39;rec&#39;</span><span class="p">])</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;stacked&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;outputs&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Population disease state breakdown&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T6-Programs_21_0.svg" src="../_images/tutorial_T6-Programs_21_0.svg" /></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T6-Programs_21_1.svg" src="../_images/tutorial_T6-Programs_21_1.svg" /></div>
+</div>
+<p>This confirms that the treatment program results in a considerable decrease in prevalance.</p>
+<div class="section" id="Reconciliation">
+<h2>Reconciliation<a class="headerlink" href="#Reconciliation" title="Permalink to this headline">¶</a></h2>
+<p>As discussed above, a simulation that uses program switches from ‘ParameterSet’ parameters to ‘ProgramSet’ parameters at the program start year. What happens if the parameter values from programs don’t align with values from the parameter set? In some cases, this doesn’t matter - for example, if the program set only contains new programs. More commonly though, a project may be set up for a disease such as TB where there were previously programs running in the country. The calibrated parameter
+set therefore reflects programs running in the country even if the program set is not yet being used. In that case, it is important that the program set values for current spending should produce parameters that match (or are close to) the calibrated values.</p>
+<p><em>Reconciliation</em> then refers to the process of calibrating the program set to match the program parameters to the parameter set in the program start year.</p>
+<p>For example, suppose that the disease natural recovery rate was zero. The databook specifies that the recovery rate is <code class="docutils literal notranslate"><span class="pre">0.2</span></code>. If there is no natural recovery, then we would interpret this value as representing the existing treatment program. The absence of natural recovery means that the program’s baseline value should be 0. Thus we would expect that the program’s budget in 2020 together with the unit cost should yield a recovery rate of <code class="docutils literal notranslate"><span class="pre">0.2</span></code>. <code class="docutils literal notranslate"><span class="pre">t6_progbook_2.xlsx</span></code> has a baseline of 0 to
+match this scenario.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pset</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">load_progbook</span><span class="p">(</span><span class="s1">&#39;assets/T6/t6_progbook_2.xlsx&#39;</span><span class="p">)</span>
+<span class="n">res_programs_1</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">progset</span><span class="o">=</span><span class="n">pset</span><span class="p">,</span><span class="n">progset_instructions</span><span class="o">=</span><span class="n">instructions</span><span class="p">,</span><span class="n">result_name</span><span class="o">=</span><span class="s1">&#39;Programs&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">res_baseline</span><span class="p">,</span> <span class="n">res_programs_1</span><span class="p">],</span><span class="s1">&#39;rec_rate&#39;</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Recovery rate&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.00714s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T6-Programs_24_1.svg" src="../_images/tutorial_T6-Programs_24_1.svg" /></div>
+</div>
+<p>As shown above, the program produces a recovery rate that is too low. The reason for this is depends on likely sources of error in the data. For example, the recovery rate could be too low because</p>
+<ul class="simple">
+<li><p>There are more infected people than there were in reality - this situation should be resolved during the calibration step</p></li>
+<li><p>The actual amount of spending was higher than what was entered in the databook</p></li>
+<li><p>The program’s unit cost was actually lower</p></li>
+<li><p>The treatment program has an associated recovery rate that is actually higher than 0.9</p></li>
+<li><p>There were other sources of treatment that <em>were</em> included in the recovery rate parameter but do not correspond to this program. This situation can be avoided by setting the baseline value to include any programs not being explicitly modelled</p></li>
+</ul>
+<p>Reconciliation could in principle involve changing any of these quantities. In practice, typically it is the unit cost and spending that are adjusted, as these often have the highest uncertainty in real data sets.</p>
+<p>Reconciliation can be performed manually, or it can be done automatically using the <code class="docutils literal notranslate"><span class="pre">reconcile</span></code> function. This function takes in arguments to specify whether the spending, unit cost, or program effects can be changed. For example, we can automatically adjust the unit cost as follows:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">reconciled_pset</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">reconcile</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="n">pset</span><span class="p">,</span><span class="n">reconciliation_year</span><span class="o">=</span><span class="mi">2020</span><span class="p">,</span> <span class="n">unit_cost_bounds</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Reconcilation when parameter is in number units not fully tested
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Program set &#39;default&#39; will be ignored while running project &#39;default&#39; due to the absence of program set instructions
+Elapsed time for running &#34;default&#34;: 0.00672s
+Reconciling in 2020.00, evaluating from 2020.00 up to 2021.00
+     step 1 (0.0 s) ++ (orig:0.012100 | best:0.012100 | new:0.010000 | diff:-0.0021000)
+     step 2 (0.0 s) ++ (orig:0.012100 | best:0.010000 | new:0.0051020 | diff:-0.0048980)
+     step 3 (0.0 s) -- (orig:0.012100 | best:0.0051020 | new:0.010000 | diff:0.0048980)
+     step 4 (0.0 s) ++ (orig:0.012100 | best:0.0051020 | new:0.00040000 | diff:-0.0047020)
+     step 5 (0.0 s) -- (orig:0.012100 | best:0.00040000 | new:0.49000 | diff:0.48960)
+     step 6 (0.0 s) -- (orig:0.012100 | best:0.00040000 | new:0.010000 | diff:0.0096000)
+     step 7 (0.0 s) -- (orig:0.012100 | best:0.00040000 | new:0.0025000 | diff:0.0021000)
+     step 8 (0.0 s) -- (orig:0.012100 | best:0.00040000 | new:0.0013223 | diff:0.00092231)
+     step 9 (0.0 s) -- (orig:0.012100 | best:0.00040000 | new:0.00062500 | diff:0.00022500)
+     step 10 (0.0 s) ++ (orig:0.012100 | best:0.00040000 | new:0.00000000000000000000000000000000077037 | diff:-0.00040000)
+     step 11 (0.0 s) -- (orig:0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0032653 | diff:0.0032653)
+     step 12 (0.0 s) -- (orig:0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00011080 | diff:0.00011080)
+     step 13 (0.0 s) -- (orig:0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00062500 | diff:0.00062500)
+     step 14 (0.0 s) -- (orig:0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000029218 | diff:0.000029218)
+     step 15 (0.0 s) -- (orig:0.012100 | best:0.00000000000000000000000000000000077037 | new:0.00013841 | diff:0.00013841)
+     step 16 (0.0 s) -- (orig:0.012100 | best:0.00000000000000000000000000000000077037 | new:0.000032653 | diff:0.000032653)
+     step 17 (0.0 s) -- (orig:0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000075061 | diff:0.0000075061)
+     step 18 (0.0 s) -- (orig:0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000079349 | diff:0.0000079349)
+     step 19 (0.0 s) -- (orig:0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019025 | diff:0.0000019025)
+     step 20 (0.0 s) -- (orig:0.012100 | best:0.00000000000000000000000000000000077037 | new:0.0000019561 | diff:0.0000019561)
+===  Absolute improvement too small (0 &lt; 0.0000010000) (20 steps, orig: 0.012100 | best: 0 | ratio: 0) ===
+</pre></div></div>
+</div>
+<p>Regardless of how reconciliation is performed, the idea is that the result of reconciliation is a <em>reconciled progset</em> that provides a better match to a given parameter set in the program start year. We expected based on the un-reconciled result that reconciliation based on unit cost should result in decreasing the unit cost to achieve an increase in recovery rate. We can look at the reconciled unit cost to confirm this is what the automatic reconciliation has done:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">unit_cost</span> <span class="o">=</span> <span class="n">pset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="mi">2020</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">reconciled_cost</span> <span class="o">=</span> <span class="n">reconciled_pset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="mi">2020</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Original unit cost = $</span><span class="si">{</span><span class="n">unit_cost</span><span class="si">}</span><span class="s1">, reconciled unit cost = $</span><span class="si">{</span><span class="n">reconciled_cost</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Original unit cost = $100.0, reconciled unit cost = $45.0
+</pre></div></div>
+</div>
+<p>We can then plot the recovery rate to confirm that the resulting recovery rate matches the parameter set. It’s a good idea to verify the quality of the reconciliation because there is no guarantee that the reconciliation was able to actually match the parameter value given the reconciliation constraints. For example, the reconciled unit cost was less than half of the original unit cost, but if the automatic reconciliation was configured to change the unit cost by say, 5% at most, then it would
+not be possible to reach the target recovery rate.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">res_programs_2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">progset</span><span class="o">=</span><span class="n">reconciled_pset</span><span class="p">,</span><span class="n">progset_instructions</span><span class="o">=</span><span class="n">instructions</span><span class="p">,</span><span class="n">result_name</span><span class="o">=</span><span class="s1">&#39;Reconciled&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">res_baseline</span><span class="p">,</span> <span class="n">res_programs_1</span><span class="p">,</span> <span class="n">res_programs_2</span><span class="p">],</span><span class="s1">&#39;rec_rate&#39;</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Recovery rate&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0119s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T6-Programs_30_1.svg" src="../_images/tutorial_T6-Programs_30_1.svg" /></div>
+</div>
+<p>In this case, we can see that the reconciliation was indeed successful at matching the recovery rate in the parameter set.</p>
+<div class="alert alert-block alert-danger"><p>Reconciliation involves matching the programs to the parameter set in the reconciliation year only. In general, the parameter set and the program set make different assumptions about future parameter values. In this example, the parameter set assumes the recovery rate will remain constant, while the program set assumes the number of people treated each year will remain constant. Therefore it is NOT expected that the parameter set and program set would produce similar values in the future
+projections.</p>
+<p>When performing reconciliation, it is important to focus on the reconciliation year only. The reconciliation above was successful because the parameter values match in 2020, even though they differ considerably in say, 2030.</p>
+</div></div>
+<div class="section" id="Common-intervention-types">
+<h2>Common intervention types<a class="headerlink" href="#Common-intervention-types" title="Permalink to this headline">¶</a></h2>
+<p>Atomica does not contain any pre-defined program types. That is, a program is defined by the compartments it targets and the parameters it overwrites, which is solely a function of the framework and the progbook. This means that it is possible to define a wide variety of programs, but on the other hand, it is not possible to simply ‘make a vaccine program’ - since a vaccine program is defined by having vaccine states in the framework that are affected by the parameters overwritten in the program
+book. There are examples of how to set up different kinds of programs in the Atomica framework library, but here are some design patterns for common program types.</p>
+<div class="section" id="Vaccines">
+<h3>Vaccines<a class="headerlink" href="#Vaccines" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Framework contains a vaccine compartment, and a targetable vaccination rate parameter</p></li>
+<li><p>The program targets the susceptible compartment and overwrites the vaccination rate parameter</p></li>
+<li><p>For infant and child vaccination programs, the program only targets the appropriate populations (e.g. only targets a <code class="docutils literal notranslate"><span class="pre">0-4</span></code> population</p></li>
+</ul>
+</div>
+<div class="section" id="Diagnosis-screening-program">
+<h3>Diagnosis screening program<a class="headerlink" href="#Diagnosis-screening-program" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>A screening program is characterised by having a low yield, because many of the people screened do not have the condition being tested.</p></li>
+<li><p>The framework contains states for susceptible, undiagnosed, and diagnosed. The latter two states would both be considered infected. A diagnosis parameter moves people from undiagnosed to diagnosed</p></li>
+<li><p>The program targets both susceptible and undiagnosed, and overwrites the diagnosis parameter. The program’s coverage denominator is increased by including the susceptible compartment, which reduces the impact of the program by decreasing the fraction of undiagnosed people covered.</p></li>
+</ul>
+</div>
+<div class="section" id="Diagnosis">
+<h3>Diagnosis<a class="headerlink" href="#Diagnosis" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>The framework contains states for susceptible, undiagnosed, and diagnosed. The latter two states would both be considered infected. A diagnosis parameter moves people from undiagnosed to diagnosed</p></li>
+<li><p>The program targets only undiagnosed people, and overwrites the diagnosis parameter</p></li>
+<li><p>The sensitivity of the diagnosis test corresponds to the program’s effect (i.e. a test with low sensitivity would return a negative result for someone that is true positive, so a program effect less than 1 would mean that an affected individual that gets reached by the diagnosis program does not actually become diagnosed).</p></li>
+</ul>
+</div>
+<div class="section" id="Screening-with-confirmatory-test">
+<h3>Screening with confirmatory test<a class="headerlink" href="#Screening-with-confirmatory-test" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>The framework contains states for susceptible, undiagnosed, screened, and diagnosed. Typically the framework would also contain a treatment compartment, where people had to be diagnosed before being treated.</p></li>
+<li><p>The progbook would define two programs - a screening program, and a diagnosis program</p></li>
+<li><p>Each of those two programs would be set up as described above. The screening program would target susceptible and undiagnosed, and people into the screened compartment. The diagnosis program would target the screened compartment and move people into the diagnosed compartment</p></li>
+</ul>
+</div>
+<div class="section" id="One-off-treatment">
+<h3>One-off treatment<a class="headerlink" href="#One-off-treatment" title="Permalink to this headline">¶</a></h3>
+<p>With an explicit treatment state:</p>
+<ul class="simple">
+<li><p>The framework contains compartments for being diagnosed (or otherwise eligible for treatment) and on treatment</p></li>
+<li><p>The treatment program moves people into the treatment state</p></li>
+<li><p>The treatment program could also overwrite a treatment success parameter that moves people from being on treatment to being recovered.</p></li>
+</ul>
+<p>Without an explicit treatment state:</p>
+<ul class="simple">
+<li><p>The framework contains compartments for being diagnosed, and for a successfully treated outcome</p></li>
+<li><p>The treatment program moves people from being diagnosed to being successfully treated (e.g. recovered)</p></li>
+<li><p>The treatment program’s effect is the treatment efficacy</p></li>
+</ul>
+</div>
+<div class="section" id="Sustained-treatment">
+<h3>Sustained treatment<a class="headerlink" href="#Sustained-treatment" title="Permalink to this headline">¶</a></h3>
+<p>Some treatment programs involve being continuously on treatment without ever changing compartments - for example, ART for HIV treatment. These programs typically have a cost per year of treatment associated with them (rather than a cost for a one-off course of treatment)</p>
+<ul class="simple">
+<li><p>The framework defines a targetable parameter for the proportion of people on treatment</p></li>
+<li><p>The program unit cost is entered in units of ‘\<span class="math notranslate nohighlight">\(\/person\/year' rather than '\\\)</span>/person’</p></li>
+<li><p>The program effect is entered as 1</p></li>
+<li><p>The framework defines other parameters whose value depends on the proportion on treatment parameter</p></li>
+</ul>
+<p>See the full program documentation for further information about continuous/sustained programs.</p>
+</div>
+</div>
+<div class="section" id="Exercise">
+<h2>Exercise<a class="headerlink" href="#Exercise" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Add a ‘Diagnosed’ compartment to the SIR model, such that an individual must be diagnosed before they can recover. The flow in the model should be set up as <code class="docutils literal notranslate"><span class="pre">S</span> <span class="pre">-&gt;</span> <span class="pre">I</span> <span class="pre">-&gt;</span> <span class="pre">D</span> <span class="pre">-&gt;</span> <span class="pre">R</span></code> (with death flows due to background deaths and disease-related death set up accordingly. Set up your model so that there is no natural recovery rate (i.e. people must be diagnosed or eventually die from the ‘Infected’ compartment, and people must be treated or eventually die from the ‘Diagnosed’ compartment).</p></li>
+<li><p>Implement a diagnosis program that moves people from ‘Infected’ to ‘Diagnosed’</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../library/index.html" class="btn btn-neutral float-right" title="Model library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="T5-Junctions.html" class="btn btn-neutral float-left" title="T5 - Junctions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Atomica Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
