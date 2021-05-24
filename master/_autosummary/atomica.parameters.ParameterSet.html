@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +31,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -64,7 +67,7 @@
             
             
               <div class="version">
-                1.24.2
+                1.25.0
               </div>
             
           
@@ -220,8 +223,8 @@
 <div class="section" id="atomica-parameters-parameterset">
 <h1>atomica.parameters.ParameterSet<a class="headerlink" href="#atomica-parameters-parameterset" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="atomica.parameters.ParameterSet">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">atomica.parameters.</span></code><code class="sig-name descname"><span class="pre">ParameterSet</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">framework</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">atomica.parameters.</span></span><span class="sig-name descname"><span class="pre">ParameterSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">framework</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="atomica.utils.NamedItem.html#atomica.utils.NamedItem" title="atomica.utils.NamedItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">atomica.utils.NamedItem</span></code></a></p>
 <p>Collection of model parameters to run a simulation</p>
 <p>A ParameterSet contains a collection of Parameters required to run the simulation.
@@ -263,20 +266,34 @@ the difference in how they are formatted in the databook</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.all_pars" title="atomica.parameters.ParameterSet.all_pars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_pars</span></code></a></p></td>
 <td><p>Return an iterator over all Parameters</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.calibration_spreadsheet" title="atomica.parameters.ParameterSet.calibration_spreadsheet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calibration_spreadsheet</span></code></a></p></td>
+<td><p>Return y-values in a spreadsheet</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.get_par" title="atomica.parameters.ParameterSet.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.get_par" title="atomica.parameters.ParameterSet.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a></p></td>
 <td><p>Retrieve parameter instance</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_calibration</span></code></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">rtype</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.sample" title="atomica.parameters.ParameterSet.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample</span></code></a></p></td>
 <td><p>Return a sampled copy of the ParameterSet</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.save_calibration" title="atomica.parameters.ParameterSet.save_calibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_calibration</span></code></a></p></td>
+<td><p>Save y-values to file</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py method">
-<dt id="atomica.parameters.ParameterSet.all_pars">
-<code class="sig-name descname"><span class="pre">all_pars</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.all_pars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.all_pars" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet.all_pars">
+<span class="sig-name descname"><span class="pre">all_pars</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.all_pars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.all_pars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an iterator over all Parameters</p>
 <p>This is useful because transfers and interaction <a class="reference internal" href="atomica.parameters.Parameter.html#atomica.parameters.Parameter" title="atomica.parameters.Parameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parameter</span></code></a> instances are stored in
 nested dictionaries, so it’s not trivial to iterate over all of them.</p>
@@ -288,8 +305,22 @@ nested dictionaries, so it’s not trivial to iterate over all of them.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="atomica.parameters.ParameterSet.get_par">
-<code class="sig-name descname"><span class="pre">get_par</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.get_par"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.get_par" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet.calibration_spreadsheet">
+<span class="sig-name descname"><span class="pre">calibration_spreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.calibration_spreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.calibration_spreadsheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return y-values in a spreadsheet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Spreadsheet containing y-factors in tabular form</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet.get_par">
+<span class="sig-name descname"><span class="pre">get_par</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.get_par"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.get_par" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve parameter instance</p>
 <p>The parameter values for interactions and transfers are stored keyed by
 the source/from population. Thus, if the quantity name is an interaction
@@ -312,8 +343,8 @@ to return a <a class="reference internal" href="atomica.parameters.Parameter.htm
 </dd></dl>
 
 <dl class="py method">
-<dt id="atomica.parameters.ParameterSet.sample">
-<code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.sample" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a sampled copy of the ParameterSet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -322,6 +353,20 @@ an different perturbation will be applied to each time specific value independen
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A new <a class="reference internal" href="#atomica.parameters.ParameterSet" title="atomica.parameters.ParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code></a> with perturbed values</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet.save_calibration">
+<span class="sig-name descname"><span class="pre">save_calibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.save_calibration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.save_calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save y-values to file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> – <code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">Path</span></code> specifying location of file to save</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
