@@ -1,0 +1,530 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>atomica.reconciliation &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.25.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>atomica.reconciliation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for atomica.reconciliation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements the automatic reconciliation algorithm</span>
+
+<span class="sd">In any given model run, the parameters calculated by the :class:`ProgramSet`</span>
+<span class="sd">should ideally match up with the values in the :class:`ParameterSet` so that</span>
+<span class="sd">there are no discontinuities in parameter value. This may not be the case depending</span>
+<span class="sd">on the data gathered and the calibration. Reconciliation aims to adjust the</span>
+<span class="sd">internal parameters of the :class:`ProgramSet` to best match a :class:`ParameterSet`</span>
+<span class="sd">in a particular year.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">FrameworkSettings</span> <span class="k">as</span> <span class="n">FS</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;reconcile&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_extract_targets</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">progset</span><span class="p">,</span> <span class="n">ti</span><span class="p">,</span> <span class="n">eval_pars</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># Store the target parset values in the same form as the progset computed parameter values</span>
+    <span class="c1"># This will also mean that target_vals contains the par UIDs only for the impact parameters</span>
+    <span class="c1"># requested for reconcilation (if None, then all will be used). For simplicity, just do it</span>
+    <span class="c1"># for all programs and parameters, only the target ones will actually get looked at.</span>
+    <span class="c1">#</span>
+    <span class="c1"># INPUTS</span>
+    <span class="c1"># - result : A result object for the baseline sim (it won&#39;t have a progset because it was run without programs)</span>
+    <span class="c1"># - progset : The progset to use to get the target pars/pops and coverage denominator</span>
+    <span class="c1"># - ti : Time indices to extract results from (could be several)</span>
+    <span class="c1"># - eval_pars: Optional list of (par,pop) names for evaluation - otherwise, uses all impact pars</span>
+
+    <span class="c1"># Get the parameter outcomes - assumes simulation end year was the reconciliation year (hence -1 index)</span>
+    <span class="n">target_vals</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">covout</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">covouts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span> <span class="o">=</span> <span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">eval_pars</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">result</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">get_par</span><span class="p">(</span><span class="n">par_name</span><span class="p">)[</span><span class="s2">&quot;targetable&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)</span> <span class="ow">in</span> <span class="n">eval_pars</span><span class="p">:</span>
+            <span class="n">par</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="n">FS</span><span class="o">.</span><span class="n">QUANTITY_TYPE_NUMBER</span><span class="p">:</span>
+                <span class="c1"># If a transition parameter in number units is being targeted, then the program outcome is in units of per person reached</span>
+                <span class="c1"># at each timestep, while the parameter units are people/year. Thus, we need to convert the model parameter into the program</span>
+                <span class="c1"># output units prior to reconciling</span>
+                <span class="n">target_vals</span><span class="p">[(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">*</span> <span class="n">result</span><span class="o">.</span><span class="n">dt</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">par</span><span class="o">.</span><span class="n">source_popsize</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ti</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">target_vals</span><span class="p">[(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span>
+
+    <span class="c1"># Get the coverage denominator in the reconciliation year (it&#39;s always the same, so can do it once here)</span>
+    <span class="n">num_eligible</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">y</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">get_coverage</span><span class="p">(</span><span class="s2">&quot;eligible&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">return</span> <span class="n">target_vals</span><span class="p">,</span> <span class="n">num_eligible</span>
+
+
+<span class="k">def</span> <span class="nf">_update_progset</span><span class="p">(</span><span class="n">asd_vals</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">progset</span><span class="p">):</span>
+    <span class="c1"># Updates progset in place, inserting values</span>
+    <span class="c1"># INPUTS:</span>
+    <span class="c1"># - asd_vals - asd array</span>
+    <span class="c1"># - mapping - list of tuples specifying where to insert elements from the ASD array</span>
+    <span class="c1">#             e.g.  [(&#39;unit_cost&#39;,&#39;BCG&#39;),(&#39;outcome&#39;,&#39;v_rate&#39;,&#39;0-4&#39;,&#39;BCG&#39;)]</span>
+    <span class="c1">#             The mapping is</span>
+    <span class="c1">#             unit_cost - program</span>
+    <span class="c1">#             capacity_constraint - program</span>
+    <span class="c1">#             baseline - par,pop</span>
+    <span class="c1">#             outcome - par,pop,program</span>
+    <span class="c1"># - progset : ProgramSet to modify, should have only one time</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">asd_vals</span><span class="p">,</span> <span class="n">mapping</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;unit_cost&quot;</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">vals</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">elif</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;capacity_constraint&quot;</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">vals</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">elif</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;baseline&quot;</span><span class="p">:</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">covouts</span><span class="p">[(</span><span class="n">target</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">target</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span><span class="o">.</span><span class="n">baseline</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">elif</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;outcome&quot;</span><span class="p">:</span>
+            <span class="n">progset</span><span class="o">.</span><span class="n">covouts</span><span class="p">[(</span><span class="n">target</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">target</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span><span class="o">.</span><span class="n">progs</span><span class="p">[</span><span class="n">target</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="o">=</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">_prepare_bounds</span><span class="p">(</span><span class="n">progset</span><span class="p">,</span> <span class="n">unit_cost_bounds</span><span class="p">,</span> <span class="n">baseline_bounds</span><span class="p">,</span> <span class="n">capacity_bounds</span><span class="p">,</span> <span class="n">outcome_bounds</span><span class="p">):</span>
+    <span class="c1"># This is a separate function to _prepare_asd_inputs() because there may be complex logic related to</span>
+    <span class="c1"># defaults for constructing the bounds. At the end, the bounds dict contains upper and lower limits</span>
+    <span class="c1"># for every parameter being considered</span>
+    <span class="c1">#</span>
+    <span class="c1"># OUTPUTS</span>
+    <span class="c1"># bounds dict : {quantity:{key:(lower,upper)} where quantity is &#39;unit_cost&#39;,&#39;capacity_constraint&#39;,&#39;baseline&#39;,&#39;outcome&#39;, and key is:</span>
+    <span class="c1">#     for unit_cost - program</span>
+    <span class="c1">#     for capacity_constraint - program</span>
+    <span class="c1">#     for baseline - par,pop</span>
+    <span class="c1">#     for outcome - par,pop,program</span>
+
+    <span class="n">bounds</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;unit_cost&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;capacity_constraint&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;baseline&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;outcome&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">prog</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">unit_cost_bounds</span><span class="p">:</span>
+            <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;unit_cost&quot;</span><span class="p">][</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">vals</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">-</span> <span class="n">unit_cost_bounds</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">unit_cost_bounds</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">capacity_bounds</span> <span class="ow">and</span> <span class="n">prog</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
+            <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;capacity_constraint&quot;</span><span class="p">][</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">vals</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">-</span> <span class="n">capacity_bounds</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">capacity_bounds</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">covout</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">covouts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">baseline_bounds</span><span class="p">:</span>
+            <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;baseline&quot;</span><span class="p">][(</span><span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">)]</span> <span class="o">=</span> <span class="n">covout</span><span class="o">.</span><span class="n">baseline</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">-</span> <span class="n">baseline_bounds</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">baseline_bounds</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">outcome_bounds</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">prog</span><span class="p">,</span> <span class="n">outcome</span> <span class="ow">in</span> <span class="n">covout</span><span class="o">.</span><span class="n">progs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;outcome&quot;</span><span class="p">][(</span><span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">,</span> <span class="n">prog</span><span class="p">)]</span> <span class="o">=</span> <span class="n">outcome</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="o">-</span> <span class="n">outcome_bounds</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">outcome_bounds</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">bounds</span>
+
+
+<span class="k">def</span> <span class="nf">_prepare_asd_inputs</span><span class="p">(</span><span class="n">progset</span><span class="p">,</span> <span class="n">bounds</span><span class="p">):</span>
+    <span class="c1"># Return initial values, upper-lower bounds, and mapping to insert the arrays into a progset</span>
+    <span class="c1"># Only quantities that appear in the bounds dict will be reconciled</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">xmin</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">xmax</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">mapping</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">prog</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">prog</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;unit_cost&quot;</span><span class="p">]:</span>  <span class="c1"># Might need to check program_specific bounds here</span>
+            <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prog</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">xmin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;unit_cost&quot;</span><span class="p">][</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">xmax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;unit_cost&quot;</span><span class="p">][</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">mapping</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;unit_cost&quot;</span><span class="p">,</span> <span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">prog</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;capacity_constraint&quot;</span><span class="p">]:</span>  <span class="c1"># Might need to check program_specific bounds here</span>
+            <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prog</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">xmin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;capacity_constraint&quot;</span><span class="p">][</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">xmax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;capacity_constraint&quot;</span><span class="p">][</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">mapping</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;capacity_constraint&quot;</span><span class="p">,</span> <span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">covout</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">covouts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">)</span> <span class="ow">in</span> <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;baseline&quot;</span><span class="p">]:</span>
+            <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">covout</span><span class="o">.</span><span class="n">baseline</span><span class="p">)</span>
+            <span class="n">xmin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;baseline&quot;</span><span class="p">][(</span><span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">)][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">xmax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;baseline&quot;</span><span class="p">][(</span><span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">)][</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">mapping</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;baseline&quot;</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">prog</span><span class="p">,</span> <span class="n">outcome</span> <span class="ow">in</span> <span class="n">covout</span><span class="o">.</span><span class="n">progs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">,</span> <span class="n">prog</span><span class="p">)</span> <span class="ow">in</span> <span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;outcome&quot;</span><span class="p">]:</span>
+                    <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outcome</span><span class="p">)</span>
+                    <span class="n">xmin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;outcome&quot;</span><span class="p">][(</span><span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">,</span> <span class="n">prog</span><span class="p">)][</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">xmax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="s2">&quot;outcome&quot;</span><span class="p">][(</span><span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">,</span> <span class="n">prog</span><span class="p">)][</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">mapping</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;outcome&quot;</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">,</span> <span class="n">prog</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">x0</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">mapping</span>
+
+
+<span class="k">def</span> <span class="nf">_objective</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">progset</span><span class="p">,</span> <span class="n">eval_years</span><span class="p">,</span> <span class="n">target_vals</span><span class="p">,</span> <span class="n">num_eligible</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+    <span class="n">_update_progset</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">progset</span><span class="p">)</span>  <span class="c1"># Apply the changes to the progset</span>
+    <span class="n">capacities</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">get_capacities</span><span class="p">(</span><span class="n">tvec</span><span class="o">=</span><span class="n">eval_years</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>  <span class="c1"># Get number coverage using latest unit costs but default spending</span>
+    <span class="n">prop_coverage</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">get_prop_coverage</span><span class="p">(</span><span class="n">tvec</span><span class="o">=</span><span class="n">eval_years</span><span class="p">,</span> <span class="n">capacities</span><span class="o">=</span><span class="n">capacities</span><span class="p">,</span> <span class="n">num_eligible</span><span class="o">=</span><span class="n">num_eligible</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+
+    <span class="n">obj</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">eval_years</span><span class="p">)):</span>
+        <span class="n">outcomes</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">get_outcomes</span><span class="p">(</span><span class="n">prop_coverage</span><span class="o">=</span><span class="n">prop_coverage</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">target_vals</span><span class="p">:</span>  <span class="c1"># Key is a (par,pop) tuple</span>
+            <span class="n">obj</span> <span class="o">+=</span> <span class="p">(</span><span class="n">target_vals</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">outcomes</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># Add squared difference in parameter value</span>
+    <span class="k">return</span> <span class="n">obj</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_to_single_year</span><span class="p">(</span><span class="n">progset</span><span class="p">,</span> <span class="n">reconciliation_year</span><span class="p">):</span>
+    <span class="c1"># Take in a progset</span>
+    <span class="c1"># Return a progset with values only in the reconciliation year</span>
+    <span class="c1"># This is then what actually gets reconciled</span>
+    <span class="c1"># And we can be sure that when we go to make changes in the reconciliation year, we do not</span>
+    <span class="c1"># have any extra time points</span>
+
+    <span class="c1"># Basically, we only need to modify program attributes</span>
+    <span class="n">reconciliation_year</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">reconciliation_year</span><span class="p">)</span>
+    <span class="n">new_progset</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
+    <span class="n">new_progset</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="n">reconciliation_year</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">prog</span> <span class="ow">in</span> <span class="n">new_progset</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="c1"># NOTE - because of the TDVE format, we need to do the overwrite for ALL time series provided</span>
+        <span class="c1"># (because they must all have the same time axis) even if they are not being modified by the reconciliation</span>
+        <span class="c1"># This results in a clear mapping from the original progbook into the single-year format. Users can always</span>
+        <span class="c1"># go back and modify the reconciled progbook</span>
+        <span class="k">if</span> <span class="n">prog</span><span class="o">.</span><span class="n">spend_data</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">spend_data</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">spend_data</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">reconciliation_year</span><span class="p">)</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">spend_data</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">reconciliation_year</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">spend_data</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">prog</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">reconciliation_year</span><span class="p">)</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">reconciliation_year</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">prog</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">reconciliation_year</span><span class="p">)</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">reconciliation_year</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">capacity_constraint</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># This is tricky - maybe we do want to retain other values? Depends on what ends up happening with coverage</span>
+        <span class="k">if</span> <span class="n">prog</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">reconciliation_year</span><span class="p">)</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">reconciliation_year</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">prog</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">new_progset</span>
+
+
+<span class="c1"># ASD takes in a list of values. So we need to map all of the things we are optimizing onto</span>
+
+
+<div class="viewcode-block" id="reconcile"><a class="viewcode-back" href="../../_autosummary/atomica.reconciliation.reconcile.html#atomica.reconciliation.reconcile">[docs]</a><span class="k">def</span> <span class="nf">reconcile</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="p">,</span> <span class="n">reconciliation_year</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">unit_cost_bounds</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">baseline_bounds</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">capacity_bounds</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">outcome_bounds</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">eval_pars</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eval_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Modify a progset to optimally match a parset in a specified year</span>
+
+<span class="sd">    Reconciliation is a mapping from one progset to another. The output progset generates optimally matched output parameter</span>
+<span class="sd">    values compared to the specified parset, in the reconciliation year for the progset&#39;s default spending. The output progset</span>
+<span class="sd">    has internal attributes (such as unit costs) with values that are defined only in the reconciliation year. So while the</span>
+<span class="sd">    input progset may have time varying unit costs etc. after reconciliation, they will be constant.</span>
+
+<span class="sd">    The upper and lower bounds for unit costs, baseline, capacity_constraint, and outcome are specified as fractions of the initial value. For</span>
+<span class="sd">    example, entering ``unit_cost_bounds=0.2`` would mean that unit costs would be allowed to range from 0.8 to 1.2 times the</span>
+<span class="sd">    value in the input progset.</span>
+
+<span class="sd">    :param project: A :class:`Project` instance</span>
+<span class="sd">    :param parset: A :class:`ParameterSet` instance (or name of a parset contained in the project)</span>
+<span class="sd">    :param progset: A :class:`ProgramSet` instance (or name of a progset contained in the project)</span>
+<span class="sd">    :param reconciliation_year: Year to perform reconciliation in</span>
+<span class="sd">    :param max_time: Optionally override the maximum execution time in ASD</span>
+<span class="sd">    :param unit_cost_bounds: Optionally specify bounds for unit costs. Default is 0.0 (unit costs will not be changed)</span>
+<span class="sd">    :param baseline_bounds: Optionally specify bounds for baseline spending. Default is 0.0 (no changes)</span>
+<span class="sd">    :param capacity_bounds: Optionally specify bounds for capacity_constraint constraints. Default is 0.0 (no changes)</span>
+<span class="sd">    :param outcome_bounds: Optionally specify bounds for outcome values. Default is 0.0 (no changes)</span>
+<span class="sd">    :param eval_pars: Optionally select a subset of parameters for comparison. By default, all parameters overwritten by the progset will be used.</span>
+<span class="sd">    :param eval_range: Optionally specify a range of years over which to evaluate the progset-parset match. By default, it will only use the reconciliation year</span>
+<span class="sd">    :return: tuple containing</span>
+<span class="sd">            - A reconciled :class:`ProgramSet` instance</span>
+<span class="sd">            - A DataFrame comparing the unreconciled and reconciled progsets</span>
+<span class="sd">            - A DataFrame comparing the parset parameters and progset</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Sanitize inputs</span>
+    <span class="n">parset</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">parset</span><span class="p">(</span><span class="n">parset</span><span class="p">)</span>
+    <span class="n">progset</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">progset</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Reconcilation when parameter is in number units not fully tested&quot;</span><span class="p">)</span>
+
+    <span class="n">reconciliation_year</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetoarray</span><span class="p">(</span><span class="n">reconciliation_year</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">reconciliation_year</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Reconciliation year must be a scalar&quot;</span>
+
+    <span class="k">if</span> <span class="n">eval_range</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">eval_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">reconciliation_year</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">reconciliation_year</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_dt</span><span class="p">]</span>
+
+    <span class="c1"># Do a prerun to get the baseline values and coverage denominator</span>
+    <span class="n">parset_results</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="n">progset</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ti</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">parset_results</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="n">eval_range</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">parset_results</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">&lt;</span> <span class="n">eval_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">eval_years</span> <span class="o">=</span> <span class="n">parset_results</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span>
+    <span class="n">target_vals</span><span class="p">,</span> <span class="n">num_eligible</span> <span class="o">=</span> <span class="n">_extract_targets</span><span class="p">(</span><span class="n">parset_results</span><span class="p">,</span> <span class="n">progset</span><span class="p">,</span> <span class="n">ti</span><span class="p">,</span> <span class="n">eval_pars</span><span class="p">)</span>
+
+    <span class="c1"># Prepare ASD inputs</span>
+    <span class="n">new_progset</span> <span class="o">=</span> <span class="n">_convert_to_single_year</span><span class="p">(</span><span class="n">progset</span><span class="p">,</span> <span class="n">reconciliation_year</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">bounds</span> <span class="o">=</span> <span class="n">_prepare_bounds</span><span class="p">(</span><span class="n">new_progset</span><span class="p">,</span> <span class="n">unit_cost_bounds</span><span class="p">,</span> <span class="n">baseline_bounds</span><span class="p">,</span> <span class="n">capacity_bounds</span><span class="p">,</span> <span class="n">outcome_bounds</span><span class="p">)</span>  <span class="c1"># Convert reconcile() inputs into full detailed bounds</span>
+    <span class="n">x0</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">mapping</span> <span class="o">=</span> <span class="n">_prepare_asd_inputs</span><span class="p">(</span><span class="n">new_progset</span><span class="p">,</span> <span class="n">bounds</span><span class="p">)</span>  <span class="c1"># Assemble ASD variables</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reconciling in </span><span class="si">%.2f</span><span class="s2">, evaluating from </span><span class="si">%.2f</span><span class="s2"> up to </span><span class="si">%.2f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">reconciliation_year</span><span class="p">,</span> <span class="n">eval_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">eval_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;mapping&quot;</span><span class="p">:</span> <span class="n">mapping</span><span class="p">,</span>
+        <span class="s2">&quot;progset&quot;</span><span class="p">:</span> <span class="n">new_progset</span><span class="p">,</span>
+        <span class="s2">&quot;eval_years&quot;</span><span class="p">:</span> <span class="n">eval_years</span><span class="p">,</span>
+        <span class="s2">&quot;target_vals&quot;</span><span class="p">:</span> <span class="n">target_vals</span><span class="p">,</span>
+        <span class="s2">&quot;num_eligible&quot;</span><span class="p">:</span> <span class="n">num_eligible</span><span class="p">,</span>
+        <span class="s2">&quot;dt&quot;</span><span class="p">:</span> <span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_dt</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">optim_args</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># TODO - tune these variables specifically for reconciliation</span>
+        <span class="c1"># &#39;stepsize&#39;: project.settings.autofit_params[&#39;stepsize&#39;],</span>
+        <span class="c1"># &#39;maxiters&#39;: project.settings.autofit_params[&#39;maxiters&#39;],</span>
+        <span class="c1"># &#39;maxtime&#39;: project.settings.autofit_params[&#39;maxtime&#39;],</span>
+        <span class="c1"># &#39;sinc&#39;: project.settings.autofit_params[&#39;sinc&#39;],</span>
+        <span class="c1"># &#39;sdec&#39;: project.settings.autofit_params[&#39;sdec&#39;],</span>
+        <span class="s2">&quot;fulloutput&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># &#39;reltol&#39;: None,</span>
+        <span class="s2">&quot;xmin&quot;</span><span class="p">:</span> <span class="n">xmin</span><span class="p">,</span>
+        <span class="s2">&quot;xmax&quot;</span><span class="p">:</span> <span class="n">xmax</span><span class="p">,</span>
+        <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1"># default verbosity</span>
+        <span class="s2">&quot;maxtime&quot;</span><span class="p">:</span> <span class="n">max_time</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">log_level</span> <span class="o">&lt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">:</span>
+        <span class="n">optim_args</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">optim_args</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">opt_result</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">asd</span><span class="p">(</span><span class="n">_objective</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">optim_args</span><span class="p">)</span>
+    <span class="n">x_opt</span> <span class="o">=</span> <span class="n">opt_result</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+
+    <span class="n">_update_progset</span><span class="p">(</span><span class="n">x_opt</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">new_progset</span><span class="p">)</span>  <span class="c1"># Apply the changes to the progset</span>
+
+    <span class="c1"># Before/after for quantities</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="p">[(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">orig_val</span><span class="p">,</span> <span class="n">opt_val</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">orig_val</span><span class="p">,</span> <span class="n">opt_val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x_opt</span><span class="p">)]</span>
+    <span class="n">progset_comparison</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Quantity&quot;</span><span class="p">,</span> <span class="s2">&quot;Identifier&quot;</span><span class="p">,</span> <span class="s2">&quot;Before reconciliation&quot;</span><span class="p">,</span> <span class="s2">&quot;After reconciliation&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Before/after for parameters</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">old_capacities</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">get_capacities</span><span class="p">(</span><span class="n">tvec</span><span class="o">=</span><span class="n">eval_years</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_dt</span><span class="p">)</span>
+    <span class="n">new_capacities</span> <span class="o">=</span> <span class="n">new_progset</span><span class="o">.</span><span class="n">get_capacities</span><span class="p">(</span><span class="n">tvec</span><span class="o">=</span><span class="n">eval_years</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_dt</span><span class="p">)</span>
+    <span class="n">old_prop_coverage</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">get_prop_coverage</span><span class="p">(</span><span class="n">tvec</span><span class="o">=</span><span class="n">eval_years</span><span class="p">,</span> <span class="n">capacities</span><span class="o">=</span><span class="n">old_capacities</span><span class="p">,</span> <span class="n">num_eligible</span><span class="o">=</span><span class="n">num_eligible</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_dt</span><span class="p">)</span>
+    <span class="n">new_prop_coverage</span> <span class="o">=</span> <span class="n">new_progset</span><span class="o">.</span><span class="n">get_prop_coverage</span><span class="p">(</span><span class="n">tvec</span><span class="o">=</span><span class="n">eval_years</span><span class="p">,</span> <span class="n">capacities</span><span class="o">=</span><span class="n">new_capacities</span><span class="p">,</span> <span class="n">num_eligible</span><span class="o">=</span><span class="n">num_eligible</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_dt</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">eval_years</span><span class="p">):</span>
+        <span class="n">old_outcomes</span> <span class="o">=</span> <span class="n">progset</span><span class="o">.</span><span class="n">get_outcomes</span><span class="p">(</span><span class="n">prop_coverage</span><span class="o">=</span><span class="p">{</span><span class="n">prog</span><span class="p">:</span> <span class="n">cov</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">prog</span><span class="p">,</span> <span class="n">cov</span> <span class="ow">in</span> <span class="n">old_prop_coverage</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>  <span class="c1"># Program outcomes for this year</span>
+        <span class="n">new_outcomes</span> <span class="o">=</span> <span class="n">new_progset</span><span class="o">.</span><span class="n">get_outcomes</span><span class="p">(</span><span class="n">prop_coverage</span><span class="o">=</span><span class="p">{</span><span class="n">prog</span><span class="p">:</span> <span class="n">cov</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">prog</span><span class="p">,</span> <span class="n">cov</span> <span class="ow">in</span> <span class="n">new_prop_coverage</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>  <span class="c1"># Program outcomes for this year</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">par</span><span class="p">,</span> <span class="n">pop</span><span class="p">),</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">target_vals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">par</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">old_outcomes</span><span class="p">[(</span><span class="n">par</span><span class="p">,</span> <span class="n">pop</span><span class="p">)],</span> <span class="n">new_outcomes</span><span class="p">[(</span><span class="n">par</span><span class="p">,</span> <span class="n">pop</span><span class="p">)]))</span>
+    <span class="n">parameter_comparison</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Parameter&quot;</span><span class="p">,</span> <span class="s2">&quot;Population&quot;</span><span class="p">,</span> <span class="s2">&quot;Year&quot;</span><span class="p">,</span> <span class="s2">&quot;Target&quot;</span><span class="p">,</span> <span class="s2">&quot;Before reconciliation&quot;</span><span class="p">,</span> <span class="s2">&quot;After reconciliation&quot;</span><span class="p">])</span>
+    <span class="n">parameter_comparison</span><span class="p">[</span><span class="s2">&quot;Difference&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameter_comparison</span><span class="p">[</span><span class="s2">&quot;Before reconciliation&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">parameter_comparison</span><span class="p">[</span><span class="s2">&quot;After reconciliation&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">new_progset</span><span class="p">,</span> <span class="n">progset_comparison</span><span class="p">,</span> <span class="n">parameter_comparison</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Atomica Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
