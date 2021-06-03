@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.25.0
+                1.25.2
               </div>
             
           
@@ -256,6 +256,18 @@ the difference in how they are formatted in the databook</p></li>
 <dd class="field-odd"><p><strong>name</strong> – </p>
 </dd>
 </dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.y_factors" title="atomica.parameters.ParameterSet.y_factors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y_factors</span></code></a></p></td>
+<td><p>Return y-values in a dictionary</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -308,6 +320,9 @@ nested dictionaries, so it’s not trivial to iterate over all of them.</p>
 <dt class="sig sig-object py" id="atomica.parameters.ParameterSet.calibration_spreadsheet">
 <span class="sig-name descname"><span class="pre">calibration_spreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.calibration_spreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.calibration_spreadsheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return y-values in a spreadsheet</p>
+<p>Note that the tabular structure contains missing entries for any interactions
+that don’t exist (e.g. due to missing population types) - these can be identified
+with <code class="docutils literal notranslate"><span class="pre">pd.isna</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></p>
@@ -367,6 +382,23 @@ an different perturbation will be applied to each time specific value independen
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet.y_factors">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">y_factors</span></span><em class="property"><span class="pre">:</span> <span class="pre">dict</span></em><a class="headerlink" href="#atomica.parameters.ParameterSet.y_factors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return y-values in a dictionary</p>
+<p>Note that any missing populations reflect population types. For example, the
+dictionary for a parameter in one population type will not contain any entries
+for populations that belong to another type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary keyed by <code class="docutils literal notranslate"><span class="pre">(par,</span> <span class="pre">pop)</span></code> containing a dict of y-values</p>
 </dd>
 </dl>
 </dd></dl>

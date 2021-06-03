@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                1.25.0
+                1.25.2
               </div>
             
           
@@ -463,30 +463,41 @@
         <span class="k">return</span> <span class="n">new</span></div>
 
     <span class="c1">### SAVE AND LOAD CALIBRATION (Y-FACTORS)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_factors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return y-values in a dictionary</span>
+
+<span class="sd">        Note that any missing populations reflect population types. For example, the</span>
+<span class="sd">        dictionary for a parameter in one population type will not contain any entries</span>
+<span class="sd">        for populations that belong to another type</span>
+
+<span class="sd">        :return: Dictionary keyed by ``(par, pop)`` containing a dict of y-values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">y_factors</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">par_name</span><span class="p">,</span> <span class="n">par</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">y_factors</span><span class="p">[(</span><span class="n">par_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">({</span><span class="s2">&quot;meta_y_factor&quot;</span><span class="p">:</span> <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span><span class="p">},</span> <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">par_name</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">y_factors</span><span class="p">[(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">({</span><span class="s2">&quot;meta_y_factor&quot;</span><span class="p">:</span> <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span><span class="p">},</span> <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">y_factors</span>
 
 <div class="viewcode-block" id="ParameterSet.calibration_spreadsheet"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.calibration_spreadsheet">[docs]</a>    <span class="k">def</span> <span class="nf">calibration_spreadsheet</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return y-values in a spreadsheet</span>
 
+<span class="sd">        Note that the tabular structure contains missing entries for any interactions</span>
+<span class="sd">        that don&#39;t exist (e.g. due to missing population types) - these can be identified</span>
+<span class="sd">        with ``pd.isna``</span>
+
 <span class="sd">        :return: Spreadsheet containing y-factors in tabular form</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">vals</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">par</span><span class="o">=</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pop</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-            <span class="n">vals</span><span class="p">[</span><span class="s1">&#39;meta_y_factor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span>
-            <span class="n">vals</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">)</span>
-            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">par_name</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">vals</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">par</span><span class="o">=</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop</span><span class="o">=</span><span class="n">pop_name</span><span class="p">)</span>
-                <span class="n">vals</span><span class="p">[</span><span class="s1">&#39;meta_y_factor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span>
-                <span class="n">vals</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">)</span>
-                <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
-
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;par&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_factors</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">set_names</span><span class="p">([</span><span class="s2">&quot;par&quot;</span><span class="p">,</span> <span class="s2">&quot;pop&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">b</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
         <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">merge_cells</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -508,23 +519,23 @@
             <span class="n">spreadsheet</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">spreadsheet</span><span class="p">)</span>
 
         <span class="n">df</span> <span class="o">=</span> <span class="n">spreadsheet</span><span class="o">.</span><span class="n">pandas</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;par&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;par&quot;</span><span class="p">,</span> <span class="s2">&quot;pop&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">),</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">),</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">par</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_par</span><span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
                     <span class="k">continue</span>
 
-                <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;meta_y_factor&#39;</span> <span class="p">:</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;meta_y_factor&quot;</span><span class="p">:</span>
                     <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span> <span class="o">=</span> <span class="n">v</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">:</span>
                         <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Attempted to set a y-factor for </span><span class="si">{</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> in </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1"> but the ParameterSet does not define a y-factor for that population (e.g., because the population type does not match the parameter)&#39;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempted to set a y-factor for </span><span class="si">{</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> but the ParameterSet does not define a y-factor for that population (e.g., because the population type does not match the parameter)&quot;</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Loaded calibration from file&#39;</span><span class="p">)</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loaded calibration from file&quot;</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
