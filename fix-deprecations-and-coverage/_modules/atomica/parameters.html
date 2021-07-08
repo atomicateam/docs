@@ -1,0 +1,606 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>atomica.parameters &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.25.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>atomica.parameters</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for atomica.parameters</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements data-based model parameters (:class:`ParameterSet`)</span>
+
+<span class="sd">A :class:`ParameterSet` (or &#39;parset&#39;) is an intermediate representation of</span>
+<span class="sd">model parameters. The main role of the parset is to store the calibration</span>
+<span class="sd">values that are used to scale model parameters. Therefore, every parameter</span>
+<span class="sd">in the model appears in the parset, not just the parameters in the databook.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">NamedItem</span><span class="p">,</span> <span class="n">TimeSeries</span>
+<span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">import</span> <span class="nn">scipy.interpolate</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Parameter&quot;</span><span class="p">,</span> <span class="s2">&quot;ParameterSet&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Parameter"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter">[docs]</a><span class="k">class</span> <span class="nc">Parameter</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to hold one set of parameter values disaggregated by populations.</span>
+
+<span class="sd">    :param name: The name of the parameter (should match framework code name)</span>
+<span class="sd">    :param ts: A dict where the key is population name and the value is a TimeSeries instance</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">NamedItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span>  <span class="c1"># : Population-specific data is stored in TimeSeries within this dict, keyed by population name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_factor</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># : Calibration scale factors for the parameter in each population</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_y_factor</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># : Calibration scale factor for all populations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skip_function</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># : This can be a range of years [start,stop] between which the parameter function will not be evaluated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interpolation_method</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>  <span class="c1">#: Fallback interpolation method. It is _strongly_ recommended not to change this, but to call ``Parameter.smooth()` instead</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pops</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get populations contained in the Parameter</span>
+
+<span class="sd">        :return: Generator/list of available populations</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Parameter.has_values"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter.has_values">[docs]</a>    <span class="k">def</span> <span class="nf">has_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if any values are present</span>
+
+<span class="sd">        Returns True if this Parameter has values specified for the given population</span>
+<span class="sd">        If the Parameter has an assumption, then the time value will be nan but a</span>
+<span class="sd">        y-value will be present. If the Parameter normally has a function, then the</span>
+<span class="sd">        y-value will be None. If a function Parameter has a scenario overwrite applied</span>
+<span class="sd">        then actual values will be present. Essentially, if this function returns True,</span>
+<span class="sd">        then the `interpolate()` method will return usable values</span>
+
+<span class="sd">        :param pop_name: The code name of a population</span>
+<span class="sd">        :return: ``True`` if any values are present for specified population, otherwise ``False``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">pop_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop_name</span><span class="p">]</span><span class="o">.</span><span class="n">has_data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Parameter.interpolate"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter.interpolate">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return interpolated parameter values for a given population</span>
+
+<span class="sd">        The Parameter internally stores the interpolation method. The default is linear.</span>
+<span class="sd">        It is possible to set it to &#39;pchip&#39; or &#39;previous&#39; or some other method. However,</span>
+<span class="sd">        this would also also be applied to any parameter scenarios that have modified the</span>
+<span class="sd">        parameter and require interpolation. Therefore, it is STRONGLY recommended not to</span>
+<span class="sd">        modify the fallback interpolation method, but to instead call `Parameter.smooth()`</span>
+<span class="sd">        in advance with the appropriate options, if the interpolation matters.</span>
+
+<span class="sd">        :param tvec: A scalar, list, or array or time values</span>
+<span class="sd">        :param pop_name: The population to interpolate data for</span>
+<span class="sd">        :return: An array with the interpolated values</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop_name</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_interpolation_method</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parameter.sample"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constant</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perturb parameter based on uncertainties</span>
+
+<span class="sd">        This function modifies the parameter in-place. It would normally be called via</span>
+<span class="sd">        :meth:`ParameterSet.sample()` which is responsible for copying this instance first.</span>
+
+<span class="sd">        :param constant: If True, time series will be perturbed by a single constant offset. If False,</span>
+<span class="sd">                         an different perturbation will be applied to each time specific value independently.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">constant</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parameter.smooth"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter.smooth">[docs]</a>    <span class="k">def</span> <span class="nf">smooth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;smoothinterp&quot;</span><span class="p">,</span> <span class="n">pop_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Smooth the parameter&#39;s time values</span>
+
+<span class="sd">        Normally, Parameter instances contain temporally-sparse values from the databook.</span>
+<span class="sd">        These are then interpolated to get the input parameter values at all model time points.</span>
+<span class="sd">        The default interpolation is linear. However, sometimes it may be desired to make specific</span>
+<span class="sd">        assumptions about the parameter value at intermediate times. These could be added directly</span>
+<span class="sd">        to the Parameter&#39;s underlying `TimeSeries`.</span>
+
+<span class="sd">        This method applies a smoothing method to the Parameter, modifying the underlying TimeSeries</span>
+<span class="sd">        in-place. The operation is</span>
+
+<span class="sd">        - Interpolated or smoothed values are generated for the requested times</span>
+<span class="sd">        - All existing time points between and including the minimum and maximum values of `tvec` are removed</span>
+<span class="sd">        - The time values generated in this function are inserted</span>
+
+<span class="sd">        For example, to apply pchip interpolation to generate intermediate values</span>
+
+<span class="sd">        &gt;&gt;&gt; Parameter.smooth(P.settings.tvec, method=&#39;pchip&#39;,**kwargs)</span>
+
+<span class="sd">        As this goes through `TimeSeries.interpolate` the same rules apply for the conditions under which</span>
+<span class="sd">        the interpolation function gets used - specifically, interpolation is used if there are at least two</span>
+<span class="sd">        finite time values present, otherwise, the assumption or single value will be used.</span>
+
+<span class="sd">        :param tvec: New time points to add to the TimeSeries</span>
+<span class="sd">        :param method: Method for generation of smoothed/interpolated values, default uses sciris smoothinterp</span>
+<span class="sd">        :param pop_names: Optionally specify a list of populations to modify</span>
+<span class="sd">        :param kwargs: Optionally pass arguments to the generating function/class constructor</span>
+<span class="sd">        :return:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pop_names</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetolist</span><span class="p">(</span><span class="n">pop_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pop_names</span><span class="p">:</span>
+            <span class="n">pop_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;smoothinterp&quot;</span><span class="p">:</span>
+                <span class="c1"># Generating function for smooth-interp interpolator</span>
+                <span class="k">def</span> <span class="nf">smoothinterp</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                    <span class="k">def</span> <span class="nf">fcn</span><span class="p">(</span><span class="n">x2</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">smoothinterp</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+                    <span class="k">return</span> <span class="n">fcn</span>
+
+                <span class="n">method</span> <span class="o">=</span> <span class="n">smoothinterp</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;pchip&quot;</span><span class="p">,</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;previous&quot;</span><span class="p">]:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unknown smoothing method&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">pop_names</span><span class="p">:</span>
+            <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">pop</span><span class="p">]</span>
+            <span class="n">v2</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">ts</span><span class="o">.</span><span class="n">remove_between</span><span class="p">((</span><span class="nb">min</span><span class="p">(</span><span class="n">tvec</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">tvec</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ParameterSet"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet">[docs]</a><span class="k">class</span> <span class="nc">ParameterSet</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Collection of model parameters to run a simulation</span>
+
+<span class="sd">    A ParameterSet contains a collection of Parameters required to run the simulation.</span>
+<span class="sd">    The parameters contain scale factors used for calibration, so often a project will</span>
+<span class="sd">    contain multiple ParameterSets corresponding to different calibrations.</span>
+
+<span class="sd">    Although parameters are constructed from ProjectData, there are two key differences</span>
+
+<span class="sd">        - The ParameterSet contains calibration scale factors</span>
+<span class="sd">        - The ParameterSet expands transfers and interactions into per-population parameters</span>
+<span class="sd">          so they are stored on an equal basis (whereas ProjectData segregates them in</span>
+<span class="sd">          :class:`TimeDependentValuesEntry` and :class:`TimeDependentConnections` due to</span>
+<span class="sd">          the difference in how they are formatted in the databook</span>
+
+<span class="sd">    :param framework: A :class:`ProjectFramework` instance</span>
+<span class="sd">    :param data: A :class:`ProjectData` instance</span>
+<span class="sd">    :param name: Optionally specify the name of the parset</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="n">NamedItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pop_names</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># : List of all population code names contained in the ``ParameterSet``</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pop_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">pop</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>  <span class="c1"># : List of corresponding full names for populations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pop_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">pop</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>  <span class="c1"># : List of corresponding population types</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pars</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>  <span class="c1"># : Stores the Parameter instances contained by this ParameterSet associated with framework comps, characs, and parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>  <span class="c1"># : Stores the Parameter instances contained by this ParameterSet associated with databook transfers, keyed by source population</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>  <span class="c1"># : Stores the Parameter instances contained by this ParameterSet associated with framework interactions, keyed by source population</span>
+
+        <span class="c1"># Instantiate all quantities that appear in the databook (compartments, characteristics, parameters)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tdve</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">framework</span><span class="o">.</span><span class="n">get_databook_units</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  <span class="c1"># The TDVE has already been validated to contain any required populations (although it might also contain extra ones)</span>
+                <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="n">ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                    <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;The units for quantity &quot;</span><span class="si">{</span><span class="n">framework</span><span class="o">.</span><span class="n">get_label</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot; in the databook do not match the units in the framework. Expecting &quot;</span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s1">&quot; but the databook contained &quot;</span><span class="si">{</span><span class="n">ts</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_names</span><span class="p">}))</span>  <span class="c1"># Keep only valid populations (discard any extra ones here)</span>
+
+        <span class="c1"># Instantiate parameters not in the databook</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">framework</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+                <span class="n">ts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+                <span class="n">units</span> <span class="o">=</span> <span class="n">framework</span><span class="o">.</span><span class="n">get_databook_units</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">pop_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_names</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">pop_name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;population type&quot;</span><span class="p">]:</span>
+                        <span class="n">ts</span><span class="p">[</span><span class="n">pop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+
+        <span class="c1"># Instantiate parameters for transfers and interactions</span>
+        <span class="c1"># As with TDVE quantities, these must be initialized from the databook</span>
+        <span class="k">for</span> <span class="n">tdc</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">transfers</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">interpops</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tdc</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;transfer&quot;</span><span class="p">:</span>
+                <span class="n">item_storage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span>
+            <span class="k">elif</span> <span class="n">tdc</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;interaction&quot;</span><span class="p">:</span>
+                <span class="n">item_storage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unknown time-dependent connection type&quot;</span><span class="p">)</span>
+
+            <span class="n">name</span> <span class="o">=</span> <span class="n">tdc</span><span class="o">.</span><span class="n">code_name</span>  <span class="c1"># The name of this interaction e.g. &#39;age&#39;</span>
+            <span class="n">item_storage</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
+            <span class="n">ts_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">pop_link</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">tdc</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">ts_dict</span><span class="p">[</span><span class="n">pop_link</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">pop_link</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">source_pop</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">ts_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">item_storage</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">source_pop</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_from_&quot;</span> <span class="o">+</span> <span class="n">source_pop</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">ts</span><span class="p">))</span>
+
+<div class="viewcode-block" id="ParameterSet.all_pars"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.all_pars">[docs]</a>    <span class="k">def</span> <span class="nf">all_pars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an iterator over all Parameters</span>
+
+<span class="sd">        This is useful because transfers and interaction :class:`Parameter` instances are stored in</span>
+<span class="sd">        nested dictionaries, so it&#39;s not trivial to iterate over all of them.</span>
+
+<span class="sd">        :return: Generator over all :class:`Parameter` instances contained in the ``ParameterSet``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">par</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">yield</span> <span class="n">par</span></div>
+
+<div class="viewcode-block" id="ParameterSet.get_par"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.get_par">[docs]</a>    <span class="k">def</span> <span class="nf">get_par</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pop</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parameter</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve parameter instance</span>
+
+<span class="sd">        The parameter values for interactions and transfers are stored keyed by</span>
+<span class="sd">        the source/from population. Thus, if the quantity name is an interaction</span>
+<span class="sd">        or transfer, it is also necessary to specify the source population in order</span>
+<span class="sd">        to return a :class:`Parameter` instance.</span>
+
+<span class="sd">        :param name: The code name of a parameter, interaction, or transfer</span>
+<span class="sd">        :param pop:</span>
+<span class="sd">        :return: A :class:`Parameter` instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">pop</span><span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is a parameter so the ``pop`` should not be specified&#39;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">pop</span><span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is a transfer, so the ``pop`` must be specified&#39;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">pop</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">pop</span><span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is an interaction, so the ``pop`` must be specified&#39;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">pop</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parameter &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; not found&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ParameterSet.sample"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a sampled copy of the ParameterSet</span>
+
+<span class="sd">        :param constant: If True, time series will be perturbed by a single constant offset. If False,</span>
+<span class="sd">                         an different perturbation will be applied to each time specific value independently.</span>
+<span class="sd">        :return: A new :class:`ParameterSet` with perturbed values</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">new</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">new</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
+            <span class="n">par</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">constant</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new</span></div>
+
+    <span class="c1">### SAVE AND LOAD CALIBRATION (Y-FACTORS)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y_factors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return y-values in a dictionary</span>
+
+<span class="sd">        Note that any missing populations reflect population types. For example, the</span>
+<span class="sd">        dictionary for a parameter in one population type will not contain any entries</span>
+<span class="sd">        for populations that belong to another type</span>
+
+<span class="sd">        :return: Dictionary keyed by ``(par, pop)`` containing a dict of y-values</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">y_factors</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">par_name</span><span class="p">,</span> <span class="n">par</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">y_factors</span><span class="p">[(</span><span class="n">par_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">({</span><span class="s2">&quot;meta_y_factor&quot;</span><span class="p">:</span> <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span><span class="p">},</span> <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">par_name</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">y_factors</span><span class="p">[(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">({</span><span class="s2">&quot;meta_y_factor&quot;</span><span class="p">:</span> <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span><span class="p">},</span> <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">y_factors</span>
+
+<div class="viewcode-block" id="ParameterSet.calibration_spreadsheet"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.calibration_spreadsheet">[docs]</a>    <span class="k">def</span> <span class="nf">calibration_spreadsheet</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return y-values in a spreadsheet</span>
+
+<span class="sd">        Note that the tabular structure contains missing entries for any interactions</span>
+<span class="sd">        that don&#39;t exist (e.g. due to missing population types) - these can be identified</span>
+<span class="sd">        with ``pd.isna``</span>
+
+<span class="sd">        :return: Spreadsheet containing y-factors in tabular form</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_factors</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">set_names</span><span class="p">([</span><span class="s2">&quot;par&quot;</span><span class="p">,</span> <span class="s2">&quot;pop&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">b</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">merge_cells</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ParameterSet.save_calibration"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.save_calibration">[docs]</a>    <span class="k">def</span> <span class="nf">save_calibration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save y-values to file</span>
+
+<span class="sd">        :param fname: ``str`` or ``Path`` specifying location of file to save</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calibration_spreadsheet</span><span class="p">()</span>
+        <span class="n">ss</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ParameterSet.load_calibration"><a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.load_calibration">[docs]</a>    <span class="k">def</span> <span class="nf">load_calibration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spreadsheet</span><span class="p">:</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load calibration y-factors</span>
+
+<span class="sd">        This function reads a spreadsheet created by ``ParameterSet.save_calibration()`` and</span>
+<span class="sd">        inserts the y-factors. It is permissive in that</span>
+
+<span class="sd">        - If y-factors are present in the spreadsheet and not in the ``ParameterSet`` then they</span>
+<span class="sd">          will be skipped</span>
+<span class="sd">        - If y-factors are missing in the spreadsheet, the existing values will be maintained</span>
+
+<span class="sd">        :param spreadsheet:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spreadsheet</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">):</span>
+            <span class="n">spreadsheet</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">spreadsheet</span><span class="p">)</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">spreadsheet</span><span class="o">.</span><span class="n">pandas</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;par&quot;</span><span class="p">,</span> <span class="s2">&quot;pop&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">),</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">par</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_par</span><span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pop_name</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">pop_name</span><span class="si">}</span><span class="s2"> was not found, ignoring y-factors for this quantity&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> was not found, ignoring y-factors for this quantity&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;meta_y_factor&quot;</span><span class="p">:</span>
+                    <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span> <span class="o">=</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">:</span>
+                        <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The ParameterSet does not define a y-factor for </span><span class="si">{</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> in the </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> population (e.g., because the population type does not match the parameter) - skipping&quot;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loaded calibration from file&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Atomica Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

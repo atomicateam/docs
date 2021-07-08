@@ -1,0 +1,1543 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Results and Models &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Plotting Documentation" href="Plotting.html" />
+    <link rel="prev" title="Models (implementation)" href="Model-dev.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.25.5
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Basic-workflow.html">Basic workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Databooks.html">Data and Databooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Frameworks.html">Frameworks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Model-dev.html">Models (implementation)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Results and Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Pre-specified-plots">Pre-specified plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Exporting-results">Exporting results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Exporting-raw-results">Exporting raw results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Accessing-raw-values">Accessing raw values</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Traversing-the-graph">Traversing the graph</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Plotting.html">Plotting Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plot-Programs.html">Plotting programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plot-Units.html">Plot unit conversions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Probability-Rescaling.html">Probability rescaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Scenarios.html">Scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Uncertainty.html">Uncertainty</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Examples</a> &raquo;</li>
+        
+      <li>Results and Models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Results-and-Models">
+<h1>Results and Models<a class="headerlink" href="#Results-and-Models" title="Permalink to this headline">¶</a></h1>
+<p>This page provides an overview of Result objects with a view to key interactions and access to model outputs.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<p>First we will run a simulation to produce a <code class="docutils literal notranslate"><span class="pre">Result</span></code> object.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">P</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">demo</span><span class="p">(</span><span class="s1">&#39;tb&#39;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Parameter &#34;lu_prog&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;lx_prog&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;leu_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;lex_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;llu_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;llx_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;l_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;v_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;lr_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;ar_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;ar_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;pd_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;pm_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;px_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nd_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nm_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nx_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;pd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;pm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;px_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.522s
+</pre></div></div>
+</div>
+<p>The plotting documentation discusses how to generate plots in detail. This documentation will thus focus on methods and functionality of the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object itself, with a view to</p>
+<ol class="arabic simple">
+<li><p>Generating pre-specified plots</p></li>
+<li><p>Accessing and interacting with raw values</p></li>
+</ol>
+<div class="section" id="Pre-specified-plots">
+<h2>Pre-specified plots<a class="headerlink" href="#Pre-specified-plots" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to pre-define plots in the Framework by creating a sheet called ‘Plots’. This sheet contains a specification of a set of plots to generate:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">P</span><span class="o">.</span><span class="n">framework</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s1">&#39;plots&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>type</th>
+      <th>quantities</th>
+      <th>plot group</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>Population size</td>
+      <td>series</td>
+      <td>alive</td>
+      <td>Demographics</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Latent infections</td>
+      <td>series</td>
+      <td>lt_inf</td>
+      <td>TB progression</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Active TB</td>
+      <td>series</td>
+      <td>ac_inf</td>
+      <td>TB progression</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Active DS-TB</td>
+      <td>series</td>
+      <td>ds_inf</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Active MDR-TB</td>
+      <td>series</td>
+      <td>mdr_inf</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Active XDR-TB</td>
+      <td>series</td>
+      <td>xdr_inf</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>New active TB infections</td>
+      <td>series</td>
+      <td>{'New incident cases':['leu_act:flow','llu_act...</td>
+      <td>TB progression</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Activated TB infections inc. relapse and immig...</td>
+      <td>series</td>
+      <td>{'Incident cases':['p_div:flow','n_div:flow']}</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Smear negative active TB</td>
+      <td>series</td>
+      <td>sn_inf</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Smear positive active TB</td>
+      <td>series</td>
+      <td>sp_inf</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Latent diagnoses</td>
+      <td>series</td>
+      <td>{'Latent diagnoses':['le_ntreat:flow', 'lx_ntr...</td>
+      <td>Demographics</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>New active TB diagnoses</td>
+      <td>series</td>
+      <td>{'Active TB diagnoses':['pd_ndiag:flow','pm_nd...</td>
+      <td>TB progression</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Latent treatment</td>
+      <td>series</td>
+      <td>ltt_inf</td>
+      <td>Demographics</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Active treatment</td>
+      <td>series</td>
+      <td>num_treat</td>
+      <td>TB progression</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>TB-related deaths</td>
+      <td>series</td>
+      <td>:ddis</td>
+      <td>TB progression</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Latent prevalence</td>
+      <td>series</td>
+      <td>lt_prev</td>
+      <td>TB progression</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Active prevalence</td>
+      <td>series</td>
+      <td>ac_prev</td>
+      <td>TB progression</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>DR prevalence</td>
+      <td>series</td>
+      <td>dr_prev</td>
+      <td>TB progression</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>New active SP-DS diagnoses</td>
+      <td>series</td>
+      <td>pd_ndiag:flow</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>New active SP-MDR diagnoses</td>
+      <td>series</td>
+      <td>pm_ndiag:flow</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>New active SP-XDR diagnoses</td>
+      <td>series</td>
+      <td>px_ndiag:flow</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>New active SN-DS diagnoses</td>
+      <td>series</td>
+      <td>nd_ndiag:flow</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>New active SN-MDR diagnoses</td>
+      <td>series</td>
+      <td>nm_ndiag:flow</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>New active SN-XDR diagnoses</td>
+      <td>series</td>
+      <td>nx_ndiag:flow</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>DS number initiating treatment</td>
+      <td>series</td>
+      <td>{'Active DS-TB treatment initiation':['pd_ntre...</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>MDR number initiating treatment</td>
+      <td>series</td>
+      <td>{'Active MDR-TB treatment initiation':['pm_ntr...</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>XDR number initiating treatment</td>
+      <td>series</td>
+      <td>{'Active XDR-TB treatment initiation':['px_ntr...</td>
+      <td>TB smear/strain</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>WHO diagnosis rate</td>
+      <td>series</td>
+      <td>ac_diag_rate</td>
+      <td>TB treatment</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The most important columns here are the <code class="docutils literal notranslate"><span class="pre">name</span></code> which identifies the plot, and the <code class="docutils literal notranslate"><span class="pre">quantities</span></code> which corresponds to a valid input to the <code class="docutils literal notranslate"><span class="pre">outputs</span></code> argument of <code class="docutils literal notranslate"><span class="pre">PlotData</span></code>. To generate a plot, simply pass the name of the plot to <code class="docutils literal notranslate"><span class="pre">Result.plot</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;New active TB infections&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Model-user_7_0.svg" src="../_images/examples_Model-user_7_0.svg" /></div>
+</div>
+<p>The output is the same as if a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object was constructed, a series plot generated with <code class="docutils literal notranslate"><span class="pre">axis='pops'</span></code>, and the title set to match the specified title:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;New incident cases&#39;</span><span class="p">:[</span><span class="s1">&#39;leu_act:flow&#39;</span><span class="p">,</span><span class="s1">&#39;llu_act:flow&#39;</span><span class="p">,</span> <span class="s1">&#39;lex_act:flow&#39;</span><span class="p">,</span> <span class="s1">&#39;llx_act:flow&#39;</span><span class="p">,</span> <span class="p">]})</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;pops&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;New active TB infections&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Model-user_9_0.svg" src="../_images/examples_Model-user_9_0.svg" /></div>
+</div>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">Result.plot()</span></code> with no arguments will result in all plots in the Framework being produced. At the moment, it is only possible to define series plots in the framework.</p>
+</div>
+<div class="section" id="Exporting-results">
+<h2>Exporting results<a class="headerlink" href="#Exporting-results" title="Permalink to this headline">¶</a></h2>
+<p>Many key outputs are generated by aggregation of raw model quantities - for example, in the demo TB model, the number of new cases is given by aggregating together several different modes of latent activation. Thus, often the main quantities for analysis are those defined as plottable quantities on the Framework’s ‘Plots’ sheet.</p>
+<p>These outputs can be written to an Excel file using the <code class="docutils literal notranslate"><span class="pre">at.export_results()</span></code> function. This is not a method of the <code class="docutils literal notranslate"><span class="pre">Result</span></code> because it is possible to export multiple results at the same time, which is shown later in this document.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">at</span><span class="o">.</span><span class="n">export_results</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="s1">&#39;example1.xlsx&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>This produces a spreadsheet like the one shown below:</p>
+<p><img alt="resultsexport1" src="../_images/results_export1.jpg" /></p>
+<p>Additional sheets will be present showing with numerical values for any cascades that are present:</p>
+<p><img alt="resultsexport1cascades" src="../_images/results_export1_cascades.jpg" /></p>
+<p>If any parameters are targetable by programs, the exported results will also include the value of those parameters, which facilitates monitoring program overwrites.</p>
+<p><img alt="resultsexport1targets" src="../_images/results_export1_targets.jpg" /></p>
+<p>If programs are present, an additional sheet will be written with program-related outputs. To demonstrate this, we will now first generate some scenario results:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">at</span><span class="o">.</span><span class="n">make_demo_scenarios</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+<span class="n">scen_results</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_scenarios</span><span class="p">()</span>
+<span class="n">at</span><span class="o">.</span><span class="n">export_results</span><span class="p">(</span><span class="n">scen_results</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;example2.xlsx&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.698s
+Elapsed time for running &#34;default&#34;: 0.828s
+Elapsed time for running &#34;default&#34;: 0.681s
+</pre></div></div>
+</div>
+<p>We have now exported results for a single simulation with programs active. The exported spreadsheet now contains a ‘Programs’ sheet with contents like:</p>
+<p><img alt="resultsexport2programs" src="../_images/results_export2_programs.jpg" /></p>
+<p>We next turn to the question of exporting multiple results. The scenario set that we ran above produced 3 results. We can write all three to a workbook by passing all of them to <code class="docutils literal notranslate"><span class="pre">at.export_results</span></code></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">at</span><span class="o">.</span><span class="n">export_results</span><span class="p">(</span><span class="n">scen_results</span><span class="p">,</span><span class="s1">&#39;example3.xlsx&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>This produces a workbook where all of the results are displayed together. For example, the original ‘Plot data’ sheet now shows:</p>
+<p><img alt="resultsexport3plotdata" src="../_images/results_export3_plotdata.jpg" /></p>
+<p>with similar changes to the other sheets as well.</p>
+<p>By default, the results are shown with each quantity (e.g. parameter, program) being in a separate table, that is grouped by result, then by population. So in the screenshot above, the table is for the ‘Population size’ quantity, on the left there are blocks for the ‘Default budget’ scenario, the ‘Doubled budget’ scenario etc. and then within each block, the population are shown.</p>
+<p>Sometimes it is useful to group the quantities differently. For example, if we wanted to compare the number of people in each of the populations under each scenario. To do this, simply specify a different grouping order. The default grouping order described and shown above is <code class="docutils literal notranslate"><span class="pre">('output','result','pop')</span></code>. If we wanted to place all of the same populations together, specify the order as <code class="docutils literal notranslate"><span class="pre">('output','pop','result')</span></code> instead.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">at</span><span class="o">.</span><span class="n">export_results</span><span class="p">(</span><span class="n">scen_results</span><span class="p">,</span><span class="s1">&#39;example4.xlsx&#39;</span><span class="p">,</span><span class="n">output_ordering</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">,</span><span class="s1">&#39;result&#39;</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<p>This produces the following output</p>
+<p><img alt="resultsexport4plotdata" src="../_images/results_export4_plotdata.jpg" /></p>
+<p>Notice how the values are grouped differently now. The ordering is specified independently for the plot data, cascades, and programs - see the documentation for the <code class="docutils literal notranslate"><span class="pre">export_results</span></code> function for full details.</p>
+<p>Finally, note that it was only necessary to pass a list of results to <code class="docutils literal notranslate"><span class="pre">at.export_results</span></code> - this means that it is possible to combine arbitrary results into a single spreadsheet as required (they do not all have to come from the same set of scenarios or optimization).</p>
+</div>
+<div class="section" id="Exporting-raw-results">
+<h2>Exporting raw results<a class="headerlink" href="#Exporting-raw-results" title="Permalink to this headline">¶</a></h2>
+<p>The model contains a raw representation of the values at each timestep associated with parameters, compartments, characteristics, and flow rates (links). These raw values can be exported using the <code class="docutils literal notranslate"><span class="pre">Result.export_raw()</span></code> method of the result object. This method dumps the raw output for a single result. For example:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">export_raw</span><span class="p">(</span><span class="s1">&#39;export5.xlsx&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>This produces an Excel file with the following content:</p>
+<p><img alt="resultsexport5a" src="../_images/results_export5a.jpg" /></p>
+<p>Some rows have been hidden for clarity (see row numbers above). The raw output is quite detailed - for the TB example model, there are over 2000 rows of output.</p>
+<p>In addition, <code class="docutils literal notranslate"><span class="pre">Result.export_raw()</span></code> returns a Pandas <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> with the contents that get written to the file - in fact, if you provide a filename when calling <code class="docutils literal notranslate"><span class="pre">export_raw()</span></code>, the only difference is that <code class="docutils literal notranslate"><span class="pre">export_raw()</span></code> automatically writes the returned dataframe to the specified file.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">df</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">export_raw</span><span class="p">();</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="10" halign="left">Compartments</th>
+      <th>...</th>
+      <th colspan="10" halign="left">Flow rates</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th colspan="10" halign="left">0-4</th>
+      <th>...</th>
+      <th colspan="10" halign="left">Prisoners</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>initj</th>
+      <th>sus</th>
+      <th>vac</th>
+      <th>lteu</th>
+      <th>ltet</th>
+      <th>ltetoj</th>
+      <th>ltlu</th>
+      <th>ltlt</th>
+      <th>ltltoj</th>
+      <th>susx</th>
+      <th>...</th>
+      <th>nd_rec:flow</th>
+      <th>nm_rec:flow</th>
+      <th>nx_rec:flow</th>
+      <th>pd_term:flow</th>
+      <th>pm_term:flow</th>
+      <th>px_term:flow</th>
+      <th>nd_term:flow</th>
+      <th>nm_term:flow</th>
+      <th>nx_term:flow</th>
+      <th>inc_Prisoners_to_15-64:flow</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>Initialization population size</th>
+      <th>Susceptible</th>
+      <th>Vaccinated</th>
+      <th>Early latent untreated (diagnosable)</th>
+      <th>Early latent on treatment</th>
+      <th>Junction: Latent early treatment outcome</th>
+      <th>Late latent untreated (diagnosable)</th>
+      <th>Late latent on treatment</th>
+      <th>Junction: Latent late treatment outcome</th>
+      <th>Susceptible (diagnosis restricted)</th>
+      <th>...</th>
+      <th>SN-DS natural recovery rate (flow)</th>
+      <th>SN-MDR natural recovery rate (flow)</th>
+      <th>SN-XDR natural recovery rate (flow)</th>
+      <th>SP-DS death rate (untreated) (flow)</th>
+      <th>SP-MDR death rate (untreated) (flow)</th>
+      <th>SP-XDR death rate (untreated) (flow)</th>
+      <th>SN-DS death rate (untreated) (flow)</th>
+      <th>SN-MDR death rate (untreated) (flow)</th>
+      <th>SN-XDR death rate (untreated) (flow)</th>
+      <th>-</th>
+    </tr>
+    <tr>
+      <th>Time</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2000.0</th>
+      <td>0.0</td>
+      <td>840678.852600</td>
+      <td>608386.857900</td>
+      <td>36000.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>9000.000000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>70.207200</td>
+      <td>0.352800</td>
+      <td>0.000000</td>
+      <td>22.680000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>8.775900</td>
+      <td>0.044100</td>
+      <td>0.000000</td>
+      <td>3598.009067</td>
+    </tr>
+    <tr>
+      <th>2000.5</th>
+      <td>0.0</td>
+      <td>830137.145072</td>
+      <td>612643.944524</td>
+      <td>43212.161695</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>11053.800000</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>358.572375</td>
+      <td>...</td>
+      <td>70.824693</td>
+      <td>0.641336</td>
+      <td>0.000533</td>
+      <td>23.827254</td>
+      <td>0.152843</td>
+      <td>0.000000</td>
+      <td>8.853087</td>
+      <td>0.080167</td>
+      <td>0.000067</td>
+      <td>3812.357260</td>
+    </tr>
+    <tr>
+      <th>2001.0</th>
+      <td>0.0</td>
+      <td>818925.141017</td>
+      <td>617418.954147</td>
+      <td>49049.306398</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>13494.924602</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>628.981745</td>
+      <td>...</td>
+      <td>69.907551</td>
+      <td>0.767243</td>
+      <td>0.002471</td>
+      <td>24.331490</td>
+      <td>0.259608</td>
+      <td>0.000992</td>
+      <td>8.738444</td>
+      <td>0.095905</td>
+      <td>0.000309</td>
+      <td>4012.857000</td>
+    </tr>
+    <tr>
+      <th>2001.5</th>
+      <td>0.0</td>
+      <td>807431.734081</td>
+      <td>622771.184132</td>
+      <td>53462.386307</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>16171.619035</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>820.729690</td>
+      <td>...</td>
+      <td>68.112786</td>
+      <td>0.888851</td>
+      <td>0.005615</td>
+      <td>24.307339</td>
+      <td>0.368140</td>
+      <td>0.002849</td>
+      <td>8.514098</td>
+      <td>0.111106</td>
+      <td>0.000702</td>
+      <td>4201.026805</td>
+    </tr>
+    <tr>
+      <th>2002.0</th>
+      <td>0.0</td>
+      <td>795936.179120</td>
+      <td>628390.185374</td>
+      <td>56732.528248</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>18943.495681</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>971.114360</td>
+      <td>...</td>
+      <td>65.724117</td>
+      <td>1.005611</td>
+      <td>0.009916</td>
+      <td>23.898043</td>
+      <td>0.478135</td>
+      <td>0.005572</td>
+      <td>8.215515</td>
+      <td>0.125701</td>
+      <td>0.001240</td>
+      <td>4377.593457</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 2540 columns</p>
+</div></div>
+</div>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> can provide a convenient way to perform extra operations or to customize the spreadsheet.</p>
+</div>
+<div class="section" id="Accessing-raw-values">
+<h2>Accessing raw values<a class="headerlink" href="#Accessing-raw-values" title="Permalink to this headline">¶</a></h2>
+<p>Within the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object, a <code class="docutils literal notranslate"><span class="pre">Model</span></code> object stores all of the underlying quantities. Within the <code class="docutils literal notranslate"><span class="pre">Model</span></code>, they are stored hierarchically within <code class="docutils literal notranslate"><span class="pre">Population</span></code> objects. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[Population &#34;0-4&#34;,
+ Population &#34;5-14&#34;,
+ Population &#34;15-64&#34;,
+ Population &#34;65+&#34;,
+ Population &#34;Prisoners&#34;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[JunctionCompartment &#34;initj&#34; (&#39;0-4&#39;, &#39;initj&#39;),
+ Compartment &#34;sus&#34; (&#39;0-4&#39;, &#39;sus&#39;),
+ Compartment &#34;vac&#34; (&#39;0-4&#39;, &#39;vac&#39;),
+ Compartment &#34;lteu&#34; (&#39;0-4&#39;, &#39;lteu&#39;),
+ Compartment &#34;ltet&#34; (&#39;0-4&#39;, &#39;ltet&#39;)]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[Parameter &#34;aci_idiv&#34; (&#39;0-4&#39;, &#39;aci_idiv&#39;),
+ Parameter &#34;lti_idiv&#34; (&#39;0-4&#39;, &#39;lti_idiv&#39;),
+ Parameter &#34;ltei_idiv&#34; (&#39;0-4&#39;, &#39;ltei_idiv&#39;),
+ Parameter &#34;lteti_idiv&#34; (&#39;0-4&#39;, &#39;lteti_idiv&#39;),
+ Parameter &#34;acdi_idiv&#34; (&#39;0-4&#39;, &#39;acdi_idiv&#39;)]
+</pre></div></div>
+</div>
+<p>Each of these objects has a <code class="docutils literal notranslate"><span class="pre">vals</span></code> attribute that stores the actual values. For convenience, they also have a <code class="docutils literal notranslate"><span class="pre">t</span></code> attribute that stores the time values</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">t</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([2000. , 2000.5, 2001. , 2001.5, 2002. , 2002.5, 2003. , 2003.5,
+       2004. , 2004.5, 2005. , 2005.5, 2006. , 2006.5, 2007. , 2007.5,
+       2008. , 2008.5, 2009. , 2009.5, 2010. , 2010.5, 2011. , 2011.5,
+       2012. , 2012.5, 2013. , 2013.5, 2014. , 2014.5, 2015. , 2015.5,
+       2016. , 2016.5, 2017. , 2017.5, 2018. , 2018.5, 2019. , 2019.5,
+       2020. , 2020.5, 2021. , 2021.5, 2022. , 2022.5, 2023. , 2023.5,
+       2024. , 2024.5, 2025. , 2025.5, 2026. , 2026.5, 2027. , 2027.5,
+       2028. , 2028.5, 2029. , 2029.5, 2030. , 2030.5, 2031. , 2031.5,
+       2032. , 2032.5, 2033. , 2033.5, 2034. , 2034.5, 2035. ])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">vals</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([840678.8526    , 830137.14507161, 818925.1410167 , 807431.73408111,
+       795936.17911973, 784438.64189761, 772962.54615262, 761479.55042216,
+       750731.49264522, 740718.56456972, 731442.87432715, 722866.7633955 ,
+       714535.69231394, 706264.60229092, 697962.80047631, 689550.44121886,
+       680974.52486168, 672305.08176119, 663547.19223369, 654710.37439578,
+       645823.5782231 , 636891.72580864, 628238.7878327 , 619867.04300878,
+       611797.90817666, 603984.22503826, 596347.80069927, 588791.07466194,
+       581265.63061197, 573816.53943644, 566466.97372058, 559242.86861922,
+       552077.40164813, 544976.97637218, 537930.29818745, 530928.57325812,
+       524700.84701489, 519147.03504136, 514196.90384823, 509786.22202476,
+       505856.55902625, 502355.00478344, 499233.99299343, 496450.96882895,
+       493967.9893496 , 491751.30094992, 489770.9217781 , 488000.26257496,
+       486415.75571263, 484996.51943209, 483724.06126727, 482582.01060729,
+       481555.87854444, 480632.84377206, 479801.56208566, 479051.99711401,
+       478375.27009443, 477763.52666032, 477209.81878702, 476708.000221  ,
+       476252.63388695, 475838.90992575, 475462.57316065, 475119.85892056,
+       474807.43626738, 474522.35778102, 474262.01515033, 474024.09990318,
+       473806.56868458, 473607.61255888, 473425.62987168])
+</pre></div></div>
+</div>
+<p>These objects have a <code class="docutils literal notranslate"><span class="pre">.plot</span></code> method that can be used to generate a diagnostic plot - this is mainly useful for debugging</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Model-user_35_0.svg" src="../_images/examples_Model-user_35_0.svg" /></div>
+</div>
+<p>You can retrieve a specific population and object by name rather than by index</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_pop</span><span class="p">(</span><span class="s1">&#39;0-4&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_comp</span><span class="p">(</span><span class="s1">&#39;sus&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Compartment &#34;sus&#34; (&#39;0-4&#39;, &#39;sus&#39;)
+</pre></div></div>
+</div>
+<p>Methods <code class="docutils literal notranslate"><span class="pre">get_comp</span></code>, <code class="docutils literal notranslate"><span class="pre">get_par</span></code>, <code class="docutils literal notranslate"><span class="pre">get_charac</span></code> and <code class="docutils literal notranslate"><span class="pre">get_links</span></code> exist to retrieve variables of a specific type. If you have a code name but don’t know the type of variable, you can use the generic <code class="docutils literal notranslate"><span class="pre">get_variable</span></code> method. This method returns a list of matching objects (because if the code name corresponds to a link, there could be more than one matching object)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_pop</span><span class="p">(</span><span class="s1">&#39;0-4&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;sus&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[Compartment &#34;sus&#34; (&#39;0-4&#39;, &#39;sus&#39;)]
+</pre></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">get_variable</span></code> method also supports the standard link syntax <code class="docutils literal notranslate"><span class="pre">source:destination:par_name</span></code> e.g.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_pop</span><span class="p">(</span><span class="s1">&#39;0-4&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;:ddis&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[Link pd_sad_div:flow (parameter pd_sad_div) - spdtoj to ddis,
+ Link nd_sad_div:flow (parameter nd_sad_div) - sndtoj to ddis,
+ Link pm_sad_div:flow (parameter pm_sad_div) - spmtoj to ddis,
+ Link nm_sad_div:flow (parameter nm_sad_div) - snmtoj to ddis,
+ Link px_sad_div:flow (parameter px_sad_div) - spxtoj to ddis,
+ Link nx_sad_div:flow (parameter nx_sad_div) - snxtoj to ddis,
+ Link pd_term:flow (parameter pd_term) - spdu to ddis,
+ Link pd_term:flow (parameter pd_term) - spdd to ddis,
+ Link pm_term:flow (parameter pm_term) - spmu to ddis,
+ Link pm_term:flow (parameter pm_term) - spmd to ddis,
+ Link px_term:flow (parameter px_term) - spxu to ddis,
+ Link px_term:flow (parameter px_term) - spxd to ddis,
+ Link nd_term:flow (parameter nd_term) - sndu to ddis,
+ Link nd_term:flow (parameter nd_term) - sndd to ddis,
+ Link nm_term:flow (parameter nm_term) - snmu to ddis,
+ Link nm_term:flow (parameter nm_term) - snmd to ddis,
+ Link nx_term:flow (parameter nx_term) - snxu to ddis,
+ Link nx_term:flow (parameter nx_term) - snxd to ddis]
+</pre></div></div>
+</div>
+<p>For convenience, the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object has a <code class="docutils literal notranslate"><span class="pre">get_variable</span></code> method that wraps accessing <code class="docutils literal notranslate"><span class="pre">get_pop</span></code> and <code class="docutils literal notranslate"><span class="pre">get_variable</span></code> for the underlying <code class="docutils literal notranslate"><span class="pre">Model</span></code> object. So for example, the most convenient way of looking up a particular quantity is with:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;0-4&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[Compartment &#34;sus&#34; (&#39;0-4&#39;, &#39;sus&#39;)]
+</pre></div></div>
+</div>
+<p>The population name is optional in <code class="docutils literal notranslate"><span class="pre">Result.get_variable</span></code> - if you omit it, it will return a list of all matching variables in all populations. This can be useful if there are multiple population types, and you don’t know which populations contain a particular variable.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">result</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;sus&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[Compartment &#34;sus&#34; (&#39;0-4&#39;, &#39;sus&#39;),
+ Compartment &#34;sus&#34; (&#39;5-14&#39;, &#39;sus&#39;),
+ Compartment &#34;sus&#34; (&#39;15-64&#39;, &#39;sus&#39;),
+ Compartment &#34;sus&#34; (&#39;65+&#39;, &#39;sus&#39;),
+ Compartment &#34;sus&#34; (&#39;Prisoners&#39;, &#39;sus&#39;)]
+</pre></div></div>
+</div>
+<div class="section" id="Traversing-the-graph">
+<h3>Traversing the graph<a class="headerlink" href="#Traversing-the-graph" title="Permalink to this headline">¶</a></h3>
+<p>The integration objects (such as <code class="docutils literal notranslate"><span class="pre">Compartment</span></code>, <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> etc.) are very powerful because they store information about the relationship between quantities in the computational graph, which is not present if simply working with the values. These relationships are discussed in detail in the documentation of the model internals, but the most useful quantities are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Compartment.inlinks</span></code> - All links flowing into the compartment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Compartment.outlink</span></code> - All links flowing out of a compartment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Link.source</span></code> - The source compartment for the link</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Link.dest</span></code> - The destination compartment for the link</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Link.parameter</span></code> - The parameter supplying values for the transition</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Parameter.links</span></code> - All of the links associated with the the parameter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Parameter.deps</span></code> - A dict with all of the parameter’s dependencies required to evaluate its function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Characteristic.includes</span></code> - All of the included compartments in a characteristic</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Characteristic.denominator</span></code> - The denominator compartment or characteristic</p></li>
+</ul>
+<p>For example</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">comp</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;0-4&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">comp</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Compartment &#34;sus&#34; (&#39;0-4&#39;, &#39;sus&#39;)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">comp</span><span class="o">.</span><span class="n">outlinks</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[Link doth_rate:flow (parameter doth_rate) - sus to doth,
+ Link e_rate:flow (parameter e_rate) - sus to emi,
+ Link v_num:flow (parameter v_num) - sus to vac,
+ Link l_inf:flow (parameter l_inf) - sus to lteu,
+ Link age_0-4_to_5-14:flow (parameter age_0-4_to_5-14) - sus to sus]
+</pre></div></div>
+</div>
+<p>Crucially, <em>all of these variables are references to other objects</em>. Therefore, it’s possible to chain the lookups together. For example, if we wanted to access the parameter governing the flow from <code class="docutils literal notranslate"><span class="pre">sus</span></code> to <code class="docutils literal notranslate"><span class="pre">vac</span></code> out of the <code class="docutils literal notranslate"><span class="pre">sus</span></code> compartment, we could use</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">link</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">outlinks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Get a link flowing out of the `sus` compartment</span>
+<span class="n">par</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">parameter</span> <span class="c1"># Get the parameter associated with that link</span>
+<span class="n">par</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Parameter &#34;doth_rate&#34; (&#39;0-4&#39;, &#39;doth_rate&#39;)
+</pre></div></div>
+</div>
+<p>This functionality can be extremely useful in exploratory analysis because it makes it easy to trace through different parts of the model.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="Plotting.html" class="btn btn-neutral float-right" title="Plotting Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Model-dev.html" class="btn btn-neutral float-left" title="Models (implementation)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Atomica Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
