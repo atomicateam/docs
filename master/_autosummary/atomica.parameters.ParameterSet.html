@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.25.2
+                1.25.5
               </div>
             
           
@@ -98,7 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
 </ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
@@ -287,13 +287,8 @@ the difference in how they are formatted in the databook</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.get_par" title="atomica.parameters.ParameterSet.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a></p></td>
 <td><p>Retrieve parameter instance</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_calibration</span></code></p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">rtype</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
-</dd>
-</dl>
-</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.load_calibration" title="atomica.parameters.ParameterSet.load_calibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_calibration</span></code></a></p></td>
+<td><p>Load calibration y-factors</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.sample" title="atomica.parameters.ParameterSet.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample</span></code></a></p></td>
 <td><p>Return a sampled copy of the ParameterSet</p></td>
@@ -325,7 +320,7 @@ that don’t exist (e.g. due to missing population types) - these can be identif
 with <code class="docutils literal notranslate"><span class="pre">pd.isna</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Spreadsheet containing y-factors in tabular form</p>
@@ -353,6 +348,30 @@ to return a <a class="reference internal" href="atomica.parameters.Parameter.htm
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A <a class="reference internal" href="atomica.parameters.Parameter.html#atomica.parameters.Parameter" title="atomica.parameters.Parameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parameter</span></code></a> instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet.load_calibration">
+<span class="sig-name descname"><span class="pre">load_calibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spreadsheet</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.load_calibration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.load_calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load calibration y-factors</p>
+<p>This function reads a spreadsheet created by <code class="docutils literal notranslate"><span class="pre">ParameterSet.save_calibration()</span></code> and
+inserts the y-factors. It is permissive in that</p>
+<ul class="simple">
+<li><p>If y-factors are present in the spreadsheet and not in the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> then they
+will be skipped</p></li>
+<li><p>If y-factors are missing in the spreadsheet, the existing values will be maintained</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spreadsheet</strong> (<a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
 </dd>
 </dl>
 </dd></dl>

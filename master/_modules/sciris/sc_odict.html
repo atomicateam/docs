@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                1.25.2
+                1.25.5
               </div>
             
           
@@ -96,7 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
 </ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../_autosummary/atomica.html">atomica</a></li>
 </ul>
@@ -456,6 +456,26 @@
     <span class="k">def</span> <span class="nf">_repr_pretty_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">cycle</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c1"># pragma: no cover</span>
         <span class="sd">&#39;&#39;&#39; Function to fix __repr__ in IPython&#39;&#39;&#39;</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">return</span>
+
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict2</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Allow two dictionaries to be added (merged).</span>
+
+<span class="sd">        **Example**::</span>
+
+<span class="sd">            dict1 = sc.odict(a=3, b=4)</span>
+<span class="sd">            dict2 = sc.odict(c=5, d=7)</span>
+<span class="sd">            dict3 = dict1 + dict2</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">ut</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict2</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict2</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Allows sum() to work correctly &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dict2</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">dict2</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">disp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">showmultilines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">divider</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dividerthresh</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">numindents</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">numformat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxitems</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -464,8 +484,7 @@
 
 <span class="sd">        **Example**::</span>
 
-<span class="sd">            import pylab as pl</span>
-<span class="sd">            z = odict().make(keys=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;], vals=(10*pl.rand(3)).tolist())</span>
+<span class="sd">            z = sc.odict().make(keys=[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;], vals=[4.293487,3,6])</span>
 <span class="sd">            z.disp(sigfigs=3)</span>
 <span class="sd">            z.disp(numformat=&#39;%0.6f&#39;)</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -1035,6 +1054,11 @@
         <span class="k">return</span> <span class="n">iterator</span>
 
 
+    <span class="k">def</span> <span class="nf">enumvalues</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Alias for enumvals(). New in version 1.2.0. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enumvals</span><span class="p">(</span><span class="n">transpose</span><span class="o">=</span><span class="n">transpose</span><span class="p">)</span>
+
+
     <span class="k">def</span> <span class="nf">enumitems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns tuple of 3 things: index, key, value.</span>
@@ -1080,7 +1104,7 @@
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return a list of items, as in Python 2. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Return a list of items (as in Python 2). &quot;&quot;&quot;</span>
         <span class="n">iterator</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span> <span class="n">iterator</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">transposelist</span><span class="p">(</span><span class="n">iterator</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">iterator</span>
@@ -1088,6 +1112,22 @@
     <span class="k">def</span> <span class="nf">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Alias to items() &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="n">transpose</span><span class="o">=</span><span class="n">transpose</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">makenested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Alias to sc.makenested(odict); see sc.makenested() for full documentation. New in version 1.2.0. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">ut</span><span class="o">.</span><span class="n">makenested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getnested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Alias to sc.getnested(odict); see sc.makenested() for full documentation. New in version 1.2.0. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">ut</span><span class="o">.</span><span class="n">getnested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setnested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Alias to sc.setnested(odict); see sc.makenested() for full documentation. New in version 1.2.0. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">ut</span><span class="o">.</span><span class="n">setnested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">iternested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Alias to sc.iternested(odict); see sc.makenested() for full documentation. New in version 1.2.0. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">ut</span><span class="o">.</span><span class="n">iternested</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">objdict</span><span class="p">(</span><span class="n">odict</span><span class="p">):</span>

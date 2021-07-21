@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                1.25.2
+                1.25.5
               </div>
             
           
@@ -96,7 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../library/index.html">Model library</a></li>
 </ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../_autosummary/atomica.html">atomica</a></li>
 </ul>
@@ -210,7 +210,7 @@
 
 <span class="sd">    - Spending (in units of people/year)</span>
 <span class="sd">    - Capacity (in units of people/year)</span>
-<span class="sd">    - Fraction/proportion coverage</span>
+<span class="sd">    - Fraction/proportion coverage (dimensionless - NOT in units of &#39;/year&#39;)</span>
 
 <span class="sd">    which thus provides the underlying implementation for program-related scenarios. The</span>
 <span class="sd">    :class:`ProgramSet` and :class:`Program` methods access and use the :class:`ProgramInstructions`</span>
@@ -246,7 +246,8 @@
 <span class="sd">    :param capacity: Overwrites to capacity. This is a dict keyed by program name, containing a scalar capacity or a TimeSeries of capacity values</span>
 <span class="sd">                     For convenience, the capacity overwrite should be in units of &#39;people/year&#39; and it will be automatically</span>
 <span class="sd">                     converted to a per-timestep value based on the units for the program&#39;s unit cost.</span>
-<span class="sd">    :param coverage: Overwrites to proportion coverage. This is a dict keyed by program name, containing a scalar coverage or a TimeSeries of coverage values</span>
+<span class="sd">    :param coverage: Overwrites to proportion coverage. This is a dict keyed by program name, containing a scalar coverage or a TimeSeries of coverage values.</span>
+<span class="sd">                     This</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1212,7 +1213,7 @@
 
         <span class="k">return</span> <span class="n">capacities</span></div>
 
-<div class="viewcode-block" id="ProgramSet.get_prop_coverage"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_prop_coverage">[docs]</a>    <span class="k">def</span> <span class="nf">get_prop_coverage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">capacities</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">num_eligible</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="ProgramSet.get_prop_coverage"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_prop_coverage">[docs]</a>    <span class="k">def</span> <span class="nf">get_prop_coverage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">capacities</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">num_eligible</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return fractional coverage</span>
 
@@ -1228,12 +1229,13 @@
 <span class="sd">        - instructions can override the coverage (for coverage scenarios)</span>
 <span class="sd">        - Programs can contain saturation constraints</span>
 
+<span class="sd">        This function returns *dimensionless* coverage (i.e. not coverage/year)</span>
+
 <span class="sd">        :param tvec: scalar year, or array of years - this is required to interpolate time-varying saturation values</span>
 <span class="sd">        :param capacities: dict of program coverages, should match the available programs (typically the output of ``ProgramSet.get_capacities()``)</span>
 <span class="sd">                           Note that since the capacity and eligible compartment sizes are being compared here,</span>
 <span class="sd">                           the capacity needs to be in units of &#39;people&#39; (not &#39;people/year&#39;) at this point</span>
 <span class="sd">        :param num_eligible: dict of number of people covered by each program, computed externally and with one entry for each program</span>
-<span class="sd">        :param dt: simulation timestep</span>
 <span class="sd">        :param instructions: optionally specify instructions, which can supply a coverage overwrite</span>
 <span class="sd">        :return: Dict like ``{prog_name: np.array()}`` with fractional coverage values (dimensionless)</span>
 
@@ -1242,14 +1244,12 @@
         <span class="n">prop_coverage</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>  <span class="c1"># Initialise outputs</span>
         <span class="k">for</span> <span class="n">prog</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">programs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">instructions</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">prog</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">instructions</span><span class="o">.</span><span class="n">coverage</span><span class="p">:</span>
+                <span class="c1"># Note that since the coverage overwrite does not get scaled by dt, the coverage overwrite is specified as the</span>
+                <span class="c1"># timestep coverage to use for each program, not the annual coverage</span>
                 <span class="n">prop_coverage</span><span class="p">[</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">prog</span><span class="o">.</span><span class="n">get_prop_covered</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">capacities</span><span class="p">[</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="n">num_eligible</span><span class="p">[</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Note that coverage overwrites are specified in dimensionless units, therefore no dt adjustment is made here</span>
                 <span class="n">prop_coverage</span><span class="p">[</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">instructions</span><span class="o">.</span><span class="n">coverage</span><span class="p">[</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">tvec</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;previous&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">prog</span><span class="o">.</span><span class="n">is_one_off</span><span class="p">:</span>
-                    <span class="c1"># Scale by dt beforehand, so that a timestep coverage of 1 can be achieved with an annual coverage</span>
-                    <span class="c1"># greater than 1 - that is, the number of people covered in a year relative to the CURRENT</span>
-                    <span class="c1"># compartment size</span>
-                    <span class="n">prop_coverage</span><span class="p">[</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">*=</span> <span class="n">dt</span>
                 <span class="n">prop_coverage</span><span class="p">[</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">minimum</span><span class="p">(</span><span class="n">prop_coverage</span><span class="p">[</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">prop_coverage</span></div>
@@ -1610,7 +1610,8 @@
 <span class="sd">                             programs in `self.progs`. Note that `coverage` is expected to be a ``np.array``</span>
 <span class="sd">                             (such that that generated by :meth:`ProgramSet.get_prop_coverage`). However,</span>
 <span class="sd">                             because the modality calculations only work for scalars, only the first entry</span>
-<span class="sd">                             in the array will be used.</span>
+<span class="sd">                             in the array will be used. Note that the coverage in this dictionary should be</span>
+<span class="sd">                             dimensionless.</span>
 <span class="sd">        :return: A scalar outcome (of type `np.double` or similar i.e. _not_ an array)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
