@@ -1,0 +1,549 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>UDT model &mdash; Atomica  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="UDT model with dynamics" href="udt_dyn.html" />
+    <link rel="prev" title="TB simple with dynamics" href="tb_simple_dyn.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Atomica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.25.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general/index.html">General content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Model library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cervicalcancer.html">Cervical cancer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diabetes.html">Diabetes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dt.html">Diagnosis-Treated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hiv.html">HIV without dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hiv_dyn.html">HIV with dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hypertension.html">Hypertension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hypertension_dyn.html">Hypertension with dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service.html">Service modalities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sir.html">SIR model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tb.html">TB full model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tb_simple.html">TB simple model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tb_simple_dyn.html">TB simple with dynamics</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">UDT model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#contents">Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compartments">Compartments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-undiagnosed">Compartment: Undiagnosed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-diagnosed">Compartment: Diagnosed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment-treated">Compartment: Treated</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#characteristics">Characteristics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-all-people-with-condition">Characteristic: All people with condition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-diagnosed-people">Characteristic: Diagnosed people</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-currently-treated">Characteristic: Currently treated</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-annual-number-of-new-diagnoses">Parameter: Annual number of new diagnoses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-diagnosis-rate">Parameter: Diagnosis rate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-annual-number-newly-initiated-onto-treatment">Parameter: Annual number newly initiated onto treatment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-initiation-rate">Parameter: Initiation rate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-annual-number-lost-to-follow-up">Parameter: Annual number lost to follow-up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameter-loss-to-follow-up-rate">Parameter: Loss-to-follow-up rate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interactions">Interactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cascades">Cascades</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cascade-cascade">Cascade: Cascade</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="udt_dyn.html">UDT model with dynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usdt.html">USDT model</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/atomica.html">atomica</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Atomica</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Model library</a> &raquo;</li>
+        
+      <li>UDT model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="udt-model">
+<h1>UDT model<a class="headerlink" href="#udt-model" title="Permalink to this headline">¶</a></h1>
+<p><strong>Name</strong>: UDT</p>
+<p><strong>Description</strong>: UDT example</p>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="#compartments">Compartments</a></p></li>
+<li><p><a class="reference external" href="#characteristics">Characteristics</a></p></li>
+<li><p><a class="reference external" href="#parameters">Parameters</a></p></li>
+<li><p><a class="reference external" href="#interactions">Interactions</a></p></li>
+<li><p><a class="reference external" href="#cascades">Cascades</a></p></li>
+</ul>
+</div>
+<div class="section" id="compartments">
+<h2>Compartments<a class="headerlink" href="#compartments" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="compartment-undiagnosed">
+<h3>Compartment: Undiagnosed<a class="headerlink" href="#compartment-undiagnosed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">undx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+<div class="section" id="compartment-diagnosed">
+<h3>Compartment: Diagnosed<a class="headerlink" href="#compartment-diagnosed" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">dx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+<div class="section" id="compartment-treated">
+<h3>Compartment: Treated<a class="headerlink" href="#compartment-treated" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">tx</span></code></p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="characteristic-all-people-with-condition">
+<h3>Characteristic: All people with condition<a class="headerlink" href="#characteristic-all-people-with-condition" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_people</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Undiagnosed</p></li>
+<li><p>Diagnosed</p></li>
+<li><p>Treated</p></li>
+</ul>
+</li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+<div class="section" id="characteristic-diagnosed-people">
+<h3>Characteristic: Diagnosed people<a class="headerlink" href="#characteristic-diagnosed-people" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_dx</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Diagnosed</p></li>
+<li><p>Treated</p></li>
+</ul>
+</li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+<div class="section" id="characteristic-currently-treated">
+<h3>Characteristic: Currently treated<a class="headerlink" href="#characteristic-currently-treated" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">all_tx</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Includes:</p>
+<ul>
+<li><p>Treated</p></li>
+</ul>
+</li>
+<li><p>Appears in the databook</p></li>
+<li><p>Databook values will be used for model initialization</p></li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="parameter-annual-number-of-new-diagnoses">
+<h3>Parameter: Annual number of new diagnoses<a class="headerlink" href="#parameter-annual-number-of-new-diagnoses" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_diag</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Diagnosis rate”</p></li>
+</ul>
+</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+<div class="section" id="parameter-diagnosis-rate">
+<h3>Parameter: Diagnosis rate<a class="headerlink" href="#parameter-diagnosis-rate" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">diag</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Undiagnosed” to “Diagnosed”</p></li>
+</ul>
+</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_diag/max(undx,num_diag)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Undiagnosed”</p></li>
+<li><p>“Annual number of new diagnoses”</p></li>
+</ul>
+</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+<div class="section" id="parameter-annual-number-newly-initiated-onto-treatment">
+<h3>Parameter: Annual number newly initiated onto treatment<a class="headerlink" href="#parameter-annual-number-newly-initiated-onto-treatment" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_initiate</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Initiation rate”</p></li>
+</ul>
+</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+<div class="section" id="parameter-initiation-rate">
+<h3>Parameter: Initiation rate<a class="headerlink" href="#parameter-initiation-rate" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">initiate</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Diagnosed” to “Treated”</p></li>
+</ul>
+</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_initiate/max(dx,num_initiate)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Diagnosed”</p></li>
+<li><p>“Annual number newly initiated onto treatment”</p></li>
+</ul>
+</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+<div class="section" id="parameter-annual-number-lost-to-follow-up">
+<h3>Parameter: Annual number lost to follow-up<a class="headerlink" href="#parameter-annual-number-lost-to-follow-up" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">num_loss</span></code></p></li>
+<li><p>Units/format: number</p></li>
+<li><p>Value restrictions: At least 0</p></li>
+<li><p>Default value: None</p></li>
+<li><p>Appears in the databook</p></li>
+<li><p>Used to compute:</p>
+<ul>
+<li><p>“Loss-to-follow-up rate”</p></li>
+</ul>
+</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+<div class="section" id="parameter-loss-to-follow-up-rate">
+<h3>Parameter: Loss-to-follow-up rate<a class="headerlink" href="#parameter-loss-to-follow-up-rate" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Code name: <code class="docutils literal notranslate"><span class="pre">loss</span></code></p></li>
+<li><p>Value can be used for calibration</p></li>
+<li><p>Units/format: probability</p></li>
+<li><p>Value restrictions: 0-1.0000</p></li>
+<li><p>Contributes to transitions from:</p>
+<ul>
+<li><p>“Treated” to “Diagnosed”</p></li>
+</ul>
+</li>
+<li><p>Default value: None</p></li>
+<li><p>Does not appear in the databook</p></li>
+<li><p>This parameter’s value is computed by a function: <code class="docutils literal notranslate"><span class="pre">num_loss/max(tx,num_loss)</span></code></p></li>
+<li><p>Depends on:</p>
+<ul>
+<li><p>“Treated”</p></li>
+<li><p>“Annual number lost to follow-up”</p></li>
+</ul>
+</li>
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Data entry guidance: <ENTER GUIDANCE></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="interactions">
+<h2>Interactions<a class="headerlink" href="#interactions" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="cascades">
+<h2>Cascades<a class="headerlink" href="#cascades" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cascade-cascade">
+<h3>Cascade: Cascade<a class="headerlink" href="#cascade-cascade" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Description: <ENTER DESCRIPTION></p></li>
+<li><p>Stages:</p>
+<ul>
+<li><p>All people with condition</p>
+<ul>
+<li><p>All people with condition</p></li>
+</ul>
+</li>
+<li><p>Diagnosed people</p>
+<ul>
+<li><p>Diagnosed people</p></li>
+</ul>
+</li>
+<li><p>Currently treated</p>
+<ul>
+<li><p>Currently treated</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="udt_dyn.html" class="btn btn-neutral float-right" title="UDT model with dynamics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tb_simple_dyn.html" class="btn btn-neutral float-left" title="TB simple with dynamics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Atomica Team.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
