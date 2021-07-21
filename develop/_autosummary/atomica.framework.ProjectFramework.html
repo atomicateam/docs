@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.25.4
+                1.25.5
               </div>
             
           
@@ -98,7 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
 </ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
@@ -267,6 +267,27 @@ the framework should still be validated before it is used.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.pop_types" title="atomica.framework.ProjectFramework.pop_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop_types</span></code></a></p></td>
 <td><p>Return available population types</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.uid" title="atomica.framework.ProjectFramework.uid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uid</span></code></a></p></td>
+<td><p>Unique identifier</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.version" title="atomica.framework.ProjectFramework.version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></a></p></td>
+<td><p>Current Atomica version</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.gitinfo" title="atomica.framework.ProjectFramework.gitinfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gitinfo</span></code></a></p></td>
+<td><p>Atomica Git version information, if being run in a Git repository</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.created" title="atomica.framework.ProjectFramework.created"><code class="xref py py-obj docutils literal notranslate"><span class="pre">created</span></code></a></p></td>
+<td><p>Creation time</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.modified" title="atomica.framework.ProjectFramework.modified"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modified</span></code></a></p></td>
+<td><p>Last modified time</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.sheets" title="atomica.framework.ProjectFramework.sheets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sheets</span></code></a></p></td>
+<td><p>Stores a dict of Pandas dataframes organized by sheet from the Excel file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.framework.ProjectFramework.spreadsheet" title="atomica.framework.ProjectFramework.spreadsheet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spreadsheet</span></code></a></p></td>
+<td><p>A <code class="docutils literal notranslate"><span class="pre">sc.Spreadsheet</span></code> object containing the original Excel file</p></td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
@@ -319,7 +340,7 @@ Excel file) is also included here. Therefore, downstream code does not need to d
 explicitly defined cascades or automatically generated cascades.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">odict</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v1.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">odict</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A dict keyed by cascade name, containing a <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> with the definition of each cascade from the framework</p>
@@ -610,7 +631,7 @@ of the framework, where the key is the population type code name, and the value 
 with all of the attributes (columns) in the dataframe.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">odict</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v1.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">odict</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A dictionary with the population types defined in the framework</p>
@@ -652,7 +673,7 @@ frameworks to be viewed in Excel.</p>
 <span class="sig-name descname"><span class="pre">to_spreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.to_spreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.to_spreadsheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return content as a Sciris Spreadsheet</p>
 <p>This
-:rtype: <a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a>
+:rtype: <a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a>
 :return: A <code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.Spreadsheet</span></code> instance</p>
 </dd></dl>
 

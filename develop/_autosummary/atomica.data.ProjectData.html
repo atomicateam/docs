@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.25.4
+                1.25.5
               </div>
             
           
@@ -98,7 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../library/index.html">Model library</a></li>
 </ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="atomica.html">atomica</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="atomica.calibration.html">atomica.calibration</a></li>
@@ -224,7 +224,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="atomica.data.ProjectData">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">atomica.data.</span></span><span class="sig-name descname"><span class="pre">ProjectData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">framework</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/data.html#ProjectData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.data.ProjectData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_utils.prettyobj.html#sciris.sc_utils.prettyobj" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.sc_utils.prettyobj</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_utils.prettyobj.html#sciris.sc_utils.prettyobj" title="(in Sciris v1.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.sc_utils.prettyobj</span></code></a></p>
 <p>Store project data: class-equivalent of Databooks</p>
 <p>This class is used to load and work with data that is entered in databooks. It
 provides the interface for</p>
@@ -252,6 +252,24 @@ the static methods</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#atomica.data.ProjectData.start_year" title="atomica.data.ProjectData.start_year"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_year</span></code></a></p></td>
 <td><p>Return the start year from the databook</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.data.ProjectData.pops" title="atomica.data.ProjectData.pops"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pops</span></code></a></p></td>
+<td><p>full_name, ‘type’:pop_type}</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.data.ProjectData.transfers" title="atomica.data.ProjectData.transfers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transfers</span></code></a></p></td>
+<td><p>This stores a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code> instances for transfers</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.data.ProjectData.interpops" title="atomica.data.ProjectData.interpops"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpops</span></code></a></p></td>
+<td><p>This stores a list of <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code> instances for interactions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.data.ProjectData.tvec" title="atomica.data.ProjectData.tvec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvec</span></code></a></p></td>
+<td><p>This is the data’s tvec used when instantiating new tables.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.data.ProjectData.tdve" title="atomica.data.ProjectData.tdve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tdve</span></code></a></p></td>
+<td><p>This is an odict storing <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentValuesEntry</span></code> instances keyed by the code name of the TDVE</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.data.ProjectData.tdve_pages" title="atomica.data.ProjectData.tdve_pages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tdve_pages</span></code></a></p></td>
+<td><p>This is an odict mapping worksheet name to an (ordered) list of TDVE code names appearing on that sheet</p></td>
 </tr>
 </tbody>
 </table>
@@ -655,7 +673,7 @@ start year, if using all of the data in the databook is desired.</p>
 <dd><p>Return content as a Sciris Spreadsheet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v1.2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.Spreadsheet</span></code> instance</p>
