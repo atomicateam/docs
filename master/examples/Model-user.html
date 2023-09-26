@@ -12,9 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -37,7 +39,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2507,7 +2509,7 @@
            <div itemprop="articleBody">
              
   <section id="Results-and-Models">
-<h1>Results and Models<a class="headerlink" href="#Results-and-Models" title="Permalink to this heading">¶</a></h1>
+<h1>Results and Models<a class="headerlink" href="#Results-and-Models" title="Link to this heading">¶</a></h1>
 <p>This page provides an overview of Result objects with a view to key interactions and access to model outputs.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -2560,6 +2562,8 @@ Parameter &#34;px_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 Parameter &#34;nd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Parameter &#34;nm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2567,7 +2571,7 @@ Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.440s
+Elapsed time for running &#34;default&#34;: 0.501s
 </pre></div></div>
 </div>
 <p>The plotting documentation discusses how to generate plots in detail. This documentation will thus focus on methods and functionality of the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object itself, with a view to</p>
@@ -2576,7 +2580,7 @@ Elapsed time for running &#34;default&#34;: 0.440s
 <li><p>Accessing and interacting with raw values</p></li>
 </ol>
 <section id="Pre-specified-plots">
-<h2>Pre-specified plots<a class="headerlink" href="#Pre-specified-plots" title="Permalink to this heading">¶</a></h2>
+<h2>Pre-specified plots<a class="headerlink" href="#Pre-specified-plots" title="Link to this heading">¶</a></h2>
 <p>It is possible to pre-define plots in the Framework by creating a sheet called ‘Plots’. This sheet contains a specification of a set of plots to generate:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -2851,7 +2855,7 @@ Elapsed time for running &#34;default&#34;: 0.440s
 <p>Calling <code class="docutils literal notranslate"><span class="pre">Result.plot()</span></code> with no arguments will result in all plots in the Framework being produced. At the moment, it is only possible to define series plots in the framework.</p>
 </section>
 <section id="Exporting-results">
-<h2>Exporting results<a class="headerlink" href="#Exporting-results" title="Permalink to this heading">¶</a></h2>
+<h2>Exporting results<a class="headerlink" href="#Exporting-results" title="Link to this heading">¶</a></h2>
 <p>Many key outputs are generated by aggregation of raw model quantities - for example, in the demo TB model, the number of new cases is given by aggregating together several different modes of latent activation. Thus, often the main quantities for analysis are those defined as plottable quantities on the Framework’s ‘Plots’ sheet.</p>
 <p>These outputs can be written to an Excel file using the <code class="docutils literal notranslate"><span class="pre">at.export_results()</span></code> function. This is not a method of the <code class="docutils literal notranslate"><span class="pre">Result</span></code> because it is possible to export multiple results at the same time, which is shown later in this document.</p>
 <div class="nbinput docutils container">
@@ -2867,6 +2871,42 @@ Elapsed time for running &#34;default&#34;: 0.440s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 Series(parset_default,total,im_lat_div) contains NaNs
 Series(parset_default,total,im_act_div) contains NaNs
 </pre></div></div>
@@ -2893,9 +2933,9 @@ Series(parset_default,total,im_act_div) contains NaNs
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.602s
-Elapsed time for running &#34;default&#34;: 0.610s
-Elapsed time for running &#34;default&#34;: 0.794s
+Elapsed time for running &#34;default&#34;: 0.652s
+Elapsed time for running &#34;default&#34;: 0.667s
+Elapsed time for running &#34;default&#34;: 0.634s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2903,6 +2943,42 @@ Elapsed time for running &#34;default&#34;: 0.794s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 Series(Default budget,total,im_lat_div) contains NaNs
 Series(Default budget,total,im_act_div) contains NaNs
 </pre></div></div>
@@ -2924,6 +3000,42 @@ Series(Default budget,total,im_act_div) contains NaNs
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 Series(Zero budget,total,ac_diag_rate) contains NaNs
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 Series(Default budget,total,im_lat_div) contains NaNs
 Series(Doubled budget,total,im_lat_div) contains NaNs
 Series(Zero budget,total,im_lat_div) contains NaNs
@@ -2951,6 +3063,42 @@ Series(Zero budget,total,im_act_div) contains NaNs
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 Series(Zero budget,total,ac_diag_rate) contains NaNs
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 Series(Default budget,total,im_lat_div) contains NaNs
 Series(Doubled budget,total,im_lat_div) contains NaNs
 Series(Zero budget,total,im_lat_div) contains NaNs
@@ -2965,7 +3113,7 @@ Series(Zero budget,total,im_act_div) contains NaNs
 <p>Finally, note that it was only necessary to pass a list of results to <code class="docutils literal notranslate"><span class="pre">at.export_results</span></code> - this means that it is possible to combine arbitrary results into a single spreadsheet as required (they do not all have to come from the same set of scenarios or optimization).</p>
 </section>
 <section id="Exporting-raw-results">
-<h2>Exporting raw results<a class="headerlink" href="#Exporting-raw-results" title="Permalink to this heading">¶</a></h2>
+<h2>Exporting raw results<a class="headerlink" href="#Exporting-raw-results" title="Link to this heading">¶</a></h2>
 <p>The model contains a raw representation of the values at each timestep associated with parameters, compartments, characteristics, and flow rates (links). These raw values can be exported using the <code class="docutils literal notranslate"><span class="pre">Result.export_raw()</span></code> method of the result object. This method dumps the raw output for a single result. For example:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -3227,7 +3375,7 @@ Series(Zero budget,total,im_act_div) contains NaNs
 <p>Using the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> can provide a convenient way to perform extra operations or to customize the spreadsheet.</p>
 </section>
 <section id="Accessing-raw-values">
-<h2>Accessing raw values<a class="headerlink" href="#Accessing-raw-values" title="Permalink to this heading">¶</a></h2>
+<h2>Accessing raw values<a class="headerlink" href="#Accessing-raw-values" title="Link to this heading">¶</a></h2>
 <p>Within the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object, a <code class="docutils literal notranslate"><span class="pre">Model</span></code> object stores all of the underlying quantities. Within the <code class="docutils literal notranslate"><span class="pre">Model</span></code>, they are stored hierarchically within <code class="docutils literal notranslate"><span class="pre">Population</span></code> objects. For example:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -3479,7 +3627,7 @@ Compartment &#34;sus&#34; (&#39;0-4&#39;, &#39;sus&#39;)
 </pre></div></div>
 </div>
 <section id="Traversing-the-graph">
-<h3>Traversing the graph<a class="headerlink" href="#Traversing-the-graph" title="Permalink to this heading">¶</a></h3>
+<h3>Traversing the graph<a class="headerlink" href="#Traversing-the-graph" title="Link to this heading">¶</a></h3>
 <p>The integration objects (such as <code class="docutils literal notranslate"><span class="pre">Compartment</span></code>, <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> etc.) are very powerful because they store information about the relationship between quantities in the computational graph, which is not present if simply working with the values. These relationships are discussed in detail in the documentation of the model internals, but the most useful quantities are</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Compartment.inlinks</span></code> - All links flowing into the compartment</p></li>

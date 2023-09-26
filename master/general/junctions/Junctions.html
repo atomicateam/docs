@@ -11,9 +11,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -36,7 +38,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2506,7 +2508,7 @@
            <div itemprop="articleBody">
              
   <section id="junction-overview">
-<h1>Junction overview<a class="headerlink" href="#junction-overview" title="Permalink to this heading">¶</a></h1>
+<h1>Junction overview<a class="headerlink" href="#junction-overview" title="Link to this heading">¶</a></h1>
 <p>Junctions offer a way to re-parametrize transitions when the relative proportions of outflows are constrained. As discussed in other pages, they are special compartments that are emptied entirely at the end of each timestep. As a result, the total number of people leaving the compartment is not determined by any parameter values, because it directly corresponds to the number of people in the compartment. Instead, the parameter values are all proportions that govern the relative outflows.</p>
 <p>The general layout of a junction is shown below:</p>
 <a class="reference internal image-reference" href="../../_images/junction_example.png"><img alt="../../_images/junction_example.png" src="../../_images/junction_example.png" style="width: 600px;" /></a>
@@ -2521,7 +2523,7 @@
 <a class="reference internal image-reference" href="../../_images/j_framework_2.png"><img alt="../../_images/j_framework_2.png" src="../../_images/j_framework_2.png" style="width: 600px;" /></a>
 <p>This syntax means that the flow from the junction to <code class="docutils literal notranslate"><span class="pre">compartment_3</span></code> would equal <code class="docutils literal notranslate"><span class="pre">max(0,1-A-B)</span></code>. That is, if <span class="math notranslate nohighlight">\(A+B&lt;1\)</span> then the residual will be assigned to <span class="math notranslate nohighlight">\(C\)</span>. Consider the following examples for the compartments shown in the schematic above:</p>
 <table class="docutils align-default" id="id1">
-<caption><span class="caption-text">Example 1 - scale up, normal junction</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Example 1 - scale up, normal junction</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Transition</p></th>
 <th class="head"><p>Parameter value</p></th>
@@ -2545,7 +2547,7 @@
 </table>
 <p>In this example, all outflows are specified and they sum to a value of 0.5. As a result, they are all rescaled so that the total outflows equal 1.</p>
 <table class="docutils align-default" id="id2">
-<caption><span class="caption-text">Example 2 - scale up, residual junction</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Example 2 - scale up, residual junction</span><a class="headerlink" href="#id2" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Transition</p></th>
 <th class="head"><p>Parameter value</p></th>
@@ -2569,7 +2571,7 @@
 </table>
 <p>In this example, the outflow <code class="docutils literal notranslate"><span class="pre">C</span></code> is specified as a residual, and parameter values provided only for <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code>. The sum of the provided outflows is 0.4. However, instead of being rescaled to 1 like in the previous example, the remaining 0.6 is assigned to <code class="docutils literal notranslate"><span class="pre">C</span></code>. Therefore, 60 people move via <code class="docutils literal notranslate"><span class="pre">C</span></code>. The total outflow is still 100 people, as required to empty the junction.</p>
 <table class="docutils align-default" id="id3">
-<caption><span class="caption-text">Example 3 - scale down, normal junction</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Example 3 - scale down, normal junction</span><a class="headerlink" href="#id3" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Transition</p></th>
 <th class="head"><p>Parameter value</p></th>
@@ -2593,7 +2595,7 @@
 </table>
 <p>In this example, the outflows all sum to a value greater than 1. All of them get rescaled proportionately, so the outflow is the same for all three transitions, and the total outflow is 100.</p>
 <table class="docutils align-default" id="id4">
-<caption><span class="caption-text">Example 4 - scale down, residual junction</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Example 4 - scale down, residual junction</span><a class="headerlink" href="#id4" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Transition</p></th>
 <th class="head"><p>Parameter value</p></th>

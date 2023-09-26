@@ -12,9 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -37,7 +39,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2507,7 +2509,7 @@
            <div itemprop="articleBody">
              
   <section id="Probability-rescaling">
-<h1>Probability rescaling<a class="headerlink" href="#Probability-rescaling" title="Permalink to this heading">¶</a></h1>
+<h1>Probability rescaling<a class="headerlink" href="#Probability-rescaling" title="Link to this heading">¶</a></h1>
 <p>In Atomica, there are two key conversions for probabilities</p>
 <ol class="arabic simple">
 <li><p>Converting between (mean) durations and probabilities - for example, when users enter a treatment duration, this needs to be converted into a probability of leaving the treatment compartment due to treatment completion</p></li>
@@ -2897,7 +2899,7 @@ Ratio of steady state compartments: 2.0033
 \[e^x \approx 1 - x\]</div>
 <p>And so we find that <code class="docutils literal notranslate"><span class="pre">1.0</span> <span class="pre">-</span> <span class="pre">np.exp(-dt/dur))</span></code> approaches <code class="docutils literal notranslate"><span class="pre">dt/dur</span></code> for small <code class="docutils literal notranslate"><span class="pre">dt</span></code>.</p>
 <section id="Geometric-vs-Exponential-distribution-for-durations">
-<h2>Geometric vs Exponential distribution for durations<a class="headerlink" href="#Geometric-vs-Exponential-distribution-for-durations" title="Permalink to this heading">¶</a></h2>
+<h2>Geometric vs Exponential distribution for durations<a class="headerlink" href="#Geometric-vs-Exponential-distribution-for-durations" title="Link to this heading">¶</a></h2>
 <p>Certainly the fact that Poisson-based duration conversion <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">=</span> <span class="pre">(1.0</span> <span class="pre">-</span> <span class="pre">np.exp(-dt/dur)))</span></code> has the correct behaviour for small step sizes suggests that this approach could validly be used in the case where the step size is very small. But why does it perform so poorly for small durations? Or more specifically, durations that are similar to the step size? Consider what happens in the case where we have a mean duration that is exactly the same as the simulation timestep. With discrete simulation
 timesteps, we <em>enforce</em> that the minimum time spent in a state is one timestep. So when computing the time taken to empty the compartment, if anyone takes longer than one timestep, the mean time taken to transition must necessarily be higher than 1. The timestep imposes a minimum value for the mean duration. However, if <code class="docutils literal notranslate"><span class="pre">dt=dur</span></code> then <code class="docutils literal notranslate"><span class="pre">(1.0</span> <span class="pre">-</span> <span class="pre">np.exp(-dt/dur)))</span></code> means that only 63% of people make the transition in the first timestep. So the mean time taken to leave the compartment is
 significantly overestimated due to the large step size. If we consider a short duration, like 0.25 years, in the continuous case:</p>
@@ -2998,7 +3000,7 @@ Ratio of steady state compartments: 1.0000
 </div>
 </section>
 <section id="Preserving-durations-vs-preserving-annual-flows">
-<h2>Preserving durations vs preserving annual flows<a class="headerlink" href="#Preserving-durations-vs-preserving-annual-flows" title="Permalink to this heading">¶</a></h2>
+<h2>Preserving durations vs preserving annual flows<a class="headerlink" href="#Preserving-durations-vs-preserving-annual-flows" title="Link to this heading">¶</a></h2>
 <p>Part of the motivation for the original timestep conversion was to preserve the annual flow. For instance, suppose there were 100 people in a compartment, and an annual transition probability of 0.6. This would mean that in the first timestep, 60 people would transition out of the compartment. If we had a timestep of 0.25 and use the conversion <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">=</span> <span class="pre">1-(1-0.6)**0.25</span> <span class="pre">=</span> <span class="pre">0.204</span></code> then the number of people remaining after 4 timesteps would be <code class="docutils literal notranslate"><span class="pre">100*(1-0.204)^4</span> <span class="pre">=</span> <span class="pre">40</span></code>. So, that conversion preserved
 the expected number of people that would flow out. Of course, this is only correct in the absence of any inflows. Because people that flow in are not eligible to leave the compartment in the same timestep, if we had an annual inflow of 100 people, with <code class="docutils literal notranslate"><span class="pre">dt=1</span></code> there would be <code class="docutils literal notranslate"><span class="pre">100*(1-0.6)+100</span> <span class="pre">=</span> <span class="pre">140</span></code> people in the compartment. Whereas with the flow-preserving conversion, we would have <code class="docutils literal notranslate"><span class="pre">((100*(1-0.204)+25)*(1-0.204)+25)...</span> <span class="pre">=</span> <span class="pre">113.2</span></code> so already the presence of any inflows suggests that the
 predicted compartment sizes under this approximation will not remain the same as the step size is changed. That said, the same is true for the geometric conversion. The difference in the two methods is that while the Poisson conversion preserves neither the annual flow nor the steady state equilibrium, the geometric conversion does preserve the latter.</p>
@@ -3014,7 +3016,7 @@ p_2 = (1-p_1)^{1/k}\end{split}\]</div>
 compartment would be due to transition out at the next timestep, so the transition fraction should be <code class="docutils literal notranslate"><span class="pre">0.0625</span></code>. This corresponds to the mean of the distribution for a geometric distribution, which is the operation that is actually performed by the model.</p>
 </section>
 <section id="Atomica-models">
-<h2>Atomica models<a class="headerlink" href="#Atomica-models" title="Permalink to this heading">¶</a></h2>
+<h2>Atomica models<a class="headerlink" href="#Atomica-models" title="Link to this heading">¶</a></h2>
 <p>Ultimately, the test is that we would expect that models in Atomica should give the same results when run at different step sizes (once the timestep is sufficiently small).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -3055,11 +3057,20 @@ compartment would be due to transition out at the next timestep, so the transiti
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_34_0.svg" src="../_images/examples_Probability-Rescaling_34_0.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_34_1.svg" src="../_images/examples_Probability-Rescaling_34_1.svg" /></div>
 </div>
 <p>Similar results are observed with the HIV dynamic model</p>
 <div class="nbinput docutils container">
@@ -3080,11 +3091,20 @@ compartment would be due to transition out at the next timestep, so the transiti
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_36_0.svg" src="../_images/examples_Probability-Rescaling_36_0.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_36_1.svg" src="../_images/examples_Probability-Rescaling_36_1.svg" /></div>
 </div>
 <p>And also in the cervical cancer model, which does not have any durations (only probability and number transition parameters). Note below that the dynamics and convergence are different in different parts of the system. Also note that the plot of compartment size alone is insufficient to fully gauge the flow rate through the compartment - the outflow is equal to the inflow in the steady state, regardless of the number of people actually in the compartment.</p>
 <div class="nbinput docutils container">
@@ -3108,17 +3128,26 @@ compartment would be due to transition out at the next timestep, so the transiti
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_38_0.svg" src="../_images/examples_Probability-Rescaling_38_0.svg" /></div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+</pre></div></div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/examples_Probability-Rescaling_38_1.svg" src="../_images/examples_Probability-Rescaling_38_1.svg" /></div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Probability-Rescaling_38_2.svg" src="../_images/examples_Probability-Rescaling_38_2.svg" /></div>
+</div>
 <p>For TB, convergence is somewhat slower, but even just switching from annual to quarterly timesteps provides a large improvement.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
@@ -3132,6 +3161,15 @@ compartment would be due to transition out at the next timestep, so the transiti
 <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_dt</span><span class="p">(</span><span class="mf">0.01</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -3151,7 +3189,7 @@ compartment would be due to transition out at the next timestep, so the transiti
 </div>
 </section>
 <section id="Conclusions">
-<h2>Conclusions<a class="headerlink" href="#Conclusions" title="Permalink to this heading">¶</a></h2>
+<h2>Conclusions<a class="headerlink" href="#Conclusions" title="Link to this heading">¶</a></h2>
 <p>Model integration is ultimately discrete, so in that sense it’s logical to use the geometric distribution to consider converting durations to timestep probabilities or converting probabilities between timestep sizes. While this results in different flow rates to the previous conversions, it appears to do a better job of preserving durations, provides more consistent results when changing the step size, and preserves the system’s equilibrium solution when changing the step size.</p>
 </section>
 </section>

@@ -10,9 +10,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -31,7 +33,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2532,7 +2534,9 @@
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">UserWarning</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="s2">&quot;openpyxl.worksheet&quot;</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="standard_formats"><a class="viewcode-back" href="../../_autosummary/atomica.excel.standard_formats.html#atomica.excel.standard_formats">[docs]</a><span class="k">def</span> <span class="nf">standard_formats</span><span class="p">(</span><span class="n">workbook</span><span class="p">):</span>
+<div class="viewcode-block" id="standard_formats">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.standard_formats.html#atomica.excel.standard_formats">[docs]</a>
+<span class="k">def</span> <span class="nf">standard_formats</span><span class="p">(</span><span class="n">workbook</span><span class="p">):</span>
     <span class="c1"># Add standard formatting to a workbook and return the set of format objects</span>
     <span class="c1"># for use when writing within the workbook</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;the formats used in the spreadsheet&quot;&quot;&quot;</span>
@@ -2576,12 +2580,18 @@
     <span class="k">return</span> <span class="n">formats</span></div>
 
 
-<div class="viewcode-block" id="apply_widths"><a class="viewcode-back" href="../../_autosummary/atomica.excel.apply_widths.html#atomica.excel.apply_widths">[docs]</a><span class="k">def</span> <span class="nf">apply_widths</span><span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="n">width_dict</span><span class="p">):</span>
+
+<div class="viewcode-block" id="apply_widths">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.apply_widths.html#atomica.excel.apply_widths">[docs]</a>
+<span class="k">def</span> <span class="nf">apply_widths</span><span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="n">width_dict</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">width</span> <span class="ow">in</span> <span class="n">width_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">worksheet</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="mf">1.1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="update_widths"><a class="viewcode-back" href="../../_autosummary/atomica.excel.update_widths.html#atomica.excel.update_widths">[docs]</a><span class="k">def</span> <span class="nf">update_widths</span><span class="p">(</span><span class="n">width_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="update_widths">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.update_widths.html#atomica.excel.update_widths">[docs]</a>
+<span class="k">def</span> <span class="nf">update_widths</span><span class="p">(</span><span class="n">width_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">column_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Keep track of required width for a column</span>
 
@@ -2606,7 +2616,10 @@
         <span class="n">width_dict</span><span class="p">[</span><span class="n">column_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">width_dict</span><span class="p">[</span><span class="n">column_index</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">contents</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="transfer_comments"><a class="viewcode-back" href="../../_autosummary/atomica.excel.transfer_comments.html#atomica.excel.transfer_comments">[docs]</a><span class="k">def</span> <span class="nf">transfer_comments</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">,</span> <span class="n">comment_source</span><span class="p">:</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="transfer_comments">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.transfer_comments.html#atomica.excel.transfer_comments">[docs]</a>
+<span class="k">def</span> <span class="nf">transfer_comments</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">,</span> <span class="n">comment_source</span><span class="p">:</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Copy comments between spreadsheets</span>
 
@@ -2651,7 +2664,10 @@
     <span class="n">target</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="copy_sheet"><a class="viewcode-back" href="../../_autosummary/atomica.excel.copy_sheet.html#atomica.excel.copy_sheet">[docs]</a><span class="k">def</span> <span class="nf">copy_sheet</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sheet_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">workbook</span><span class="p">:</span> <span class="n">xlsxwriter</span><span class="o">.</span><span class="n">Workbook</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="copy_sheet">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.copy_sheet.html#atomica.excel.copy_sheet">[docs]</a>
+<span class="k">def</span> <span class="nf">copy_sheet</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sheet_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">workbook</span><span class="p">:</span> <span class="n">xlsxwriter</span><span class="o">.</span><span class="n">Workbook</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Copy a sheet into a Workbook</span>
 
@@ -2690,7 +2706,10 @@
     <span class="n">src_workbook</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="read_tables"><a class="viewcode-back" href="../../_autosummary/atomica.excel.read_tables.html#atomica.excel.read_tables">[docs]</a><span class="k">def</span> <span class="nf">read_tables</span><span class="p">(</span><span class="n">worksheet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+
+<div class="viewcode-block" id="read_tables">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.read_tables.html#atomica.excel.read_tables">[docs]</a>
+<span class="k">def</span> <span class="nf">read_tables</span><span class="p">(</span><span class="n">worksheet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read tables from sheet</span>
 
@@ -2737,7 +2756,10 @@
     <span class="k">return</span> <span class="n">tables</span><span class="p">,</span> <span class="n">start_rows</span></div>
 
 
-<div class="viewcode-block" id="read_dataframes"><a class="viewcode-back" href="../../_autosummary/atomica.excel.read_dataframes.html#atomica.excel.read_dataframes">[docs]</a><span class="k">def</span> <span class="nf">read_dataframes</span><span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+
+<div class="viewcode-block" id="read_dataframes">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.read_dataframes.html#atomica.excel.read_dataframes">[docs]</a>
+<span class="k">def</span> <span class="nf">read_dataframes</span><span class="p">(</span><span class="n">worksheet</span><span class="p">,</span> <span class="n">merge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read dataframes from sheet</span>
 
@@ -2832,7 +2854,10 @@
     <span class="k">return</span> <span class="n">dfs</span></div>
 
 
-<div class="viewcode-block" id="TimeDependentConnections"><a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentConnections.html#atomica.excel.TimeDependentConnections">[docs]</a><span class="k">class</span> <span class="nc">TimeDependentConnections</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TimeDependentConnections">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentConnections.html#atomica.excel.TimeDependentConnections">[docs]</a>
+<span class="k">class</span> <span class="nc">TimeDependentConnections</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Structure for reading/writing interactions</span>
 
@@ -2899,7 +2924,9 @@
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;TDC </span><span class="si">%s</span><span class="s1"> &quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">title</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TimeDependentConnections.from_tables"><a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentConnections.html#atomica.excel.TimeDependentConnections.from_tables">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TimeDependentConnections.from_tables">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentConnections.html#atomica.excel.TimeDependentConnections.from_tables">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_tables</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">interaction_type</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Instantiate based on list of tables</span>
@@ -3045,7 +3072,10 @@
 
         <span class="k">return</span> <span class="n">tdc</span></div>
 
-<div class="viewcode-block" id="TimeDependentConnections.write"><a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentConnections.html#atomica.excel.TimeDependentConnections.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">,</span> <span class="n">start_row</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">widths</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TimeDependentConnections.write">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentConnections.html#atomica.excel.TimeDependentConnections.write">[docs]</a>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">,</span> <span class="n">start_row</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">widths</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write to cells in a worksheet</span>
 
@@ -3263,6 +3293,7 @@
 
         <span class="k">return</span> <span class="n">current_row</span></div>
 
+
     <span class="k">def</span> <span class="nf">_write_pop_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">,</span> <span class="n">start_row</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">boolean_choice</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">widths</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write a square matrix to Excel</span>
@@ -3341,7 +3372,10 @@
         <span class="k">return</span> <span class="n">next_row</span><span class="p">,</span> <span class="n">table_references</span><span class="p">,</span> <span class="n">values_written</span></div>
 
 
-<div class="viewcode-block" id="TimeDependentValuesEntry"><a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry">[docs]</a><span class="k">class</span> <span class="nc">TimeDependentValuesEntry</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TimeDependentValuesEntry">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry">[docs]</a>
+<span class="k">class</span> <span class="nc">TimeDependentValuesEntry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Table for time-dependent data entry</span>
 
 <span class="sd">    This class is Databooks and Program books to enter potentially time-varying data.</span>
@@ -3402,7 +3436,9 @@
 
         <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">has_data</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
 
-<div class="viewcode-block" id="TimeDependentValuesEntry.from_rows"><a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.from_rows">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TimeDependentValuesEntry.from_rows">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.from_rows">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_rows</span><span class="p">(</span><span class="n">rows</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create new instance from Excel rows</span>
@@ -3508,7 +3544,10 @@
         <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">ts_entries</span>
         <span class="k">return</span> <span class="n">tdve</span></div>
 
-<div class="viewcode-block" id="TimeDependentValuesEntry.write"><a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">,</span> <span class="n">start_row</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">widths</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+<div class="viewcode-block" id="TimeDependentValuesEntry.write">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.write">[docs]</a>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">worksheet</span><span class="p">,</span> <span class="n">start_row</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">references</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">widths</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write to cells in a worksheet</span>
 
@@ -3664,10 +3703,14 @@
                     <span class="n">worksheet</span><span class="o">.</span><span class="n">conditional_format</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;formula&quot;</span><span class="p">,</span> <span class="s2">&quot;criteria&quot;</span><span class="p">:</span> <span class="s2">&quot;=&quot;</span> <span class="o">+</span> <span class="n">fcn_empty_times</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;ignored&quot;</span><span class="p">]})</span>
                     <span class="n">worksheet</span><span class="o">.</span><span class="n">conditional_format</span><span class="p">(</span><span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;formula&quot;</span><span class="p">,</span> <span class="s2">&quot;criteria&quot;</span><span class="p">:</span> <span class="s2">&quot;=AND(</span><span class="si">%s</span><span class="s2">,NOT(ISBLANK(</span><span class="si">%s</span><span class="s2">)))&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fcn_empty_times</span><span class="p">,</span> <span class="n">xlrc</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="n">constant_index</span><span class="p">)),</span> <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="n">formats</span><span class="p">[</span><span class="s2">&quot;ignored_warning&quot;</span><span class="p">]})</span>
 
-        <span class="k">return</span> <span class="n">current_row</span> <span class="o">+</span> <span class="mi">2</span>  <span class="c1"># Add two so there is a blank line after this table</span></div></div>
+        <span class="k">return</span> <span class="n">current_row</span> <span class="o">+</span> <span class="mi">2</span>  <span class="c1"># Add two so there is a blank line after this table</span></div>
+</div>
 
 
-<div class="viewcode-block" id="cell_get_string"><a class="viewcode-back" href="../../_autosummary/atomica.excel.cell_get_string.html#atomica.excel.cell_get_string">[docs]</a><span class="k">def</span> <span class="nf">cell_get_string</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">allow_empty</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="cell_get_string">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.cell_get_string.html#atomica.excel.cell_get_string">[docs]</a>
+<span class="k">def</span> <span class="nf">cell_get_string</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">allow_empty</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return string value from cell</span>
 
@@ -3688,7 +3731,10 @@
         <span class="k">return</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="cell_get_number"><a class="viewcode-back" href="../../_autosummary/atomica.excel.cell_get_number.html#atomica.excel.cell_get_number">[docs]</a><span class="k">def</span> <span class="nf">cell_get_number</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
+
+<div class="viewcode-block" id="cell_get_number">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.cell_get_number.html#atomica.excel.cell_get_number">[docs]</a>
+<span class="k">def</span> <span class="nf">cell_get_number</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return numeric value from cell</span>
 
@@ -3722,7 +3768,10 @@
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Cell </span><span class="si">%s</span><span class="s2"> needs to contain a number&quot;</span> <span class="o">%</span> <span class="n">cell</span><span class="o">.</span><span class="n">coordinate</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="validate_category"><a class="viewcode-back" href="../../_autosummary/atomica.excel.validate_category.html#atomica.excel.validate_category">[docs]</a><span class="k">def</span> <span class="nf">validate_category</span><span class="p">(</span><span class="n">workbook</span><span class="p">,</span> <span class="n">expected_category</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="validate_category">
+<a class="viewcode-back" href="../../_autosummary/atomica.excel.validate_category.html#atomica.excel.validate_category">[docs]</a>
+<span class="k">def</span> <span class="nf">validate_category</span><span class="p">(</span><span class="n">workbook</span><span class="p">,</span> <span class="n">expected_category</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check Atomica workbook type</span>
 
@@ -3744,6 +3793,7 @@
             <span class="n">actual_type</span> <span class="o">=</span> <span class="n">category</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
             <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Error loading </span><span class="si">%s</span><span class="s2"> - the provided file was a </span><span class="si">%s</span><span class="s2"> file&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expected_type</span><span class="p">,</span> <span class="n">actual_type</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
 </pre></div>
 
            </div>

@@ -11,9 +11,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -34,7 +36,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2504,7 +2506,7 @@
            <div itemprop="articleBody">
              
   <section id="population-types">
-<h1>Population types<a class="headerlink" href="#population-types" title="Permalink to this heading">¶</a></h1>
+<h1>Population types<a class="headerlink" href="#population-types" title="Link to this heading">¶</a></h1>
 <p>For most standard models, there is a simple relationship between the disease cascade specified in the Framework, and the populations specified in the databook. The two are separated, such that every population contains the same compartments, as shown in the example below:</p>
 <a class="reference internal image-reference" href="../../_images/Slide1.PNG"><img alt="../../_images/Slide1.PNG" src="../../_images/Slide1.PNG" style="width: 500px;" /></a>
 <p>A different Framework, such as one for a different disease, will have a different set of compartments (e.g. different states that a person may be in) but still, all populations have the same cascade:</p>
@@ -2542,7 +2544,7 @@
 </div>
 <p>Adding population types has effects on the Framework, databook, program book, and plotting. We now discuss each of these in detail. For a worked example, refer to the <code class="docutils literal notranslate"><span class="pre">combined_framework.xlsx</span></code> example in the Atomica model library, together with the associated databook and program book. The screenshots below are drawn from this example</p>
 <section id="framework-population-types">
-<h2>Framework population types<a class="headerlink" href="#framework-population-types" title="Permalink to this heading">¶</a></h2>
+<h2>Framework population types<a class="headerlink" href="#framework-population-types" title="Link to this heading">¶</a></h2>
 <p>The first step to create population types is to fill in the ‘Population types’ sheet in the Framework. Most frameworks omit this sheet, but it is present in the advanced template when creating a new framework from scratch. The sheet simply defines a code name and description for each population type.</p>
 <a class="reference internal image-reference" href="../../_images/framework_1.png"><img alt="../../_images/framework_1.png" src="../../_images/framework_1.png" style="width: 500px;" /></a>
 <p>Under the hood, if this sheet is omitted, then Atomica will automatically fill it with a population type named <code class="docutils literal notranslate"><span class="pre">'default'</span></code>. The default population type is otherwise the first population type listed here.</p>
@@ -2582,7 +2584,7 @@
 <p>In the top left cell of the transition matrix, enter the code name for the population type. For example, the above screenshot shows ‘udt’ entered into cell A7. If the population type is omitted, it will default to the first population type in the framework. So the empty cell A1 will be automatically populated with ‘sir’ in this example. All of the compartments in the transition matrix must have the same type as the transition matrix itself (e.g., with ‘udt’ in cell A7, the compartment in cell B7 must exist in the ‘udt’ population type). This is atuomatically checked and validated when the framework is loaded. Similarly, all of the parameters in each transition matrix must belong the corresponding population type.</p>
 </section>
 <section id="databook-population-types">
-<h2>Databook population types<a class="headerlink" href="#databook-population-types" title="Permalink to this heading">¶</a></h2>
+<h2>Databook population types<a class="headerlink" href="#databook-population-types" title="Link to this heading">¶</a></h2>
 <p>The next step in working with population types is creating and filling in a databook. When creating a databook, it is essential to specify the population type of each population being added. This is because the data entry tables will only contain rows for populations where a given variable is defined. For example, you might create a databook with the following population input:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pops</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;SIR_0-4&#39;</span><span class="p">:{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;SIR 0-4&#39;</span><span class="p">,</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;sir&#39;</span><span class="p">},</span>
@@ -2617,7 +2619,7 @@
 <p>Notice that because there are 3 SIR populations but only two UDT populations, the interactions matrix is not square.</p>
 </section>
 <section id="programs-and-population-types">
-<h2>Programs and population types<a class="headerlink" href="#programs-and-population-types" title="Permalink to this heading">¶</a></h2>
+<h2>Programs and population types<a class="headerlink" href="#programs-and-population-types" title="Link to this heading">¶</a></h2>
 <p>Programs also support population types, but the implementation is relatively simple compared to frameworks and databooks.</p>
 <p>On the ‘Program targeting’ sheet, all populations and all compartments are shown, regardless of which population type they are in. You can select any population and any compartment to target. The number of people targeted by the program is defined as the sum of all compartments that are targeted by the program. Thus, any nonexistent compartments will simply be skipped in the this summation. Consider the example shown below:</p>
 <a class="reference internal image-reference" href="../../_images/progbook_1.png"><img alt="../../_images/progbook_1.png" src="../../_images/progbook_1.png" style="width: 650px;" /></a>
@@ -2638,7 +2640,7 @@
 </ul>
 </section>
 <section id="running-simulations">
-<h2>Running simulations<a class="headerlink" href="#running-simulations" title="Permalink to this heading">¶</a></h2>
+<h2>Running simulations<a class="headerlink" href="#running-simulations" title="Link to this heading">¶</a></h2>
 <p>Running the model is essentially unchanged. Note that</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> objects contain <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects, and those <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects will name populations that depend on the population type. So you cannot assume that all <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> instances within a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> have the same populations</p></li>
@@ -2646,7 +2648,7 @@
 </ul>
 </section>
 <section id="plotting">
-<h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this heading">¶</a></h2>
+<h2>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">¶</a></h2>
 <p>As with running simulations, the plotting routines are essentially unchanged. However, the fact that outputs do not exist in all populations adds an additional complication to aggregating outputs.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>

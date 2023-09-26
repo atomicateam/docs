@@ -12,9 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -37,7 +39,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2507,7 +2509,7 @@
            <div itemprop="articleBody">
              
   <section id="Scenarios">
-<h1>Scenarios<a class="headerlink" href="#Scenarios" title="Permalink to this heading">¶</a></h1>
+<h1>Scenarios<a class="headerlink" href="#Scenarios" title="Link to this heading">¶</a></h1>
 <p>This page demonstrates how to run various types of scenarios in Atomica</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -2552,6 +2554,8 @@ Parameter &#34;px_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 Parameter &#34;nd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Parameter &#34;nm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2559,11 +2563,11 @@ Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.428s
+Elapsed time for running &#34;default&#34;: 0.643s
 </pre></div></div>
 </div>
 <section id="Parameter-scenarios">
-<h2>Parameter scenarios<a class="headerlink" href="#Parameter-scenarios" title="Permalink to this heading">¶</a></h2>
+<h2>Parameter scenarios<a class="headerlink" href="#Parameter-scenarios" title="Link to this heading">¶</a></h2>
 <p>A parameter scenario involves making manual changes to parameter values. All parameter scenarios can therefore be thought of as a mapping from <code class="docutils literal notranslate"><span class="pre">ParameterSet</span> <span class="pre">-&gt;</span> <span class="pre">ParameterSet</span></code> - that is, all of the changes to the simulation in the scenario are expressed as modifications to a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>. There are then two ways of making these changes</p>
 <ol class="arabic simple">
 <li><p>You can modify the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> directly by adding or removing values</p></li>
@@ -2571,7 +2575,7 @@ Elapsed time for running &#34;default&#34;: 0.428s
 </ol>
 <p>Keep in mind that under the hood, the <code class="docutils literal notranslate"><span class="pre">ParameterScenario</span></code> class is simply returning a modified <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>, it simply automates making changes to the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>.</p>
 <section id="Using-the-ParameterScenario-class">
-<h3>Using the <code class="docutils literal notranslate"><span class="pre">ParameterScenario</span></code> class<a class="headerlink" href="#Using-the-ParameterScenario-class" title="Permalink to this heading">¶</a></h3>
+<h3>Using the <code class="docutils literal notranslate"><span class="pre">ParameterScenario</span></code> class<a class="headerlink" href="#Using-the-ParameterScenario-class" title="Link to this heading">¶</a></h3>
 <p>Typical use of parameter scenarios is to modify future parameter values, by using historical values for parameters up to the current year, then explicitly specifying parameter values for future years. You can do this simply by naming the parameter, population, and values.</p>
 <p>Consider the baseline birth rate</p>
 <div class="nbinput docutils container">
@@ -2616,7 +2620,7 @@ Elapsed time for running &#34;default&#34;: 0.428s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.01s
+Elapsed time for running &#34;default&#34;: 0.556s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2627,7 +2631,7 @@ Elapsed time for running &#34;default&#34;: 1.01s
 </div>
 <p>This plot demonstrates a number of features of parameter scenarios as implemented in the <code class="docutils literal notranslate"><span class="pre">ParameterScenario</span></code> class.</p>
 <section id="Scenario-start-year">
-<h4>Scenario start year<a class="headerlink" href="#Scenario-start-year" title="Permalink to this heading">¶</a></h4>
+<h4>Scenario start year<a class="headerlink" href="#Scenario-start-year" title="Link to this heading">¶</a></h4>
 <p>The scenario is considered to ‘begin’ in the first year specified in the overwrite. The baseline parameter value will be used until this initial year. This makes it possible to set the initial overwrite year for each parameter individually. It also avoids ambiguity when interpolating between the last data point and the first overwrite value in cases where the most recent data point is several years out of date (e.g. if the most recent data for a quantity was in 2010 and you want a scenario to
 start in 2018).</p>
 <p>In the example above, if you wanted to smoothly change the value from 2018 to 2025, you would need to add an extra value in the scenario corresponding to the 2018 value of the quantity:</p>
@@ -2647,7 +2651,7 @@ start in 2018).</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.641s
+Elapsed time for running &#34;default&#34;: 0.517s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2659,11 +2663,11 @@ Elapsed time for running &#34;default&#34;: 0.641s
 <p>Notice that calling <code class="docutils literal notranslate"><span class="pre">scen.add()</span></code> replaces the existing overwrite entirely, so we needed to specify all of the values we wanted to overwrite with.</p>
 </section>
 <section id="Scenario-end-year">
-<h4>Scenario end year<a class="headerlink" href="#Scenario-end-year" title="Permalink to this heading">¶</a></h4>
+<h4>Scenario end year<a class="headerlink" href="#Scenario-end-year" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">ParameterScenario</span></code> never ends, so the final overwrite value is used until the end of the simulation. If you want to have a parameter scenario that ends, you can instead modify the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> directly, as shown in the examples below.</p>
 </section>
 <section id="Smoothing">
-<h4>Smoothing<a class="headerlink" href="#Smoothing" title="Permalink to this heading">¶</a></h4>
+<h4>Smoothing<a class="headerlink" href="#Smoothing" title="Link to this heading">¶</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">ParameterScenario</span></code> can optionally be smoothed by setting the <code class="docutils literal notranslate"><span class="pre">interpolation</span></code> attribution of the scenario. By default, linear interpolation is used. However, you can use a method like <code class="docutils literal notranslate"><span class="pre">pchip</span></code> to smooth the values if desired.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -2683,7 +2687,7 @@ Elapsed time for running &#34;default&#34;: 0.641s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.438s
+Elapsed time for running &#34;default&#34;: 0.511s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2718,7 +2722,7 @@ Elapsed time for running &#34;default&#34;: 0.438s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.438s
+Elapsed time for running &#34;default&#34;: 0.514s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -2735,7 +2739,7 @@ Elapsed time for running &#34;default&#34;: 0.438s
 </div>
 </section>
 <section id="Step-changes">
-<h4>Step changes<a class="headerlink" href="#Step-changes" title="Permalink to this heading">¶</a></h4>
+<h4>Step changes<a class="headerlink" href="#Step-changes" title="Link to this heading">¶</a></h4>
 <p>A more common use of interpolation is to implement step changes in parameter value, where the parameter value defined in the scenario is retained until the next overwrite is encountered. This can be achieved by setting the interpolation method to ‘previous’:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -2755,7 +2759,7 @@ Elapsed time for running &#34;default&#34;: 0.438s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.441s
+Elapsed time for running &#34;default&#34;: 0.509s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2766,11 +2770,11 @@ Elapsed time for running &#34;default&#34;: 0.441s
 </div>
 </section>
 <section id="Parameter-interpolation-prior-to-the-start-year">
-<h4>Parameter interpolation prior to the start year<a class="headerlink" href="#Parameter-interpolation-prior-to-the-start-year" title="Permalink to this heading">¶</a></h4>
+<h4>Parameter interpolation prior to the start year<a class="headerlink" href="#Parameter-interpolation-prior-to-the-start-year" title="Link to this heading">¶</a></h4>
 <p>The scenario will automatically interpolate the baseline parameter values onto all of the simulation years where the baseline is used. Therefore, if you want to apply any smoothing to the parameter values via <code class="docutils literal notranslate"><span class="pre">Parameter.smooth()</span></code> then you should do so before calling <code class="docutils literal notranslate"><span class="pre">scen.run()</span></code></p>
 </section>
 <section id="Inspecting-the-ParameterSet">
-<h4>Inspecting the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code><a class="headerlink" href="#Inspecting-the-ParameterSet" title="Permalink to this heading">¶</a></h4>
+<h4>Inspecting the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code><a class="headerlink" href="#Inspecting-the-ParameterSet" title="Link to this heading">¶</a></h4>
 <p>Instead of running a simulation, you can use the <code class="docutils literal notranslate"><span class="pre">ParameterScenario</span></code> object to return a modified <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>. You can then examine the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> objects contained in the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> to inspect the values:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -2787,7 +2791,8 @@ Elapsed time for running &#34;default&#34;: 0.441s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.utils.TimeSeries at 0x7ff9b9c17790&gt;
+&lt;atomica.utils.TimeSeries at 0x7f81e187d2b0&gt;
+[&lt;class &#39;atomica.utils.TimeSeries&#39;&gt;, &lt;class &#39;object&#39;&gt;]
 ————————————————————————————————————————————————————————————
 Methods:
   copy()              interpolate()       remove_between()
@@ -2814,7 +2819,7 @@ assumption: None
 </section>
 </section>
 <section id="Modifying-a-ParameterSet">
-<h3>Modifying a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code><a class="headerlink" href="#Modifying-a-ParameterSet" title="Permalink to this heading">¶</a></h3>
+<h3>Modifying a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code><a class="headerlink" href="#Modifying-a-ParameterSet" title="Link to this heading">¶</a></h3>
 <p>If the default parameter scenarios are too restrictive (because of the assumptions they make about start and end years, and because they internally perform interpolation) then you can modify <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects directly using the appropriate <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> methods. For example</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -2834,7 +2839,7 @@ assumption: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.599s
+Elapsed time for running &#34;default&#34;: 0.680s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2846,7 +2851,7 @@ Elapsed time for running &#34;default&#34;: 0.599s
 <p>Notice how because no interpolation was previously done, the resulting manual simulation smoothly changes from 2018 to 2025, unlike the <code class="docutils literal notranslate"><span class="pre">ParameterScenario</span></code>, without needing any values to be specified in 2018. Similarly, if there were additional data points after 2030, those would not be removed here, whereas they would be overwritten by using <code class="docutils literal notranslate"><span class="pre">ParameterScenario</span></code>. Working directly with the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> also gives you more control over when smoothing and interpolation takes place.</p>
 </section>
 <section id="Overwriting-function-parameters">
-<h3>Overwriting function parameters<a class="headerlink" href="#Overwriting-function-parameters" title="Permalink to this heading">¶</a></h3>
+<h3>Overwriting function parameters<a class="headerlink" href="#Overwriting-function-parameters" title="Link to this heading">¶</a></h3>
 <p>Finally, it is also possible to overwrite function parameters. Functions are evaluated during model integration, and thus the value of the parameter in the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> is normally overwritten by the evaluated function. Therefore, the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> contains an attribute, <code class="docutils literal notranslate"><span class="pre">skip_function</span></code>, that stores the range of years over which the parameter function should not be evaluated. If you overwrite a function parameter using a <code class="docutils literal notranslate"><span class="pre">ParameterScenario</span></code>, this is automatically set for you.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -2865,7 +2870,7 @@ Elapsed time for running &#34;default&#34;: 0.599s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.428s
+Elapsed time for running &#34;default&#34;: 0.507s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2893,7 +2898,7 @@ Elapsed time for running &#34;default&#34;: 0.428s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.434s
+Elapsed time for running &#34;default&#34;: 0.545s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2918,7 +2923,7 @@ Elapsed time for running &#34;default&#34;: 0.434s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.433s
+Elapsed time for running &#34;default&#34;: 0.501s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2944,7 +2949,7 @@ Elapsed time for running &#34;default&#34;: 0.433s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.644s
+Elapsed time for running &#34;default&#34;: 0.725s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">

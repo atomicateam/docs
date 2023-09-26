@@ -10,9 +10,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -31,7 +33,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2574,7 +2576,9 @@
 <span class="c1"># separately e.g. in a database</span>
 
 
-<div class="viewcode-block" id="Migration"><a class="viewcode-back" href="../../_autosummary/atomica.migration.Migration.html#atomica.migration.Migration">[docs]</a><span class="k">class</span> <span class="nc">Migration</span><span class="p">:</span>
+<div class="viewcode-block" id="Migration">
+<a class="viewcode-back" href="../../_autosummary/atomica.migration.Migration.html#atomica.migration.Migration">[docs]</a>
+<span class="k">class</span> <span class="nc">Migration</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class representation of a migration</span>
 
 <span class="sd">    This class stores a migration function together with all required metadata. It would</span>
@@ -2615,7 +2619,10 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Migration(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">classname</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">original_version</span><span class="si">}</span><span class="s2">-&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">new_version</span><span class="si">}</span><span class="s2">)&quot;</span></div>
 
 
-<div class="viewcode-block" id="register_migration"><a class="viewcode-back" href="../../_autosummary/atomica.migration.register_migration.html#atomica.migration.register_migration">[docs]</a><span class="k">def</span> <span class="nf">register_migration</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">original_version</span><span class="p">,</span> <span class="n">new_version</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">update_required</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="register_migration">
+<a class="viewcode-back" href="../../_autosummary/atomica.migration.register_migration.html#atomica.migration.register_migration">[docs]</a>
+<span class="k">def</span> <span class="nf">register_migration</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">original_version</span><span class="p">,</span> <span class="n">new_version</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">update_required</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator to register migration functions</span>
 
 <span class="sd">    This decorator constructs a `Migration` object from a decorated migration function, and registers it</span>
@@ -2653,15 +2660,21 @@
     <span class="k">return</span> <span class="n">register</span></div>
 
 
+
 <span class="n">migrations</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>  <span class="c1"># Registry of migrations in Atomica</span>
 
 
-<div class="viewcode-block" id="migration"><a class="viewcode-back" href="../../_autosummary/atomica.migration.migration.html#atomica.migration.migration">[docs]</a><span class="k">def</span> <span class="nf">migration</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="migration">
+<a class="viewcode-back" href="../../_autosummary/atomica.migration.migration.html#atomica.migration.migration">[docs]</a>
+<span class="k">def</span> <span class="nf">migration</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="c1"># Wrapper decorator to bind register_migration to the migration registry in this module</span>
     <span class="k">return</span> <span class="n">register_migration</span><span class="p">(</span><span class="n">migrations</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="migrate"><a class="viewcode-back" href="../../_autosummary/atomica.migration.migrate.html#atomica.migration.migrate">[docs]</a><span class="k">def</span> <span class="nf">migrate</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">registry</span><span class="o">=</span><span class="n">migrations</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span><span class="o">=</span><span class="n">gitinfo</span><span class="p">):</span>
+
+<div class="viewcode-block" id="migrate">
+<a class="viewcode-back" href="../../_autosummary/atomica.migration.migrate.html#atomica.migration.migrate">[docs]</a>
+<span class="k">def</span> <span class="nf">migrate</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">registry</span><span class="o">=</span><span class="n">migrations</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span><span class="o">=</span><span class="n">gitinfo</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update a object to the latest version</span>
 
 <span class="sd">    Run all of the migrations in the list of available migrations. The migrations are run in ascending order, as long</span>
@@ -2721,7 +2734,10 @@
     <span class="k">return</span> <span class="n">obj</span></div>
 
 
-<div class="viewcode-block" id="all_results"><a class="viewcode-back" href="../../_autosummary/atomica.migration.all_results.html#atomica.migration.all_results">[docs]</a><span class="k">def</span> <span class="nf">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+<div class="viewcode-block" id="all_results">
+<a class="viewcode-back" href="../../_autosummary/atomica.migration.all_results.html#atomica.migration.all_results">[docs]</a>
+<span class="k">def</span> <span class="nf">all_results</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper generator to iterate over all results in a project</span>
 
 <span class="sd">    Project results may be</span>
@@ -2750,7 +2766,10 @@
             <span class="k">yield</span> <span class="n">result</span></div>
 
 
-<div class="viewcode-block" id="all_progsets"><a class="viewcode-back" href="../../_autosummary/atomica.migration.all_progsets.html#atomica.migration.all_progsets">[docs]</a><span class="k">def</span> <span class="nf">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+<div class="viewcode-block" id="all_progsets">
+<a class="viewcode-back" href="../../_autosummary/atomica.migration.all_progsets.html#atomica.migration.all_progsets">[docs]</a>
+<span class="k">def</span> <span class="nf">all_progsets</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper generator to iterate over all progsets in a project</span>
 
 <span class="sd">    Project progsets may be</span>
@@ -2782,7 +2801,10 @@
             <span class="k">yield</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">progset</span></div>
 
 
-<div class="viewcode-block" id="all_frameworks"><a class="viewcode-back" href="../../_autosummary/atomica.migration.all_frameworks.html#atomica.migration.all_frameworks">[docs]</a><span class="k">def</span> <span class="nf">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+
+<div class="viewcode-block" id="all_frameworks">
+<a class="viewcode-back" href="../../_autosummary/atomica.migration.all_frameworks.html#atomica.migration.all_frameworks">[docs]</a>
+<span class="k">def</span> <span class="nf">all_frameworks</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper generator to iterate over all frameworks in a project</span>
 
 <span class="sd">    Project frameworks may be</span>
@@ -2806,6 +2828,7 @@
                 <span class="k">yield</span> <span class="n">r</span><span class="o">.</span><span class="n">framework</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">Result</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">result</span><span class="o">.</span><span class="n">framework</span></div>
+
 
 
 <span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;Project&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.5&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0.6&quot;</span><span class="p">,</span> <span class="s2">&quot;Simplify ParameterSet storage&quot;</span><span class="p">)</span>

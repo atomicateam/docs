@@ -11,9 +11,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -34,7 +36,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2504,10 +2506,10 @@
            <div itemprop="articleBody">
              
   <section id="optimization">
-<h1>Optimization<a class="headerlink" href="#optimization" title="Permalink to this heading">¶</a></h1>
+<h1>Optimization<a class="headerlink" href="#optimization" title="Link to this heading">¶</a></h1>
 <p>Atomica’s optimization system is designed to be flexible and extensible. To support this, the philosophy underpinning the implementation is that the different aspects of optimization are separated out so that they can be combined in different ways, and easily extended. The most common optimization tasks will likely have their own API wrappers for easy usage.</p>
 <section id="optimization-class">
-<h2><code class="docutils literal notranslate"><span class="pre">Optimization</span></code> class<a class="headerlink" href="#optimization-class" title="Permalink to this heading">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">Optimization</span></code> class<a class="headerlink" href="#optimization-class" title="Link to this heading">¶</a></h2>
 <p>The key entry point to the optimization system is the <code class="docutils literal notranslate"><span class="pre">Optimization</span></code> class. Conceptually, an instance of this class contains a set of instructions for how to perform an optimization. The role of optimization is to make changes to a set of program instructions (such as changing the amount of spending on programs) in order to achieve some goal. Optimization takes in an unoptimized set of program instructions, and returns a set of program instructions that is optimal in some sense. An <code class="docutils literal notranslate"><span class="pre">Optimization</span></code> instance describes what changes can be made to the program instructions, and how to define ‘optimality’ for the purpose of the optimization.</p>
 <p>There are three fundamental aspects for optimization:</p>
 <ul class="simple">
@@ -2522,12 +2524,12 @@
 <li><p>A set of <code class="docutils literal notranslate"><span class="pre">Measurables</span></code> that computes objective values based on the simulation output. Conceptually, a ‘Measurable’ represents a term in the objective function, so it is a specification of what quantities should be used to guide optimization</p></li>
 </ul>
 <section id="performing-an-optimization">
-<h3>Performing an optimization<a class="headerlink" href="#performing-an-optimization" title="Permalink to this heading">¶</a></h3>
+<h3>Performing an optimization<a class="headerlink" href="#performing-an-optimization" title="Link to this heading">¶</a></h3>
 <p>To use the optimization, the function <code class="docutils literal notranslate"><span class="pre">optimization.optimize</span></code> takes in a parset, progset, optimization, and unoptimized program instructions. It optimizes according to the specification given in the <code class="docutils literal notranslate"><span class="pre">Optimization</span></code> object provided, and returns optimized instructions. <code class="docutils literal notranslate"><span class="pre">Project.make_optimization</span></code> wraps the <code class="docutils literal notranslate"><span class="pre">Optimization</span></code> constructor for the API, and also automatically stores the <code class="docutils literal notranslate"><span class="pre">Optimization</span></code> object in the <code class="docutils literal notranslate"><span class="pre">Project</span></code>. <code class="docutils literal notranslate"><span class="pre">Project.run_optimization</span></code> wraps <code class="docutils literal notranslate"><span class="pre">optimization.optimize</span></code> for the API. It also automatically runs a simulation using the optimized instructions, and can optionally save that simulation to the project.</p>
 </section>
 </section>
 <section id="adjustments">
-<h2>Adjustments<a class="headerlink" href="#adjustments" title="Permalink to this heading">¶</a></h2>
+<h2>Adjustments<a class="headerlink" href="#adjustments" title="Link to this heading">¶</a></h2>
 <p>The first component of an optimization is the set of changes that can be made to the program instructions. Typically, these changes focus on spending, but this is not necessarily the case. From the outset, we can identify an initial set of different adjustments users might want to make:</p>
 <ul class="simple">
 <li><p>Basic overwrite - all programs being optimized each have a single value for spending, which takes effect in the program start year</p></li>
@@ -2552,7 +2554,7 @@
 </div>
 <p>to the optimization means that the optimization will change the allocation for ‘Treatment 1’ in 2020 and the spending value must be between 0 and 100.</p>
 <section id="implementation-specifics">
-<h3>Implementation specifics<a class="headerlink" href="#implementation-specifics" title="Permalink to this heading">¶</a></h3>
+<h3>Implementation specifics<a class="headerlink" href="#implementation-specifics" title="Link to this heading">¶</a></h3>
 <p>An <code class="docutils literal notranslate"><span class="pre">Adjustment</span></code> contains</p>
 <ul class="simple">
 <li><p>A name to identify it</p></li>
@@ -2575,7 +2577,7 @@
 </section>
 </section>
 <section id="constraints">
-<h2>Constraints<a class="headerlink" href="#constraints" title="Permalink to this heading">¶</a></h2>
+<h2>Constraints<a class="headerlink" href="#constraints" title="Link to this heading">¶</a></h2>
 <p>The second major component of an optimization is the constraints. Every adjustable has its own upper and lower bound. However, we may also want to provide constraints that apply to the Program Instructions as a whole (i.e. to the cumulative effect of all adjustments together). For example, this could be a constraint on total spending. A constraint on total spending cannot be implemented by considering each program independently. Therefore, it is implemented by the <code class="docutils literal notranslate"><span class="pre">Constraint</span></code> class that operates after all of the adjustments in the optimization have been made. There are two aspects to constraints</p>
 <ol class="simple">
 <li><p>How to check whether a constraint is satisfied or not</p></li>
@@ -2596,7 +2598,7 @@
 <p>For example, the user might want to define an <code class="docutils literal notranslate"><span class="pre">Optimization</span></code> that fixes total spending, and then reuse that <code class="docutils literal notranslate"><span class="pre">Optimization</span></code> for several different proposed <code class="docutils literal notranslate"><span class="pre">ProgramInstructions</span></code> with different initial allocations. Alternatively, they may know what total spend they want, but they might not know the total spend associated with the initial values for the adjustables. For example, if a program is made time-varying using a parametric overwrite, the user might specify initial values for the parameters, but they might not know what the resulting sum of spending on all programs is.</p>
 <p><strong>Caution - Constraining spending in conjunction with parametric time-varying programs means that spending on programs will in general <em>not</em> match the requested parametric function. That is, the effect of rescaling will likely be that the constrained spending does not match the spending function. If using parametric functions with a separate constraint, it is important to check the optimized spending temporal profile in order to monitor this. It may be preferable for the parametric adjustment to implement the constraint itself within its function, as demonstrated in <code class="docutils literal notranslate"><span class="pre">PairedLinearSpendingAdjustment</span></code></strong></p>
 <section id="id1">
-<h3>Implementation specifics<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<h3>Implementation specifics<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <p>There are two stages for constraints</p>
 <ul class="simple">
 <li><p>As part of optimization pre-processing, any relative constraints need to be converted into absolute constraints. For example, the actual value for total spending needs to be calculate based on the initial instructions, and relative bounds on attributes or spending need to be converted to absolute values. These values are referred to as <strong>hard constraints</strong>. Each <code class="docutils literal notranslate"><span class="pre">Constraint</span></code> has a ‘hard constraint’ dictionary associated with it. The <code class="docutils literal notranslate"><span class="pre">Constraint</span></code> generates it based on the program instructions and optimization using <code class="docutils literal notranslate"><span class="pre">Constraint.get_hard_constraint(self,optimization,</span> <span class="pre">instructions)</span></code> (which is generally overloaded in derived classes). The resulting dictionary is stored by <code class="docutils literal notranslate"><span class="pre">optimization.optimize</span></code> and passed back into <code class="docutils literal notranslate"><span class="pre">Constraint.constrain_instructions</span></code> during ASD optimization</p></li>
@@ -2604,14 +2606,14 @@
 </ul>
 </section>
 <section id="total-spending-constraint">
-<h3>Total spending constraint<a class="headerlink" href="#total-spending-constraint" title="Permalink to this heading">¶</a></h3>
+<h3>Total spending constraint<a class="headerlink" href="#total-spending-constraint" title="Link to this heading">¶</a></h3>
 <p>In considering the implementation for <code class="docutils literal notranslate"><span class="pre">Constraints</span></code>, it became evident that there were many different possible constraints. To support this, the system for defining constraints is very flexible and extensible. However, designing a one-size-fits-all <code class="docutils literal notranslate"><span class="pre">Constraint</span></code> is complex due to the range of different possibilities. As with <code class="docutils literal notranslate"><span class="pre">Adjustments</span></code>, it is expected that <code class="docutils literal notranslate"><span class="pre">Constraints</span></code> will be subclassed to define specific, detailed constraints. At the moment, Atomica only contains an implementation for the most commonly-used total spending constraint, and it is envisaged that more constraint types will be added as development continues.</p>
 <p>The included basic constraint on total spending is implemented by the <code class="docutils literal notranslate"><span class="pre">TotalSpendConstraint</span></code> class. This constraint behaves as follows: total spending is constrained independently at each time point where at least one program is reached by an Adjustment. Rescaling is performed by constrained minimization using <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code>. Specifically, this returns spending values that satisfy the total spending constraint, and also minimize the ‘distance’ between the ASD-requested spending and the valid constrained spending. <code class="docutils literal notranslate"><span class="pre">scipy.optimize.minimize</span></code> also accounts for the upper and lower bounds on individual programs, if they exist. This implementation is compact (requires minimal code on our end) and the optimal rescaled solution is also likely unique.</p>
 <p><code class="docutils literal notranslate"><span class="pre">TotalSpendConstraint</span></code> applies this constraint at each time point for all programs that are being reached at that time point, or alternatively it can only perform the rescaling in user-specified years. For the majority of optimizations, the optimal spending is computed for all programs at only one time point, so this is sufficient. However, some complications can arise if there are complex time-dependent adjustments. In those cases, it may be necessary to define a new constraint tailored to that optimization, or otherwise to incorporate the constraint into the adjustment itself, as mentioned above.</p>
 </section>
 </section>
 <section id="measurables">
-<h2>Measurables<a class="headerlink" href="#measurables" title="Permalink to this heading">¶</a></h2>
+<h2>Measurables<a class="headerlink" href="#measurables" title="Link to this heading">¶</a></h2>
 <p>After applying proposed changes to the program instructions and running the model, the final aspect of optimization is computing the objective value. There are a number of different metrics that users may wish to use. For example, users may need to:</p>
 <ul class="simple">
 <li><p>Maximize people alive in a certain year</p></li>
@@ -2648,7 +2650,7 @@
 </div>
 <p>would mean that the simulation must have at least 728.01 people alive in 2030.</p>
 <section id="measurables-vs-constraints">
-<h3>Measurables vs. constraints<a class="headerlink" href="#measurables-vs-constraints" title="Permalink to this heading">¶</a></h3>
+<h3>Measurables vs. constraints<a class="headerlink" href="#measurables-vs-constraints" title="Link to this heading">¶</a></h3>
 <p>The threshold measurables described above effectively function as constraints. However the fundamental difference in usage is that a <code class="docutils literal notranslate"><span class="pre">Constraint</span></code> adjusts the <code class="docutils literal notranslate"><span class="pre">ProgramInstructions</span></code> so that the proposed ASD values still produce output. In contrast, a measurable that returns <code class="docutils literal notranslate"><span class="pre">np.inf</span></code> if a condition isn’t satisfied will result in those ASD values being rejected outright. In general, it is simpler and clearer to implement constraints as measurables that reject values. However, some constraints cannot be satisfied by simply trying different parameters - ASD changes one parameter at a time, so if total spending must be fixed, then <em>any</em> ASD step will violate that condition. In that case, it may be necessary to write a <code class="docutils literal notranslate"><span class="pre">Constraint</span></code>.</p>
 <p>As discussed above, a third option would be to redesign the adjustable such that the constraint is guaranteed to be satisfied. For example, suppose spending on Program 2 had to have at most 50% of the budget of Program 1. Thus three approaches for incorporating this are:</p>
 <ol class="simple">
@@ -2660,7 +2662,7 @@
 </section>
 </section>
 <section id="optimization-examples">
-<h2>Optimization examples<a class="headerlink" href="#optimization-examples" title="Permalink to this heading">¶</a></h2>
+<h2>Optimization examples<a class="headerlink" href="#optimization-examples" title="Link to this heading">¶</a></h2>
 <p>Putting it all together, here are some examples of common optimizations. Suppose we have 5 programs defined, with</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alloc</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">([(</span><span class="s1">&#39;Risk avoidance&#39;</span><span class="p">,</span><span class="mf">0.</span><span class="p">),</span>
                  <span class="p">(</span><span class="s1">&#39;Harm reduction 1&#39;</span><span class="p">,</span><span class="mf">0.</span><span class="p">),</span>
@@ -2672,7 +2674,7 @@
 </div>
 <p>We want to optimize spending on Treatment 1 and Treatment 2 while keeping the remaining programs at fixed spending.</p>
 <section id="maximize-people-alive">
-<h3>Maximize people alive<a class="headerlink" href="#maximize-people-alive" title="Permalink to this heading">¶</a></h3>
+<h3>Maximize people alive<a class="headerlink" href="#maximize-people-alive" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adjustments</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">adjustments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">au</span><span class="o">.</span><span class="n">SpendingAdjustment</span><span class="p">(</span><span class="s1">&#39;Treatment 1&#39;</span><span class="p">,</span><span class="mi">2020</span><span class="p">,</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">100.</span><span class="p">))</span>
 <span class="n">adjustments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">au</span><span class="o">.</span><span class="n">SpendingAdjustment</span><span class="p">(</span><span class="s1">&#39;Treatment 2&#39;</span><span class="p">,</span><span class="mi">2020</span><span class="p">,</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">100.</span><span class="p">))</span>
@@ -2688,7 +2690,7 @@
 </ul>
 </section>
 <section id="minimize-deaths">
-<h3>Minimize deaths<a class="headerlink" href="#minimize-deaths" title="Permalink to this heading">¶</a></h3>
+<h3>Minimize deaths<a class="headerlink" href="#minimize-deaths" title="Link to this heading">¶</a></h3>
 <p>Suppose instead of maximizing the number of people alive from 2020 onwards, we wanted to minimize the number of people dying in 2030. Then, we could use the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adjustments</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">adjustments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">au</span><span class="o">.</span><span class="n">SpendingAdjustment</span><span class="p">(</span><span class="s1">&#39;Treatment 1&#39;</span><span class="p">,</span><span class="mi">2020</span><span class="p">,</span><span class="s1">&#39;abs&#39;</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">100.</span><span class="p">))</span>
@@ -2706,7 +2708,7 @@
 <p>For more examples, including time varying optimizations, see <code class="docutils literal notranslate"><span class="pre">test_optimization.py</span></code></p>
 </section>
 <section id="minimize-spending">
-<h3>Minimize spending<a class="headerlink" href="#minimize-spending" title="Permalink to this heading">¶</a></h3>
+<h3>Minimize spending<a class="headerlink" href="#minimize-spending" title="Link to this heading">¶</a></h3>
 <p>This optimization is quite different to the others, in that the total spending value is not fixed, and instead we wish to minimize the program budgets subject to meeting some criterion (in this case, that a minimum number of people need to be alive in 2030).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adjustments</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">adjustments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">au</span><span class="o">.</span><span class="n">SpendingAdjustment</span><span class="p">(</span><span class="s1">&#39;Treatment 1&#39;</span><span class="p">,</span> <span class="mi">2020</span><span class="p">,</span> <span class="s1">&#39;abs&#39;</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">))</span>
@@ -2731,7 +2733,7 @@
 </section>
 </section>
 <section id="optimization-calling-structure">
-<h2>Optimization calling structure<a class="headerlink" href="#optimization-calling-structure" title="Permalink to this heading">¶</a></h2>
+<h2>Optimization calling structure<a class="headerlink" href="#optimization-calling-structure" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">optimize</span></code></p>
 <ul>

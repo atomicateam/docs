@@ -11,9 +11,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -34,7 +36,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2504,15 +2506,15 @@
            <div itemprop="articleBody">
              
   <section id="timed-transitions">
-<h1>Timed transitions<a class="headerlink" href="#timed-transitions" title="Permalink to this heading">¶</a></h1>
+<h1>Timed transitions<a class="headerlink" href="#timed-transitions" title="Link to this heading">¶</a></h1>
 <section id="motivation">
-<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading">¶</a></h2>
+<h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">¶</a></h2>
 <p>In Atomica, compartments typically correspond to states than an individual can be in. Often, in reality an individual needs to spend a certain amount of time in a particular state. For example, a particular treatment might have a certain duration, or an asymptomatic initial infection state might last for a particular amount of time. In a compartment based model that has reached a steady state, the inflow of people into a compartment is equal to the outflow. In that case, the equilibrium value of the compartment is equal to the duration. For example, suppose a compartment has an inflow of 100 people/year. If the duration is 5 years, the equilibrium value would be 500 people - each year, 100 people arrive and 100 people leave, so on average, it takes 5 years to leave the compartment.</p>
 <p>This approach is widely used and is entirely valid in the steady state. In the steady state, the arrival times of people in the compartment can be considered uniformly distributed over the compartment’s duration, so randomly selecting a portion of people to move out of the compartment results in the correct number of transitions. This assumption breaks down when inflow to the compartment varies over time. Because the true arrival time is not tracked, it’s possible for someone to enter the compartment and immediately leave it in the next time step. This is reflected in the fact that the duration of a particular compartment is really an average duration, not a strict duration.</p>
 <p>In most circumstances, the standard compartment assumptions are sufficiently satisfied for the model to produce results within required tolerances. In particular, the fact that the duration assumptions are not exactly met is of secondary importance either when the inflow and outflow is approximately matched (typically when the inflow is significantly smaller than the compartment’s size, which implies that the inflow has only a small effect on the outflow) or when the compartment’s duration is short (e.g. a few timesteps).</p>
 <p>There are some circumstances however, when both of these requirements are grossly violated. In that case, the model does not produce usable results. A common example would be mass vaccination campaigns. In that case, the proportion of people vaccinated changes very quickly, e.g. from 0% to 70% in a single year. Further, the duration of protection of vaccines tends to be quite long, for example, 5 years. In a simulation with quarterly timesteps, this would correspond to 20 timesteps. We might model this as vaccination moving people from a ‘susceptible’ compartment to a ‘vaccinated’ compartment, and protection wearing off as a transition from ‘vaccinated’ back to ‘susceptible’. However, if we simply used the standard compartment assumptions, then people would be allowed to transition from ‘vaccinated’ to ‘susceptible’ immediately after being vaccinated. In this example, it is particularly noticable because the initial proportion vaccinated was 0% - therefore, it is obvious that <em>nobody</em> should lose their vaccinated status until after 5 years. Further, the dynamics of the simulation would be significantly affected because the proportion vaccinated was very large (70%). Finally, if the mass vaccination is a temporary program (e.g. 1 year long) then the vaccination rate changes rapidly (from 0, to 70% of the population, then back to 0) over just a few timesteps. The standard compartment assumptions will not produce useful projections in these circumstances, so a different approach is required. To address this, Atomica implements <strong>timed compartments</strong> that explictly track arrival times, and allow transitions to take place only after a period of time has elapsed.</p>
 <section id="use-cases">
-<h3>Use cases<a class="headerlink" href="#use-cases" title="Permalink to this heading">¶</a></h3>
+<h3>Use cases<a class="headerlink" href="#use-cases" title="Link to this heading">¶</a></h3>
 <p>Timed compartment should generally <strong>not</strong> be used when there is a constant inflow/outflow, or if inflows and outflows are slowly changing, even if there is a ‘duration’ associated with the state. In a compartment model, the amount of time people spend in the compartment follows an exponential distribution. In the steady state, only the mean matters. When things change rapidly, then discrepencies can occur. These discrepencies are largest if the compartment has a long expected duration relative to the step size, and if the inflow changes dramatically. Therefore, timed compartments are typically suitable under the following circumstances</p>
 <ul class="simple">
 <li><p>The expected time in the compartment is long relative to the step size (e.g. &gt;4 timesteps), and</p></li>
@@ -2561,7 +2563,7 @@
 </section>
 </section>
 <section id="basic-implementation">
-<h2>Basic implementation<a class="headerlink" href="#basic-implementation" title="Permalink to this heading">¶</a></h2>
+<h2>Basic implementation<a class="headerlink" href="#basic-implementation" title="Link to this heading">¶</a></h2>
 <p>Fundamentally, timed compartments leverage the fact that in Atomica, an individual must spend at least one timestep in each compartment (except for junction compartments) because new arrivals to a compartment are not eligible to move out of the compartment in the same timestep. Thus, we can explictly model a duration within the standard Atomica framework as a chain of compartments, where there are multiple compartments corresponding to a single state. For example, consider the case where a state lasts for 1 year, and there are quarterly timesteps. This could be set up as shown in the top part of the figure below:</p>
 <a class="reference internal image-reference" href="../../_images/Slide11.PNG"><img alt="../../_images/Slide11.PNG" src="../../_images/Slide11.PNG" style="width: 100%;" /></a>
 <p>Instead of one compartment for the state, there are 4 compartments. People arrive at the ‘T=1’ compartment on the left of the figure. Each timestep, they move to the next compartment in the chain. After 4 compartments (corresponding to one year), they then leave the state. This is essentially the implementation of timed compartments - after a period of time has elapsed, all people in the timed state (blue boxes) are forced to move out to a different state (orange). This movement out of the state at the end of the duration period is referred to as ‘flushing’.</p>
@@ -2580,18 +2582,18 @@
 </div>
 </section>
 <section id="initialization">
-<h2>Initialization<a class="headerlink" href="#initialization" title="Permalink to this heading">¶</a></h2>
+<h2>Initialization<a class="headerlink" href="#initialization" title="Link to this heading">¶</a></h2>
 <p>When initializing a timed compartment, the initial value is uniformly distributed over the subcompartments.</p>
 </section>
 <section id="normal-transitions">
-<h2>Normal transitions<a class="headerlink" href="#normal-transitions" title="Permalink to this heading">¶</a></h2>
+<h2>Normal transitions<a class="headerlink" href="#normal-transitions" title="Link to this heading">¶</a></h2>
 <p>After the duration period has elapsed, people are ‘flushed’ via the flush link to a single state. For the vaccination example, this would be from ‘vaccinated’ back to ‘susceptible’. Another example might be modelling early and late latency in TB - if early latency is considered a timed state, after a set period has elapsed, people could be flushed into a late latent state. However, often transitions out of the timed compartment are possible before the duration period has elapsed. These transitions are typically to a different state than the flush state. For example, it would be possible for someone that is vaccinated to die of natural causes prior to their vaccination losing efficacy.</p>
 <p>This type of transition is equivalent to transitions from each subcompartment out to a specified compartment, as shown in the figure below. As with the example above, in Atomica this can be expressed simply as a transition from ‘State 1’ to ‘Death’, with the model automatically converting the simplified representation in the lower part of the figure, into the full representation in the top part of the figure.</p>
 <a class="reference internal image-reference" href="../../_images/Slide21.PNG"><img alt="../../_images/Slide21.PNG" src="../../_images/Slide21.PNG" style="width: 100%;" /></a>
 <p>Most importantly, when transitioning out of the timed state (State 1), transitioning to ‘Death’ results in leaving the state, the same as transitioning to the orange flush state. Therefore, people in the final subcompartment (T=4) are also eligible for the transition, because it doesn’t matter whether they leave State 1 to go to ‘Death’ or to go to the flush state, they have still left State 1 as required by the duration of the state.</p>
 </section>
 <section id="duration-groups">
-<h2>Duration groups<a class="headerlink" href="#duration-groups" title="Permalink to this heading">¶</a></h2>
+<h2>Duration groups<a class="headerlink" href="#duration-groups" title="Link to this heading">¶</a></h2>
 <p>As mentioned above, people in the final subcompartment are required to leave the timed compartment, but it doesn’t matter whether they leave via the flush link or via a different transition. In some cases, the other transition might be to another timed compartment. In cases where the destination timed compartment is unrelated, there is no problem. For example, consider the case of someone that is vaccinated and transitioning to an infected state with an incubation period. Suppose further that the incubation state is also a timed compartment. In that case, anyone in a vaccinated subcompartment could transition into incubation, and they would enter incubation at the very start of the process, so they enter the second timed compartment as usual (via the initial subcompartment) and spend the full duration in the second state.</p>
 <p>A special case, however, occurs if there need to be transitions that preserve the time spent in a state. In this case, the timed state does not map directly to a compartment - instead, it maps to a set of compartments. For example, suppose that we have a model where it is possible to acquire harmless symptoms mimicking the condition of interest (e.g. typhoid-like symptoms). This can be important to model if tests or treatments are being provided to people with symptoms prior to knowing whether they actually have the condition, in which case the expense of the intervention would be incurred without it having any effect on the epidemic. Suppose someone is vaccinated against typhoid with a duration of protection of 5 years. During this time, they may start off asymptomatic, but then acquire typhoid-like symptoms. They would then need to move to a ‘vaccinated + typhoid-like symptoms’ compartment. After some time, their symptoms might resolve, and they would move back to the ‘vaccinated’ state. However, the transition to and from typhoid-like symptoms should not affect the duration of protection.</p>
 <p>In this case, the ‘vaccinated’ meta-state applies to both the ‘vaccinated’ and ‘vaccinated + typhoid-like symptoms’ compartments. It is a state associated with the timed parameter, rather than the compartments. The transitions out of the two vaccinated compartments would likely be set up as follows</p>
@@ -2642,7 +2644,7 @@
 <p>This is all that is required to define the model - the software will automatically set up ‘state_1’ and ‘state_2’ to be timed compartments, and it will automatically determine that ‘state_1’ and ‘state_2’ belong to the same duration group and set up a timed link between them.</p>
 </section>
 <section id="architecture">
-<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this heading">¶</a></h2>
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">¶</a></h2>
 <p>Internally, when a compartment has a timed transition associated within it, a <code class="docutils literal notranslate"><span class="pre">TimedCompartment</span></code> will be created inside the model. This timed compartment internally stores a set of subcompartments (although note that the implementation simply stores the compartment’s values as a matrix rather than a vector). The different components are marked on the figure below</p>
 <a class="reference internal image-reference" href="../../_images/Slide6.PNG"><img alt="../../_images/Slide6.PNG" src="../../_images/Slide6.PNG" style="width: 350px;" /></a>
 <p>The outflow paths discussed in detail above are summarized here. There are three cases</p>
@@ -2670,14 +2672,14 @@
 </div>
 </section>
 <section id="transfers">
-<h2>Transfers<a class="headerlink" href="#transfers" title="Permalink to this heading">¶</a></h2>
+<h2>Transfers<a class="headerlink" href="#transfers" title="Link to this heading">¶</a></h2>
 <p>Transfers between populations also need to preserve time spent in a duration group - for example, children that have been vaccinated and that subsequently change age groups retain their duration of protection. However, in some cases, the duration associated with the timed compartment may differ across populations. For example, a vaccine may last longer in adults than in children, or coinfection with HIV could decrease incubation time.</p>
 <p>The figure below shows how discrepencies in durations are managed. The incoming <code class="docutils literal notranslate"><span class="pre">TimedLink</span></code> corresponds to the duration in the source population. If the duration in the destination is longer, then the original time remaining until the individual needs to leave the duration group is preserved. For example, if an 11 year old is vaccinated with a vaccine that has a duration protection of 5 years in children and 10 years in adults, and they are subsequently transferred from a <code class="docutils literal notranslate"><span class="pre">5-14</span></code> population to a <code class="docutils literal notranslate"><span class="pre">15-64</span></code> population when they turn 15, they will retain their original 5 year duration of protection, and will have their vaccine expire after spending 1 more year in <code class="docutils literal notranslate"><span class="pre">15-64</span></code>.</p>
 <p>In contrast, if the destination population has a shorter duration of protection than the source population, individuals are ‘accelerated’ by transferring them into the initial subcompartment. For example, suppose the normal incubation period of a disease is 4 weeks, but in a PLHIV population it is 1 week. If an individual acquires the disease in the main population, and then is transferred to the PLHIV population 1 week later, they would normally have 3 weeks of incubation remaining, but this would be reduced to 1 week after the transfer.</p>
 <a class="reference internal image-reference" href="../../_images/Slide9.PNG"><img alt="../../_images/Slide9.PNG" src="../../_images/Slide9.PNG" style="width: 100%;" /></a>
 </section>
 <section id="junctions">
-<h2>Junctions<a class="headerlink" href="#junctions" title="Permalink to this heading">¶</a></h2>
+<h2>Junctions<a class="headerlink" href="#junctions" title="Link to this heading">¶</a></h2>
 <p>Timed compartments can be used in conjunction with junctions. However, we have seen previously that while normal links can transfer people in any subcompartment, timed links can only transfer people that are not in the final subcompartment. Thus there is not a direct substitution between the two, because eligibility within the subcompartments is different. This can be problematic when dealing with junctions. Consider the example below:</p>
 <a class="reference internal image-reference" href="../../_images/Slide12.PNG"><img alt="../../_images/Slide12.PNG" src="../../_images/Slide12.PNG" style="width: 350px;" /></a>
 <p>In the top case, without a junction, the two links have different eligibility in the <code class="docutils literal notranslate"><span class="pre">vac</span></code> compartment. However, with the junction, only a single link connects <code class="docutils literal notranslate"><span class="pre">vac</span></code> to the junction. What should the eligibility of this link be? In general, we cannot have outflows from a junction where some links preserve durations, and others do not.</p>

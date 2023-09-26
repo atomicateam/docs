@@ -12,9 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -37,7 +39,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2507,7 +2509,7 @@
            <div itemprop="articleBody">
              
   <section id="T5---Junctions">
-<h1>T5 - Junctions<a class="headerlink" href="#T5---Junctions" title="Permalink to this heading">¶</a></h1>
+<h1>T5 - Junctions<a class="headerlink" href="#T5---Junctions" title="Link to this heading">¶</a></h1>
 <p>Junctions in Atomica are special compartments that do not hold any people. They are used to reparametrize transitions, taking in input from one or more compartments, and then dividing it into downstream compartments. They are useful in cases where you know the proportions of the flow into a set of compartments.</p>
 <p>To examine this in detail, consider a simple modification of the SIR example where there are two strains of the disease - normal, and drug resistant. The compartments and overall structure of the model would be similar to:</p>
 <p><img alt="t5-junctions-1" src="../_images/t5_junctions_1.png" /></p>
@@ -2556,7 +2558,7 @@ entering <code class="docutils literal notranslate"><span class="pre">1</span></
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00413s
+Elapsed time for running &#34;default&#34;: 0.00442s
 </pre></div></div>
 </div>
 <p>Let’s now plot all of the compartments</p>
@@ -2577,7 +2579,7 @@ Elapsed time for running &#34;default&#34;: 0.00413s
 </div>
 <p>We can see how the susceptible compartment is decreasing at a rate of 50 people per year until it is empty, and they are being divided in a <code class="docutils literal notranslate"><span class="pre">1:5</span></code> ratio due to the <code class="docutils literal notranslate"><span class="pre">prop_dr</span></code> being <code class="docutils literal notranslate"><span class="pre">0.2</span></code>, such that at the end, of the original 100 people that were susceptible, 20 of them have drug resistant infections.</p>
 <section id="Exercise">
-<h2>Exercise<a class="headerlink" href="#Exercise" title="Permalink to this heading">¶</a></h2>
+<h2>Exercise<a class="headerlink" href="#Exercise" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Add a drug resistant infection state to the SIR framework in Tutorial 1, using the junction structure illustrated above. The databook should contain the proportion of new infections that are drug resistant, as shown here</p></li>
 <li><p>Add a vaccinated state to the model. Vaccinations should be entered in the databook as a number of people per year. Vaccinations move people from susceptible to a vaccinated state. The force of infection should be lower for vaccinated people, and you will need a parameter to store the vaccine efficacy. If the vaccination rate is zero, the simulation will be identical to the one in the first exercise here. Make a plot showing the effect of increasing the vaccination rate (hint: the plotting

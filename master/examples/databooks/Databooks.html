@@ -12,9 +12,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -37,7 +39,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2507,7 +2509,7 @@
            <div itemprop="articleBody">
              
   <section id="Data-and-Databooks">
-<h1>Data and Databooks<a class="headerlink" href="#Data-and-Databooks" title="Permalink to this heading">¶</a></h1>
+<h1>Data and Databooks<a class="headerlink" href="#Data-and-Databooks" title="Link to this heading">¶</a></h1>
 <p>This page provides an overview of Atomica’s internal representation of databooks. Project data for an application is specified in a ‘databook’. This is an Excel file that contains</p>
 <ul class="simple">
 <li><p>A listing of which populations a simulation will have</p></li>
@@ -2515,7 +2517,7 @@
 <li><p>Population and time specific values for characteristics, parameters, transfers, and interactions</p></li>
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> is a Python object containing the data, and it has methods to convert to and from the databook spreadsheet.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -2530,6 +2532,15 @@
     <span class="n">data</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProjectData</span><span class="o">.</span><span class="n">from_spreadsheet</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">LIBRARY_PATH</span> <span class="o">/</span> <span class="s2">&quot;tb_databook.xlsx&quot;</span><span class="p">,</span><span class="n">F</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+</pre></div></div>
 </div>
 <p>We have now loaded in a framework, and a corresponding databook as a <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> object. The <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> object contains a number of attributes</p>
 <ul class="simple">
@@ -2546,7 +2557,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">TimeDependentValueEntry</span></code> tables which are used for characteristics and parameters</p></li>
 </ol>
 <section id="TimeSeries-objects">
-<h2><code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> objects<a class="headerlink" href="#TimeSeries-objects" title="Permalink to this heading">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> objects<a class="headerlink" href="#TimeSeries-objects" title="Link to this heading">¶</a></h2>
 <p>Time-varying data is backed by the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> object defined in <code class="docutils literal notranslate"><span class="pre">structure.py</span></code>. This object stores sparse time-varying data, together with an assumption. This allows it to keep track of both assumption and time-varying values entered in a databook. It has a few key properties</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -2627,7 +2638,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&lt;matplotlib.lines.Line2D at 0x7fa8e420e4d0&gt;]
+[&lt;matplotlib.lines.Line2D at 0x7f8fbdd63650&gt;]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2700,7 +2711,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7fa8a6fd2d50&gt;
+&lt;matplotlib.legend.Legend at 0x7f8fbaf66890&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2712,13 +2723,13 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> object also has a <code class="docutils literal notranslate"><span class="pre">units</span></code> property that lets it store the units of the quantity entered in the databook.</p>
 <div class="alert alert-info"><p>In general, whenever the databook has a time-dependent values row with an assumption and some year-specific data, the corresponding object used to store the data on that row is a <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code></p>
 <section id="Population-table">
-<h3>Population table<a class="headerlink" href="#Population-table" title="Permalink to this heading">¶</a></h3>
+<h3>Population table<a class="headerlink" href="#Population-table" title="Link to this heading">¶</a></h3>
 <p>The population table is very basic:</p>
 <p><img alt="databook-population-example" src="../../_images/databook_population_example.png" /></p>
 <p>If population types are present (e.g., if modelling both humans and a vector like mosquitos) there will be additional columns in this table - see the documentation pages for ‘Population types’ for more information.</p>
 </section>
 <section id="TimeDependentConnections">
-<h3>TimeDependentConnections<a class="headerlink" href="#TimeDependentConnections" title="Permalink to this heading">¶</a></h3>
+<h3>TimeDependentConnections<a class="headerlink" href="#TimeDependentConnections" title="Link to this heading">¶</a></h3>
 <p><img alt="databook-tdc" src="../../_images/databook_tdc.png" /></p>
 <p>A <code class="docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code> table consists of three elements</p>
 <ol class="arabic simple">
@@ -2739,7 +2750,7 @@
 </ul>
 </section>
 <section id="TimeDependentValuesEntry">
-<h3>TimeDependentValuesEntry<a class="headerlink" href="#TimeDependentValuesEntry" title="Permalink to this heading">¶</a></h3>
+<h3>TimeDependentValuesEntry<a class="headerlink" href="#TimeDependentValuesEntry" title="Link to this heading">¶</a></h3>
 <p><img alt="databook-tdve" src="../../_images/databook_tdve.png" /></p>
 <p>A <code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry</span></code> consists of a single element with</p>
 <ul>
@@ -2760,12 +2771,12 @@
 </section>
 </section>
 <section id="Modifying-databooks">
-<h2>Modifying databooks<a class="headerlink" href="#Modifying-databooks" title="Permalink to this heading">¶</a></h2>
+<h2>Modifying databooks<a class="headerlink" href="#Modifying-databooks" title="Link to this heading">¶</a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> instance is essentially a Python representation of the databook spreadsheet, and you can freely move between either representation depending on which is easiest to work with for any given task. In particular, this functionality facilitates programmatic editing of the databook, which can be useful in several common workflows.</p>
 <section id="Creating-a-blank-databook">
-<h3>Creating a blank databook<a class="headerlink" href="#Creating-a-blank-databook" title="Permalink to this heading">¶</a></h3>
+<h3>Creating a blank databook<a class="headerlink" href="#Creating-a-blank-databook" title="Link to this heading">¶</a></h3>
 <p>Starting from a framework, you can make a blank databook using the <code class="docutils literal notranslate"><span class="pre">at.ProjectData.new()</span></code> function:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
@@ -2773,6 +2784,15 @@
 <span class="n">D</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProjectData</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">framework</span><span class="o">=</span><span class="n">F</span><span class="p">,</span> <span class="n">pops</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">transfers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tvec</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2041</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+</pre></div></div>
 </div>
 <p>This has produced an empty <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> instance. It can be converted and saved to a spreadsheet databook format using the <code class="docutils literal notranslate"><span class="pre">save</span></code> method</p>
 <div class="nbinput docutils container">
@@ -2794,7 +2814,7 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_1.xlsx.
 <p><img alt="databook-new1" src="../../_images/new_1.png" /></p>
 </section>
 <section id="Pre-populating-data">
-<h3>Pre-populating data<a class="headerlink" href="#Pre-populating-data" title="Permalink to this heading">¶</a></h3>
+<h3>Pre-populating data<a class="headerlink" href="#Pre-populating-data" title="Link to this heading">¶</a></h3>
 <p>The tables in the databook are stored in the <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> instance under three member variables</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">tdve</span></code> stores the compartment, characteristic, and parameter input tables</p></li>
@@ -2840,7 +2860,8 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_1.xlsx.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.excel.TimeDependentValuesEntry at 0x7fa8a6e7e6d0&gt;
+&lt;atomica.excel.TimeDependentValuesEntry at 0x7f8fbe5f28d0&gt;
+[&lt;class &#39;atomica.excel.TimeDependentValuesEntry&#39;&gt;, &lt;class &#39;object&#39;&gt;]
 ————————————————————————————————————————————————————————————
 Methods:
   from_rows()         write()
@@ -2854,8 +2875,8 @@ assumption_heading: &#39;Constant&#39;
               name: &#39;Susceptible&#39;
           pop_type: &#39;default&#39;
                 ts: #0: &#39;pop_0&#39;:
-                    &lt;atomica.utils.TimeSeries at 0x7fa8a6e6df30&gt;
-                    ———— [...]
+                    &lt;atomica.utils.TimeSeries at 0x7f8fbaf1cdb0&gt;
+                    [&lt;cl [...]
      ts_attributes: {&#39;Provenance&#39;: {}}
               tvec: array([2020, 2021, 2022, 2023, 2024, 2025, 2026,
                     2027, 2028, 2 [...]
@@ -2880,7 +2901,8 @@ assumption_heading: &#39;Constant&#39;
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.utils.TimeSeries at 0x7fa8a6e6df30&gt;
+&lt;atomica.utils.TimeSeries at 0x7f8fbaf1cdb0&gt;
+[&lt;class &#39;atomica.utils.TimeSeries&#39;&gt;, &lt;class &#39;object&#39;&gt;]
 ————————————————————————————————————————————————————————————
 Methods:
   copy()              interpolate()       remove_between()
@@ -2915,7 +2937,8 @@ assumption: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.utils.TimeSeries at 0x7fa8a6e6df30&gt;
+&lt;atomica.utils.TimeSeries at 0x7f8fbaf1cdb0&gt;
+[&lt;class &#39;atomica.utils.TimeSeries&#39;&gt;, &lt;class &#39;object&#39;&gt;]
 ————————————————————————————————————————————————————————————
 Methods:
   copy()              interpolate()       remove_between()
@@ -2987,11 +3010,11 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_3.xlsx.
 to run simulations. This workflow is particularly useful if conducting an analysis in multiple settings, where several databooks are required. The input data spreadsheet might correspond to one type of quantity (e.g., population size) for every country all from a single source, and a script to generate databooks would read data for a specific country from each of the input spreadsheets to generate multiple databooks.</p>
 </section>
 <section id="Adding-a-variable">
-<h3>Adding a variable<a class="headerlink" href="#Adding-a-variable" title="Permalink to this heading">¶</a></h3>
+<h3>Adding a variable<a class="headerlink" href="#Adding-a-variable" title="Link to this heading">¶</a></h3>
 <p>Another common use case is when a framework has been updated to contain a new variable. How can this new variable be added to an existing databook? The <em>easiest</em> way to do this is actually to simply make a copy of the sub-table in Excel, populate values as required, and then load the new databook. For example, consider modifying the framework to contain:</p>
 <p><img alt="databook-framework2" src="../../_images/framework_2.png" /></p>
 <p>Suppose we try to load the existing databook using this framework:</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
@@ -2999,6 +3022,15 @@ to run simulations. This workflow is particularly useful if conducting an analys
 <span class="n">D2</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProjectData</span><span class="o">.</span><span class="n">from_spreadsheet</span><span class="p">(</span><span class="s1">&#39;sir_databook_3.xlsx&#39;</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="n">F2</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+</pre></div></div>
 </div>
 <p>The databook can be loaded even though the <code class="docutils literal notranslate"><span class="pre">vac</span></code> table is missing. However, the databook will not pass validation because it does not contain the missing variable</p>
 <div class="nbinput docutils container">
@@ -3047,10 +3079,10 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_4.xlsx.
 <div class="alert alert-block alert-info"><p>In general, the preferred workflow for adding new variables to the databook is to simply edit the existing databook in Excel to match the required format, by copying-and-pasting the existing tables. Any issues with formatting can be tidied by loading the databook into Atomica and saving it back, to re-write it with standard formatting.</p>
 </div></section>
 <section id="Removing-a-variable">
-<h3>Removing a variable<a class="headerlink" href="#Removing-a-variable" title="Permalink to this heading">¶</a></h3>
+<h3>Removing a variable<a class="headerlink" href="#Removing-a-variable" title="Link to this heading">¶</a></h3>
 <p>Removing a variable follows a similar workflow as adding a variable. Suppose we have now removed the <code class="docutils literal notranslate"><span class="pre">ch_prev</span></code> variable (‘Prevalence’) from the databook:</p>
 <p><img alt="databook-framework3" src="../../_images/framework_3.png" /></p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
@@ -3059,6 +3091,15 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_4.xlsx.
 <span class="n">D3</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">F3</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+</pre></div></div>
 </div>
 <p>Unlike the previous example where a new variables was required, the existing databook is valid for use with the new framework, because the additional variable is simply surplus and does not otherwise interact with the model. However, to remove it, you can otherwise delete it from the dictionary:</p>
 <div class="nbinput docutils container">
@@ -3111,7 +3152,7 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_5.xlsx.
 <div class="alert alert-block alert-info"><p>In general, the preferred workflow for removing variables from a databook is to simply delete the relevant rows from the existing databook.</p>
 </div></section>
 <section id="Add/remove-populations">
-<h3>Add/remove populations<a class="headerlink" href="#Add/remove-populations" title="Permalink to this heading">¶</a></h3>
+<h3>Add/remove populations<a class="headerlink" href="#Add/remove-populations" title="Link to this heading">¶</a></h3>
 <p>Adding or removing populations requires modifying the rows in every TDVE and TDC instance contained in the databook. Therefore, the <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> instance provides methods to facilitate these operations:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
@@ -3175,7 +3216,7 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_8.xlsx.
 <p>Notice that the data values that were previously entered for the <code class="docutils literal notranslate"><span class="pre">pop_0</span></code> population have been preserved.</p>
 </section>
 <section id="Add/remove-transfers-and-interactions">
-<h3>Add/remove transfers and interactions<a class="headerlink" href="#Add/remove-transfers-and-interactions" title="Permalink to this heading">¶</a></h3>
+<h3>Add/remove transfers and interactions<a class="headerlink" href="#Add/remove-transfers-and-interactions" title="Link to this heading">¶</a></h3>
 <p>Transfers and interactions can be added or removed in the same way as populations, using</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ProjectData.add_transfer()</span></code></p></li>
@@ -3186,7 +3227,7 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_8.xlsx.
 </ul>
 </section>
 <section id="Changing-databook-years">
-<h3>Changing databook years<a class="headerlink" href="#Changing-databook-years" title="Permalink to this heading">¶</a></h3>
+<h3>Changing databook years<a class="headerlink" href="#Changing-databook-years" title="Link to this heading">¶</a></h3>
 <p>The year range in the databook is defined at the TDVE/TDC level, and therefore each quantity can have a different set of time values. In Excel, to add an extra year to a table, simply add an extra column to the appropriate variable. When programatically modifying the time points at the variable level, it’s important to make the change at the <code class="docutils literal notranslate"><span class="pre">tvec</span></code> level rather than the <code class="docutils literal notranslate"><span class="pre">ts</span></code> (timeseries) level, so that the change propagates to the databook when exported. This is shown in the example above.</p>
 <p>To change the data entry years for the entire databook, the <code class="docutils literal notranslate"><span class="pre">ProjectData.change_tvec()</span></code> method can be used:</p>
 <div class="nbinput docutils container">
@@ -3209,7 +3250,7 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_9.xlsx.
 <p><img alt="image-1a.png" src="data:image/png;base64,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" /></p>
 </section>
 <section id="Further-spreadsheet-modification">
-<h3>Further spreadsheet modification<a class="headerlink" href="#Further-spreadsheet-modification" title="Permalink to this heading">¶</a></h3>
+<h3>Further spreadsheet modification<a class="headerlink" href="#Further-spreadsheet-modification" title="Link to this heading">¶</a></h3>
 <p>Sometimes it is useful to programatically interact with the <em>spreadsheet</em> without writing it to disk - for example, adding an extra sheet, or returning the spreadsheet for download. There are actually three output methods available in the <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> class</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ProjectData.to_workbook()</span></code> which returns a <code class="docutils literal notranslate"><span class="pre">BytesIO</span></code> instance and an open <code class="docutils literal notranslate"><span class="pre">xlsxwriter.Workbook</span></code></p></li>

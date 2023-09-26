@@ -12,9 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -37,7 +39,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2507,7 +2509,7 @@
            <div itemprop="articleBody">
              
   <section id="Plotting-programs">
-<h1>Plotting programs<a class="headerlink" href="#Plotting-programs" title="Permalink to this heading">¶</a></h1>
+<h1>Plotting programs<a class="headerlink" href="#Plotting-programs" title="Link to this heading">¶</a></h1>
 <p>This notebook illustrates a secondary feature of the plotting library - plotting program related quantities such as</p>
 <ul class="simple">
 <li><p>Program spending</p></li>
@@ -2606,6 +2608,8 @@ Parameter &#34;px_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 Parameter &#34;nd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Parameter &#34;nm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2613,14 +2617,14 @@ Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.430s
-Elapsed time for running &#34;default&#34;: 0.571s
-Elapsed time for running &#34;default&#34;: 0.586s
-Elapsed time for running &#34;default&#34;: 0.706s
+Elapsed time for running &#34;default&#34;: 0.484s
+Elapsed time for running &#34;default&#34;: 0.637s
+Elapsed time for running &#34;default&#34;: 0.655s
+Elapsed time for running &#34;default&#34;: 0.795s
 </pre></div></div>
 </div>
 <section id="Creating-PlotData-from-programs">
-<h2>Creating <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> from programs<a class="headerlink" href="#Creating-PlotData-from-programs" title="Permalink to this heading">¶</a></h2>
+<h2>Creating <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> from programs<a class="headerlink" href="#Creating-PlotData-from-programs" title="Link to this heading">¶</a></h2>
 <p>To make a standard plot of model outputs, you pass a <code class="docutils literal notranslate"><span class="pre">Result</span></code> object to the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> constructor:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -2656,7 +2660,7 @@ Elapsed time for running &#34;default&#34;: 0.706s
 </div>
 <p>For this method, the <code class="docutils literal notranslate"><span class="pre">outputs</span></code> argument should correspond to the code name of <em>programs</em>, and the <code class="docutils literal notranslate"><span class="pre">pop</span></code> argument is not supported because the program quantities for spending and coverage are not population specific.</p>
 <section id="Plotting-spending-and-coverage">
-<h3>Plotting spending and coverage<a class="headerlink" href="#Plotting-spending-and-coverage" title="Permalink to this heading">¶</a></h3>
+<h3>Plotting spending and coverage<a class="headerlink" href="#Plotting-spending-and-coverage" title="Link to this heading">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">au.PlotData.programs()</span></code> takes an optional argument, <code class="docutils literal notranslate"><span class="pre">quantity</span></code>, that selects whether to extract values associated with</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">spending</span></code> which are budget amounts from the <code class="docutils literal notranslate"><span class="pre">alloc</span></code></p></li>
@@ -2755,7 +2759,7 @@ Elapsed time for running &#34;default&#34;: 0.706s
 </div>
 </section>
 <section id="Bar-plots-and-selecting-times">
-<h3>Bar plots and selecting times<a class="headerlink" href="#Bar-plots-and-selecting-times" title="Permalink to this heading">¶</a></h3>
+<h3>Bar plots and selecting times<a class="headerlink" href="#Bar-plots-and-selecting-times" title="Link to this heading">¶</a></h3>
 <p>A common task is making a bar plot for allocations in specific year(s). The simulation is fundamentally run with a spending value at each timestep, and the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object has values for every simulation time, as shown above. To select a single year, simply interpolate the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object onto the year that you want to plot. This parsimoniously handles time-varying budgets.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -2858,7 +2862,7 @@ Elapsed time for running &#34;default&#34;: 0.706s
 </div>
 </section>
 <section id="Time-aggregation">
-<h3>Time aggregation<a class="headerlink" href="#Time-aggregation" title="Permalink to this heading">¶</a></h3>
+<h3>Time aggregation<a class="headerlink" href="#Time-aggregation" title="Link to this heading">¶</a></h3>
 <p>To aggregate values over time, you can pass in an argument <code class="docutils literal notranslate"><span class="pre">t_bins</span></code> which behaves the same as for standard <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> objects. However, unlike normal <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> objects, the time aggregation type is fixed because only certain aggregations make sense in the context of programs:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">spending</span></code> which is in units of ‘$/year’ will be integrated over time</p></li>
@@ -3044,7 +3048,7 @@ Elapsed time for running &#34;default&#34;: 0.706s
 </div>
 </section>
 <section id="Output-aggregation">
-<h3>Output aggregation<a class="headerlink" href="#Output-aggregation" title="Permalink to this heading">¶</a></h3>
+<h3>Output aggregation<a class="headerlink" href="#Output-aggregation" title="Link to this heading">¶</a></h3>
 <p>When plotting spending values, it is possible to aggregate programs in the same way that outputs can be aggregated for standard <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> objects. This can only be done for programs - coverages are more complex due to modality interactions, and a system for plotting such aggregations is not yet available.</p>
 <p>As with aggregating outputs and pops normally, to aggregate programs, pass them in within a <code class="docutils literal notranslate"><span class="pre">dict</span></code> where the key is the name of the aggregated output, and the value is a list of the program names to include:</p>
 <div class="nbinput docutils container">

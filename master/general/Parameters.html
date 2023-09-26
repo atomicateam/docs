@@ -11,9 +11,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -36,7 +38,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2506,9 +2508,9 @@
            <div itemprop="articleBody">
              
   <section id="parameters">
-<h1>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">¶</a></h1>
+<h1>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h1>
 <section id="types-of-parameter">
-<h2>Types of parameter<a class="headerlink" href="#types-of-parameter" title="Permalink to this heading">¶</a></h2>
+<h2>Types of parameter<a class="headerlink" href="#types-of-parameter" title="Link to this heading">¶</a></h2>
 <p>Parameters are all defined on the ‘Parameters’ sheet of the framework. Depending on the structure of the model defined in the framework, a parameter may have certain attributes or restrictions if used in a particular way. We therefore introduce three classifications to help refer to such parameters. These classifications are:</p>
 <ul class="simple">
 <li><p><strong>Transition parameter</strong> - A parameter is referred to as a ‘transition parameter’ if it appears in the transition matrix and is thus <em>directly</em> associated with flow rates.</p></li>
@@ -2517,7 +2519,7 @@
 </ul>
 </section>
 <section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
 <p>In the framework, a parameter can have a function associated with it, which can compute the value of a parameter based on the values of other integration objects like compartments, characteristics, parameters, and links (flow rates). You can also refer to the simulation time as <cite>t</cite> and the time step as <cite>dt</cite>. Standard math operations can be performed, as well as common functions like <code class="docutils literal notranslate"><span class="pre">max</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">exp</span></code> etc. Valid functions can be found in <code class="docutils literal notranslate"><span class="pre">function_parser.py</span></code>.</p>
 <p>Parameters are updated in the order in which they appear in the framework. This means that parameter functions can only refer to parameters that appear above them in the framework. Atomica will automatically validate this when the framework is loaded. This also means that any program overwrites that affect terms inside a parameter function will be performed prior to the function being evaluated.</p>
 <p>As mentioned above, it is possible to include actual flow rates in parameter functions. These can be specified in two ways</p>
@@ -2536,7 +2538,7 @@
 </div>
 </section>
 <section id="value-precedence">
-<h2>Value precedence<a class="headerlink" href="#value-precedence" title="Permalink to this heading">¶</a></h2>
+<h2>Value precedence<a class="headerlink" href="#value-precedence" title="Link to this heading">¶</a></h2>
 <p>The value for a parameter is derived from (in order of precedence):</p>
 <ol class="arabic simple">
 <li><p>Data entered in the databook</p></li>
@@ -2556,7 +2558,7 @@
 <p>In the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>, it is possible to set the <code class="docutils literal notranslate"><span class="pre">skip_function</span></code> attribute in order to skip evaluating the parameter function, in which case the parameter value will be drawn from either the data points or from the program calculation, if present. This functionality is used internally by parameter scenarios, so that it is possible to use a parameter overwrite to override a function (e.g. to use a parameter scenario to explicitly set the force of infection). However, using the <code class="docutils literal notranslate"><span class="pre">skip_function</span></code> attribute directly is a non-standard workflow and must be implemented consistently in all scripts. If a script omits setting this flag then the simulation will run without errors, but will produce different results. It is therefore recommended not to use this functionality directly, but to modify the framework to avoid the need to disable the parameter function.</p>
 </section>
 <section id="performance-considerations">
-<h2>Performance considerations<a class="headerlink" href="#performance-considerations" title="Permalink to this heading">¶</a></h2>
+<h2>Performance considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading">¶</a></h2>
 <p>The structure of the parameters in the model can have a significant effect on performance. The root causes is that in Python, it is much faster to perform calculations with vectorized operations rather than repeated scalar operations.</p>
 <p>A vectorized operation is one that can be performed on all time points simultaneously, whereas a scalar operation operates on only one time point at a time. Operating one time point at a time is required if two conditions are met</p>
 <ul class="simple">
@@ -2567,7 +2569,7 @@
 <p>Atomica will automatically select the fastest possible computation, but be aware that the inclusion of compartments and characteristics in parameter functions can have a significant effect on performance.</p>
 </section>
 <section id="timescales">
-<h2>Timescales<a class="headerlink" href="#timescales" title="Permalink to this heading">¶</a></h2>
+<h2>Timescales<a class="headerlink" href="#timescales" title="Link to this heading">¶</a></h2>
 <p>Transitions in the model are driven by parameters. If the parameter is specified as a probability or a number of people, then there is an implicit time period associated with the flow. This is 1 year by default. So for example,</p>
 <ul class="simple">
 <li><p>A transition parameter in probability units is interpreted as ‘probability (per year)’</p></li>
@@ -2599,7 +2601,7 @@
 <p>This means that it is up to the modeller to explicitly handle any unit conversions required - for example, if combining a ‘Number per day’ and a ‘Number per week’ in a function, it would likely be necessary to explicitly introduce a factor of <code class="docutils literal notranslate"><span class="pre">7</span></code>. This would be done in the Framework in conjunction with specification of the timescales for the relevant parameters. Users are unable to change the timescale in the databook by design because the conversion is an arbitrary operation and depends on the parameter timescale - the modeller has complete control in the Framework to define the format and units and construct the model accordingly, without having to deal with the possibility of the user entering different formats or units.</p>
 </section>
 <section id="derivatives">
-<h2>Derivatives<a class="headerlink" href="#derivatives" title="Permalink to this heading">¶</a></h2>
+<h2>Derivatives<a class="headerlink" href="#derivatives" title="Link to this heading">¶</a></h2>
 <p>Sometimes, it is important to track quantities dynamically. For example, you may want to model a change in pollution level depending on the number of people in the model, where the <em>derivative</em> of pollution depends on the number of people. This cannot be achieved with normal parameters, because parameter functions explicitly supply the value for the parameter at each timestep. Compartment values are effectively governed by derivatives, but setting the values is nontrivial because of the need to have source and sink compartments.</p>
 <p>Instead, it is possible to mark a parameter function as supplying a derivative rather than the value itself. Suppose we have a parameter function <span class="math notranslate nohighlight">\(f(\theta,t)\)</span> where <span class="math notranslate nohighlight">\(\theta\)</span> represents the state of the model (so it encompasses any quantities that could appear in the parameter function), and <span class="math notranslate nohighlight">\(t\)</span> is the current simulation time. If we want the parameter function to act as a derivative, enter ‘Y’ in the ‘Is derivative’ column of the databook, as shown below. This column can be added in if it is not already present.</p>
 <a class="reference internal image-reference" href="../_images/parameters_1.png"><img alt="../_images/parameters_1.png" src="../_images/parameters_1.png" style="width: 650px;" /></a>
@@ -2622,13 +2624,13 @@
 </div>
 </section>
 <section id="interpolation-and-smoothing">
-<h2>Interpolation and smoothing<a class="headerlink" href="#interpolation-and-smoothing" title="Permalink to this heading">¶</a></h2>
+<h2>Interpolation and smoothing<a class="headerlink" href="#interpolation-and-smoothing" title="Link to this heading">¶</a></h2>
 <p>Parameters generally contain sparse time-dependent values matching those entered in the databook. As part of running the model, these automatically get interpolated onto the simulation time points. This interpolation is linear by default (although legacy projects use spline interpolation). Generally, this means that you can look at the values in the databook and they will be linearly interpolated when running the simulation.</p>
 <p>However, in some cases, it is desirable to incorporate additional assumptions into the input parameters - for example, that they are smoothly changing. To support this, <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> objects contain a smoothing method, <code class="docutils literal notranslate"><span class="pre">Parameter.smooth</span></code>. This applies smoothing in-place, onto a set of specified time points, replacing the parameter’s value. The most common usage would be to simply use <code class="docutils literal notranslate"><span class="pre">Parameter.smooth(proj.settings.tvec)</span></code> which will smooth the parameter onto the simulation times (assuming the step size is not subsequently modified).</p>
 <p>By specifying a different set of times, you can apply different smoothing methods to different parts of the parameter. For example, you could smooth parameter scenario values differently to the databook values. Don’t forget that you can always modify the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> object contained in the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> as well, to perform arbitrarily specific modifications.</p>
 </section>
 <section id="maximum-compartment-duration">
-<h2>Maximum compartment duration<a class="headerlink" href="#maximum-compartment-duration" title="Permalink to this heading">¶</a></h2>
+<h2>Maximum compartment duration<a class="headerlink" href="#maximum-compartment-duration" title="Link to this heading">¶</a></h2>
 <p>A common, complex situation occurs if there are durations in the model that are significantly larger than the simulation time step (such as the duration of protection of a vaccine). See the documentation on Timed Transitions for details on how to implement this in a framework.</p>
 </section>
 </section>

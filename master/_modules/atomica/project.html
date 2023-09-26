@@ -10,9 +10,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -31,7 +33,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2546,7 +2548,9 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ProjectSettings&quot;</span><span class="p">,</span> <span class="s2">&quot;Project&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="ProjectSettings"><a class="viewcode-back" href="../../_autosummary/atomica.project.ProjectSettings.html#atomica.project.ProjectSettings">[docs]</a><span class="k">class</span> <span class="nc">ProjectSettings</span><span class="p">:</span>
+<div class="viewcode-block" id="ProjectSettings">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.ProjectSettings.html#atomica.project.ProjectSettings">[docs]</a>
+<span class="k">class</span> <span class="nc">ProjectSettings</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_start</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">sim_end</span><span class="o">=</span><span class="mi">2035</span><span class="p">,</span> <span class="n">sim_dt</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sim_start</span> <span class="o">=</span> <span class="n">sim_start</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sim_dt</span> <span class="o">=</span> <span class="n">sim_dt</span>
@@ -2600,7 +2604,9 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_start</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sim_dt</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ProjectSettings.update_time_vector"><a class="viewcode-back" href="../../_autosummary/atomica.project.ProjectSettings.html#atomica.project.ProjectSettings.update_time_vector">[docs]</a>    <span class="k">def</span> <span class="nf">update_time_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ProjectSettings.update_time_vector">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.ProjectSettings.html#atomica.project.ProjectSettings.update_time_vector">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_time_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the project simulation times</span>
 
@@ -2620,10 +2626,14 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_sim_dt</span> <span class="o">=</span> <span class="n">dt</span>  <span class="c1"># Change sim_dt internally so that the sim_end is only changed once</span>
 
         <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">=</span> <span class="n">end</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">=</span> <span class="n">end</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Project">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project">[docs]</a>
+<span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Main simulation container</span>
 
@@ -2730,7 +2740,9 @@
     <span class="c1">#######################################################################################################</span>
     <span class="c1"># Methods for I/O and spreadsheet loading</span>
     <span class="c1">#######################################################################################################</span>
-<div class="viewcode-block" id="Project.create_databook"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.create_databook">[docs]</a>    <span class="k">def</span> <span class="nf">create_databook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">databook_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_pops</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_transfers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_start</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">,</span> <span class="n">data_end</span><span class="o">=</span><span class="mf">2020.0</span><span class="p">,</span> <span class="n">data_dt</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.create_databook">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.create_databook">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_databook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">databook_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_pops</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_transfers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_start</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">,</span> <span class="n">data_end</span><span class="o">=</span><span class="mf">2020.0</span><span class="p">,</span> <span class="n">data_dt</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate an empty data-input Excel spreadsheet corresponding to the framework of this project.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">databook_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">databook_path</span> <span class="o">=</span> <span class="s2">&quot;./databook_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.xlsx&quot;</span>
@@ -2738,7 +2750,10 @@
         <span class="n">data</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">databook_path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span></div>
 
-<div class="viewcode-block" id="Project.load_databook"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.load_databook">[docs]</a>    <span class="k">def</span> <span class="nf">load_databook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">databook_path</span><span class="p">,</span> <span class="n">make_default_parset</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">do_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Project.load_databook">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.load_databook">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_databook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">databook_path</span><span class="p">,</span> <span class="n">make_default_parset</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">do_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load a data spreadsheet</span>
 
@@ -2784,12 +2799,18 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Project has been requested to run a simulation after loading databook, &quot;</span> <span class="s2">&quot;despite no request to create a default parameter set.&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.make_parset"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.make_parset">[docs]</a>    <span class="k">def</span> <span class="nf">make_parset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Project.make_parset">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.make_parset">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_parset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform project data into a set of parameters that can be used in model simulations.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ParameterSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Project.make_progbook"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.make_progbook">[docs]</a>    <span class="k">def</span> <span class="nf">make_progbook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progbook_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">progs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data_end</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Project.make_progbook">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.make_progbook">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_progbook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progbook_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">progs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">data_end</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save a blank program book</span>
 
@@ -2816,7 +2837,10 @@
         <span class="n">progset</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">full_path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">full_path</span></div>
 
-<div class="viewcode-block" id="Project.load_progbook"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.load_progbook">[docs]</a>    <span class="k">def</span> <span class="nf">load_progbook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progbook_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Project.load_progbook">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.load_progbook">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_progbook</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progbook_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a ProgramSet given a progbook</span>
 
@@ -2842,7 +2866,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">progsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">progset</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">progset</span></div>
 
-<div class="viewcode-block" id="Project.make_scenario"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.make_scenario">[docs]</a>    <span class="k">def</span> <span class="nf">make_scenario</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;combined&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Scenario</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Project.make_scenario">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.make_scenario">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_scenario</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;combined&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Scenario</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make new scenario and store in Project</span>
 
@@ -2857,11 +2884,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">scens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scenario</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">scenario</span></div>
 
+
     <span class="c1">#    #######################################################################################################</span>
     <span class="c1">#    ### Utilities</span>
     <span class="c1">#    #######################################################################################################</span>
 
-<div class="viewcode-block" id="Project.parset"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.parset">[docs]</a>    <span class="k">def</span> <span class="nf">parset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.parset">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.parset">[docs]</a>
+    <span class="k">def</span> <span class="nf">parset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut for getting a parset&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -2874,7 +2904,10 @@
                 <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, parset &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Project.progset"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.progset">[docs]</a>    <span class="k">def</span> <span class="nf">progset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Project.progset">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.progset">[docs]</a>
+    <span class="k">def</span> <span class="nf">progset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut for getting a progset&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -2887,7 +2920,10 @@
                 <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, progset &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Project.scen"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.scen">[docs]</a>    <span class="k">def</span> <span class="nf">scen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Project.scen">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.scen">[docs]</a>
+    <span class="k">def</span> <span class="nf">scen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut for getting a scenario&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -2900,7 +2936,10 @@
                 <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, scenario &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Project.optim"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.optim">[docs]</a>    <span class="k">def</span> <span class="nf">optim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Project.optim">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.optim">[docs]</a>
+    <span class="k">def</span> <span class="nf">optim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut for getting an optimization&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -2913,7 +2952,10 @@
                 <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, scenario &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Project.result"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.result">[docs]</a>    <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Project.result">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.result">[docs]</a>
+    <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Shortcut for getting an result -- a little special since they don&#39;t have a fixed type&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -2934,6 +2976,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">printv</span><span class="p">(</span><span class="s1">&#39;Warning, results &quot;</span><span class="si">%s</span><span class="s1">&quot; not found!&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>  <span class="c1"># Returns None</span></div>
+
 
     <span class="c1">#######################################################################################################</span>
     <span class="c1"># Methods to perform major tasks</span>
@@ -2965,11 +3008,16 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING, </span><span class="si">%s</span><span class="s2"> failed (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">allfigs</span>
 
-<div class="viewcode-block" id="Project.update_settings"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.update_settings">[docs]</a>    <span class="k">def</span> <span class="nf">update_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_dt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.update_settings">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.update_settings">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sim_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sim_dt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the project settings, e.g. the simulation time vector.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update_time_vector</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">sim_start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">sim_end</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">sim_dt</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.run_sim"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.run_sim">[docs]</a>    <span class="k">def</span> <span class="nf">run_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">result_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Project.run_sim">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.run_sim">[docs]</a>
+    <span class="k">def</span> <span class="nf">run_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">result_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run a single simulation</span>
 
@@ -3010,7 +3058,10 @@
 
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="Project.run_sampled_sims"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.run_sampled_sims">[docs]</a>    <span class="k">def</span> <span class="nf">run_sampled_sims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">result_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Project.run_sampled_sims">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.run_sampled_sims">[docs]</a>
+    <span class="k">def</span> <span class="nf">run_sampled_sims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">result_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run sampled simulations</span>
 
@@ -3071,7 +3122,10 @@
 
         <span class="k">return</span> <span class="n">results</span></div>
 
-<div class="viewcode-block" id="Project.calibrate"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.calibrate">[docs]</a>    <span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">measurables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">save_to_project</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_min_scale</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">default_max_scale</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">default_weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">default_metric</span><span class="o">=</span><span class="s2">&quot;fractional&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterSet</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Project.calibrate">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.calibrate">[docs]</a>
+    <span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjustables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">measurables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">save_to_project</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_min_scale</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">default_max_scale</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">default_weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">default_metric</span><span class="o">=</span><span class="s2">&quot;fractional&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterSet</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method to perform automatic calibration.</span>
 
@@ -3126,7 +3180,10 @@
 
         <span class="k">return</span> <span class="n">new_parset</span></div>
 
-<div class="viewcode-block" id="Project.run_scenarios"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.run_scenarios">[docs]</a>    <span class="k">def</span> <span class="nf">run_scenarios</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_results</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Project.run_scenarios">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.run_scenarios">[docs]</a>
+    <span class="k">def</span> <span class="nf">run_scenarios</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">store_results</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run all active scenarios</span>
 
@@ -3142,7 +3199,10 @@
                 <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">results</span></div>
 
-<div class="viewcode-block" id="Project.run_optimization"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.run_optimization">[docs]</a>    <span class="k">def</span> <span class="nf">run_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxtime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxiters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Project.run_optimization">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.run_optimization">[docs]</a>
+    <span class="k">def</span> <span class="nf">run_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxtime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxiters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Run an optimization&quot;&quot;&quot;</span>
         <span class="n">optim_ins</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optim</span><span class="p">(</span><span class="n">optimname</span><span class="p">)</span>
         <span class="n">optim</span><span class="p">,</span> <span class="n">unoptimized_instructions</span> <span class="o">=</span> <span class="n">optim_ins</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
@@ -3168,7 +3228,10 @@
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">unoptimized_result</span><span class="p">,</span> <span class="n">optimized_result</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">results</span></div>
 
-<div class="viewcode-block" id="Project.save"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Project.save">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.save">[docs]</a>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save binary project file</span>
 
@@ -3185,7 +3248,10 @@
         <span class="n">sc</span><span class="o">.</span><span class="n">saveobj</span><span class="p">(</span><span class="n">fullpath</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">fullpath</span></div>
 
-<div class="viewcode-block" id="Project.load"><a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.load">[docs]</a>    <span class="nd">@staticmethod</span>
+
+<div class="viewcode-block" id="Project.load">
+<a class="viewcode-back" href="../../_autosummary/atomica.project.Project.html#atomica.project.Project.load">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load binary project file</span>
@@ -3203,10 +3269,12 @@
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Project</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">P</span></div>
 
+
     <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">d</span>
         <span class="n">P</span> <span class="o">=</span> <span class="n">migrate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="vm">__dict__</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">_run_sampled_sim</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">progset</span><span class="p">,</span> <span class="n">progset_instructions</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">result_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>

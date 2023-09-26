@@ -11,9 +11,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -36,7 +38,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2506,10 +2508,10 @@
            <div itemprop="articleBody">
              
   <section id="Models-(implementation)">
-<h1>Models (implementation)<a class="headerlink" href="#Models-(implementation)" title="Permalink to this heading">¶</a></h1>
+<h1>Models (implementation)<a class="headerlink" href="#Models-(implementation)" title="Link to this heading">¶</a></h1>
 <p>This page provides an overview of <code class="docutils literal notranslate"><span class="pre">Model</span></code> objects oriented towards the internal structure and underlying objects. It thus documents ways of interacting directly with <code class="docutils literal notranslate"><span class="pre">Model</span></code> instances.</p>
 <section id="Model-object-structure">
-<h2>Model object structure<a class="headerlink" href="#Model-object-structure" title="Permalink to this heading">¶</a></h2>
+<h2>Model object structure<a class="headerlink" href="#Model-object-structure" title="Link to this heading">¶</a></h2>
 <p>At its core, models in Atomica are implemented as a computational graph. The nodes in this graph are ‘compartments’, which store numbers of people, and the edges are ‘links’, which move people from one compartment to another. However, there are additional complexities associated with computing the flows between compartments, and generating other model outputs, and we thus introduce additional types of nodes into the graph representing intermediate calculations and outputs.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Model</span></code> objects serve two purposes</p>
 <ol class="arabic simple">
@@ -2528,7 +2530,7 @@
 <p>where ‘Compartments’, ‘Characteristics’, and ‘Parameters’ all correspond to items in the framework, ‘Links’ correspond to transitions in the framework, and ‘Populations’ correspond to the populations listed in the databook.</p>
 <p>We now go through each of these objects in turn.</p>
 <section id="Compartment">
-<h3>Compartment<a class="headerlink" href="#Compartment" title="Permalink to this heading">¶</a></h3>
+<h3>Compartment<a class="headerlink" href="#Compartment" title="Link to this heading">¶</a></h3>
 <p><img alt="modelcompartment" src="../_images/model_compartment.png" /></p>
 <p>A <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> represents one of the compartments specified in the ‘Compartments’ sheet of the framework. A compartment stores people in a particular state (e.g., susceptible, infected). For each population, there is one <code class="docutils literal notranslate"><span class="pre">Compartment</span></code> for every entry in that sheet. <code class="docutils literal notranslate"><span class="pre">Compartments</span></code> have the following key features:</p>
 <ul class="simple">
@@ -2548,7 +2550,7 @@
 <p>The last two methods <code class="docutils literal notranslate"><span class="pre">expected_duration</span></code> and <code class="docutils literal notranslate"><span class="pre">expected_outflow</span></code> are mainly for application diagnostic purposes.</p>
 </section>
 <section id="Link">
-<h3>Link<a class="headerlink" href="#Link" title="Permalink to this heading">¶</a></h3>
+<h3>Link<a class="headerlink" href="#Link" title="Link to this heading">¶</a></h3>
 <p><img alt="modellink" src="../_images/model_link.png" /></p>
 <p>A link represents one of the transitions specified in the ‘Transitions’ sheet of the cascade workbook. For each population, there is one <code class="docutils literal notranslate"><span class="pre">Link</span></code> for every entry in the transition matrix - note that this means there are separate instances of a <code class="docutils literal notranslate"><span class="pre">Link</span></code> object for any repeated tags. There is also an instance of a <code class="docutils literal notranslate"><span class="pre">Link</span></code> object between corresponding pairs of compartments between any two populations that have transfers between them. The transfer links are stored in the source population. A
 <code class="docutils literal notranslate"><span class="pre">Link</span></code> draws its value from a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> object. A <code class="docutils literal notranslate"><span class="pre">Link</span></code> has the following key features:</p>
@@ -2562,7 +2564,7 @@ are <em>not</em> annualized. This greatly improves consistency and usability whe
 </ul>
 </section>
 <section id="Characteristic">
-<h3>Characteristic<a class="headerlink" href="#Characteristic" title="Permalink to this heading">¶</a></h3>
+<h3>Characteristic<a class="headerlink" href="#Characteristic" title="Link to this heading">¶</a></h3>
 <p><img alt="modelcharacteristic" src="../_images/model_characteristic.png" /></p>
 <p>A characteristic represents a grouping of compartments, with optional normalization. In each population, there is one <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> object for every entry in the ‘Characteristics’ sheet in the cascade workbook. A characteristic may be used within other characteristics and in parameter computation. A <code class="docutils literal notranslate"><span class="pre">Characteristic</span></code> has the following key features:</p>
 <ul class="simple">
@@ -2577,7 +2579,7 @@ are <em>not</em> annualized. This greatly improves consistency and usability whe
 <code class="docutils literal notranslate"><span class="pre">_internal_vals</span></code> member variable that actually stores the characteristic value during integration. If this is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, then the <code class="docutils literal notranslate"><span class="pre">vals</span></code> method will simply return the <code class="docutils literal notranslate"><span class="pre">_internal_vals</span></code> array.</p>
 </section>
 <section id="Parameter">
-<h3>Parameter<a class="headerlink" href="#Parameter" title="Permalink to this heading">¶</a></h3>
+<h3>Parameter<a class="headerlink" href="#Parameter" title="Link to this heading">¶</a></h3>
 <p><img alt="modelparameter" src="../_images/model_parameter.png" /></p>
 <p>A parameter object provides a way to compute variables based on the value of other variables, either for use as simulation outputs, or to dynamically compute transition rates (i.e. <code class="docutils literal notranslate"><span class="pre">Link</span></code> values) during integration. There is one <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> object for every entry listed in the ‘Parameters’ sheet of the cascade workbook, plus an additional <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> for every pair of populations that has a transfer between them. Note that there is only one transfer <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> for every pair of
 populations, but there is a <code class="docutils literal notranslate"><span class="pre">Link</span></code> between every corresponding compartment within those populations - so for example, aging from <code class="docutils literal notranslate"><span class="pre">0-4</span></code> to <code class="docutils literal notranslate"><span class="pre">5-14</span></code> will have a single <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> representing the total number of people changing populations, and there would be links between <code class="docutils literal notranslate"><span class="pre">[0-4</span> <span class="pre">Sus]-&gt;[5-14</span> <span class="pre">Sus]</span></code> and <code class="docutils literal notranslate"><span class="pre">[0-4</span> <span class="pre">Vac]-&gt;[5-14</span> <span class="pre">Vac]</span></code>.</p>
@@ -2600,7 +2602,7 @@ computing programs, it is internally cached for efficiency.</p></li>
 </ul>
 </section>
 <section id="Population">
-<h3>Population<a class="headerlink" href="#Population" title="Permalink to this heading">¶</a></h3>
+<h3>Population<a class="headerlink" href="#Population" title="Link to this heading">¶</a></h3>
 <p><img alt="modelpopulation" src="../_images/model_population.png" /></p>
 <p>A <code class="docutils literal notranslate"><span class="pre">Population</span></code> stores lists the base objects listed above, all associated with a single population. It has the following key features:</p>
 <ul class="simple">
@@ -2616,7 +2618,7 @@ computing programs, it is internally cached for efficiency.</p></li>
 </ul>
 </section>
 <section id="Model">
-<h3>Model<a class="headerlink" href="#Model" title="Permalink to this heading">¶</a></h3>
+<h3>Model<a class="headerlink" href="#Model" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">Model</span></code> object is a class that contains all of the <code class="docutils literal notranslate"><span class="pre">Populations</span></code> for a simulation, and has methods to perform integration. Its key attributes are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">pops</span></code> a list of population groups that this model subdivides into.</p></li>
@@ -2641,7 +2643,7 @@ are intrinsically properties that intrinsically span populations.</p></li>
 </ul>
 <p>Note that the <code class="docutils literal notranslate"><span class="pre">Model</span></code> forms the primary storage of the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object, and thus it is possible to retrieve detailed output from the model run by querying the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object. This also means that there is minimal post-processing time to reorganize the model outputs, because they are generally accessed in-place.</p>
 <section id="Building">
-<h4>Building<a class="headerlink" href="#Building" title="Permalink to this heading">¶</a></h4>
+<h4>Building<a class="headerlink" href="#Building" title="Link to this heading">¶</a></h4>
 <p>Building the model proceeds in the following stages</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Population</span></code> objects are instantiated</p></li>
@@ -2651,7 +2653,7 @@ are intrinsically properties that intrinsically span populations.</p></li>
 </ol>
 </section>
 <section id="Integrating">
-<h4>Integrating<a class="headerlink" href="#Integrating" title="Permalink to this heading">¶</a></h4>
+<h4>Integrating<a class="headerlink" href="#Integrating" title="Link to this heading">¶</a></h4>
 <p><img alt="modelintegrationworkflow" src="../_images/model_integration_workflow.png" /></p>
 <p>The integration workflow is an interative process, alternating between updating the compartment sizes, and updating the link values. The main integration loop is in <code class="docutils literal notranslate"><span class="pre">Model.process()</span></code>. The stages are as follows</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>self.update_comps() # This writes values to comp.vals[ti+1] so this will be out of bounds if self._t_index == self.t.size-1
@@ -2693,7 +2695,7 @@ attributable to each link.</p></li>
 </section>
 </section>
 <section id="Linking-and-unlinking">
-<h3>Linking and unlinking<a class="headerlink" href="#Linking-and-unlinking" title="Permalink to this heading">¶</a></h3>
+<h3>Linking and unlinking<a class="headerlink" href="#Linking-and-unlinking" title="Link to this heading">¶</a></h3>
 <p>The network of integration objects makes it easy to traverse the graph to trace back quantities. For example, <code class="docutils literal notranslate"><span class="pre">link.source.outlinks</span></code> would be a list of all of the outgoing links for the source compartment given an initial link. Because cyclical references are common (e.g, a <code class="docutils literal notranslate"><span class="pre">link</span></code> has a <code class="docutils literal notranslate"><span class="pre">source</span></code> which has that <code class="docutils literal notranslate"><span class="pre">link</span></code> in <code class="docutils literal notranslate"><span class="pre">source.outlinks</span></code>) an additional step is needed in order to be able to pickle and unpickle <code class="docutils literal notranslate"><span class="pre">Model</span></code> objects. This step recursively replaces all of the references with
 IDs. It proceeds as follows</p>
 <ul class="simple">

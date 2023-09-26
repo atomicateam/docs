@@ -11,9 +11,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -34,7 +36,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2504,7 +2506,7 @@
            <div itemprop="articleBody">
              
   <section id="initializing-compartments">
-<h1>Initializing compartments<a class="headerlink" href="#initializing-compartments" title="Permalink to this heading">¶</a></h1>
+<h1>Initializing compartments<a class="headerlink" href="#initializing-compartments" title="Link to this heading">¶</a></h1>
 <p>An important step in integrating the model equations is specifying the initial conditions. There are two challenges to overcome</p>
 <ul class="simple">
 <li><p>Computing initial compartment sizes <em>based on the values entered in the databook</em></p></li>
@@ -2512,7 +2514,7 @@
 </ul>
 <p>We will discuss these two issues in turn.</p>
 <section id="characteristics-to-compartments">
-<h2>Characteristics to Compartments<a class="headerlink" href="#characteristics-to-compartments" title="Permalink to this heading">¶</a></h2>
+<h2>Characteristics to Compartments<a class="headerlink" href="#characteristics-to-compartments" title="Link to this heading">¶</a></h2>
 <p>The first challenge is related to the fact that in the databook, users enter initial values for characteristics, not just compartments. This is motivated by the fact that application data may correspond to characteristics rather than compartments. <strong>The guiding principle is that the databook should strive to directly accept as much data as the user has available</strong>. That is, the databook aims to be as complete a record of the available data as possible, with as little manual user processing as possible.</p>
 <p>To see why initial values are often drawn via characteristics, consider a standard TB model. Because latent infection has a separate stream for vaccinated and unvaccinated individuals, the model contains the following compartments</p>
 <table border="1" class="docutils">
@@ -2561,9 +2563,9 @@
 </div>
 <p>which can be solved using any number of standard linear algebra functions (e.g. <code class="docutils literal notranslate"><span class="pre">numpy.linalg.solve</span></code>).</p>
 <section id="problems-and-solutions">
-<h3>Problems and solutions<a class="headerlink" href="#problems-and-solutions" title="Permalink to this heading">¶</a></h3>
+<h3>Problems and solutions<a class="headerlink" href="#problems-and-solutions" title="Link to this heading">¶</a></h3>
 <section id="negative-initial-compartment-sizes">
-<h4>Negative initial compartment sizes<a class="headerlink" href="#negative-initial-compartment-sizes" title="Permalink to this heading">¶</a></h4>
+<h4>Negative initial compartment sizes<a class="headerlink" href="#negative-initial-compartment-sizes" title="Link to this heading">¶</a></h4>
 <p>It is possible for the initial characteristic values provided by the user to lead to negative initial compartment sizes. For example, if the user specified</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alive</span> <span class="o">=</span> <span class="n">sus</span> <span class="o">+</span> <span class="n">vac</span>
 <span class="n">alive</span> <span class="o">=</span> <span class="mi">100</span>
@@ -2579,7 +2581,7 @@
 <p>then a negative value for <code class="docutils literal notranslate"><span class="pre">sus</span></code> would be a consequence of the value for the characteristic <code class="docutils literal notranslate"><span class="pre">nvac</span></code> which itself could be the result of a computation. Thus, the user has to look at a set of characteristics and compartments to trace where the original inconsistency occurred. As a result, the most helpful output for the user to debug this is a dump of all of the compartment and characteristic values, which is the same in both the original and the linear algebra-based approach.</p>
 </section>
 <section id="underdetermined-system">
-<h4>Underdetermined system<a class="headerlink" href="#underdetermined-system" title="Permalink to this heading">¶</a></h4>
+<h4>Underdetermined system<a class="headerlink" href="#underdetermined-system" title="Link to this heading">¶</a></h4>
 <p>An initialization is underdetermined if the input data is not sufficient to uniquely specify the initialization without additional assumptions. This condition can be directly detected based on the <code class="docutils literal notranslate"><span class="pre">A</span></code> matrix. For example, consider the system</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nvac</span> <span class="o">=</span> <span class="n">vac</span> <span class="o">+</span> <span class="n">ltex</span> <span class="o">+</span> <span class="n">ltlx</span>
 <span class="n">ltx</span> <span class="o">=</span> <span class="n">ltex</span> <span class="o">+</span> <span class="n">ltlx</span>
@@ -2595,7 +2597,7 @@
 <p>In Atomica, underdetermined systems are handled by returning the minimum norm solution, so any compartments missing entirely will be initialized with 0, and in cases where compartments are nonzero but not uniquely constrained, people will be uniformly distributed across those compartments.</p>
 </section>
 <section id="inconsistent-system">
-<h4>Inconsistent system<a class="headerlink" href="#inconsistent-system" title="Permalink to this heading">¶</a></h4>
+<h4>Inconsistent system<a class="headerlink" href="#inconsistent-system" title="Link to this heading">¶</a></h4>
 <p>In the case where the number of characteristics used for initialization is the same as the number of compartments, there exists a single unique solution for the compartment values that exactly matches the characteristic values. For example, if we have</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alive</span> <span class="o">=</span> <span class="n">sus</span> <span class="o">+</span> <span class="n">vac</span>
 </pre></div>
@@ -2614,7 +2616,7 @@
 <p>which exactly matches the specified values <code class="docutils literal notranslate"><span class="pre">alive=100</span></code> and <code class="docutils literal notranslate"><span class="pre">vac=120</span></code>. The inconsistency in the system therefore results in a negative compartment size appearing in one or more compartments, and this can be detected regardless of the implementation used for initialization.</p>
 </section>
 <section id="inconsistent-overdetermined-system">
-<h4>Inconsistent overdetermined system<a class="headerlink" href="#inconsistent-overdetermined-system" title="Permalink to this heading">¶</a></h4>
+<h4>Inconsistent overdetermined system<a class="headerlink" href="#inconsistent-overdetermined-system" title="Link to this heading">¶</a></h4>
 <p>As described above, the guiding principle for the databook is that it strives to be a complete, direct record of all available data. In pursuing this, it is possible that the user could provide an overspecification of the system. For example, suppose we have a characteristic <code class="docutils literal notranslate"><span class="pre">alive</span> <span class="pre">=</span> <span class="pre">sus</span> <span class="pre">+</span> <span class="pre">vac</span></code> and the user has the following values from their data sources</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alive</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">sus</span> <span class="o">=</span> <span class="mi">60</span>
@@ -2647,7 +2649,7 @@
 <p>and the corresponding value of alive would be 103.32. In this way, the difference between the data provided by the user and the values used for initialization is minimized across all of the values provided. The least squares solution also has the useful property that it is unique.</p>
 </section>
 <section id="resolving-inconsistencies-initialization-weight">
-<h4>Resolving inconsistencies - initialization weight<a class="headerlink" href="#resolving-inconsistencies-initialization-weight" title="Permalink to this heading">¶</a></h4>
+<h4>Resolving inconsistencies - initialization weight<a class="headerlink" href="#resolving-inconsistencies-initialization-weight" title="Link to this heading">¶</a></h4>
 <p>In the example above, where the inconsistent input values of</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sus</span> <span class="o">=</span> <span class="mi">60</span>
 <span class="n">vac</span> <span class="o">=</span> <span class="mi">50</span>
@@ -2671,7 +2673,7 @@
 </section>
 </section>
 <section id="computing-initial-values-at-arbitrary-times">
-<h2>Computing initial values at arbitrary times<a class="headerlink" href="#computing-initial-values-at-arbitrary-times" title="Permalink to this heading">¶</a></h2>
+<h2>Computing initial values at arbitrary times<a class="headerlink" href="#computing-initial-values-at-arbitrary-times" title="Link to this heading">¶</a></h2>
 <p>The initial compartment values are computed based on the characteristic values at a specific point in time. However, the data values entered in the databook are in general provided at sparse, arbitrary times. Therefore, it is typically necessary to interpolate each of the characteristics onto the initial simulation time prior to calculating the initial compartment values.</p>
 <p>The critical issue here is that inconsistencies in the values can be time dependent. For example, the user may enter a consistent set of values in 1990 but an invalid set of values in 2000. If the simulation is started in 1990 then it may run fine, but if started in 2000 it is possible that an inconsistency could result in negative compartment sizes. More insidious is the possibility that interpolation could result in inconsistent values. For example, suppose that the values are consistent in 1990 <em>and</em> in 2000. It is still possible that in 1995 the interpolated values are not consistent, particularly if some of the characteristics have data values between 1990 and 2000 and others do not.</p>
 <p>Because the interpolation routine uses the nearest-neighbour value for times before and after the first or last data point, respectively, if the simulation is started from the first year in the databook then it is possible to directly read out the characteristic values used for interpolation, which makes diagnosing inconsistencies easier. However, if interpolation results in inconsistencies, the input characteristic values will not correspond to anything entered in the databook. So it is important to keep this issue in mind when diagnosing inconsistent initializations when the simulation start year is different to the data start year.</p>

@@ -12,9 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -37,7 +39,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2507,7 +2509,7 @@
            <div itemprop="articleBody">
              
   <section id="Frameworks">
-<h1>Frameworks<a class="headerlink" href="#Frameworks" title="Permalink to this heading">¶</a></h1>
+<h1>Frameworks<a class="headerlink" href="#Frameworks" title="Link to this heading">¶</a></h1>
 <p>The <em>framework</em> is an object that represents the transition structure of the model in Atomica. It contains a listing of all of the compartments, characteristics, and parameters, as well as the transition matrix that links parameters with transitions between compartments. It does not contain a specification of the populations, because these are entered in the databook. This page assumes familiarity with basic Atomica concepts (e.g., compartments, characteristics, parameters, populations) and is
 intended as technical documentation on the implementation of the framework.</p>
 <div class="nbinput nblast docutils container">
@@ -2526,7 +2528,7 @@ intended as technical documentation on the implementation of the framework.</p>
 </ul>
 <p>On the user input side, users of Atomica implementing new cascade models etc. will typically be modifying the framework file. On the development size, Python code can generally expect to interact with the <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> object. A key goal is to make the <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> as flexible as possible to accommodate changes in the Excel file, to maximize the extent to which changes in a project can be performed in the framework file without needing complex changes in the codebase.</p>
 <section id="ProjectFramework-basics">
-<h2><code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> basics<a class="headerlink" href="#ProjectFramework-basics" title="Permalink to this heading">¶</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> basics<a class="headerlink" href="#ProjectFramework-basics" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> class stores a parsed, validated representation of the framework file. The framework file consists of a set of sheets, with content on each of the sheets. An example from the TB framework is shown below</p>
 <p><img alt="framework-overview-example" src="../_images/framework_overview_example.png" /></p>
 <p>Here we can see that there are a number of worksheets in the file (‘Databook Pages’, ‘Compartments’, ‘Transitions’,…) and there is of course content on each sheet.</p>
@@ -2568,6 +2570,8 @@ Parameter &#34;px_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 Parameter &#34;nd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Parameter &#34;nm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2831,7 +2835,7 @@ list
 </div>
 <div class="alert alert-success"><p>The code parses Excel sheets into <code class="docutils literal notranslate"><span class="pre">DataFrames</span></code> in <code class="docutils literal notranslate"><span class="pre">ProjectFramework.__init__()</span></code> and <strong>this initial stage of parsing is blind to the contents of the worksheet</strong>. This means that all columns of all sheets will be loaded into <code class="docutils literal notranslate"><span class="pre">DataFrames</span></code>. Any new columns added by the user in the framework file will automatically appear in the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> when the framework file is loaded.</p>
 </div><section id="Accessing-the-data">
-<h3>Accessing the data<a class="headerlink" href="#Accessing-the-data" title="Permalink to this heading">¶</a></h3>
+<h3>Accessing the data<a class="headerlink" href="#Accessing-the-data" title="Link to this heading">¶</a></h3>
 <p>You can access the contents from the Excel file by operating on the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>. Notice how in the previous examples, the first row of each ‘table’ is assumed to be a heading and is set as the <code class="docutils literal notranslate"><span class="pre">Columns</span></code> property of the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>. This means those column names can be used as normal to index the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -2961,15 +2965,15 @@ Name: datasheet title, dtype: object
 <div class="alert alert-success"><p>As these are just ordinary <code class="docutils literal notranslate"><span class="pre">DataFrames</span></code>, you can work with them in the same way as any other <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> in regards to indexing, accessing rows/columns, filling values etc.</p>
 </div></section>
 <section id="Exporting-a-Framework">
-<h3>Exporting a Framework<a class="headerlink" href="#Exporting-a-Framework" title="Permalink to this heading">¶</a></h3>
+<h3>Exporting a Framework<a class="headerlink" href="#Exporting-a-Framework" title="Link to this heading">¶</a></h3>
 <p>By design, although a <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> can be pickled and saved as an object, it cannot be exported back to a spreadsheet. Users are not expected to require the ability to programatically modify framework files (in contrast, they <em>are</em> expected to programatically modify databooks).</p>
 </section>
 <section id="Making-a-new-Framework">
-<h3>Making a new Framework<a class="headerlink" href="#Making-a-new-Framework" title="Permalink to this heading">¶</a></h3>
+<h3>Making a new Framework<a class="headerlink" href="#Making-a-new-Framework" title="Link to this heading">¶</a></h3>
 <p>It is no longer necessary to export a blank framework file from the code - simply copy <code class="docutils literal notranslate"><span class="pre">atomica/core/framework_template.xlsx</span></code> to start a new template. That Excel file now has a lot of extra validation and autocompletion to facilitate creating new Frameworks. This will be outlined in detail in the user guide.</p>
 </section>
 <section id="Validating-the-input">
-<h3>Validating the input<a class="headerlink" href="#Validating-the-input" title="Permalink to this heading">¶</a></h3>
+<h3>Validating the input<a class="headerlink" href="#Validating-the-input" title="Link to this heading">¶</a></h3>
 <p>When a <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> is instantiated, it will read in everything in the Excel file. However, it is up to the code to actually use the variables contained in the framework. For example, a new column could be added to store an additional property of say, a compartment. However, it won’t have any effect on the simulation unless code is written to take advantage of this (e.g., <code class="docutils literal notranslate"><span class="pre">model.py</span></code> might use the new property to treat those compartments differently).</p>
 <p>This presents a challenge - what should be done if the <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> does not contain something that is required by the code? The simplest solution is that the user’s custom code can simply check whether a particular sheet, a particular column, or a particular value is present in the <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> and act accordingly.</p>
 <p>If you don’t want the logic of your code to be complicated by the additional validation checks, or if the code is performance-critical and you only want to validate values once, you can instead perform the validation when the <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> is loaded. The method <code class="docutils literal notranslate"><span class="pre">ProjectFramework._validate()</span></code> is automatically called after the spreadsheet is read in. At the moment, it mainly contains validation of the basic elements of an Atomica model - for example, ensuring that compartments,
@@ -2985,12 +2989,12 @@ characteristics, parameters, and the transition matrix are present. Here are som
 </section>
 </section>
 <section id="Adding-a-quantity-to-the-Framework">
-<h2>Adding a quantity to the Framework<a class="headerlink" href="#Adding-a-quantity-to-the-Framework" title="Permalink to this heading">¶</a></h2>
+<h2>Adding a quantity to the Framework<a class="headerlink" href="#Adding-a-quantity-to-the-Framework" title="Link to this heading">¶</a></h2>
 <div class="alert alert-success"><p>Adding something to the Framework can be done simply by adding an extra column or extra sheet. <code class="docutils literal notranslate"><span class="pre">DataFrames</span></code> associated with every Table on the page will be created. These can then be accessed directly from the Framework. In the simplest case, you can perform validation (like checking if a quantity was provided in the framework) at the point you want to use the quantity.</p>
 </div><p>However, if you want to validate the new variables when the framework is loaded, then you will need to modify <code class="docutils literal notranslate"><span class="pre">ProjectFramework._validate()</span></code>. To add a default quantity, look at how default values for compartments etc. are handled in that function.</p>
 </section>
 <section id="Convenience-methods">
-<h2>Convenience methods<a class="headerlink" href="#Convenience-methods" title="Permalink to this heading">¶</a></h2>
+<h2>Convenience methods<a class="headerlink" href="#Convenience-methods" title="Link to this heading">¶</a></h2>
 <p>First and foremost, the role of the <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> is to store information about compartments, characteristics, parameters, interactions, and transitions, because those are are the fundamental building blocks of <code class="docutils literal notranslate"><span class="pre">Model</span></code> objects, and simulations cannot be run without them. These are accessed so frequently that the <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> provides some special methods to facilitate working with them.</p>
 <p>First, the <code class="docutils literal notranslate"><span class="pre">Transitions</span></code> sheet is handled in a special way. As with every other sheet, it appears in the <code class="docutils literal notranslate"><span class="pre">.sheets</span></code> property:</p>
 <div class="nbinput docutils container">
@@ -3567,7 +3571,7 @@ Name: vac, dtype: object
 <p>Note that these functions rely on the fact that code names and display names are supposed to be unique across all of the different variable types (i.e. not only can you not have two compartments with the same name, you cannot give a parameter the same name as a compartment). This is checked for in <code class="docutils literal notranslate"><span class="pre">ProjectFramework._validate()</span></code>.</p>
 </section>
 <section id="Iterating-over-items">
-<h2>Iterating over items<a class="headerlink" href="#Iterating-over-items" title="Permalink to this heading">¶</a></h2>
+<h2>Iterating over items<a class="headerlink" href="#Iterating-over-items" title="Link to this heading">¶</a></h2>
 <p>The simplest way to iterate over rows of a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> is using the <code class="docutils literal notranslate"><span class="pre">iterrows()</span></code> method of the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>. For example, to loop over all compartments, you could use:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:

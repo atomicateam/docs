@@ -10,9 +10,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -31,7 +33,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2527,7 +2529,9 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ProgramInstructions&quot;</span><span class="p">,</span> <span class="s2">&quot;ProgramSet&quot;</span><span class="p">,</span> <span class="s2">&quot;Program&quot;</span><span class="p">,</span> <span class="s2">&quot;Covout&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="ProgramInstructions"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramInstructions.html#atomica.programs.ProgramInstructions">[docs]</a><span class="k">class</span> <span class="nc">ProgramInstructions</span><span class="p">:</span>
+<div class="viewcode-block" id="ProgramInstructions">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramInstructions.html#atomica.programs.ProgramInstructions">[docs]</a>
+<span class="k">class</span> <span class="nc">ProgramInstructions</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Store instructions for applying programs</span>
 
@@ -2622,7 +2626,9 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="p">[</span><span class="n">prog_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">start_year</span><span class="p">,</span> <span class="n">vals</span><span class="o">=</span><span class="n">vals</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ProgramInstructions.scale_alloc"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramInstructions.html#atomica.programs.ProgramInstructions.scale_alloc">[docs]</a>    <span class="k">def</span> <span class="nf">scale_alloc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ProgramInstructions.scale_alloc">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramInstructions.html#atomica.programs.ProgramInstructions.scale_alloc">[docs]</a>
+    <span class="k">def</span> <span class="nf">scale_alloc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Scale allocation by a constant</span>
 
@@ -2639,10 +2645,14 @@
             <span class="n">ts</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">scale_factor</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ts</span><span class="o">.</span><span class="n">vals</span><span class="p">]</span>
             <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="o">*</span> <span class="n">scale_factor</span> <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">assumption</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">scale_factor</span> <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">sigma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">new</span></div></div>
+        <span class="k">return</span> <span class="n">new</span></div>
+</div>
 
 
-<div class="viewcode-block" id="ProgramSet"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet">[docs]</a><span class="k">class</span> <span class="nc">ProgramSet</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProgramSet">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet">[docs]</a>
+<span class="k">class</span> <span class="nc">ProgramSet</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Representation of a single program</span>
 
@@ -2754,7 +2764,9 @@
 
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Could not find full name for quantity &quot;</span><span class="si">%s</span><span class="s1">&quot; (n.b. this is case sensitive)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">))</span>
 
-<div class="viewcode-block" id="ProgramSet.add_program"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.add_program">[docs]</a>    <span class="k">def</span> <span class="nf">add_program</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ProgramSet.add_program">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.add_program">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_program</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a program to the ProgramSet</span>
 
@@ -2768,7 +2780,10 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Program with name &quot;</span><span class="si">%s</span><span class="s1">&quot; is already present in the ProgramSet&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">programs</span><span class="p">[</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">prog</span></div>
 
-<div class="viewcode-block" id="ProgramSet.remove_program"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.remove_program">[docs]</a>    <span class="k">def</span> <span class="nf">remove_program</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.remove_program">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.remove_program">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_program</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a program from the ProgramSet</span>
 
@@ -2785,7 +2800,10 @@
                 <span class="k">if</span> <span class="p">(</span><span class="n">par</span><span class="p">,</span> <span class="n">pop</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">covouts</span> <span class="ow">and</span> <span class="n">code_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">covouts</span><span class="p">[(</span><span class="n">par</span><span class="p">,</span> <span class="n">pop</span><span class="p">)]</span><span class="o">.</span><span class="n">progs</span><span class="p">:</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">covouts</span><span class="p">[(</span><span class="n">par</span><span class="p">,</span> <span class="n">pop</span><span class="p">)]</span><span class="o">.</span><span class="n">progs</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="ProgramSet.add_pop"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.add_pop">[docs]</a>    <span class="k">def</span> <span class="nf">add_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.add_pop">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.add_pop">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a population to the ``ProgramSet``</span>
 
@@ -2803,7 +2821,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">full_name</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">pop_type</span><span class="p">}</span></div>
 
-<div class="viewcode-block" id="ProgramSet.remove_pop"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.remove_pop">[docs]</a>    <span class="k">def</span> <span class="nf">remove_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.remove_pop">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.remove_pop">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a population from the ``ProgramSet``</span>
 
@@ -2825,7 +2846,10 @@
 
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="ProgramSet.add_comp"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.add_comp">[docs]</a>    <span class="k">def</span> <span class="nf">add_comp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.add_comp">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.add_comp">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_comp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a compartment</span>
 
@@ -2841,7 +2865,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">full_name</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">pop_type</span><span class="p">}</span></div>
 
-<div class="viewcode-block" id="ProgramSet.remove_comp"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.remove_comp">[docs]</a>    <span class="k">def</span> <span class="nf">remove_comp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.remove_comp">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.remove_comp">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_comp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a compartment</span>
 
@@ -2862,7 +2889,10 @@
                 <span class="n">prog</span><span class="o">.</span><span class="n">target_comps</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">code_name</span><span class="p">)</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="ProgramSet.add_par"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.add_par">[docs]</a>    <span class="k">def</span> <span class="nf">add_par</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.add_par">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.add_par">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_par</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pop_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a parameter</span>
 
@@ -2883,7 +2913,10 @@
         <span class="c1"># So all we have to do is add it to the list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="n">full_name</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">pop_type</span><span class="p">}</span></div>
 
-<div class="viewcode-block" id="ProgramSet.remove_par"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.remove_par">[docs]</a>    <span class="k">def</span> <span class="nf">remove_par</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.remove_par">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.remove_par">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_par</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Remove a parameter</span>
 
@@ -2902,6 +2935,7 @@
             <span class="k">if</span> <span class="p">(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">pop</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">covouts</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">covouts</span><span class="p">[(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">pop</span><span class="p">)]</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span></div>
+
 
     <span class="c1">#######################################################################################################</span>
     <span class="c1"># Methods for data I/O</span>
@@ -2952,7 +2986,9 @@
 
         <span class="k">return</span> <span class="n">framework</span><span class="p">,</span> <span class="n">data</span>
 
-<div class="viewcode-block" id="ProgramSet.from_spreadsheet"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.from_spreadsheet">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ProgramSet.from_spreadsheet">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.from_spreadsheet">[docs]</a>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_spreadsheet</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">spreadsheet</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_allow_missing_data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Instantiate a ProgramSet from a spreadsheet</span>
@@ -2992,7 +3028,10 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="ProgramSet.to_workbook"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.to_workbook">[docs]</a>    <span class="k">def</span> <span class="nf">to_workbook</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.to_workbook">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.to_workbook">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_workbook</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return an open workbook for the ProgramSet</span>
 
@@ -3024,7 +3063,10 @@
 
         <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">wb</span></div>
 
-<div class="viewcode-block" id="ProgramSet.to_spreadsheet"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.to_spreadsheet">[docs]</a>    <span class="k">def</span> <span class="nf">to_spreadsheet</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.to_spreadsheet">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.to_spreadsheet">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_spreadsheet</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return content as a Sciris Spreadsheet</span>
 
@@ -3036,6 +3078,7 @@
         <span class="n">wb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># Close the workbook to flush any xlsxwriter content</span>
         <span class="n">spreadsheet</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  <span class="c1"># Wrap it in a spreadsheet instance</span>
         <span class="k">return</span> <span class="n">spreadsheet</span></div>
+
 
     <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
         <span class="n">ss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_spreadsheet</span><span class="p">()</span>
@@ -3416,7 +3459,9 @@
 
         <span class="n">apply_widths</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="n">widths</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ProgramSet.new"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.new">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ProgramSet.new">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.new">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tvec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a new progset with blank data</span>
@@ -3460,7 +3505,10 @@
 
         <span class="k">return</span> <span class="n">newps</span></div>
 
-<div class="viewcode-block" id="ProgramSet.validate"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.validate">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.validate">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform basic validation checks</span>
 
@@ -3480,11 +3528,14 @@
                 <span class="c1"># so we raise an error if no populations are targeted</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Program &quot;</span><span class="si">%s</span><span class="s1">&quot; does not target any populations&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prog</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
 
+
     <span class="c1">#######################################################################################################</span>
     <span class="c1"># Methods for getting core response summaries: budget, allocations, coverages, outcomes, etc</span>
     <span class="c1">#######################################################################################################</span>
 
-<div class="viewcode-block" id="ProgramSet.get_alloc"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_alloc">[docs]</a>    <span class="k">def</span> <span class="nf">get_alloc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="ProgramSet.get_alloc">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_alloc">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_alloc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the spending allocation for each program</span>
 
@@ -3514,7 +3565,10 @@
 
         <span class="k">return</span> <span class="n">alloc</span></div>
 
-<div class="viewcode-block" id="ProgramSet.get_capacities"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_capacities">[docs]</a>    <span class="k">def</span> <span class="nf">get_capacities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.get_capacities">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_capacities">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_capacities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return timestep capacity for all programs</span>
 
@@ -3552,7 +3606,10 @@
 
         <span class="k">return</span> <span class="n">capacities</span></div>
 
-<div class="viewcode-block" id="ProgramSet.get_prop_coverage"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_prop_coverage">[docs]</a>    <span class="k">def</span> <span class="nf">get_prop_coverage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">capacities</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">num_eligible</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.get_prop_coverage">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_prop_coverage">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_prop_coverage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">capacities</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">num_eligible</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">instructions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return dimensionless (timestep) fractional coverage</span>
 
@@ -3597,7 +3654,10 @@
 
         <span class="k">return</span> <span class="n">prop_coverage</span></div>
 
-<div class="viewcode-block" id="ProgramSet.get_outcomes"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_outcomes">[docs]</a>    <span class="k">def</span> <span class="nf">get_outcomes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop_coverage</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ProgramSet.get_outcomes">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.get_outcomes">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_outcomes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop_coverage</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get program outcomes given fractional coverage</span>
 
@@ -3621,7 +3681,10 @@
 
         <span class="k">return</span> <span class="p">{(</span><span class="n">covout</span><span class="o">.</span><span class="n">par</span><span class="p">,</span> <span class="n">covout</span><span class="o">.</span><span class="n">pop</span><span class="p">):</span> <span class="n">covout</span><span class="o">.</span><span class="n">get_outcome</span><span class="p">(</span><span class="n">prop_coverage</span><span class="p">)</span> <span class="k">for</span> <span class="n">covout</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">covouts</span><span class="o">.</span><span class="n">values</span><span class="p">()}</span></div>
 
-<div class="viewcode-block" id="ProgramSet.sample"><a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constant</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ProgramSet.sample">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.ProgramSet.html#atomica.programs.ProgramSet.sample">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constant</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perturb programs based on uncertainties</span>
 
@@ -3641,10 +3704,14 @@
             <span class="n">prog</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">constant</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">covout</span> <span class="ow">in</span> <span class="n">new</span><span class="o">.</span><span class="n">covouts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">covout</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">new</span></div></div>
+        <span class="k">return</span> <span class="n">new</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Program"><a class="viewcode-back" href="../../_autosummary/atomica.programs.Program.html#atomica.programs.Program">[docs]</a><span class="k">class</span> <span class="nc">Program</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Program">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.Program.html#atomica.programs.Program">[docs]</a>
+<span class="k">class</span> <span class="nc">Program</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Representation of a single program</span>
 
@@ -3701,7 +3768,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;/year&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_cost</span><span class="o">.</span><span class="n">units</span>
 
-<div class="viewcode-block" id="Program.sample"><a class="viewcode-back" href="../../_autosummary/atomica.programs.Program.html#atomica.programs.Program.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constant</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Program.sample">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.Program.html#atomica.programs.Program.sample">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constant</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perturb program values based on uncertainties</span>
 
@@ -3719,6 +3788,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">saturation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saturation</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">constant</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coverage</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">constant</span><span class="p">)</span></div>
 
+
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">prepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;          Program name: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
@@ -3728,7 +3798,9 @@
         <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">output</span>
 
-<div class="viewcode-block" id="Program.get_spend"><a class="viewcode-back" href="../../_autosummary/atomica.programs.Program.html#atomica.programs.Program.get_spend">[docs]</a>    <span class="k">def</span> <span class="nf">get_spend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<div class="viewcode-block" id="Program.get_spend">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.Program.html#atomica.programs.Program.get_spend">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_spend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve program spending</span>
 
@@ -3743,7 +3815,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spend_data</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;previous&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Program.get_capacity"><a class="viewcode-back" href="../../_autosummary/atomica.programs.Program.html#atomica.programs.Program.get_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">get_capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">spending</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Program.get_capacity">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.Program.html#atomica.programs.Program.get_capacity">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">spending</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return timestep capacity</span>
 
@@ -3788,7 +3863,10 @@
 
         <span class="k">return</span> <span class="n">capacity</span></div>
 
-<div class="viewcode-block" id="Program.get_prop_covered"><a class="viewcode-back" href="../../_autosummary/atomica.programs.Program.html#atomica.programs.Program.get_prop_covered">[docs]</a>    <span class="k">def</span> <span class="nf">get_prop_covered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">eligible</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Program.get_prop_covered">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.Program.html#atomica.programs.Program.get_prop_covered">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_prop_covered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">eligible</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return proportion of people covered</span>
 
@@ -3819,10 +3897,14 @@
             <span class="c1"># The division below means that 0/0 is treated as returning 1</span>
             <span class="n">prop_covered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">eligible</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">capacity</span><span class="p">),</span> <span class="n">where</span><span class="o">=</span><span class="n">eligible</span> <span class="o">&gt;</span> <span class="n">capacity</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">prop_covered</span></div></div>
+        <span class="k">return</span> <span class="n">prop_covered</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Covout"><a class="viewcode-back" href="../../_autosummary/atomica.programs.Covout.html#atomica.programs.Covout">[docs]</a><span class="k">class</span> <span class="nc">Covout</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Covout">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.Covout.html#atomica.programs.Covout">[docs]</a>
+<span class="k">class</span> <span class="nc">Covout</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Store and compute program outcomes</span>
 
@@ -3877,7 +3959,9 @@
 
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Covout.sample"><a class="viewcode-back" href="../../_autosummary/atomica.programs.Covout.html#atomica.programs.Covout.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Covout.sample">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.Covout.html#atomica.programs.Covout.sample">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perturb the values entered in the databook</span>
 
@@ -3901,7 +3985,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">update_outcomes</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Covout.update_outcomes"><a class="viewcode-back" href="../../_autosummary/atomica.programs.Covout.html#atomica.programs.Covout.update_outcomes">[docs]</a>    <span class="k">def</span> <span class="nf">update_outcomes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Covout.update_outcomes">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.Covout.html#atomica.programs.Covout.update_outcomes">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_outcomes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update cache when outcomes change</span>
 
@@ -3933,6 +4020,7 @@
             <span class="n">_combination_outcomes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compute_impact_interaction</span><span class="p">(</span><span class="n">progs</span><span class="o">=</span><span class="n">prog_combination</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_combination_outcomes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_combination_outcomes</span><span class="p">)</span>  <span class="c1"># Reshape to column vector, since that&#39;s the shape of combination_coverage</span></div>
 
+
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">prepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="s2">&quot;   Parameter: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="p">)</span>
@@ -3942,7 +4030,9 @@
         <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">output</span>
 
-<div class="viewcode-block" id="Covout.get_outcome"><a class="viewcode-back" href="../../_autosummary/atomica.programs.Covout.html#atomica.programs.Covout.get_outcome">[docs]</a>    <span class="k">def</span> <span class="nf">get_outcome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop_covered</span><span class="p">):</span>
+<div class="viewcode-block" id="Covout.get_outcome">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.Covout.html#atomica.programs.Covout.get_outcome">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_outcome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop_covered</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return parameter value given program coverages</span>
 
 <span class="sd">        The :class:`Covout` object contains a set of programs and outcomes. The :meth:`Covout.get_outcome` method</span>
@@ -4028,7 +4118,10 @@
 
         <span class="k">return</span> <span class="n">outcome</span></div>
 
-<div class="viewcode-block" id="Covout.compute_impact_interaction"><a class="viewcode-back" href="../../_autosummary/atomica.programs.Covout.html#atomica.programs.Covout.compute_impact_interaction">[docs]</a>    <span class="k">def</span> <span class="nf">compute_impact_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Covout.compute_impact_interaction">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.Covout.html#atomica.programs.Covout.compute_impact_interaction">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_impact_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the output for a given combination of programs</span>
 
@@ -4055,7 +4148,9 @@
             <span class="c1"># Otherwise, do the &#39;best&#39; interaction and return the delta with the largest magnitude</span>
             <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deltas</span><span class="p">[</span><span class="n">progs</span><span class="p">]</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">tmp</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">tmp</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></div></div>
+            <span class="k">return</span> <span class="n">tmp</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></div>
+</div>
+
 </pre></div>
 
            </div>

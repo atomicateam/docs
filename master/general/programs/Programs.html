@@ -11,9 +11,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -36,7 +38,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2506,7 +2508,7 @@
            <div itemprop="articleBody">
              
   <section id="program-system">
-<h1>Program System<a class="headerlink" href="#program-system" title="Permalink to this heading">¶</a></h1>
+<h1>Program System<a class="headerlink" href="#program-system" title="Link to this heading">¶</a></h1>
 <p>The role of the programs module is to produce simulations in which spending on programs has been used to compute the parameter values driving transitions between compartments in the model. An overview is shown below:</p>
 <a class="reference internal image-reference" href="../../_images/model_structure.png"><img alt="../../_images/model_structure.png" src="../../_images/model_structure.png" style="width: 600px;" /></a>
 <p>The way this is achieved is by the ProgramSet overwriting the parameter values during integration. While the model is being run, if programs are active, then program-generated parameter values are used to overwrite the relevant subset of databook (calibrated) parameter values.</p>
@@ -2515,7 +2517,7 @@
 <a class="reference internal image-reference" href="../../_images/parameter_cco.png"><img alt="../../_images/parameter_cco.png" src="../../_images/parameter_cco.png" style="width: 600px;" /></a>
 <p>If multiple programs target the same people, then it is possible for complex interactions between them to take place. Therefore, the program overwrites are normally computed for an entire collection of programs at once (via a <code class="xref py py-class docutils literal notranslate"><span class="pre">ProgramSet</span></code>), which enables computation of any interactions between programs.</p>
 <section id="data-and-structural-overview">
-<h2>Data and structural overview<a class="headerlink" href="#data-and-structural-overview" title="Permalink to this heading">¶</a></h2>
+<h2>Data and structural overview<a class="headerlink" href="#data-and-structural-overview" title="Link to this heading">¶</a></h2>
 <p>The key data associated with programs is all entered into the <em>program book</em>. A program book can be thought of as an Excel data-based representation of a ProgramSet. The program data is divided into three sheets.</p>
 <p>Programs are targeted at a subset of available compartments and populations. A simple example is shown below, with two programs each targeting different compartments in the model.</p>
 <a class="reference internal image-reference" href="../../_images/program_targeting.png"><img alt="../../_images/program_targeting.png" src="../../_images/program_targeting.png" style="width: 600px;" /></a>
@@ -2561,7 +2563,7 @@
 <p>We now go through each of these stages in turn.</p>
 </section>
 <section id="coverage-computation">
-<h2>Coverage computation<a class="headerlink" href="#coverage-computation" title="Permalink to this heading">¶</a></h2>
+<h2>Coverage computation<a class="headerlink" href="#coverage-computation" title="Link to this heading">¶</a></h2>
 <p>Computing program coverage is performed independently for each program. In discussing program coverage, we introduce the following terms:</p>
 <ul class="simple">
 <li><p>The <em>capacity</em> of a program is the maximum number of people that can be covered by the program</p></li>
@@ -2576,7 +2578,7 @@
 </ol>
 <a class="reference internal image-reference" href="../../_images/coverage_computation.png"><img alt="../../_images/coverage_computation.png" src="../../_images/coverage_computation.png" style="width: 800px;" /></a>
 <section id="capacity">
-<h3>Capacity<a class="headerlink" href="#capacity" title="Permalink to this heading">¶</a></h3>
+<h3>Capacity<a class="headerlink" href="#capacity" title="Link to this heading">¶</a></h3>
 <p>The capacity of a program (in some contexts, referred to as the ‘coverage numerator’) can be thought of as the maximum number of people that could be reached by an intervention for a given budget. For example, it might correspond to the number of doses of a treatment that can be purchased with the available funds. There are fundamentally two types of programs</p>
 <ul class="simple">
 <li><p>One-off programs, in which a cost is incurred every time a person is reached by a program (e.g. the cost per dose of a treatment)</p></li>
@@ -2587,7 +2589,7 @@
 <p>The capacity constraint serves as a hard upper limit on the capacity. It can be entered in units of ‘people/year’ or ‘people’ and it will be converted automatically between these two representations using the timestep, if required. In general, the capacity constraint should be entered in the same native units as capacity, so for one-off programs, it should be entered in units of ‘people/year’ and for continuous programs, it should be entered in units of ‘people’.</p>
 </section>
 <section id="coverage">
-<h3>Coverage<a class="headerlink" href="#coverage" title="Permalink to this heading">¶</a></h3>
+<h3>Coverage<a class="headerlink" href="#coverage" title="Link to this heading">¶</a></h3>
 <p>The next step is to calculate the program’s coverage. Here, we are principally focused on computing the fraction (of targeted people) covered. Program coverage is computed in three steps</p>
 <ol class="arabic simple">
 <li><p>The raw fraction covered is computed by dividing the program capacity by number of eligible people</p></li>
@@ -2607,7 +2609,7 @@
 <p>A final comment is that in many cases, the fraction covered will simply be the program capacity divided by number eligible. It can therefore be tempting to think of the program capacity as being the ‘coverage numerator’. However, this interpretation can be confusing, because if the number of eligible people is smaller than the capacity, or if saturation constraints are present, then the fraction covered cannot simply be obtained by dividing capacity by number eligible. Hence we prefer the terminology ‘program capacity’ and ‘number eligible’ to ‘coverage numerator’ and ‘coverage denominator’, because the former terms are formally defined within our framework and are not context-dependent.</p>
 </section>
 <section id="number-covered">
-<h3>Number covered<a class="headerlink" href="#number-covered" title="Permalink to this heading">¶</a></h3>
+<h3>Number covered<a class="headerlink" href="#number-covered" title="Link to this heading">¶</a></h3>
 <p>The number covered is effectively an output that follows directly from the fraction covered - it is obtained by multiplying the final fraction covered by the number of people eligible. The number covered therefore corresponds to the number of people that are actually reached by the program, after taking into account</p>
 <ul class="simple">
 <li><p>Capacity constraints</p></li>
@@ -2619,7 +2621,7 @@
 </section>
 </section>
 <section id="outcome-computation">
-<h2>Outcome computation<a class="headerlink" href="#outcome-computation" title="Permalink to this heading">¶</a></h2>
+<h2>Outcome computation<a class="headerlink" href="#outcome-computation" title="Link to this heading">¶</a></h2>
 <p>The final stage of programs computation is the mapping of program coverage to outcome. This is handled via the <code class="xref py py-class docutils literal notranslate"><span class="pre">Covout</span></code> object, which implements functionality related to coverage overlap and impact interactions. The overall workflow is shown below:</p>
 <a class="reference internal image-reference" href="../../_images/outcome_computation.png"><img alt="../../_images/outcome_computation.png" src="../../_images/outcome_computation.png" style="width: 800px;" /></a>
 <p>At its core, the mapping from program coverage to outcome is linear, with the form</p>
@@ -2634,7 +2636,7 @@
 </ol>
 <p>We now go through each step in turn</p>
 <section id="coverage-interaction">
-<h3>Coverage interaction<a class="headerlink" href="#coverage-interaction" title="Permalink to this heading">¶</a></h3>
+<h3>Coverage interaction<a class="headerlink" href="#coverage-interaction" title="Link to this heading">¶</a></h3>
 <p>Each program has a fractional coverage value that represents how many people are reached by that program, irrespective of whether they are reached by any other program. We have to decide how many people are reached by each combination of programs, and Atomica provides three possibilities for how this can be carried out. As noted above, the coverage interaction is computed for a single parameter at a time, and it is assumed that the overlap in coverage is taking place within the same group of people for all programs, even if those programs are targeted at different compartments (i.e. it is taking place within the group of people relevant to the parameter, which is the same for all programs targeting that parameter). This step is described in more detail below, in the ‘<a class="reference internal" href="#parameters-in-number-units"><span class="std std-ref">Parameters in Number units</span></a>’ section.</p>
 <p>The three possible interactions are</p>
 <ul class="simple">
@@ -2672,13 +2674,13 @@
 <p>In this example, Program 1 is the most effective program, followed by Program 2 and then Program 3. Because Program 1 and Program 2 have coverages that sum to less than 100%, those two programs are combined purely additively. That is, there is no overlap between Program 1 and Program 2 in the figure below. The remaining 10% are covered by Program 3 only. Afterwards, 100% of the population has been covered by one program, and there is 10% coverage for Program 3 remaining. This coverage is distributed randomly throughout the population, which results in 6% of the population being covered by Program 1 and Program 3, and 4% being covered by Program 2 and Program 3. This preferential additive algorithm means that as coverages increase, outcomes should always improve.</p>
 </section>
 <section id="impact-interactions">
-<h3>Impact interactions<a class="headerlink" href="#impact-interactions" title="Permalink to this heading">¶</a></h3>
+<h3>Impact interactions<a class="headerlink" href="#impact-interactions" title="Link to this heading">¶</a></h3>
 <p>Finally, having computed the fraction coverage of the combination of programs, we need to compute the outcome for individuals covered by that combination of programs. This can be specified in one of three ways in the Excel spreadsheet, which leads to three different cases in the code.</p>
 <p>First, the impact interaction cell can be left empty. In that case, the impact of the combination of programs is equal to the impact of the program with the largest effect - effectively, individuals receive the ‘best’ outcome of all individual programs. The best outcome is defined as the one that has the largest difference (positive or negative) between the outcome value and the baseline value, which means that this behaves correctly regardless of whether the effect of a program is to increase or decrease the parameter value.</p>
 <p>Second, the impact interaction can explicitly state the program outcome for the combination of programs. For example, suppose the program book has programs “BCG”, “PCF”, and “ACF”. Then, the impact interaction can contain a string like “BCG+PCF=0.4” which specifies that the outcome for being covered by both BCG and PCF is 0.4. Multiple outcomes can be provided, separated by commas - for example, “BCG+PCF=0.4,BCG+PCF+ACF=0.5”. If a combination does not appear explicitly in this string, then it will fall back to the ‘best’ outcome described above. One edge case occurs if programs have disparate effects on the parameter value, such that one program increases the value relative to baseline, and another decreases it. In that case, the ‘best’ outcome will be the one that has the largest difference to baseline, so whether the parameter value is increased or decreased depends on the specific values provided as program outcomes. In such cases, it may be preferable to explicitly specify the outcome in the impact interaction to avoid ambiguity.</p>
 </section>
 <section id="parameters-in-number-units">
-<h3>Parameters in Number units<a class="headerlink" href="#parameters-in-number-units" title="Permalink to this heading">¶</a></h3>
+<h3>Parameters in Number units<a class="headerlink" href="#parameters-in-number-units" title="Link to this heading">¶</a></h3>
 <p>The programs system is based on computing parameter values by multiplying the program outcome by the program’s fractional coverage. This is all that is required for parameters that are in units of probability. However, in some cases, the parameter being overwritten may be in number units - for example, if the framework defines the treatment initiation rate as a number of people rather than a probability. In that case, an additional conversion step is required. The conversion is performed automatically in <code class="docutils literal notranslate"><span class="pre">model.py</span></code> by multiplying the parameter value by the number of people in the parameter’s source compartments (the sum of all source compartments for transitions associated with the parameter). In practice, this means that in the program book, program outcomes should simply be entered as the outcome for an individual.</p>
 <p>To illustrate how this calculation works, consider a simple diagnosis setup. We have three compartments, susceptible, undiagnosed, and diagnosed. People flow from susceptible to undiagnosed by acquiring the condition, and then from undiagnosed to diagnosed by a parameter <code class="docutils literal notranslate"><span class="pre">diag</span></code> that governs the diagnosis rate. For this example, the parameter is specified in number units (i.e. the number of people diagnosed per year). Suppose further that there are 2000 people in the susceptible compartment, and 1000 people in the undiagnosed compartment. Finally, we will assume that the diagnosis intervention is ideal in that there are no false positives or false negatives. Then, administering a diagnosis test to someone that has the condition is guaranteed to result in a diagnosis. So we enter the program outcome for diagnosis as 1.0.</p>
 <p>First, consider the case where the program is targeted at the undiagnosed compartment only (Case 1 in the figure above). Intuitively, all 200 people reached by the program are within the undiagnosed compartment, so there are 1000 people eligible for the program, all of whom are undiagnosed, and the program’s fractional coverage is 20%.</p>
@@ -2698,7 +2700,7 @@
 </section>
 </section>
 <section id="targeting-transfers">
-<h2>Targeting transfers<a class="headerlink" href="#targeting-transfers" title="Permalink to this heading">¶</a></h2>
+<h2>Targeting transfers<a class="headerlink" href="#targeting-transfers" title="Link to this heading">¶</a></h2>
 <p>An advanced feature in the Programs system is the ability to target transfers between populations. This allows movements in and out of key populations to be affected by programs. It is not aimed at general use, and is therefore slightly more involved.</p>
 <p>Transfers between populations are handled in the same way as normal transitions - there is a parameter in the <cite>Model</cite> governing the flow rate, with values supplied from the ‘Transfers’ sheet of the databook, and a set of <cite>Links</cite> between every compartment in the source and destination. These items don’t appear explicitly in the Framework (in the transition matrix or in the parameter list) because they are specific to the populations defined in the databook. The key things to be aware of are</p>
 <ul class="simple">

@@ -12,9 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -37,7 +39,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.3
+                1.26.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2507,7 +2509,7 @@
            <div itemprop="articleBody">
              
   <section id="Plotting-Documentation">
-<h1>Plotting Documentation<a class="headerlink" href="#Plotting-Documentation" title="Permalink to this heading">¶</a></h1>
+<h1>Plotting Documentation<a class="headerlink" href="#Plotting-Documentation" title="Link to this heading">¶</a></h1>
 <p>Making plots in Atomica is intrinsically complex, because customization is required in several places</p>
 <ul class="simple">
 <li><p>Aggregating outputs by summation or averaging</p></li>
@@ -2525,9 +2527,9 @@
 <p>This notebook provides documentation for the plotting library, providing an overview of available functions and examples of how to perform common tasks.</p>
 <p>Note that this plotting library serves as the foundation for accessing and plotting outputs - it is expected that plots will require context-dependent customization after creation to suit specific uses e.g. frontend, reports, presentations, and a number of helper scripts are also provided to assist with these customizations. The default behaviours in the plotting library reflect the lowest common denominator of usage, maximizing the information displayed and minimizing information loss.</p>
 <section id="Quick-Reference">
-<h2>Quick Reference<a class="headerlink" href="#Quick-Reference" title="Permalink to this heading">¶</a></h2>
+<h2>Quick Reference<a class="headerlink" href="#Quick-Reference" title="Link to this heading">¶</a></h2>
 <section id="Just-give-me-a-plot">
-<h3>Just give me a plot<a class="headerlink" href="#Just-give-me-a-plot" title="Permalink to this heading">¶</a></h3>
+<h3>Just give me a plot<a class="headerlink" href="#Just-give-me-a-plot" title="Link to this heading">¶</a></h3>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>result = proj.run_sim(...)
 d = at.PlotData(result,pops=[&#39;0-4&#39;],outputs=[&#39;sus&#39;,&#39;vac&#39;],project=proj)
 figs = at.plot_series(d,data=proj.data)
@@ -2535,9 +2537,9 @@ figs = at.plot_series(d,data=proj.data)
 </div>
 </section>
 <section id="FAQs">
-<h3>FAQs<a class="headerlink" href="#FAQs" title="Permalink to this heading">¶</a></h3>
+<h3>FAQs<a class="headerlink" href="#FAQs" title="Link to this heading">¶</a></h3>
 <section id="Data-manipulation">
-<h4>Data manipulation<a class="headerlink" href="#Data-manipulation" title="Permalink to this heading">¶</a></h4>
+<h4>Data manipulation<a class="headerlink" href="#Data-manipulation" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><a class="reference internal" href="#Data-preparation-and-aggregation"><span class="std std-ref">How do I sum over all populations?</span></a></p></li>
 <li><p><a class="reference internal" href="#Function-aggregations"><span class="std std-ref">How do I transform output quantities?</span></a></p></li>
@@ -2549,7 +2551,7 @@ figs = at.plot_series(d,data=proj.data)
 </ul>
 </section>
 <section id="General-issues">
-<h4>General issues<a class="headerlink" href="#General-issues" title="Permalink to this heading">¶</a></h4>
+<h4>General issues<a class="headerlink" href="#General-issues" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><a class="reference internal" href="#Setting-full-names"><span class="std std-ref">The plot uses code names instead of full names</span></a></p></li>
 <li><p><a class="reference internal" href="#Plotting-series"><span class="std std-ref">I want lines for populations, not for outputs</span></a></p></li>
@@ -2559,7 +2561,7 @@ figs = at.plot_series(d,data=proj.data)
 </ul>
 </section>
 <section id="Bar-graphs">
-<h4>Bar graphs<a class="headerlink" href="#Bar-graphs" title="Permalink to this heading">¶</a></h4>
+<h4>Bar graphs<a class="headerlink" href="#Bar-graphs" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><a class="reference internal" href="#Plotting-bars"><span class="std std-ref">I want to make a bar graph</span></a></p></li>
 <li><p><a class="reference internal" href="#Stacking-bars"><span class="std std-ref">I want to stack things on the bar graph</span></a></p></li>
@@ -2568,7 +2570,7 @@ figs = at.plot_series(d,data=proj.data)
 </ul>
 </section>
 <section id="Legends">
-<h4>Legends<a class="headerlink" href="#Legends" title="Permalink to this heading">¶</a></h4>
+<h4>Legends<a class="headerlink" href="#Legends" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><a class="reference internal" href="#Working-with-legends"><span class="std std-ref">Something is wrong with the legend</span></a></p></li>
 <li><p><a class="reference internal" href="#Controlling-legend-order"><span class="std std-ref">I want the legend to be in a different order</span></a></p></li>
@@ -2666,6 +2668,8 @@ Parameter &#34;px_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 Parameter &#34;nd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Parameter &#34;nm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
 Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2673,15 +2677,15 @@ Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; 
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.427s
-Elapsed time for running &#34;default&#34;: 0.431s
+Elapsed time for running &#34;default&#34;: 0.493s
+Elapsed time for running &#34;default&#34;: 0.489s
 </pre></div></div>
 </div>
 </section>
 </section>
 </section>
 <section id="Plotting-system-design">
-<h2>Plotting system design<a class="headerlink" href="#Plotting-system-design" title="Permalink to this heading">¶</a></h2>
+<h2>Plotting system design<a class="headerlink" href="#Plotting-system-design" title="Link to this heading">¶</a></h2>
 <p>Conceptually, there are 4 stages of plotting</p>
 <ol class="arabic simple">
 <li><p>Preparing data for plotting by aggregating e.g. summation, averaging</p></li>
@@ -2699,7 +2703,7 @@ out in scripts like <code class="docutils literal notranslate"><span class="pre"
 customizations.</p>
 <p>We will now go through each of the 4 plotting stages in detail.</p>
 <section id="Data-preparation-and-aggregation">
-<h3>Data preparation and aggregation<a class="headerlink" href="#Data-preparation-and-aggregation" title="Permalink to this heading">¶</a></h3>
+<h3>Data preparation and aggregation<a class="headerlink" href="#Data-preparation-and-aggregation" title="Link to this heading">¶</a></h3>
 <p>All plotting starts with the creation of a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object. This object is distinct from a <code class="docutils literal notranslate"><span class="pre">Result</span></code> object in three ways</p>
 <ul class="simple">
 <li><p>A <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object contains <code class="docutils literal notranslate"><span class="pre">Series</span></code> that are identified by a <code class="docutils literal notranslate"><span class="pre">[results,pops,outputs]</span></code> tuple. That is, it spans multiple results, which allows it to contain the relevant data for plotting scenarios</p></li>
@@ -2916,7 +2920,7 @@ Output &#39;ac_prev&#39; is not in number units, so population aggregation proba
 </div>
 </section>
 <section id="Function-aggregations">
-<h3>Function aggregations<a class="headerlink" href="#Function-aggregations" title="Permalink to this heading">¶</a></h3>
+<h3>Function aggregations<a class="headerlink" href="#Function-aggregations" title="Link to this heading">¶</a></h3>
 <p>As well as defining aggregations, you can also define transformations of simulation quantities using arbitrary functions. This can only be done for outputs, not populations. To do this, define an output quantity as a <code class="docutils literal notranslate"><span class="pre">dict()</span></code> but provide a string containing the function to be evaluated, instead of a <code class="docutils literal notranslate"><span class="pre">list</span></code>. For instance</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -2991,7 +2995,7 @@ Output &#39;ac_prev&#39; is not in number units, so population aggregation proba
 </div>
 </section>
 <section id="Axis-units">
-<h3>Axis units<a class="headerlink" href="#Axis-units" title="Permalink to this heading">¶</a></h3>
+<h3>Axis units<a class="headerlink" href="#Axis-units" title="Link to this heading">¶</a></h3>
 <p>One final comment regards the units of the plot data. The plotting functions will automatically display the units on the y-axis if the units for all of the data being plotted are the same. The possible units for various quantities are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Compartment</span></code> : ‘Number of people’</p></li>
@@ -3228,7 +3232,7 @@ Aggregation for output &#39;Mix&#39; is mixing timescales, this is almost certai
 <p>This approach would be most commonly used to label plots generated using function aggregations, as demonstrated above.</p>
 </section>
 <section id="Flow-rate-aggregations-and-disaggregations">
-<h3>Flow rate aggregations and disaggregations<a class="headerlink" href="#Flow-rate-aggregations-and-disaggregations" title="Permalink to this heading">¶</a></h3>
+<h3>Flow rate aggregations and disaggregations<a class="headerlink" href="#Flow-rate-aggregations-and-disaggregations" title="Link to this heading">¶</a></h3>
 <p>A common task is to plot aggregations and disaggregations of flow rates. We have already seen that a transition tag can be used to refer to the aggregated set of all links sharing that tag. For instance, the parameter <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code> governs ‘death by other causes’ and it provides values for a number of links, since most compartments have a flow into the <code class="docutils literal notranslate"><span class="pre">doth</span></code> compartment. If we plot the transition tag <code class="docutils literal notranslate"><span class="pre">doth_rate:flow</span></code> then we will be getting the entire flow associated with the parameter
 <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code> i.e. the flow summed over all of these links.</p>
 <div class="nbinput docutils container">
@@ -3351,7 +3355,7 @@ Aggregation for output &#39;Mix&#39; is mixing timescales, this is almost certai
 </section>
 </section>
 <section id="Plotting-series">
-<h2>Plotting series<a class="headerlink" href="#Plotting-series" title="Permalink to this heading">¶</a></h2>
+<h2>Plotting series<a class="headerlink" href="#Plotting-series" title="Link to this heading">¶</a></h2>
 <p>A number of options are available when plotting a time series. First, <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> is a 4-dimensional quantity - a data point is uniquely identified based on <code class="docutils literal notranslate"><span class="pre">result</span></code>, <code class="docutils literal notranslate"><span class="pre">pop</span></code>, <code class="docutils literal notranslate"><span class="pre">output</span></code> and <code class="docutils literal notranslate"><span class="pre">time</span></code>. For a time series plot, the x-axis is always the time dimension. Then, you can select whether separate lines on the plot should be drawn for <code class="docutils literal notranslate"><span class="pre">results</span></code>, <code class="docutils literal notranslate"><span class="pre">pops</span></code>, or <code class="docutils literal notranslate"><span class="pre">outputs</span></code>, by using the <code class="docutils literal notranslate"><span class="pre">axis</span></code> argument to <code class="docutils literal notranslate"><span class="pre">plot_series</span></code>. Finally, <code class="docutils literal notranslate"><span class="pre">plot_series</span></code> will display a separate figure for each
 of the remaining dimensions. The example below has a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object containing 2 results, 2 pops, and 2 outputs, and shows the effect of setting the <code class="docutils literal notranslate"><span class="pre">axis</span></code> property to each of the possible options:</p>
 <div class="nbinput docutils container">
@@ -3573,7 +3577,7 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <img alt="../_images/examples_Plotting_76_0.svg" src="../_images/examples_Plotting_76_0.svg" /></div>
 </div>
 <section id="Overriding-data">
-<h3>Overriding data<a class="headerlink" href="#Overriding-data" title="Permalink to this heading">¶</a></h3>
+<h3>Overriding data<a class="headerlink" href="#Overriding-data" title="Link to this heading">¶</a></h3>
 <p>In some cases, you might want to render different data to the output and population specified in the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object. For example, you might have aggregated a quantity, and stored aggregated data values in the databook under a different parameter or population. Each <code class="docutils literal notranslate"><span class="pre">Series</span></code> object contains the attributes <code class="docutils literal notranslate"><span class="pre">data_label</span></code> and <code class="docutils literal notranslate"><span class="pre">data_pop</span></code>. These specify the databook TDVE table and population, respectively. Consider the two quantities below</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
@@ -3654,7 +3658,7 @@ Outputs: [&#39;b_rate&#39;]
 </div>
 </section>
 <section id="Stacked-plots-and-data">
-<h3>Stacked plots and data<a class="headerlink" href="#Stacked-plots-and-data" title="Permalink to this heading">¶</a></h3>
+<h3>Stacked plots and data<a class="headerlink" href="#Stacked-plots-and-data" title="Link to this heading">¶</a></h3>
 <p>We have already seen above that if multiple Series are plotted and there is data associated with them, then those data will be displayed as scatter points:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
@@ -3690,7 +3694,7 @@ Outputs: [&#39;b_rate&#39;]
 and data points for the next quantity in the stack. Thus, while the plotting library provides the ability to render data on top of a stacked line plot, this feature should be used carefully.</p>
 </section>
 <section id="Plotting-transition-parameters-and-flow-rates">
-<h3>Plotting transition parameters and flow rates<a class="headerlink" href="#Plotting-transition-parameters-and-flow-rates" title="Permalink to this heading">¶</a></h3>
+<h3>Plotting transition parameters and flow rates<a class="headerlink" href="#Plotting-transition-parameters-and-flow-rates" title="Link to this heading">¶</a></h3>
 <p>Every transition in the model is governed by a <code class="docutils literal notranslate"><span class="pre">Link</span></code> object, which derives its value from a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code>. A <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> object may supply values for multiple <code class="docutils literal notranslate"><span class="pre">Links</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code> supplies death by other causes for multiple compartments). A <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> may be in units of fraction or number, while a <code class="docutils literal notranslate"><span class="pre">Link</span></code> is always in units of <code class="docutils literal notranslate"><span class="pre">number</span></code>. A <code class="docutils literal notranslate"><span class="pre">Link</span></code> can be identified by its name, which is the name of the parameter that it derives its values from, but with <code class="docutils literal notranslate"><span class="pre">':flow'</span></code> appended
 to the end.</p>
 <p>If you want to plot a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code>, the <code class="docutils literal notranslate"><span class="pre">output</span></code> label should be the parameter’s label, while if you want to plot an actual flow rate, then you should append <code class="docutils literal notranslate"><span class="pre">':flow'</span></code> to the name. If you specify that you are plotting links, <strong>the values will automatically be summed over duplicate links and annualized</strong>. In both cases, if you specify that data should be plotted, the data will be accessed based on the <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> label, if the units match. This is illustrated below:</p>
@@ -3728,7 +3732,7 @@ to the end.</p>
 <p>Now, <code class="docutils literal notranslate"><span class="pre">v_rate:flow</span></code> is the transition derived from <code class="docutils literal notranslate"><span class="pre">v_rate</span></code>. Therefore, it is in units of <code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">people</span> <span class="pre">per</span> <span class="pre">year</span></code>. Note that the data points have not plotted, because the parameter is not in the same units.</p>
 </section>
 <section id="Setting-full-names">
-<h3>Setting full names<a class="headerlink" href="#Setting-full-names" title="Permalink to this heading">¶</a></h3>
+<h3>Setting full names<a class="headerlink" href="#Setting-full-names" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">results</span></code>, <code class="docutils literal notranslate"><span class="pre">pops</span></code>, and <code class="docutils literal notranslate"><span class="pre">outputs</span></code> properties of the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object specify both the order in which the quantities will be plotted, and the mapping between code names and full names. Most commonly, this is used to display full names from the <code class="docutils literal notranslate"><span class="pre">project</span></code> object. To use full names, pass a <code class="docutils literal notranslate"><span class="pre">project</span></code> object to the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> constructor:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
@@ -3778,7 +3782,7 @@ to the end.</p>
 </div>
 </section>
 <section id="Further-formatting">
-<h3>Further formatting<a class="headerlink" href="#Further-formatting" title="Permalink to this heading">¶</a></h3>
+<h3>Further formatting<a class="headerlink" href="#Further-formatting" title="Link to this heading">¶</a></h3>
 <p>In contrast to the original Optima TB plotting library, plotting and saving are separate steps. The plotting library functions return arrays containing the handles for figures that they generate. You can use these handles to interact with the plot objects prior to saving them, using any functionality provided by <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>. Some examples of figure properties you might wish to customize manually are</p>
 <ul class="simple">
 <li><p>Title and axis labels</p></li>
@@ -3831,7 +3835,7 @@ to the end.</p>
 <p>Note also that because these are raw <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> commands, searching online for code snippets for how to perform common tasks in <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> (such as drawing vertical lines or text) will yield results that can be directly used.</p>
 </section>
 <section id="Module-level-settings-and-separate-legends">
-<h3>Module-level settings and separate legends<a class="headerlink" href="#Module-level-settings-and-separate-legends" title="Permalink to this heading">¶</a></h3>
+<h3>Module-level settings and separate legends<a class="headerlink" href="#Module-level-settings-and-separate-legends" title="Link to this heading">¶</a></h3>
 <p>Similar to <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>, the Optima TB plotting library has persistent module-level settings that affect all plots. These are stored in a dict in the module:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
@@ -3922,7 +3926,7 @@ to the end.</p>
 </section>
 </section>
 <section id="Time-accumulation">
-<h2>Time accumulation<a class="headerlink" href="#Time-accumulation" title="Permalink to this heading">¶</a></h2>
+<h2>Time accumulation<a class="headerlink" href="#Time-accumulation" title="Link to this heading">¶</a></h2>
 <p>You can also sum or integrate quantities over time, for example, when calculating DALYs. This is accomplished using the <code class="docutils literal notranslate"><span class="pre">accumulate</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> constructor:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
@@ -4009,7 +4013,7 @@ series plots, and aggregation is most appropriate for bar plots.</p>
 </div>
 </section>
 <section id="Saving-figures">
-<h2>Saving figures<a class="headerlink" href="#Saving-figures" title="Permalink to this heading">¶</a></h2>
+<h2>Saving figures<a class="headerlink" href="#Saving-figures" title="Link to this heading">¶</a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> figure can always be saved using <code class="docutils literal notranslate"><span class="pre">fig.savefig(fname)</span></code>. For convenience, the plotting library contains a helper function, <code class="docutils literal notranslate"><span class="pre">save_figs()</span></code> that takes in an array of figure handles. By default, the figures will be saved in the current folder, with a file name specified by the figure’s <code class="docutils literal notranslate"><span class="pre">label</span></code> property. You can optionally provide a list of filenames, a prefix, and a path with a directory</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
@@ -4166,7 +4170,7 @@ that need to be provided, and thus empty strings would need to be added or remov
 </div>
 </section>
 <section id="Plotting-bars">
-<h2>Plotting bars<a class="headerlink" href="#Plotting-bars" title="Permalink to this heading">¶</a></h2>
+<h2>Plotting bars<a class="headerlink" href="#Plotting-bars" title="Link to this heading">¶</a></h2>
 <p>The second primary plot type in Optima TB is the bar graph, implemented by <code class="docutils literal notranslate"><span class="pre">plot_bars</span></code>. In contrast to <code class="docutils literal notranslate"><span class="pre">plot_series</span></code>, <code class="docutils literal notranslate"><span class="pre">plot_bars</span></code> will only ever return one figure. This means that whatever data is present in the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object will be displayed in the figure. As mentioned before, <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> is 4 dimensional. In <code class="docutils literal notranslate"><span class="pre">plot_bars</span></code>, these dimensions are represented in the following ways:</p>
 <ul class="simple">
 <li><p>Outputs and Populations are shown as bars, that are distinguished by colour, and appear immediately adjacent to each other. For a single result and time, these output/population bars are referred to as a ‘block’</p></li>
@@ -4174,7 +4178,7 @@ that need to be provided, and thus empty strings would need to be added or remov
 </ul>
 <p>Understanding this concept is crucial to being able to work with <code class="docutils literal notranslate"><span class="pre">plot_bars</span></code>, so the examples below should be studied carefully.</p>
 <section id="Time-aggregation">
-<h3>Time aggregation<a class="headerlink" href="#Time-aggregation" title="Permalink to this heading">¶</a></h3>
+<h3>Time aggregation<a class="headerlink" href="#Time-aggregation" title="Link to this heading">¶</a></h3>
 <p>First, unlike with <code class="docutils literal notranslate"><span class="pre">plot_series</span></code>, it is typically necessary to aggregate plot data over time. This is achieved specifying the time binds when constructing the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object. The time bins are specified as either a vector of bin edges, as a scalar spacing between bins, or the keyword <code class="docutils literal notranslate"><span class="pre">'all'</span></code> which includes all time points. So for example, if we want to aggregate the data into decade bins, we could use</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
@@ -4290,7 +4294,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <p>Notice how the labels above and below the graph are now swapped.</p>
 </section>
 <section id="Stacking-bars">
-<h3>Stacking bars<a class="headerlink" href="#Stacking-bars" title="Permalink to this heading">¶</a></h3>
+<h3>Stacking bars<a class="headerlink" href="#Stacking-bars" title="Link to this heading">¶</a></h3>
 <p>Next, we often wish to stack quantities above and below each other. To specify these stackings, you can set the <code class="docutils literal notranslate"><span class="pre">stack_pops</span></code> and <code class="docutils literal notranslate"><span class="pre">stack_outputs</span></code> arguments to <code class="docutils literal notranslate"><span class="pre">plotBars</span></code>. By default, these are lists of all of the pops and outputs in the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object. If you want quantities to appear in the same bar, you can specify a list containing the names of the pops and outputs that should appear in the same bar. Two examples are shown below:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
@@ -4425,7 +4429,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <p>An <em>aggregation</em> maps multiple time series onto a single quantity, while <em>stacking</em> puts two quantities in the same bar. A general rule of thumb is that an <em>aggregation</em> should be used if you want the two quantities to share the same colour, while <em>stacking</em> should be used if the quantities need to be visually disaggregated.</p>
 </section>
 <section id="Negative-values">
-<h3>Negative values<a class="headerlink" href="#Negative-values" title="Permalink to this heading">¶</a></h3>
+<h3>Negative values<a class="headerlink" href="#Negative-values" title="Link to this heading">¶</a></h3>
 <p>In general, Atomica model outputs are positive. However, under some circumstances, there might be negative quantities. For example, a quantity might be defined as being negative in the framework. Another common possibility is that you might want to baseline-correct your data, to get the difference between two simulations. If you attempt to make a bar graph with a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object containing negative values, the following will take place:</p>
 <ul class="simple">
 <li><p>Negative bar patches will be drawn with negative values. If they appear in stacks, the positive and negative baseline values will be tracked appropriately. So positive quantities will stack in one direction, and negative quantities will stack in the opposite direction</p></li>
@@ -4454,7 +4458,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <p>Notice how the stacks are the same, but the positive quantities and negative quantities stack in opposite directions</p>
 </section>
 <section id="Horizontal-bars">
-<h3>Horizontal bars<a class="headerlink" href="#Horizontal-bars" title="Permalink to this heading">¶</a></h3>
+<h3>Horizontal bars<a class="headerlink" href="#Horizontal-bars" title="Link to this heading">¶</a></h3>
 <p>To make a horizontal bar plot, use the optional <code class="docutils literal notranslate"><span class="pre">orientation</span></code> argument. Set it to <code class="docutils literal notranslate"><span class="pre">'horizontal'</span></code> for horizontal bars, or <code class="docutils literal notranslate"><span class="pre">'vertical'</span></code> for normal vertical bars (this is the default). All stacking and grouping functionality functions as normal.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
@@ -4473,7 +4477,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 </div>
 </section>
 <section id="Labelling-bars">
-<h3>Labelling bars<a class="headerlink" href="#Labelling-bars" title="Permalink to this heading">¶</a></h3>
+<h3>Labelling bars<a class="headerlink" href="#Labelling-bars" title="Link to this heading">¶</a></h3>
 <p>When specifying stacks of bars, you can alternatively specify a <code class="docutils literal notranslate"><span class="pre">dict</span></code> where the key is the name you want to use for that stack. Then, that name will be used for the appropriate bars</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
@@ -4606,9 +4610,9 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 </section>
 </section>
 <section id="Working-with-legends">
-<h2>Working with legends<a class="headerlink" href="#Working-with-legends" title="Permalink to this heading">¶</a></h2>
+<h2>Working with legends<a class="headerlink" href="#Working-with-legends" title="Link to this heading">¶</a></h2>
 <section id="Controlling-legend-order">
-<h3>Controlling legend order<a class="headerlink" href="#Controlling-legend-order" title="Permalink to this heading">¶</a></h3>
+<h3>Controlling legend order<a class="headerlink" href="#Controlling-legend-order" title="Link to this heading">¶</a></h3>
 <p>By default, the legend order will be determined by the internal plotting order, so it is largely dependent on the order in which you specify the variables. For bar graphs and stacked/proportion series, the legend order is reversed so that the legend matches the visual stacking order. However, in cases where there are complex stacks, like the one above, you might want to have the legend displayed in a different order. To support this, you can use the <code class="docutils literal notranslate"><span class="pre">reorder_legend</span></code> function. This function
 operates in two ways. First, you can request that the existing order is reversed:</p>
 <div class="nbinput docutils container">
@@ -4661,7 +4665,7 @@ operates in two ways. First, you can request that the existing order is reversed
 </div>
 </section>
 <section id="Relabeling-legend-entries">
-<h3>Relabeling legend entries<a class="headerlink" href="#Relabeling-legend-entries" title="Permalink to this heading">¶</a></h3>
+<h3>Relabeling legend entries<a class="headerlink" href="#Relabeling-legend-entries" title="Link to this heading">¶</a></h3>
 <p>The legend labels are automatically computed. However, you might want to change the legend labels after the fact. To do this, you can use the <code class="docutils literal notranslate"><span class="pre">relabel_legend</span></code> function. This function has two usages. First, if you want to change all labels, you can specify a list of label names the same length as the number of legend items, and they will be applied in order. For example</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[100]:
@@ -4696,7 +4700,7 @@ operates in two ways. First, you can request that the existing order is reversed
 </div>
 </section>
 <section id="Making-a-new-legend">
-<h3>Making a new legend<a class="headerlink" href="#Making-a-new-legend" title="Permalink to this heading">¶</a></h3>
+<h3>Making a new legend<a class="headerlink" href="#Making-a-new-legend" title="Link to this heading">¶</a></h3>
 <p>If you require even more customization, you can manually specify a separate legend figure to draw. The input should be an <code class="docutils literal notranslate"><span class="pre">odict</span></code> (or <code class="docutils literal notranslate"><span class="pre">dict</span></code>) where the key is the item colour and the value is the label. The reason that while it is undesirable for two different labels to have the same colour, this is still a possible valid legend, but it is not permitted for the same label to be associated with two different colours. Thus the use of the label as the key enforces that each label is only
 associated with one colour.</p>
 <div class="nbinput docutils container">
@@ -4823,9 +4827,9 @@ associated with one colour.</p>
 </section>
 </section>
 <section id="Time-aggregation-options">
-<h2>Time aggregation options<a class="headerlink" href="#Time-aggregation-options" title="Permalink to this heading">¶</a></h2>
+<h2>Time aggregation options<a class="headerlink" href="#Time-aggregation-options" title="Link to this heading">¶</a></h2>
 <section id="Flow-rates">
-<h3>Flow rates<a class="headerlink" href="#Flow-rates" title="Permalink to this heading">¶</a></h3>
+<h3>Flow rates<a class="headerlink" href="#Flow-rates" title="Link to this heading">¶</a></h3>
 <p>Flow rates are computed every timestep, but are normally annualized for plotting. For instance, the plot below of the vaccination rate has units ‘Number of people/year’</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[109]:
@@ -4920,7 +4924,7 @@ Units for series &#34;Series(Baseline,0-4,doth_rate)&#34; are &#34;probability&#
 </section>
 </section>
 <section id="Setting-colors">
-<h2>Setting colors<a class="headerlink" href="#Setting-colors" title="Permalink to this heading">¶</a></h2>
+<h2>Setting colors<a class="headerlink" href="#Setting-colors" title="Link to this heading">¶</a></h2>
 <p>A common task is to set colours. This is done by assigning colours to <code class="docutils literal notranslate"><span class="pre">Series</span></code> in the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object. These colours are then used by <code class="docutils literal notranslate"><span class="pre">plot_series</span></code> and <code class="docutils literal notranslate"><span class="pre">plot_bars</span></code>. Colours can be assigned in two ways</p>
 <ul class="simple">
 <li><p>You can set the <code class="docutils literal notranslate"><span class="pre">color</span></code> property of a series, which specifies a colour for a <code class="docutils literal notranslate"><span class="pre">[results,pop,output]</span></code> item</p></li>
@@ -5140,7 +5144,7 @@ some examples.</p>
 </div>
 <p>although the example looks a bit unusual because there are only 3 timepoints (as the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object was temporally-aggregated)</p>
 <section id="Colour-design-patterns">
-<h3>Colour design patterns<a class="headerlink" href="#Colour-design-patterns" title="Permalink to this heading">¶</a></h3>
+<h3>Colour design patterns<a class="headerlink" href="#Colour-design-patterns" title="Link to this heading">¶</a></h3>
 <p>One way to reuse colours across a project is by writing a function that contains the appropriate <code class="docutils literal notranslate"><span class="pre">set_color</span></code> calls to assign colours to a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object. So for instance, instead of</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getColormappingsBySmear</span><span class="p">():</span>
     <span class="n">cat_list</span> <span class="o">=</span> <span class="n">odict</span><span class="p">()</span>
