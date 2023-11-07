@@ -33,7 +33,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.8
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -128,6 +128,22 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../general/programs/Programs.html#targeting-transfers">Targeting transfers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../general/skipping-excel-cells.html">Skipping Excel cells</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../general/skipping-excel-cells.html#General-principles">General principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../general/skipping-excel-cells.html#Frameworks">Frameworks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../general/skipping-excel-cells.html#Databooks">Databooks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../general/skipping-excel-cells.html#TimeDependentConnections">TimeDependentConnections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../general/skipping-excel-cells.html#TimeDependentValuesEntry">TimeDependentValuesEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../general/skipping-excel-cells.html#Program-books">Program books</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../general/skipping-excel-cells.html#Program-targeting">Program targeting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../general/skipping-excel-cells.html#Spending-data">Spending data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../general/skipping-excel-cells.html#Program-effects">Program effects</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../general/stochastic/stochastic.html">Stochastic models</a></li>
@@ -2174,6 +2190,10 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.programs.InvalidProgramBook.html">atomica.programs.InvalidProgramBook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.programs.InvalidProgramBook.html#atomica.programs.InvalidProgramBook"><code class="docutils literal notranslate"><span class="pre">InvalidProgramBook</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/atomica.project.html">atomica.project</a><ul>
@@ -2532,7 +2552,12 @@
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">NamedItem</span><span class="p">,</span> <span class="n">TimeSeries</span>
 <span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ProgramInstructions&quot;</span><span class="p">,</span> <span class="s2">&quot;ProgramSet&quot;</span><span class="p">,</span> <span class="s2">&quot;Program&quot;</span><span class="p">,</span> <span class="s2">&quot;Covout&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ProgramInstructions&quot;</span><span class="p">,</span> <span class="s2">&quot;ProgramSet&quot;</span><span class="p">,</span> <span class="s2">&quot;Program&quot;</span><span class="p">,</span> <span class="s2">&quot;Covout&quot;</span><span class="p">,</span> <span class="s2">&quot;InvalidProgramBook&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="InvalidProgramBook">
+<a class="viewcode-back" href="../../_autosummary/atomica.programs.InvalidProgramBook.html#atomica.programs.InvalidProgramBook">[docs]</a>
+<span class="k">class</span> <span class="nc">InvalidProgramBook</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="ProgramInstructions">
@@ -3028,9 +3053,27 @@
         <span class="n">validate_category</span><span class="p">(</span><span class="n">workbook</span><span class="p">,</span> <span class="s2">&quot;atomica:progbook&quot;</span><span class="p">)</span>
 
         <span class="c1"># Load individual sheets</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_read_targeting</span><span class="p">(</span><span class="n">workbook</span><span class="p">[</span><span class="s2">&quot;Program targeting&quot;</span><span class="p">],</span> <span class="n">framework</span><span class="o">=</span><span class="n">framework</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_read_spending</span><span class="p">(</span><span class="n">workbook</span><span class="p">[</span><span class="s2">&quot;Spending data&quot;</span><span class="p">],</span> <span class="n">_allow_missing_data</span><span class="o">=</span><span class="n">_allow_missing_data</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_read_effects</span><span class="p">(</span><span class="n">workbook</span><span class="p">[</span><span class="s2">&quot;Program effects&quot;</span><span class="p">],</span> <span class="n">framework</span><span class="o">=</span><span class="n">framework</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_targeting</span><span class="p">(</span><span class="n">workbook</span><span class="p">[</span><span class="s2">&quot;Program targeting&quot;</span><span class="p">],</span> <span class="n">framework</span><span class="o">=</span><span class="n">framework</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Error on sheet &quot;Program targeting&quot;&#39;</span>
+            <span class="k">raise</span> <span class="n">InvalidProgramBook</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_spending</span><span class="p">(</span><span class="n">workbook</span><span class="p">[</span><span class="s2">&quot;Spending data&quot;</span><span class="p">],</span> <span class="n">_allow_missing_data</span><span class="o">=</span><span class="n">_allow_missing_data</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Error on sheet &quot;Spending data&quot;&#39;</span>
+            <span class="k">raise</span> <span class="n">InvalidProgramBook</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_read_effects</span><span class="p">(</span><span class="n">workbook</span><span class="p">[</span><span class="s2">&quot;Program effects&quot;</span><span class="p">],</span> <span class="n">framework</span><span class="o">=</span><span class="n">framework</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Error on sheet &quot;Program effects&quot;&#39;</span>
+            <span class="k">raise</span> <span class="n">InvalidProgramBook</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
+
+
+
+
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -3339,8 +3382,21 @@
                 <span class="n">par_name</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># Preserve case</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Program name &quot;</span><span class="si">%s</span><span class="s1">&quot; was not found in the framework parameters or in the databook transfers&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
-            <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-            <span class="n">idx_to_header</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">h</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">headers</span><span class="p">)}</span>  <span class="c1"># Map index to header</span>
+
+            <span class="c1"># Read the headers - on this sheet, string type only</span>
+            <span class="n">idx_to_header</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span>
+                <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#ignore&#39;</span><span class="p">):</span>
+                        <span class="k">break</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">elif</span> <span class="n">cell</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown data type in cell </span><span class="si">{</span><span class="n">cell</span><span class="o">.</span><span class="n">coordinate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
 
             <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
                 <span class="c1"># For each covout row, we will initialize</span>
@@ -3363,24 +3419,29 @@
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
                     <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Offset of 1 because the loop is over row[1:] not row[0:]</span>
 
-                    <span class="k">if</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># If the header row had a blank cell, ignore everything in that column - we don&#39;t know what it is otherwise</span>
-                        <span class="k">continue</span>
-                    <span class="k">elif</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;baseline value&quot;</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># test `is not None` because it might be entered as 0</span>
-                            <span class="n">baseline</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;coverage interaction&quot;</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                            <span class="n">cov_interaction</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>  <span class="c1"># additive, nested, etc.</span>
-                    <span class="k">elif</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;impact interaction&quot;</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                            <span class="n">imp_interaction</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># additive, nested, etc.</span>
-                    <span class="k">elif</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;uncertainty&quot;</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># test `is not None` because it might be entered as 0</span>
-                            <span class="n">uncertainty</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># If the header isn&#39;t empty, then it should be one of the program names</span>
-                        <span class="k">if</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">programs</span><span class="p">:</span>
-                            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The heading &quot;</span><span class="si">%s</span><span class="s1">&quot; was not recognized as a program name or a special token - spelling error?&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-                        <span class="n">progs</span><span class="p">[</span><span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">idx_to_header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># If the header row had a blank cell, ignore everything in that column - we don&#39;t know what it is otherwise</span>
+                            <span class="k">continue</span>
+                        <span class="k">elif</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;baseline value&quot;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># test `is not None` because it might be entered as 0</span>
+                                <span class="n">baseline</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;coverage interaction&quot;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                                <span class="n">cov_interaction</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>  <span class="c1"># additive, nested, etc.</span>
+                        <span class="k">elif</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;impact interaction&quot;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                                <span class="n">imp_interaction</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># additive, nested, etc.</span>
+                        <span class="k">elif</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;uncertainty&quot;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># test `is not None` because it might be entered as 0</span>
+                                <span class="n">uncertainty</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># If the header isn&#39;t empty, then it should be one of the program names</span>
+                            <span class="k">if</span> <span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">programs</span><span class="p">:</span>
+                                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The heading &quot;</span><span class="si">%s</span><span class="s1">&quot; was not recognized as a program name or a special token - spelling error?&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                            <span class="n">progs</span><span class="p">[</span><span class="n">idx_to_header</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Error in cell </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">coordinate</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
+
 
                 <span class="k">if</span> <span class="n">baseline</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">progs</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;On the &quot;Effects&quot; sheet for Parameter &quot;</span><span class="si">{</span><span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s1">&quot; in population &quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s1">&quot;, program outcomes are defined but the baseline value is missing&#39;</span><span class="p">)</span>

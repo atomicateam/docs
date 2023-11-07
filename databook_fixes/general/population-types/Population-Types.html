@@ -36,7 +36,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.8
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -131,6 +131,22 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../programs/Programs.html#targeting-transfers">Targeting transfers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../skipping-excel-cells.html">Skipping Excel cells</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../skipping-excel-cells.html#General-principles">General principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../skipping-excel-cells.html#Frameworks">Frameworks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../skipping-excel-cells.html#Databooks">Databooks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../skipping-excel-cells.html#TimeDependentConnections">TimeDependentConnections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../skipping-excel-cells.html#TimeDependentValuesEntry">TimeDependentValuesEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../skipping-excel-cells.html#Program-books">Program books</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../skipping-excel-cells.html#Program-targeting">Program targeting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../skipping-excel-cells.html#Spending-data">Spending data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../skipping-excel-cells.html#Program-effects">Program effects</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../stochastic/stochastic.html">Stochastic models</a></li>
@@ -2177,6 +2193,10 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.programs.InvalidProgramBook.html">atomica.programs.InvalidProgramBook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.programs.InvalidProgramBook.html#atomica.programs.InvalidProgramBook"><code class="docutils literal notranslate"><span class="pre">InvalidProgramBook</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/atomica.project.html">atomica.project</a><ul>
@@ -2555,14 +2575,14 @@
 <a class="reference internal image-reference" href="../../_images/framework_1.png"><img alt="../../_images/framework_1.png" src="../../_images/framework_1.png" style="width: 500px;" /></a>
 <p>Under the hood, if this sheet is omitted, then Atomica will automatically fill it with a population type named <code class="docutils literal notranslate"><span class="pre">'default'</span></code>. The default population type is otherwise the first population type listed here.</p>
 <p>Next, each compartment needs to be assigned to a population type. Integration variables (compartments, characteristics, parameters, and links) belong to exactly one population type. The code name for these quantities needs to be unique across all population types in the framework. You can assign the population type by filling in the ‘Population type’ column</p>
-<a class="reference internal image-reference" href="../../_images/framework_2.png"><img alt="../../_images/framework_2.png" src="../../_images/framework_2.png" style="width: 650px;" /></a>
+<a class="reference internal image-reference" href="../../_images/framework_21.png"><img alt="../../_images/framework_21.png" src="../../_images/framework_21.png" style="width: 650px;" /></a>
 <p>If you leave a cell blank, it will be automatically assigned to the first population type on the ‘Population types’ sheet.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>It is possible to define a population type without any compartments. Such a population type can be useful if you want a storage container for parameters, but don’t need to track any entities (e.g. people, mosquitos). For example, an environment population for water pollution would probably have a parameter representing water pollution, rather than a compartment.</p>
 </div>
 <p>Next, do the same for Characteristics and Parameters.</p>
-<a class="reference internal image-reference" href="../../_images/framework_3.png"><img alt="../../_images/framework_3.png" src="../../_images/framework_3.png" style="width: 650px;" /></a>
+<a class="reference internal image-reference" href="../../_images/framework_31.png"><img alt="../../_images/framework_31.png" src="../../_images/framework_31.png" style="width: 650px;" /></a>
 <p>Notice how the characteristics sheet has omitted the population type for the ‘sir’-related quantities, which will be automatically assigned because the ‘sir’ population type is the first one in the list. In general, it is better to explicitly specify the population type for all quantities. However, if there are many quantities and only a few of them belong to a different population type, this default behaviour can make it easier to fill out the Framework.</p>
 <p>Note that characteristics cannot span population types - the included compartments and the denominator must all belong to the same population type as the characteristic itself. This is because characteristics are always evaluated within a single population, so all of the constitutents of the characteristic must exist within that population.</p>
 <a class="reference internal image-reference" href="../../_images/framework_4.png"><img alt="../../_images/framework_4.png" src="../../_images/framework_4.png" style="width: 650px;" /></a>
