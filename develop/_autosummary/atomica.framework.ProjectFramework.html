@@ -36,7 +36,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.7
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -131,6 +131,22 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../general/programs/Programs.html#targeting-transfers">Targeting transfers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../general/skipping-excel-cells.html">Skipping Excel cells</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#General-principles">General principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Frameworks">Frameworks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Databooks">Databooks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#TimeDependentConnections">TimeDependentConnections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#TimeDependentValuesEntry">TimeDependentValuesEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-books">Program books</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-targeting">Program targeting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Spending-data">Spending data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-effects">Program effects</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../general/stochastic/stochastic.html">Stochastic models</a></li>
@@ -1405,6 +1421,7 @@
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.rename_transfer"><code class="docutils literal notranslate"><span class="pre">ProjectData.rename_transfer()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.save"><code class="docutils literal notranslate"><span class="pre">ProjectData.save()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.start_year"><code class="docutils literal notranslate"><span class="pre">ProjectData.start_year</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.tables"><code class="docutils literal notranslate"><span class="pre">ProjectData.tables()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.tdve"><code class="docutils literal notranslate"><span class="pre">ProjectData.tdve</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.tdve_pages"><code class="docutils literal notranslate"><span class="pre">ProjectData.tdve_pages</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.to_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ProjectData.to_spreadsheet()</span></code></a></li>
@@ -1414,6 +1431,10 @@
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.validate"><code class="docutils literal notranslate"><span class="pre">ProjectData.validate()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.data.InvalidDatabook.html">atomica.data.InvalidDatabook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="atomica.data.InvalidDatabook.html#atomica.data.InvalidDatabook"><code class="docutils literal notranslate"><span class="pre">InvalidDatabook</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2172,6 +2193,10 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.programs.InvalidProgramBook.html">atomica.programs.InvalidProgramBook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="atomica.programs.InvalidProgramBook.html#atomica.programs.InvalidProgramBook"><code class="docutils literal notranslate"><span class="pre">InvalidProgramBook</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a><ul>
@@ -2519,8 +2544,8 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>inputs</strong> – A string (which will load an Excel file from disk) or an sc.Spreadsheet. If not provided, the internal sheets will be set to an empty dict ready for content</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Optionally explicitly set the framework name. Otherwise, it will be assigned from the ‘about’ sheet, if present</p></li>
-<li><p><strong>validate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If True (default) then the framework will be validated upon loading. This can be overridden if operating on invalid/partial frameworks is required. However,
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Optionally explicitly set the framework name. Otherwise, it will be assigned from the ‘about’ sheet, if present</p></li>
+<li><p><strong>validate</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – If True (default) then the framework will be validated upon loading. This can be overridden if operating on invalid/partial frameworks is required. However,
 the framework should still be validated before it is used.</p></li>
 </ul>
 </dd>
@@ -2609,7 +2634,7 @@ the framework should still be validated before it is used.</p></li>
 </table>
 <dl class="py property">
 <dt class="sig sig-object py" id="atomica.framework.ProjectFramework.cascades">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cascades</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v3.1.0)"><span class="pre">odict</span></a></em><a class="headerlink" href="#atomica.framework.ProjectFramework.cascades" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cascades</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v3.1.2)"><span class="pre">odict</span></a></em><a class="headerlink" href="#atomica.framework.ProjectFramework.cascades" title="Link to this definition">¶</a></dt>
 <dd><p>Return dict with all cascades</p>
 <p>If the Cascades sheet is present, return an odict where the key is the name of the cascade
 and the value is the corresponding dataframe.</p>
@@ -2657,10 +2682,10 @@ explicitly defined cascades or automatically generated cascades.</p>
 <dd><p>Retrieve characteristic by code name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>charac_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of an characteristic</p>
+<dd class="field-odd"><p><strong>charac_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of an characteristic</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The row of the characteristics dataframe corresponding to the requested characteristic</p>
@@ -2687,7 +2712,7 @@ the compartments contained in the characteristic.</p>
 <dd class="field-odd"><p><strong>includes</strong> – A single code name, or list of codenames, containing only compartments and/or characteristics</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A list of compartment names</p>
@@ -2701,10 +2726,10 @@ the compartments contained in the characteristic.</p>
 <dd><p>Retrieve compartment by code name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>comp_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of an compartment</p>
+<dd class="field-odd"><p><strong>comp_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of an compartment</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The row of the compartments dataframe corresponding to the requested compartment</p>
@@ -2736,10 +2761,10 @@ internal units and timescale for a parameter (e.g. ‘probability’ and ‘1/36
 return ‘probability (per day)’ for use in the databook.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of a quantity supported by <code class="docutils literal notranslate"><span class="pre">ProjectFramework.get_variable()</span></code></p>
+<dd class="field-odd"><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of a quantity supported by <code class="docutils literal notranslate"><span class="pre">ProjectFramework.get_variable()</span></code></p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>String containing the units of the quantity</p>
@@ -2753,10 +2778,10 @@ return ‘probability (per day)’ for use in the databook.</p>
 <dd><p>Retrieve interaction by code name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>interaction_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of an interaction</p>
+<dd class="field-odd"><p><strong>interaction_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of an interaction</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The row of the interactions dataframe corresponding to the requested interaction</p>
@@ -2794,10 +2819,10 @@ and guarantee full names.</p>
 <dd><p>Retrieve parameter by code name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>par_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of an parameter</p>
+<dd class="field-odd"><p><strong>par_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of an parameter</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The row of the parameters dataframe corresponding to the requested parameter</p>
@@ -2818,10 +2843,10 @@ of these variables is desired, and are happy to look up by code name only. These
 and will return errors if a variable of the incorrect type is requested.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name or full name</p>
+<dd class="field-odd"><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name or full name</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><p>A tuple containing (<code class="docutils literal notranslate"><span class="pre">Series</span></code>,type) where
@@ -2884,7 +2909,7 @@ in the framework file rather than being stored separately.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="atomica.framework.ProjectFramework.pop_types">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pop_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v3.1.0)"><span class="pre">odict</span></a></em><a class="headerlink" href="#atomica.framework.ProjectFramework.pop_types" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pop_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_odict.odict.html#sciris.sc_odict.odict" title="(in Sciris v3.1.2)"><span class="pre">odict</span></a></em><a class="headerlink" href="#atomica.framework.ProjectFramework.pop_types" title="Link to this definition">¶</a></dt>
 <dd><p>Return available population types</p>
 <p>This returns a dictionary representation of the dataframe on the ‘Population types’ sheet
 of the framework, where the key is the population type code name, and the value is a dictionary
@@ -2908,7 +2933,7 @@ frameworks to be viewed in Excel.</p>
 <dd class="field-odd"><p><strong>fname</strong> – File name to write on disk</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2930,7 +2955,7 @@ frameworks to be viewed in Excel.</p>
 <span class="sig-name descname"><span class="pre">to_spreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/framework.html#ProjectFramework.to_spreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.framework.ProjectFramework.to_spreadsheet" title="Link to this definition">¶</a></dt>
 <dd><p>Return content as a Sciris Spreadsheet</p>
 <p>This
-:rtype: <a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a>
+:rtype: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v3.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></span>
 :return: A <code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.Spreadsheet</span></code> instance</p>
 </dd></dl>
 

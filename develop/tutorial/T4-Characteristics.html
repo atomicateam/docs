@@ -39,7 +39,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.7
+                1.27.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -134,6 +134,22 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../general/programs/Programs.html#targeting-transfers">Targeting transfers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../general/skipping-excel-cells.html">Skipping Excel cells</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#General-principles">General principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Frameworks">Frameworks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Databooks">Databooks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#TimeDependentConnections">TimeDependentConnections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#TimeDependentValuesEntry">TimeDependentValuesEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-books">Program books</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-targeting">Program targeting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Spending-data">Spending data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-effects">Program effects</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../general/stochastic/stochastic.html">Stochastic models</a></li>
@@ -1408,6 +1424,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.rename_transfer"><code class="docutils literal notranslate"><span class="pre">ProjectData.rename_transfer()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.save"><code class="docutils literal notranslate"><span class="pre">ProjectData.save()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.start_year"><code class="docutils literal notranslate"><span class="pre">ProjectData.start_year</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.tables"><code class="docutils literal notranslate"><span class="pre">ProjectData.tables()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.tdve"><code class="docutils literal notranslate"><span class="pre">ProjectData.tdve</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.tdve_pages"><code class="docutils literal notranslate"><span class="pre">ProjectData.tdve_pages</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.to_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ProjectData.to_spreadsheet()</span></code></a></li>
@@ -1417,6 +1434,10 @@
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.validate"><code class="docutils literal notranslate"><span class="pre">ProjectData.validate()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/atomica.data.InvalidDatabook.html">atomica.data.InvalidDatabook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/atomica.data.InvalidDatabook.html#atomica.data.InvalidDatabook"><code class="docutils literal notranslate"><span class="pre">InvalidDatabook</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2175,6 +2196,10 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/atomica.programs.InvalidProgramBook.html">atomica.programs.InvalidProgramBook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/atomica.programs.InvalidProgramBook.html#atomica.programs.InvalidProgramBook"><code class="docutils literal notranslate"><span class="pre">InvalidProgramBook</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../_autosummary/atomica.project.html">atomica.project</a><ul>
@@ -2555,7 +2580,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0243s
+Elapsed time for running &#34;default&#34;: 0.0155s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2609,21 +2634,21 @@ the ‘minimum norm’ solution which means that the inputs are distributed equa
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
+<div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0209s
-sus = 600.00
-inf = 200.00
-rec = 200.00
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+Elapsed time for running &#34;default&#34;: 0.0148s
+sus = 600.00
+inf = 200.00
+rec = 200.00
 </pre></div></div>
 </div>
 <p>We also now recieve a warning that ‘Initialization characteristics are underdetermined’ which reflects the fact that we had to rely on the minimum norm solution to infer the value of some of the compartments. For compartments that are missing entirely, we can remove the ‘alive’ characteristic entirely, leaving us with:</p>
@@ -2645,21 +2670,21 @@ rec = 200.00
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
+<div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0206s
-sus = 0.00
-inf = 200.00
-rec = 200.00
+/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+Elapsed time for running &#34;default&#34;: 0.0161s
+sus = 0.00
+inf = 200.00
+rec = 200.00
 </pre></div></div>
 </div>
 <p>It’s possible to freely mix compartments and characteristics for initialization. For example, we could set a databook page for ‘susceptible’ on the compartments sheet, and have the databook explicitly contain data entry for the ‘susceptible’ compartment as well as the number ever infected.</p>
