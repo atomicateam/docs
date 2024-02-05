@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>atomica.data.ProjectData &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -20,7 +22,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="atomica.demos" href="atomica.demos.html" />
+    <link rel="next" title="atomica.data.InvalidDatabook" href="atomica.data.InvalidDatabook.html" />
     <link rel="prev" title="atomica.data" href="atomica.data.html" /> 
 </head>
 
@@ -36,7 +38,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.7
+                1.28.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -131,6 +133,22 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../general/programs/Programs.html#targeting-transfers">Targeting transfers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../general/skipping-excel-cells.html">Skipping Excel cells</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#General-principles">General principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Frameworks">Frameworks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Databooks">Databooks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#TimeDependentConnections">TimeDependentConnections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#TimeDependentValuesEntry">TimeDependentValuesEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-books">Program books</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-targeting">Program targeting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Spending-data">Spending data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-effects">Program effects</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../general/stochastic/stochastic.html">Stochastic models</a></li>
@@ -260,6 +278,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Time-aggregation">Time aggregation</a></li>
@@ -1405,6 +1424,7 @@
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.rename_transfer"><code class="docutils literal notranslate"><span class="pre">ProjectData.rename_transfer()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.save"><code class="docutils literal notranslate"><span class="pre">ProjectData.save()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.start_year"><code class="docutils literal notranslate"><span class="pre">ProjectData.start_year</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.tables"><code class="docutils literal notranslate"><span class="pre">ProjectData.tables()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.tdve"><code class="docutils literal notranslate"><span class="pre">ProjectData.tdve</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.tdve_pages"><code class="docutils literal notranslate"><span class="pre">ProjectData.tdve_pages</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.to_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ProjectData.to_spreadsheet()</span></code></a></li>
@@ -1414,6 +1434,10 @@
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.validate"><code class="docutils literal notranslate"><span class="pre">ProjectData.validate()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.data.InvalidDatabook.html">atomica.data.InvalidDatabook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="atomica.data.InvalidDatabook.html#atomica.data.InvalidDatabook"><code class="docutils literal notranslate"><span class="pre">InvalidDatabook</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2172,6 +2196,10 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.programs.InvalidProgramBook.html">atomica.programs.InvalidProgramBook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="atomica.programs.InvalidProgramBook.html#atomica.programs.InvalidProgramBook"><code class="docutils literal notranslate"><span class="pre">InvalidProgramBook</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a><ul>
@@ -2512,7 +2540,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="atomica.data.ProjectData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">atomica.data.</span></span><span class="sig-name descname"><span class="pre">ProjectData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">framework</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/data.html#ProjectData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.data.ProjectData" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_utils.prettyobj.html#sciris.sc_utils.prettyobj" title="(in Sciris v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">prettyobj</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_utils.prettyobj.html#sciris.sc_utils.prettyobj" title="(in Sciris v3.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">prettyobj</span></code></a></p>
 <p>Store project data: class-equivalent of Databooks</p>
 <p>This class is used to load and work with data that is entered in databooks. It
 provides the interface for</p>
@@ -2603,13 +2631,16 @@ the static methods</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#atomica.data.ProjectData.save" title="atomica.data.ProjectData.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a></p></td>
 <td><p>Save databook to disk</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.data.ProjectData.to_spreadsheet" title="atomica.data.ProjectData.to_spreadsheet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_spreadsheet</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.data.ProjectData.tables" title="atomica.data.ProjectData.tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tables</span></code></a></p></td>
+<td><p>Return iterator over all TDVE and TDC tables</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.data.ProjectData.to_spreadsheet" title="atomica.data.ProjectData.to_spreadsheet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_spreadsheet</span></code></a></p></td>
 <td><p>Return content as a Sciris Spreadsheet</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.data.ProjectData.to_workbook" title="atomica.data.ProjectData.to_workbook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_workbook</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.data.ProjectData.to_workbook" title="atomica.data.ProjectData.to_workbook"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_workbook</span></code></a></p></td>
 <td><p>Return an open workbook for the databook</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.data.ProjectData.validate" title="atomica.data.ProjectData.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.data.ProjectData.validate" title="atomica.data.ProjectData.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a></p></td>
 <td><p>Check if the ProjectData instance can be used to run simulations</p></td>
 </tr>
 </tbody>
@@ -2625,14 +2656,14 @@ with given code name, full name, and pop type had already been added to a framew
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name of the interaction to create</p></li>
-<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The full name of the interaction to create</p></li>
-<li><p><strong>from_pop_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The name of a population type, which will identify the populations to be added. Default is first population type in the framework</p></li>
-<li><p><strong>to_pop_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The name of a population type, which will identify the populations to be added. Default is first population type in the framework</p></li>
+<li><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The code name of the interaction to create</p></li>
+<li><p><strong>full_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The full name of the interaction to create</p></li>
+<li><p><strong>from_pop_type</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The name of a population type, which will identify the populations to be added. Default is first population type in the framework</p></li>
+<li><p><strong>to_pop_type</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The name of a population type, which will identify the populations to be added. Default is first population type in the framework</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="atomica.excel.TimeDependentConnections.html#atomica.excel.TimeDependentConnections" title="atomica.excel.TimeDependentConnections"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="atomica.excel.TimeDependentConnections.html#atomica.excel.TimeDependentConnections" title="atomica.excel.TimeDependentConnections"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Newly instantiated TimeDependentConnections object (also added to <code class="docutils literal notranslate"><span class="pre">ProjectData.interpops</span></code>)</p>
@@ -2649,13 +2680,13 @@ one of the population types in the framework</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name for the new population</p></li>
-<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The full name/label for the new population</p></li>
-<li><p><strong>pop_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – String with the population type code name</p></li>
+<li><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The code name for the new population</p></li>
+<li><p><strong>full_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The full name/label for the new population</p></li>
+<li><p><strong>pop_type</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – String with the population type code name</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2667,13 +2698,13 @@ one of the population types in the framework</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name of the transfer to create</p></li>
-<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The full name of the transfer to create</p></li>
-<li><p><strong>pop_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of the population type. Default is first population type in the framework</p></li>
+<li><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The code name of the transfer to create</p></li>
+<li><p><strong>full_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The full name of the transfer to create</p></li>
+<li><p><strong>pop_type</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of the population type. Default is first population type in the framework</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="atomica.excel.TimeDependentConnections.html#atomica.excel.TimeDependentConnections" title="atomica.excel.TimeDependentConnections"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="atomica.excel.TimeDependentConnections.html#atomica.excel.TimeDependentConnections" title="atomica.excel.TimeDependentConnections"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeDependentConnections</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Newly instantiated TimeDependentConnections object (also added to <code class="docutils literal notranslate"><span class="pre">ProjectData.transfers</span></code>)</p>
@@ -2697,10 +2728,10 @@ Therefore, changing the time array won’t modify any of the data - it will only
 a databook is written (so typically this method would be called as part of preparing a modified databook).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tvec</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>) – A float, list, or array containing time values (in years) for the databook</p>
+<dd class="field-odd"><p><strong>tvec</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code></span>) – A float, list, or array containing time values (in years) for the databook</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2753,7 +2784,7 @@ end year, if using all of the data in the databook is desired.</p>
 <dd class="field-odd"><p><strong>code_name</strong> – The code name for a TDVE quantity</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The sheet that it appears on</p>
@@ -2768,7 +2799,7 @@ end year, if using all of the data in the databook is desired.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name for the container storing the <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code>
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The code name for the container storing the <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code>
 - The code name of a transfer, interaction, or compartment/characteristic/parameter
 - The name of a transfer parameter instantiated in model.build e.g. ‘age_0-4_to_5-14’.
 this is mainly useful when retrieving data for plotting, where variables are organized according
@@ -2790,6 +2821,8 @@ to names like ‘age_0-4_to_5-14’</p></li>
 </ul>
 <p>where the former is typically used when working with data and calibrations, and the latter is used in <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code> and
 is therefore encountered on the <code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code> and plotting side.</p>
+<p>If retrieving values for a comp/charac/par and the databook contains an entry for ‘all’ rather
+than specific populations, then the ‘all’ time series will be returned regardless of the key</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2842,10 +2875,10 @@ same type.</p></li>
 <dd><p>Remove an interaction</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of the interaction to remove</p>
+<dd class="field-odd"><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of the interaction to remove</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2856,10 +2889,10 @@ same type.</p></li>
 <dd><p>Remove a transfer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of the transfer to remove</p>
+<dd class="field-odd"><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of the transfer to remove</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2871,13 +2904,13 @@ same type.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>existing_code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Existing code name of a population</p></li>
-<li><p><strong>new_code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – New code name to assign</p></li>
-<li><p><strong>new_full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – New full name/label to assign</p></li>
+<li><p><strong>existing_code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Existing code name of a population</p></li>
+<li><p><strong>new_code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – New code name to assign</p></li>
+<li><p><strong>new_full_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – New full name/label to assign</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2889,13 +2922,13 @@ same type.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>existing_code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The existing code name to change</p></li>
-<li><p><strong>new_code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The new code name</p></li>
-<li><p><strong>new_full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The new full name</p></li>
+<li><p><strong>existing_code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The existing code name to change</p></li>
+<li><p><strong>new_code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The new code name</p></li>
+<li><p><strong>new_full_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The new full name</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2910,7 +2943,7 @@ same type.</p></li>
 <dd class="field-odd"><p><strong>fname</strong> – File name to write on disk</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2926,6 +2959,17 @@ start year, if using all of the data in the databook is desired.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The earliest year in the databook</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="atomica.data.ProjectData.tables">
+<span class="sig-name descname"><span class="pre">tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/data.html#ProjectData.tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.data.ProjectData.tables" title="Link to this definition">¶</a></dt>
+<dd><p>Return iterator over all TDVE and TDC tables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An iterator</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2948,7 +2992,7 @@ start year, if using all of the data in the databook is desired.</p>
 <dd><p>Return content as a Sciris Spreadsheet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v3.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.Spreadsheet</span></code> instance</p>
@@ -2967,7 +3011,7 @@ data values when reloading a workbook to append or modify content</p>
 See the usage of this method in the :meth`to_spreadsheet` function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple (bytes, workbook) with a BytesIO instance and a corresponding <em>open</em> xlsxwriter workbook instance</p>
@@ -3012,7 +3056,7 @@ the FE might want to perform this check at a different point if the databook man
 <dd class="field-odd"><p><strong>framework</strong> – A <code class="xref py py-class docutils literal notranslate"><span class="pre">ProjectFramework</span></code> instance to validate the data against</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True if ProjectData is valid. An error will be raised otherwise</p>
@@ -3029,7 +3073,7 @@ the FE might want to perform this check at a different point if the databook man
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="atomica.data.html" class="btn btn-neutral float-left" title="atomica.data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="atomica.demos.html" class="btn btn-neutral float-right" title="atomica.demos" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="atomica.data.InvalidDatabook.html" class="btn btn-neutral float-right" title="atomica.data.InvalidDatabook" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

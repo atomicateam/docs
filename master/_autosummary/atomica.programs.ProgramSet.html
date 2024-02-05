@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>atomica.programs.ProgramSet &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -20,7 +22,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="atomica.project" href="atomica.project.html" />
+    <link rel="next" title="atomica.programs.InvalidProgramBook" href="atomica.programs.InvalidProgramBook.html" />
     <link rel="prev" title="atomica.programs.ProgramInstructions" href="atomica.programs.ProgramInstructions.html" /> 
 </head>
 
@@ -36,7 +38,7 @@
             Atomica
           </a>
               <div class="version">
-                1.26.7
+                1.28.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -131,6 +133,22 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../general/programs/Programs.html#targeting-transfers">Targeting transfers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../general/skipping-excel-cells.html">Skipping Excel cells</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#General-principles">General principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Frameworks">Frameworks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Databooks">Databooks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#TimeDependentConnections">TimeDependentConnections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#TimeDependentValuesEntry">TimeDependentValuesEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-books">Program books</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-targeting">Program targeting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Spending-data">Spending data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../general/skipping-excel-cells.html#Program-effects">Program effects</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../general/stochastic/stochastic.html">Stochastic models</a></li>
@@ -260,6 +278,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Time-aggregation">Time aggregation</a></li>
@@ -1405,6 +1424,7 @@
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.rename_transfer"><code class="docutils literal notranslate"><span class="pre">ProjectData.rename_transfer()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.save"><code class="docutils literal notranslate"><span class="pre">ProjectData.save()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.start_year"><code class="docutils literal notranslate"><span class="pre">ProjectData.start_year</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.tables"><code class="docutils literal notranslate"><span class="pre">ProjectData.tables()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.tdve"><code class="docutils literal notranslate"><span class="pre">ProjectData.tdve</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.tdve_pages"><code class="docutils literal notranslate"><span class="pre">ProjectData.tdve_pages</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.to_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ProjectData.to_spreadsheet()</span></code></a></li>
@@ -1414,6 +1434,10 @@
 <li class="toctree-l5"><a class="reference internal" href="atomica.data.ProjectData.html#atomica.data.ProjectData.validate"><code class="docutils literal notranslate"><span class="pre">ProjectData.validate()</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.data.InvalidDatabook.html">atomica.data.InvalidDatabook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="atomica.data.InvalidDatabook.html#atomica.data.InvalidDatabook"><code class="docutils literal notranslate"><span class="pre">InvalidDatabook</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2172,6 +2196,10 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.programs.InvalidProgramBook.html">atomica.programs.InvalidProgramBook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="atomica.programs.InvalidProgramBook.html#atomica.programs.InvalidProgramBook"><code class="docutils literal notranslate"><span class="pre">InvalidProgramBook</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="atomica.project.html">atomica.project</a><ul>
@@ -2606,12 +2634,12 @@ desired to update an already filled out program book.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of the compartment to add</p></li>
-<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Full name of the compartment to add</p></li>
+<li><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of the compartment to add</p></li>
+<li><p><strong>full_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Full name of the compartment to add</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2625,13 +2653,13 @@ desired to update an already filled out program book.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of the parameter to add</p></li>
-<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Full name of the parameter to add</p></li>
-<li><p><strong>pop_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name of the population type</p></li>
+<li><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of the parameter to add</p></li>
+<li><p><strong>full_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Full name of the parameter to add</p></li>
+<li><p><strong>pop_type</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of the population type</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2646,12 +2674,12 @@ instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name of the new population</p></li>
-<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The full name of the new population</p></li>
+<li><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The code name of the new population</p></li>
+<li><p><strong>full_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The full name of the new population</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2663,12 +2691,12 @@ instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>code_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name of the new program</p></li>
-<li><p><strong>full_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The full name of the new program</p></li>
+<li><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The code name of the new program</p></li>
+<li><p><strong>full_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The full name of the new program</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2717,7 +2745,7 @@ present.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Dict like <code class="docutils literal notranslate"><span class="pre">{prog_name:</span> <span class="pre">np.array()}</span></code> with spending on each program (in units of ‘$/year’ or currency equivalent)</p>
@@ -2742,7 +2770,7 @@ any capacity overwrites that are present in the instructions.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Dict like <code class="docutils literal notranslate"><span class="pre">{prog_name:</span> <span class="pre">np.array()}</span></code> with program capacity at each timestep (in units of people)</p>
@@ -2766,10 +2794,10 @@ parameter-population pairs that then gets inserted into the appropriate integrat
 by <code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.update_pars()</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>prop_coverage</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) – dict with coverage values <code class="docutils literal notranslate"><span class="pre">{prog_name:val}</span></code></p>
+<dd class="field-odd"><p><strong>prop_coverage</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span>) – dict with coverage values <code class="docutils literal notranslate"><span class="pre">{prog_name:val}</span></code></p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict <code class="docutils literal notranslate"><span class="pre">{(par,pop):val}</span></code> containing parameter value overwrites</p>
@@ -2798,15 +2826,15 @@ during integration.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>tvec</strong> – scalar year, or array of years - this is required to interpolate time-varying saturation values</p></li>
-<li><p><strong>capacities</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) – dict of program coverages, should match the available programs (typically the output of <code class="docutils literal notranslate"><span class="pre">ProgramSet.get_capacities()</span></code>)
+<li><p><strong>capacities</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span>) – dict of program coverages, should match the available programs (typically the output of <code class="docutils literal notranslate"><span class="pre">ProgramSet.get_capacities()</span></code>)
 Note that since the capacity and eligible compartment sizes are being compared here,
 the capacity needs to be in units of ‘people’ (not ‘people/year’) at this point</p></li>
-<li><p><strong>num_eligible</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>) – dict of number of people covered by each program, computed externally and with one entry for each program</p></li>
+<li><p><strong>num_eligible</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span>) – dict of number of people covered by each program, computed externally and with one entry for each program</p></li>
 <li><p><strong>instructions</strong> – optionally specify instructions, which can supply a coverage overwrite</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Dict like <code class="docutils literal notranslate"><span class="pre">{prog_name:</span> <span class="pre">np.array()}</span></code> with fractional coverage values (dimensionless)</p>
@@ -2850,7 +2878,7 @@ programs, which is automatically handled by this method.</p>
 <dd class="field-odd"><p><strong>code_name</strong> – Code name or full name of the compartment to remove</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2864,10 +2892,10 @@ desired to update an already filled out program book.</p>
 <p>Note that removing a parameter also requires removing all of the <a class="reference internal" href="atomica.programs.Covout.html#atomica.programs.Covout" title="atomica.programs.Covout"><code class="xref py py-class docutils literal notranslate"><span class="pre">Covout</span></code></a> instances associated with it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name or full name of the parameter to remove</p>
+<dd class="field-odd"><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name or full name of the parameter to remove</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2881,10 +2909,10 @@ from all program target pops and will also remove the covout objects
 for the affected population.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Code name or full name of the population to remove</p>
+<dd class="field-odd"><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name or full name of the population to remove</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2895,10 +2923,10 @@ for the affected population.</p>
 <dd><p>Remove a program from the ProgramSet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – The code name or full name of the program to remove</p>
+<dd class="field-odd"><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The code name or full name of the program to remove</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2913,7 +2941,7 @@ the caches based on the sigma values. A simulation subsequently run using the Pr
 use the perturbed outcomes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>constant</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If True, time series will be perturbed by a single constant offset. If False,
+<dd class="field-odd"><p><strong>constant</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – If True, time series will be perturbed by a single constant offset. If False,
 an different perturbation will be applied to each time specific value independently.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2928,7 +2956,7 @@ an different perturbation will be applied to each time specific value independen
 <dd><p>Return content as a Sciris Spreadsheet</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://sciris.readthedocs.io/en/latest/api/_autosummary/sciris.sc_fileio.Spreadsheet.html#sciris.sc_fileio.Spreadsheet" title="(in Sciris v3.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spreadsheet</span></code></a></span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">sciris.Spreadsheet</span></code> instance</p>
@@ -2947,7 +2975,7 @@ data values when reloading a workbook to append or modify content</p>
 See the usage of this method in the :meth`to_spreadsheet` function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple (bytes, workbook) with a BytesIO instance and a corresponding <em>open</em> xlsxwriter workbook instance</p>
@@ -2964,7 +2992,7 @@ See the usage of this method in the :meth`to_spreadsheet` function.</p>
 <dd class="field-odd"><p>Exception if anything is invalid</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2978,7 +3006,7 @@ See the usage of this method in the :meth`to_spreadsheet` function.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="atomica.programs.ProgramInstructions.html" class="btn btn-neutral float-left" title="atomica.programs.ProgramInstructions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="atomica.project.html" class="btn btn-neutral float-right" title="atomica.project" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="atomica.programs.InvalidProgramBook.html" class="btn btn-neutral float-right" title="atomica.programs.InvalidProgramBook" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
