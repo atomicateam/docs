@@ -35,7 +35,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.0
+                1.28.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2719,10 +2719,10 @@
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="s1">&#39;all&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="s1">&#39;All&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;All&#39;</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="s2">&quot;all&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="s2">&quot;All&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]</span>
 
         <span class="c1"># If the key is specified, then the name corresponds to the code name only, and we can just directly</span>
         <span class="c1"># use the name and the key. However, if the key is none, then the user has passed in the name as</span>
@@ -3063,7 +3063,7 @@
                         <span class="c1"># Check that data is available for all populations. If the TDVE table contains an entry for &#39;all&#39;</span>
                         <span class="c1"># then further checks are not necessary because a fallback value will be available for every population</span>
                         <span class="n">tdve_pops</span> <span class="o">=</span> <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">tdve_pops</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">({</span><span class="s1">&#39;all&#39;</span><span class="p">,</span><span class="s1">&#39;All&#39;</span><span class="p">}):</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">tdve_pops</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">({</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;All&quot;</span><span class="p">}):</span>
                             <span class="n">missing_pops</span> <span class="o">=</span> <span class="n">required_pops</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">tdve_pops</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">missing_pops</span><span class="p">:</span>
                                 <span class="k">raise</span> <span class="n">InvalidDatabook</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">. The following populations were not supplied but are required: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">missing_pops</span><span class="p">))</span>

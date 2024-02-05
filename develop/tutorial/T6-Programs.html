@@ -41,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.0
+                1.28.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2559,7 +2559,7 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 <p>Parameter values from the <em>databook</em> are stored in a <em>ParameterSet</em> which is used to produce results for any given databook and calibration. Similarly, program-specific inputs are read in from the <em>program book</em> which maps to a <em>ProgramSet</em>. A ProgramSet together with a set of <em>program instructions</em> is used to generate results incorporating the effect of programs. A schematic overview of how these inputs relate to results is shown below:</p>
 <p><img alt="t6-model-structure" src="../_images/t6_model_structure.png" /></p>
 <p>We will now implement the SIR model with a treatment program described above, to see how these different components are instantiated and used within Atomica. First, we will load in a framework and databook for a simple SIR model:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -2569,50 +2569,6 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 <span class="n">P</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update_time_vector</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
-You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
-A typical example is when you are setting values in a column of a DataFrame, like:
-
-df[&#34;col&#34;][row_indexer] = value
-
-Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-
-  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
-/home/vsts/work/1/s/atomica/framework.py:659: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
-You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
-A typical example is when you are setting values in a column of a DataFrame, like:
-
-df[&#34;col&#34;][row_indexer] = value
-
-Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-
-  self.comps[&#34;setup weight&#34;][fill_ones] = 1
-/home/vsts/work/1/s/atomica/framework.py:660: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
-  self.comps[&#34;setup weight&#34;] = self.comps[&#34;setup weight&#34;].fillna(0)
-/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
-You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
-A typical example is when you are setting values in a column of a DataFrame, like:
-
-df[&#34;col&#34;][row_indexer] = value
-
-Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-
-  self.characs[&#34;setup weight&#34;][fill_ones] = 1
-/home/vsts/work/1/s/atomica/framework.py:731: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
-  self.characs[&#34;setup weight&#34;] = self.characs[&#34;setup weight&#34;].fillna(0)
-</pre></div></div>
 </div>
 <p>This framework is much the same as the SIR framework in previous tutorials, except that on the parameters sheet, an additional column called ‘Targetable’ is present. This column specifies whether certain parameters should appear in program books. Since we know that the treatment program is going to change the value of the disease recovery rate, this parameter has a ‘y’ in the ‘Targetable’ column:</p>
 <p><img alt="t6-framework-targetable" src="../_images/t6_framework_targetable.png" /></p>
@@ -2636,7 +2592,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00867s
+Elapsed time for running &#34;default&#34;: 0.00637s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -2774,7 +2730,7 @@ for that program, and <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00491s
+Elapsed time for running &#34;default&#34;: 0.00550s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2782,7 +2738,7 @@ Elapsed time for running &#34;default&#34;: 0.00491s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00583s
+Elapsed time for running &#34;default&#34;: 0.00729s
 </pre></div></div>
 </div>
 <p>We can now plot the recovery rate parameter and the resulting number of people flowing into the ‘recovered’ state each year.</p>
@@ -2861,7 +2817,7 @@ match this scenario.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0104s
+Elapsed time for running &#34;default&#34;: 0.0148s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2909,7 +2865,7 @@ Program set &#39;default&#39; will be ignored while running project &#39;default
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00589s
+Elapsed time for running &#34;default&#34;: 0.00641s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -2928,45 +2884,47 @@ Reconciling in 2020.00, evaluating from 2020.00 up to 2021.00
 ASD: Launching with random seed None
     step=1 choice=1, par=0, pm=1.0, origval=100.0, newval=90.0
      step 1 (0.0 s) ++ (orig:0.01210 | best:0.01210 | new:0.01000 | diff:-0.002100)
-    step=2 choice=1, par=0, pm=1.0, origval=90.0, newval=70.0
-     step 2 (0.0 s) ++ (orig:0.01210 | best:0.01000 | new:0.005102 | diff:-0.004898)
-    step=3 choice=1, par=0, pm=1.0, origval=70.0, newval=30.0
-     step 3 (0.0 s) -- (orig:0.01210 | best:0.005102 | new:0.01000 | diff:0.004898)
-    step=4 choice=1, par=0, pm=1.0, origval=70.0, newval=50.0
-     step 4 (0.0 s) ++ (orig:0.01210 | best:0.005102 | new:0.0004000 | diff:-0.004702)
-    step=5 choice=0, par=0, pm=0.0, origval=50.0, newval=60.0
-     step 5 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.002500 | diff:0.002100)
-    step=6 choice=1, par=0, pm=1.0, origval=50.0, newval=10.0
-     step 6 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.4900 | diff:0.4896)
-    step=7 choice=0, par=0, pm=0.0, origval=50.0, newval=55.0
-     step 7 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.001322 | diff:0.0009223)
+    step=2 choice=0, par=0, pm=0.0, origval=90.0, newval=100.0
+     step 2 (0.0 s) -- (orig:0.01210 | best:0.01000 | new:0.01210 | diff:0.002100)
+    step=3 choice=1, par=0, pm=1.0, origval=90.0, newval=70.0
+     step 3 (0.0 s) ++ (orig:0.01210 | best:0.01000 | new:0.005102 | diff:-0.004898)
+    step=4 choice=1, par=0, pm=1.0, origval=70.0, newval=30.0
+     step 4 (0.0 s) -- (orig:0.01210 | best:0.005102 | new:0.01000 | diff:0.004898)
+    step=5 choice=0, par=0, pm=0.0, origval=70.0, newval=75.0
+     step 5 (0.0 s) -- (orig:0.01210 | best:0.005102 | new:0.006400 | diff:0.001298)
+    step=6 choice=1, par=0, pm=1.0, origval=70.0, newval=50.0
+     step 6 (0.0 s) ++ (orig:0.01210 | best:0.005102 | new:0.0004000 | diff:-0.004702)
+    step=7 choice=1, par=0, pm=1.0, origval=50.0, newval=10.0
+     step 7 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.4900 | diff:0.4896)
     step=8 choice=1, par=0, pm=1.0, origval=50.0, newval=30.0
      step 8 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.01000 | diff:0.009600)
     step=9 choice=1, par=0, pm=1.0, origval=50.0, newval=40.0
      step 9 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.0006250 | diff:0.0002250)
-    step=10 choice=1, par=0, pm=1.0, origval=50.0, newval=45.0
-     step 10 (0.0 s) ++ (orig:0.01210 | best:0.0004000 | new:0.0000000000000000000000000000000007704 | diff:-0.0004000)
-    step=11 choice=1, par=0, pm=1.0, origval=45.0, newval=35.0
-     step 11 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.003265 | diff:0.003265)
-    step=12 choice=1, par=0, pm=1.0, origval=45.0, newval=40.0
-     step 12 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0006250 | diff:0.0006250)
-    step=13 choice=1, par=0, pm=1.0, origval=45.0, newval=42.5
-     step 13 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0001384 | diff:0.0001384)
-    step=14 choice=0, par=0, pm=0.0, origval=45.0, newval=47.5
-     step 14 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0001108 | diff:0.0001108)
-    step=15 choice=0, par=0, pm=0.0, origval=45.0, newval=46.25
-     step 15 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.00002922 | diff:0.00002922)
-    step=16 choice=0, par=0, pm=0.0, origval=45.0, newval=45.625
-     step 16 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007506 | diff:0.000007506)
-    step=17 choice=1, par=0, pm=1.0, origval=45.0, newval=43.75
-     step 17 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.00003265 | diff:0.00003265)
-    step=18 choice=1, par=0, pm=1.0, origval=45.0, newval=44.375
-     step 18 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007935 | diff:0.000007935)
-    step=19 choice=0, par=0, pm=0.0, origval=45.0, newval=45.3125
-     step 19 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000001902 | diff:0.000001902)
-    step=20 choice=1, par=0, pm=1.0, origval=45.0, newval=44.6875
-     step 20 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000001956 | diff:0.000001956)
-===  Absolute improvement too small (0 &lt; 0.000001000) (20 steps, orig: 0.01210 | best: 0 | ratio: 0) ===
+    step=10 choice=0, par=0, pm=0.0, origval=50.0, newval=52.5
+     step 10 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.0008163 | diff:0.0004163)
+    step=11 choice=1, par=0, pm=1.0, origval=50.0, newval=45.0
+     step 11 (0.0 s) ++ (orig:0.01210 | best:0.0004000 | new:0.0000000000000000000000000000000007704 | diff:-0.0004000)
+    step=12 choice=1, par=0, pm=1.0, origval=45.0, newval=35.0
+     step 12 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.003265 | diff:0.003265)
+    step=13 choice=1, par=0, pm=1.0, origval=45.0, newval=40.0
+     step 13 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0006250 | diff:0.0006250)
+    step=14 choice=1, par=0, pm=1.0, origval=45.0, newval=42.5
+     step 14 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0001384 | diff:0.0001384)
+    step=15 choice=1, par=0, pm=1.0, origval=45.0, newval=43.75
+     step 15 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.00003265 | diff:0.00003265)
+    step=16 choice=0, par=0, pm=0.0, origval=45.0, newval=46.25
+     step 16 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.00002922 | diff:0.00002922)
+    step=17 choice=1, par=0, pm=1.0, origval=45.0, newval=44.375
+     step 17 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007935 | diff:0.000007935)
+    step=18 choice=1, par=0, pm=1.0, origval=45.0, newval=44.6875
+     step 18 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000001956 | diff:0.000001956)
+    step=19 choice=0, par=0, pm=0.0, origval=45.0, newval=45.625
+     step 19 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007506 | diff:0.000007506)
+    step=20 choice=0, par=0, pm=0.0, origval=45.0, newval=45.3125
+     step 20 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000001902 | diff:0.000001902)
+    step=21 choice=1, par=0, pm=1.0, origval=45.0, newval=44.84375
+     step 21 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0000004856 | diff:0.0000004856)
+===  Absolute improvement too small (0 &lt; 0.000001000) (21 steps, orig: 0.01210 | best: 0 | ratio: 0) ===
 </pre></div></div>
 </div>
 <p>Regardless of how reconciliation is performed, the idea is that the result of reconciliation is a <em>reconciled progset</em> that provides a better match to a given parameter set in the program start year. We expected based on the un-reconciled result that reconciliation based on unit cost should result in decreasing the unit cost to achieve an increase in recovery rate. We can look at the reconciled unit cost to confirm this is what the automatic reconciliation has done:</p>
@@ -3006,7 +2964,7 @@ not be possible to reach the target recovery rate.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00625s
+Elapsed time for running &#34;default&#34;: 0.00590s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">

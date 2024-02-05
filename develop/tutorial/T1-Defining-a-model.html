@@ -41,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.0
+                1.28.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2641,55 +2641,13 @@ required, depending on what layout would be most logical and useful for users fi
 </div>
 </div>
 <p>Next, load the framework file. A framework file gets loaded into a <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> object. When loading the framework file, it will automatically be checked for validity.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProjectFramework</span><span class="p">(</span><span class="s1">&#39;assets/T1/t1_framework_1.xlsx&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
-You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
-A typical example is when you are setting values in a column of a DataFrame, like:
-
-df[&#34;col&#34;][row_indexer] = value
-
-Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-
-  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
-/home/vsts/work/1/s/atomica/framework.py:659: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
-You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
-A typical example is when you are setting values in a column of a DataFrame, like:
-
-df[&#34;col&#34;][row_indexer] = value
-
-Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-
-  self.comps[&#34;setup weight&#34;][fill_ones] = 1
-/home/vsts/work/1/s/atomica/framework.py:660: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
-  self.comps[&#34;setup weight&#34;] = self.comps[&#34;setup weight&#34;].fillna(0)
-/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
-You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
-A typical example is when you are setting values in a column of a DataFrame, like:
-
-df[&#34;col&#34;][row_indexer] = value
-
-Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-
-  self.characs[&#34;setup weight&#34;][fill_ones] = 1
-</pre></div></div>
 </div>
 <p>The warning about the characteristics being underdetermined is because we have three compartments, but the databook only contains information for two compartments, so this is warning that Atomica will make assumptions to initialize compartments where required. We will examine this in more detail in a subsequent tutorial when looking at characteristics in more detail.</p>
 <p>Now that we have the framework loaded in, we can make a <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> object, which is the Python representation of the databook. We use the <code class="docutils literal notranslate"><span class="pre">ProjectData.new()</span></code> function to instantiate it, passing in the <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code>. We also need to specify the years that we want to enter data for, and the number of populations that we want to have. The <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> constructor also prompts for the number of transfers - which we will set to <code class="docutils literal notranslate"><span class="pre">0</span></code> for now, and examine in more detail in the next
@@ -2764,7 +2722,7 @@ ignored and will be formatted red as a result).</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00741s
+Elapsed time for running &#34;default&#34;: 0.00749s
 </pre></div></div>
 </div>
 <p>When the project is loaded, a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> is automatically created, under <code class="docutils literal notranslate"><span class="pre">P.parsets</span></code></p>
@@ -2782,7 +2740,7 @@ Elapsed time for running &#34;default&#34;: 0.00741s
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #0: &#39;default&#39;:
-&lt;atomica.parameters.ParameterSet at 0x7f7aa043cd10&gt;
+&lt;atomica.parameters.ParameterSet at 0x7f89376f5f50&gt;
 [&lt;class &#39;atomica.parameters.ParameterSet&#39;&gt;, &lt;class &#39;atomica.utils.NamedItem&#39;&gt;,
 &lt;class &#39;object&#39;&gt;]
 ————————————————————————————————————————————————————————————
@@ -2794,14 +2752,14 @@ Methods:
 Properties:
   y_factors
 ————————————————————————————————————————————————————————————
-     created: datetime.datetime(2024, 2, 5, 3, 49, 52, 506843,
+     created: datetime.datetime(2024, 2, 5, 12, 25, 18, 629598,
               tzinfo=tzutc())
 interactions: odict()
-    modified: datetime.datetime(2024, 2, 5, 3, 49, 52, 508750,
+    modified: datetime.datetime(2024, 2, 5, 12, 25, 18, 631779,
               tzinfo=tzutc())
         name: &#39;default&#39;
         pars: #0: &#39;sus&#39;:
-              &lt;atomica.parameters.Parameter at 0x7f7aa042f810&gt;
+              &lt;atomica.parameters.Parameter at 0x7f89376f6e90&gt;
               [&lt;class  [...]
   pop_labels: [&#39;Adults&#39;]
    pop_names: [&#39;adults&#39;]
@@ -2834,7 +2792,7 @@ interactions: odict()
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00652s
+Elapsed time for running &#34;default&#34;: 0.0113s
 </pre></div></div>
 </div>
 <p>We can now plot some results from this model:</p>
