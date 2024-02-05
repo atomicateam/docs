@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Data and Databooks &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.27.0
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -279,6 +281,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../Plotting.html#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotting.html#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Plotting.html#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Plotting.html#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../Plotting.html#Time-aggregation">Time aggregation</a></li>
@@ -2559,13 +2562,63 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/tmp/ipykernel_2129/2227708160.py:1: DeprecationWarning:
+Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
+(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
+but was not found to be installed on your system.
+If this would cause problems for you,
+please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
+
+  import pandas as pd
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
+/home/vsts/work/1/s/atomica/framework.py:659: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:660: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.comps[&#34;setup weight&#34;] = self.comps[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:731: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.characs[&#34;setup weight&#34;] = self.characs[&#34;setup weight&#34;].fillna(0)
 </pre></div></div>
 </div>
 <p>We have now loaded in a framework, and a corresponding databook as a <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> object. The <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> object contains a number of attributes</p>
@@ -2664,7 +2717,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&lt;matplotlib.lines.Line2D at 0x7fc44d9f4a10&gt;]
+[&lt;matplotlib.lines.Line2D at 0x7f27e5eefd10&gt;]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2737,7 +2790,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7fc44b22a550&gt;
+&lt;matplotlib.legend.Legend at 0x7f27e605e0d0&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2794,6 +2847,8 @@
 <li><p>A method <code class="docutils literal notranslate"><span class="pre">from_rows()</span></code> to construct a <code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry</span></code> instance based on the rows in the spreadsheet</p></li>
 <li><p>A method <code class="docutils literal notranslate"><span class="pre">write()</span></code> that takes in a sheet and a start row, and writes the content for the object to the spreadsheet</p></li>
 </ul>
+<p>It is possible to optionally specify a row with the population set to ‘All’. This row will then serve as a fallback for any populations that are otherwise missing in the table. Since ‘All’ is a reserved keyword, it is guaranteed to not correspond to an actual population. If a row with ‘All’ is present, it is not necessary to specify any other data in the TDVE table. However, if population-specific rows are present, they will take precedence. The values for the ‘All’ population row are processed
+when constructing a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> - the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> will contain time series values for every population, and will read them from the ‘All’ row of the TDVE table as required. In that sense, having a row for ‘All’ in the TDVE table is functionally equivalent to the databook containing population specific rows for every population, with the same data appearing on every row.</p>
 </section>
 </section>
 <section id="Modifying-databooks">
@@ -2816,8 +2871,76 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
+/home/vsts/work/1/s/atomica/framework.py:659: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:660: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.comps[&#34;setup weight&#34;] = self.comps[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:666: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;calibrate&#34;][default_calibrate] = &#34;y&#34;
+/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:731: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.characs[&#34;setup weight&#34;] = self.characs[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:737: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;calibrate&#34;][default_calibrate] = &#34;y&#34;
+/home/vsts/work/1/s/atomica/framework.py:869: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.pars[&#34;calibrate&#34;][default_calibrate] = &#34;y&#34;
 </pre></div></div>
 </div>
 <p>This has produced an empty <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> instance. It can be converted and saved to a spreadsheet databook format using the <code class="docutils literal notranslate"><span class="pre">save</span></code> method</p>
@@ -2886,7 +3009,7 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_1.xlsx.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.excel.TimeDependentValuesEntry at 0x7fc44b0c1290&gt;
+&lt;atomica.excel.TimeDependentValuesEntry at 0x7f27e3809790&gt;
 [&lt;class &#39;atomica.excel.TimeDependentValuesEntry&#39;&gt;, &lt;class &#39;object&#39;&gt;]
 ————————————————————————————————————————————————————————————
 Methods:
@@ -2901,7 +3024,7 @@ assumption_heading: &#39;Constant&#39;
               name: &#39;Susceptible&#39;
           pop_type: &#39;default&#39;
                 ts: #0: &#39;pop_0&#39;:
-                    &lt;atomica.utils.TimeSeries at 0x7fc44b29c810&gt;
+                    &lt;atomica.utils.TimeSeries at 0x7f27e67849f0&gt;
                     [&lt;cl [...]
      ts_attributes: {&#39;Provenance&#39;: {}}
               tvec: array([2020, 2021, 2022, 2023, 2024, 2025, 2026,
@@ -2927,7 +3050,7 @@ assumption_heading: &#39;Constant&#39;
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.utils.TimeSeries at 0x7fc44b29c810&gt;
+&lt;atomica.utils.TimeSeries at 0x7f27e67849f0&gt;
 [&lt;class &#39;atomica.utils.TimeSeries&#39;&gt;, &lt;class &#39;object&#39;&gt;]
 ————————————————————————————————————————————————————————————
 Methods:
@@ -2963,7 +3086,7 @@ assumption: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.utils.TimeSeries at 0x7fc44b29c810&gt;
+&lt;atomica.utils.TimeSeries at 0x7f27e67849f0&gt;
 [&lt;class &#39;atomica.utils.TimeSeries&#39;&gt;, &lt;class &#39;object&#39;&gt;]
 ————————————————————————————————————————————————————————————
 Methods:
@@ -3054,8 +3177,76 @@ to run simulations. This workflow is particularly useful if conducting an analys
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
+/home/vsts/work/1/s/atomica/framework.py:659: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:660: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.comps[&#34;setup weight&#34;] = self.comps[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:666: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;calibrate&#34;][default_calibrate] = &#34;y&#34;
+/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:731: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.characs[&#34;setup weight&#34;] = self.characs[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:737: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;calibrate&#34;][default_calibrate] = &#34;y&#34;
+/home/vsts/work/1/s/atomica/framework.py:869: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.pars[&#34;calibrate&#34;][default_calibrate] = &#34;y&#34;
 </pre></div></div>
 </div>
 <p>The databook can be loaded even though the <code class="docutils literal notranslate"><span class="pre">vac</span></code> table is missing. However, the databook will not pass validation because it does not contain the missing variable</p>
@@ -3123,8 +3314,76 @@ Object saved to /home/vsts/work/1/s/docs/examples/databooks/sir_databook_4.xlsx.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
+/home/vsts/work/1/s/atomica/framework.py:659: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:660: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.comps[&#34;setup weight&#34;] = self.comps[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:666: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;calibrate&#34;][default_calibrate] = &#34;y&#34;
+/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:731: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.characs[&#34;setup weight&#34;] = self.characs[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:737: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;calibrate&#34;][default_calibrate] = &#34;y&#34;
+/home/vsts/work/1/s/atomica/framework.py:869: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.pars[&#34;calibrate&#34;][default_calibrate] = &#34;y&#34;
 </pre></div></div>
 </div>
 <p>Unlike the previous example where a new variables was required, the existing databook is valid for use with the new framework, because the additional variable is simply surplus and does not otherwise interact with the model. However, to remove it, you can otherwise delete it from the dictionary:</p>

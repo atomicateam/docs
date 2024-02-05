@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>atomica.cascade &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -33,7 +35,7 @@
             Atomica
           </a>
               <div class="version">
-                1.27.0
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -273,6 +275,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../examples/Plotting.html#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/Plotting.html#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../examples/Plotting.html#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../examples/Plotting.html#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../examples/Plotting.html#Time-aggregation">Time aggregation</a></li>
@@ -2722,7 +2725,7 @@
         <span class="n">df</span> <span class="o">=</span> <span class="n">framework</span><span class="o">.</span><span class="n">cascades</span><span class="p">[</span><span class="n">cascade_name</span><span class="p">]</span>
         <span class="n">cascade_dict</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">stage</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-            <span class="n">cascade_dict</span><span class="p">[</span><span class="n">stage</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stage</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>  <span class="c1"># Split the name of the stage and the constituents</span>
+            <span class="n">cascade_dict</span><span class="p">[</span><span class="n">stage</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stage</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>  <span class="c1"># Split the name of the stage and the constituents</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cascade_name</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">cascade_dict</span> <span class="o">=</span> <span class="n">cascade</span>

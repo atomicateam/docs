@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>T5 - Junctions &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.27.0
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -279,6 +281,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Time-aggregation">Time aggregation</a></li>
@@ -2579,12 +2582,52 @@ entering <code class="docutils literal notranslate"><span class="pre">1</span></
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00401s
+Elapsed time for running &#34;default&#34;: 0.00386s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
+/home/vsts/work/1/s/atomica/framework.py:666: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;calibrate&#34;][default_calibrate] = &#34;y&#34;
+/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;setup weight&#34;][fill_ones] = 1
 </pre></div></div>
 </div>
 <p>Let’s now plot all of the compartments</p>

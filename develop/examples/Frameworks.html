@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Frameworks &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.27.0
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -279,6 +281,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="Plotting.html#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Plotting.html#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Plotting.html#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Plotting.html#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="Plotting.html#Time-aggregation">Time aggregation</a></li>
@@ -2538,7 +2541,7 @@
 <h1>Frameworks<a class="headerlink" href="#Frameworks" title="Link to this heading">¶</a></h1>
 <p>The <em>framework</em> is an object that represents the transition structure of the model in Atomica. It contains a listing of all of the compartments, characteristics, and parameters, as well as the transition matrix that links parameters with transitions between compartments. It does not contain a specification of the populations, because these are entered in the databook. This page assumes familiarity with basic Atomica concepts (e.g., compartments, characteristics, parameters, populations) and is
 intended as technical documentation on the implementation of the framework.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -2546,6 +2549,21 @@ intended as technical documentation on the implementation of the framework.</p>
 <span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/tmp/ipykernel_4303/2810943665.py:1: DeprecationWarning:
+Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
+(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
+but was not found to be installed on your system.
+If this would cause problems for you,
+please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
+
+  import pandas as pd
+</pre></div></div>
 </div>
 <p>A ‘framework’ exists in two forms:</p>
 <ul class="simple">
@@ -2573,31 +2591,220 @@ intended as technical documentation on the implementation of the framework.</p>
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
+/home/vsts/work/1/s/atomica/framework.py:659: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:660: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.comps[&#34;setup weight&#34;] = self.comps[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:731: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.characs[&#34;setup weight&#34;] = self.characs[&#34;setup weight&#34;].fillna(0)
 WARNING {framework.py:1006} - Parameter &#34;lu_prog&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;lx_prog&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;leu_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;lex_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;llu_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;llx_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;l_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;v_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;lr_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;ar_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;ar_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;pd_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;pm_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;px_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nd_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nm_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nx_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;pd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;pm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;px_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
-/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">

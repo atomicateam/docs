@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Plotting Documentation &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.27.0
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -279,6 +281,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Time-aggregation">Time aggregation</a></li>
@@ -2581,6 +2584,7 @@ figs = at.plot_series(d,data=proj.data)
 <ul class="simple">
 <li><p><a class="reference internal" href="#Setting-full-names"><span class="std std-ref">The plot uses code names instead of full names</span></a></p></li>
 <li><p><a class="reference internal" href="#Plotting-series"><span class="std std-ref">I want lines for populations, not for outputs</span></a></p></li>
+<li><p><a class="reference internal" href="#Subplots"><span class="std std-ref">I want a single figure with subplots</span></a></p></li>
 <li><p><a class="reference internal" href="#Saving-figures"><span class="std std-ref">How do I save figures to PNG files?</span></a></p></li>
 <li><p><a class="reference internal" href="#Axis-units"><span class="std std-ref">Something is wrong with the units</span></a></p></li>
 <li><p><a class="reference internal" href="#Setting-colors"><span class="std std-ref">I want different colours</span></a></p></li>
@@ -2671,31 +2675,228 @@ figs = at.plot_series(d,data=proj.data)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
+/home/vsts/work/1/s/atomica/framework.py:659: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:660: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.comps[&#34;setup weight&#34;] = self.comps[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:731: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.characs[&#34;setup weight&#34;] = self.characs[&#34;setup weight&#34;].fillna(0)
 WARNING {framework.py:1006} - Parameter &#34;lu_prog&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;lx_prog&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;leu_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;lex_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;llu_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;llx_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;l_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;v_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;lr_inf&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;ar_act&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;ar_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;pd_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;pm_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;px_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nd_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nm_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nx_rec&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;pd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;pm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;px_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nd_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nm_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {framework.py:1006} - Parameter &#34;nx_term&#34; is in rate units and a maximum value of &#34;1&#34; has been entered. Rates in the framework should generally not be limited to &#34;1&#34;
-/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.424s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2703,8 +2904,7 @@ WARNING {framework.py:1006} - Parameter &#34;nx_term&#34; is in rate units and a
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.432s
-Elapsed time for running &#34;default&#34;: 0.433s
+Elapsed time for running &#34;default&#34;: 0.434s
 </pre></div></div>
 </div>
 </section>
@@ -3193,6 +3393,13 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 WARNING {plotting.py:344} - Aggregation for output &#39;Mix&#39; is mixing units, this is almost certainly not desired.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
 WARNING {plotting.py:352} - Aggregation for output &#39;Mix&#39; is mixing timescales, this is almost certainly not desired.
 </pre></div></div>
 </div>
@@ -3200,7 +3407,7 @@ WARNING {plotting.py:352} - Aggregation for output &#39;Mix&#39; is mixing times
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_46_1.svg" src="../_images/examples_Plotting_46_1.svg" /></div>
+<img alt="../_images/examples_Plotting_46_2.svg" src="../_images/examples_Plotting_46_2.svg" /></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
@@ -4038,11 +4245,60 @@ to the end.</p>
 series plots, and aggregation is most appropriate for bar plots.</p>
 </div>
 </section>
+<section id="Subplots">
+<h2>Subplots<a class="headerlink" href="#Subplots" title="Link to this heading">¶</a></h2>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">at.plot_series</span></code> will return multiple figures with a single axis in each figure. In some cases, you may prefer to have a single figure containing multiple axes. The optional <code class="docutils literal notranslate"><span class="pre">n_cols</span></code> argument to <code class="docutils literal notranslate"><span class="pre">at.plot_series</span></code> controls this behaviour. If a nonzero value is specified, instead of separate figures, multiple axes will be tiled into a single figure with the specified number of columns. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">par_results</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">,</span><span class="s1">&#39;15-64&#39;</span><span class="p">,</span> <span class="s1">&#39;65+&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;alive&#39;</span><span class="p">,</span><span class="s1">&#39;b_rate&#39;</span><span class="p">])</span>
+<span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;outputs&#39;</span><span class="p">,</span> <span class="n">n_cols</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Plotting_121_0.svg" src="../_images/examples_Plotting_121_0.svg" /></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">n_cols=3</span></code> the tiling and dimensions of the figure are different:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;outputs&#39;</span><span class="p">,</span> <span class="n">n_cols</span><span class="o">=</span><span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Plotting_123_0.svg" src="../_images/examples_Plotting_123_0.svg" /></div>
+</div>
+<p>If a separate legend is requested together with subplots, it will be plotted into a separate panel of the same figure, rather than opening an additional figure:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">proj</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;outputs&#39;</span><span class="p">,</span> <span class="n">n_cols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">legend_mode</span><span class="o">=</span><span class="s1">&#39;separate&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_Plotting_125_0.svg" src="../_images/examples_Plotting_125_0.svg" /></div>
+</div>
+</section>
 <section id="Saving-figures">
 <h2>Saving figures<a class="headerlink" href="#Saving-figures" title="Link to this heading">¶</a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> figure can always be saved using <code class="docutils literal notranslate"><span class="pre">fig.savefig(fname)</span></code>. For convenience, the plotting library contains a helper function, <code class="docutils literal notranslate"><span class="pre">save_figs()</span></code> that takes in an array of figure handles. By default, the figures will be saved in the current folder, with a file name specified by the figure’s <code class="docutils literal notranslate"><span class="pre">label</span></code> property. You can optionally provide a list of filenames, a prefix, and a path with a directory</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aplt</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;legend_mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;separate&#39;</span>
@@ -4053,15 +4309,43 @@ series plots, and aggregation is most appropriate for bar plots.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Saved figure &#34;Baseline_alive.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;Baseline_vac.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;Scenario_alive.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;Scenario_vac.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;Scenario_vac_legend.png&#34;
 </pre></div></div>
 </div>
@@ -4073,7 +4357,7 @@ Saved figure &#34;Scenario_vac_legend.png&#34;
 </ul>
 <p>Notice also how in the example above, the legend figure is automatically saved based on the last figure’s name. Typically, there may be multiple plots, but only one legend. The file name for the legend is thus automatically determined based on the last figure. You can override this name by specifying the label of the figure:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;pops&#39;</span><span class="p">)</span>
@@ -4083,21 +4367,49 @@ Saved figure &#34;Scenario_vac_legend.png&#34;
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Saved figure &#34;Baseline_alive.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;Baseline_vac.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;Scenario_alive.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;Scenario_vac.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;legend.png&#34;
 </pre></div></div>
 </div>
 <p>If you specify a path, the figures will be saved inside that folder. If the folder doesn’t exist, it will be created</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;pops&#39;</span><span class="p">)</span>
@@ -4107,21 +4419,49 @@ Saved figure &#34;legend.png&#34;
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Saved figure &#34;Baseline_alive.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;Baseline_vac.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;Scenario_alive.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;Scenario_vac.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;legend.png&#34;
 </pre></div></div>
 </div>
 <p>Similarly, you can specify a prefix to prepend to all figures being saved</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;pops&#39;</span><span class="p">)</span>
@@ -4131,21 +4471,49 @@ Saved figure &#34;legend.png&#34;
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Saved figure &#34;exampleBaseline_alive.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;exampleBaseline_vac.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;exampleScenario_alive.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;exampleScenario_vac.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;examplelegend.png&#34;
 </pre></div></div>
 </div>
 <p>Lastly, you can manually specify all of the names you want to use, overriding the default names. In that case, you don’t need to set the <code class="docutils literal notranslate"><span class="pre">label</span></code> of the legend figure, because the figure name is being explicitly specified</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;pops&#39;</span><span class="p">)</span>
@@ -4154,21 +4522,49 @@ Saved figure &#34;examplelegend.png&#34;
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Saved figure &#34;series_a.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;series_b.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;series_c.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;series_d.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;series_e.png&#34;
 </pre></div></div>
 </div>
 <p>If you specify names only for the non-legend figures, the legend figure name will be automatically calculated as before</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;pops&#39;</span><span class="p">)</span>
@@ -4178,15 +4574,43 @@ Saved figure &#34;series_e.png&#34;
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Saved figure &#34;series_a.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;series_b.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;series_c.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;series_d.png&#34;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Saved figure &#34;series_d_legend.png&#34;
 </pre></div></div>
 </div>
@@ -4207,7 +4631,7 @@ that need to be provided, and thus empty strings would need to be added or remov
 <h3>Time aggregation<a class="headerlink" href="#Time-aggregation" title="Link to this heading">¶</a></h3>
 <p>First, unlike with <code class="docutils literal notranslate"><span class="pre">plot_series</span></code>, it is typically necessary to aggregate plot data over time. This is achieved specifying the time binds when constructing the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object. The time bins are specified as either a vector of bin edges, as a scalar spacing between bins, or the keyword <code class="docutils literal notranslate"><span class="pre">'all'</span></code> which includes all time points. So for example, if we want to aggregate the data into decade bins, we could use</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">par_results</span><span class="p">,</span><span class="n">scen_results</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -4216,7 +4640,7 @@ that need to be provided, and thus empty strings would need to be added or remov
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[73]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -4226,7 +4650,7 @@ that need to be provided, and thus empty strings would need to be added or remov
 </div>
 <p>Alternatively, we might want to aggregate over all time points</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">par_results</span><span class="p">,</span><span class="n">scen_results</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
@@ -4235,7 +4659,7 @@ that need to be provided, and thus empty strings would need to be added or remov
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -4245,7 +4669,7 @@ array([20292080.15377111])
 </div>
 <p>Or manually specify 5 year bins</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">par_results</span><span class="p">,</span><span class="n">scen_results</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span><span class="mi">2045</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
@@ -4254,7 +4678,7 @@ array([20292080.15377111])
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -4282,7 +4706,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <p>Finally, note that because time aggregation is implemented by <code class="docutils literal notranslate"><span class="pre">PlotData</span></code>, you can apply time aggregation to <code class="docutils literal notranslate"><span class="pre">plot_series</span></code> as well as <code class="docutils literal notranslate"><span class="pre">plot_bars</span></code> e.g. if you want to plot actual annual values.</p>
 <p>So, to make our bar graph, we first select the results, pops, and outputs using the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> constructor, then perform any necessary time aggregation, and finally render the plot using <code class="docutils literal notranslate"><span class="pre">plotBars</span></code>:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">par_results</span><span class="p">,</span><span class="n">scen_results</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># Select data</span>
@@ -4294,7 +4718,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_141_0.svg" src="../_images/examples_Plotting_141_0.svg" /></div>
+<img alt="../_images/examples_Plotting_147_0.svg" src="../_images/examples_Plotting_147_0.svg" /></div>
 </div>
 <p>The example above illustrates the difference between the ‘block’, the ‘inner group’ and the ‘outer group’</p>
 <ul class="simple">
@@ -4304,7 +4728,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 </ul>
 <p>You can set the outer group using the <code class="docutils literal notranslate"><span class="pre">outer</span></code> argument, which can be either <code class="docutils literal notranslate"><span class="pre">'times'</span></code> (which is the default), or <code class="docutils literal notranslate"><span class="pre">'results'</span></code>. So to use the results as the outer group, we can use:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">)</span>
@@ -4315,7 +4739,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_143_0.svg" src="../_images/examples_Plotting_143_0.svg" /></div>
+<img alt="../_images/examples_Plotting_149_0.svg" src="../_images/examples_Plotting_149_0.svg" /></div>
 </div>
 <p>Notice how the labels above and below the graph are now swapped.</p>
 </section>
@@ -4323,7 +4747,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <h3>Stacking bars<a class="headerlink" href="#Stacking-bars" title="Link to this heading">¶</a></h3>
 <p>Next, we often wish to stack quantities above and below each other. To specify these stackings, you can set the <code class="docutils literal notranslate"><span class="pre">stack_pops</span></code> and <code class="docutils literal notranslate"><span class="pre">stack_outputs</span></code> arguments to <code class="docutils literal notranslate"><span class="pre">plotBars</span></code>. By default, these are lists of all of the pops and outputs in the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object. If you want quantities to appear in the same bar, you can specify a list containing the names of the pops and outputs that should appear in the same bar. Two examples are shown below:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stack outputs, to compare population sizes, with a colour breakdown of the vaccination state</span>
@@ -4335,10 +4759,10 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_146_0.svg" src="../_images/examples_Plotting_146_0.svg" /></div>
+<img alt="../_images/examples_Plotting_152_0.svg" src="../_images/examples_Plotting_152_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stack pops, to compare vaccination states, with a colour breakdown per population</span>
@@ -4350,11 +4774,11 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_147_0.svg" src="../_images/examples_Plotting_147_0.svg" /></div>
+<img alt="../_images/examples_Plotting_153_0.svg" src="../_images/examples_Plotting_153_0.svg" /></div>
 </div>
 <p>If you specify a partial list of stackings, then any pops or outputs that do not appear in the stack will automatically be added as separate unstacked bars. For example, if we have</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">par_results</span><span class="p">,</span><span class="n">scen_results</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -4363,7 +4787,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 </div>
 <p>Then setting <code class="docutils literal notranslate"><span class="pre">stack_outputs</span> <span class="pre">=</span> <span class="pre">[['sus','vac']]</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">stack_outputs</span> <span class="pre">=</span> <span class="pre">[['sus','vac'],'lt_inf']</span></code></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_outputs</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">]])</span>
@@ -4374,11 +4798,11 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_151_0.svg" src="../_images/examples_Plotting_151_0.svg" /></div>
+<img alt="../_images/examples_Plotting_157_0.svg" src="../_images/examples_Plotting_157_0.svg" /></div>
 </div>
 <p>You can specify an output multiple times if you want it to appear in more than one stack</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_outputs</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],[</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">]])</span>
@@ -4389,11 +4813,11 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_153_0.svg" src="../_images/examples_Plotting_153_0.svg" /></div>
+<img alt="../_images/examples_Plotting_159_0.svg" src="../_images/examples_Plotting_159_0.svg" /></div>
 </div>
 <p>The stacking order is the same as the order of the list that you use to specify the stacks:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[83]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_outputs</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">,</span><span class="s1">&#39;sus&#39;</span><span class="p">],[</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">]])</span>
@@ -4404,11 +4828,11 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_155_0.svg" src="../_images/examples_Plotting_155_0.svg" /></div>
+<img alt="../_images/examples_Plotting_161_0.svg" src="../_images/examples_Plotting_161_0.svg" /></div>
 </div>
 <p>You can also specify multiple levels of stacking, although be aware that this can potentially make the plot difficult to read</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[84]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">par_results</span><span class="p">,</span><span class="n">scen_results</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -4420,12 +4844,12 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_157_0.svg" src="../_images/examples_Plotting_157_0.svg" /></div>
+<img alt="../_images/examples_Plotting_163_0.svg" src="../_images/examples_Plotting_163_0.svg" /></div>
 </div>
 <p>Notice how the legend text automatically changes depending on the stacking. However, if you stack both pops and outputs, then there won’t be any text labelling the bars within a block.</p>
 <p>Finally, if you want to stack all of the items of a given type, you can specify <code class="docutils literal notranslate"><span class="pre">all</span></code> instead of a list of quantities to stack:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_outputs</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
@@ -4436,10 +4860,10 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_159_0.svg" src="../_images/examples_Plotting_159_0.svg" /></div>
+<img alt="../_images/examples_Plotting_165_0.svg" src="../_images/examples_Plotting_165_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_outputs</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span><span class="n">stack_pops</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
@@ -4450,7 +4874,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_160_0.svg" src="../_images/examples_Plotting_160_0.svg" /></div>
+<img alt="../_images/examples_Plotting_166_0.svg" src="../_images/examples_Plotting_166_0.svg" /></div>
 </div>
 <p>An <em>aggregation</em> maps multiple time series onto a single quantity, while <em>stacking</em> puts two quantities in the same bar. A general rule of thumb is that an <em>aggregation</em> should be used if you want the two quantities to share the same colour, while <em>stacking</em> should be used if the quantities need to be visually disaggregated.</p>
 </section>
@@ -4464,7 +4888,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 </ul>
 <p>To demonstrate this, consider what would happen if all of the ‘5-14’ populations in the plot above had negative values instead of positive values:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[87]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[90]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">par_results</span><span class="p">,</span><span class="n">scen_results</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -4479,7 +4903,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_163_0.svg" src="../_images/examples_Plotting_163_0.svg" /></div>
+<img alt="../_images/examples_Plotting_169_0.svg" src="../_images/examples_Plotting_169_0.svg" /></div>
 </div>
 <p>Notice how the stacks are the same, but the positive quantities and negative quantities stack in opposite directions</p>
 </section>
@@ -4487,7 +4911,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <h3>Horizontal bars<a class="headerlink" href="#Horizontal-bars" title="Link to this heading">¶</a></h3>
 <p>To make a horizontal bar plot, use the optional <code class="docutils literal notranslate"><span class="pre">orientation</span></code> argument. Set it to <code class="docutils literal notranslate"><span class="pre">'horizontal'</span></code> for horizontal bars, or <code class="docutils literal notranslate"><span class="pre">'vertical'</span></code> for normal vertical bars (this is the default). All stacking and grouping functionality functions as normal.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[88]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[91]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">par_results</span><span class="p">,</span><span class="n">scen_results</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -4499,14 +4923,14 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_166_0.svg" src="../_images/examples_Plotting_166_0.svg" /></div>
+<img alt="../_images/examples_Plotting_172_0.svg" src="../_images/examples_Plotting_172_0.svg" /></div>
 </div>
 </section>
 <section id="Labelling-bars">
 <h3>Labelling bars<a class="headerlink" href="#Labelling-bars" title="Link to this heading">¶</a></h3>
 <p>When specifying stacks of bars, you can alternatively specify a <code class="docutils literal notranslate"><span class="pre">dict</span></code> where the key is the name you want to use for that stack. Then, that name will be used for the appropriate bars</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[92]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">par_results</span><span class="p">,</span><span class="n">scen_results</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
@@ -4518,12 +4942,12 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_168_0.svg" src="../_images/examples_Plotting_168_0.svg" /></div>
+<img alt="../_images/examples_Plotting_174_0.svg" src="../_images/examples_Plotting_174_0.svg" /></div>
 </div>
 <p>The logic for the labelling is divided into two streams - a stream if you specify any user labels (by specifying the output and/or pop stacks using a <code class="docutils literal notranslate"><span class="pre">dict</span></code>) or a stream if the labels are to be determined automatically.</p>
 <p>In the automatic stream - Each bar is assigned a pop label and an output label based on which items are stacked in that bar. The label is empty if more than one item is stacked. - The colour scheme will be automatically determined based on whether pops, outputs, or both are stacked - If the colour scheme separates outputs, then the bars will be labelled by population, and vice-versa - If all of the bars have the same name, then that name will be automatically suppressed</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[90]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stack only outputs, bars labelled using pops</span>
@@ -4536,10 +4960,10 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_170_0.svg" src="../_images/examples_Plotting_170_0.svg" /></div>
+<img alt="../_images/examples_Plotting_176_0.svg" src="../_images/examples_Plotting_176_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[91]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stack only outputs, only one pop so no bar label</span>
@@ -4552,10 +4976,10 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_171_0.svg" src="../_images/examples_Plotting_171_0.svg" /></div>
+<img alt="../_images/examples_Plotting_177_0.svg" src="../_images/examples_Plotting_177_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[92]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stack only pops, bars labelled by output</span>
@@ -4568,11 +4992,11 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_172_0.svg" src="../_images/examples_Plotting_172_0.svg" /></div>
+<img alt="../_images/examples_Plotting_178_0.svg" src="../_images/examples_Plotting_178_0.svg" /></div>
 </div>
 <p>For user specified labels - A user specified label will always be printed - If you specify only the output labels, and there is more than one automatic pop label, then the pop labels will be shown. And vice-versa if you specify only the pop labels</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specifying both output and pop names - both names are shown</span>
@@ -4584,10 +5008,10 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_174_0.svg" src="../_images/examples_Plotting_174_0.svg" /></div>
+<img alt="../_images/examples_Plotting_180_0.svg" src="../_images/examples_Plotting_180_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specifying only pops - because outputs are stacked, there is no automatic label, so no output labels are shown</span>
@@ -4599,10 +5023,10 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_175_0.svg" src="../_images/examples_Plotting_175_0.svg" /></div>
+<img alt="../_images/examples_Plotting_181_0.svg" src="../_images/examples_Plotting_181_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specifying output stack names - because pops are not stacked, there is an automatic pop label which is shown</span>
@@ -4614,11 +5038,11 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_176_0.svg" src="../_images/examples_Plotting_176_0.svg" /></div>
+<img alt="../_images/examples_Plotting_182_0.svg" src="../_images/examples_Plotting_182_0.svg" /></div>
 </div>
 <p>If you want to set custom labels for <em>every</em> bar, then you can set the <code class="docutils literal notranslate"><span class="pre">xlabels</span></code> for the plot after rendering</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[99]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_pops</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">]],</span><span class="n">stack_outputs</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],[</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">]])</span>
@@ -4631,7 +5055,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_178_0.svg" src="../_images/examples_Plotting_178_0.svg" /></div>
+<img alt="../_images/examples_Plotting_184_0.svg" src="../_images/examples_Plotting_184_0.svg" /></div>
 </div>
 </section>
 </section>
@@ -4642,7 +5066,7 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <p>By default, the legend order will be determined by the internal plotting order, so it is largely dependent on the order in which you specify the variables. For bar graphs and stacked/proportion series, the legend order is reversed so that the legend matches the visual stacking order. However, in cases where there are complex stacks, like the one above, you might want to have the legend displayed in a different order. To support this, you can use the <code class="docutils literal notranslate"><span class="pre">reorder_legend</span></code> function. This function
 operates in two ways. First, you can request that the existing order is reversed:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[100]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_pops</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">]],</span><span class="n">stack_outputs</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],[</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">]])</span>
@@ -4654,12 +5078,12 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_180_0.svg" src="../_images/examples_Plotting_180_0.svg" /></div>
+<img alt="../_images/examples_Plotting_186_0.svg" src="../_images/examples_Plotting_186_0.svg" /></div>
 </div>
 <p>Notice how the order of the legend is exactly reversed compared to the original plot. However, you might want a more complex reordering e.g. to have the populations appear together in the legend. To achieve this, you can explicitly specify a new ordering for the legend. The input argument is a list, where the index represents the new legend order, and the value indicates the original position. For example, the original plot had the items in the order
 <code class="docutils literal notranslate"><span class="pre">[5-14-vac,0-4-vac,5-14-lt_inf,5-14-sus,0-4-lt_inf,0-4-sus]</span></code>. If we want the new order to be <code class="docutils literal notranslate"><span class="pre">[0-4-sus,0-4-vac,0-4-lt_inf,5-14-vac,5-14-sus,5-14-lt_inf]</span></code> then we need to specify a list with the original indices of those labels. The first item in that list would be 5, because we want <code class="docutils literal notranslate"><span class="pre">0-4-sus</span></code> to appear first, and its index in the original order was 5. You will need to render and examine the plot first to determine the original index order. So the final order list would be <code class="docutils literal notranslate"><span class="pre">[5,1,4,3,0,2]</span></code></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[101]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_pops</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">]],</span><span class="n">stack_outputs</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],[</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">]])</span>
@@ -4671,11 +5095,11 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_182_0.svg" src="../_images/examples_Plotting_182_0.svg" /></div>
+<img alt="../_images/examples_Plotting_188_0.svg" src="../_images/examples_Plotting_188_0.svg" /></div>
 </div>
 <p>Lastly, you can use the ordering to remove items from the legend by specifying only a partial list</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[99]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[102]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_pops</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">]],</span><span class="n">stack_outputs</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],[</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">]])</span>
@@ -4687,14 +5111,14 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_184_0.svg" src="../_images/examples_Plotting_184_0.svg" /></div>
+<img alt="../_images/examples_Plotting_190_0.svg" src="../_images/examples_Plotting_190_0.svg" /></div>
 </div>
 </section>
 <section id="Relabeling-legend-entries">
 <h3>Relabeling legend entries<a class="headerlink" href="#Relabeling-legend-entries" title="Link to this heading">¶</a></h3>
 <p>The legend labels are automatically computed. However, you might want to change the legend labels after the fact. To do this, you can use the <code class="docutils literal notranslate"><span class="pre">relabel_legend</span></code> function. This function has two usages. First, if you want to change all labels, you can specify a list of label names the same length as the number of legend items, and they will be applied in order. For example</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[100]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[103]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_pops</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">]],</span><span class="n">stack_outputs</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],[</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">]])</span>
@@ -4706,11 +5130,11 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_187_0.svg" src="../_images/examples_Plotting_187_0.svg" /></div>
+<img alt="../_images/examples_Plotting_193_0.svg" src="../_images/examples_Plotting_193_0.svg" /></div>
 </div>
 <p>Alternatively, you can specify a dict where the key is the index of the label you want to change, and the value is the new label name</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[101]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[104]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_bars</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">outer</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">stack_pops</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">]],</span><span class="n">stack_outputs</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],[</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">]])</span>
@@ -4722,7 +5146,7 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_189_0.svg" src="../_images/examples_Plotting_189_0.svg" /></div>
+<img alt="../_images/examples_Plotting_195_0.svg" src="../_images/examples_Plotting_195_0.svg" /></div>
 </div>
 </section>
 <section id="Making-a-new-legend">
@@ -4730,7 +5154,7 @@ operates in two ways. First, you can request that the existing order is reversed
 <p>If you require even more customization, you can manually specify a separate legend figure to draw. The input should be an <code class="docutils literal notranslate"><span class="pre">odict</span></code> (or <code class="docutils literal notranslate"><span class="pre">dict</span></code>) where the key is the item colour and the value is the label. The reason that while it is undesirable for two different labels to have the same colour, this is still a possible valid legend, but it is not permitted for the same label to be associated with two different colours. Thus the use of the label as the key enforces that each label is only
 associated with one colour.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[102]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[105]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entries</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
@@ -4744,11 +5168,11 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_191_0.svg" src="../_images/examples_Plotting_191_0.svg" /></div>
+<img alt="../_images/examples_Plotting_197_0.svg" src="../_images/examples_Plotting_197_0.svg" /></div>
 </div>
 <p>The items are rendered from top to bottom in the order of <code class="docutils literal notranslate"><span class="pre">entries.keys()</span></code> so if you reorder the items, the legend will change accordingly. Similarly, if you pass in a <code class="docutils literal notranslate"><span class="pre">dict</span></code> instead of an <code class="docutils literal notranslate"><span class="pre">odict</span></code>, the order of the items will be arbitrary.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[103]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[106]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entries</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>
@@ -4762,11 +5186,11 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_193_0.svg" src="../_images/examples_Plotting_193_0.svg" /></div>
+<img alt="../_images/examples_Plotting_199_0.svg" src="../_images/examples_Plotting_199_0.svg" /></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">plot_legend</span></code> optionally takes in the type of legend being made (patch or line). So if the legend is intended for use with a line plot, you could use:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[104]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[107]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">at</span><span class="o">.</span><span class="n">plot_legend</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span><span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;line&#39;</span><span class="p">);</span>
@@ -4777,11 +5201,11 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_195_0.svg" src="../_images/examples_Plotting_195_0.svg" /></div>
+<img alt="../_images/examples_Plotting_201_0.svg" src="../_images/examples_Plotting_201_0.svg" /></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">plot_legend</span></code> can also optionally take in the handle to an existing figure. In that case, any existing legend will be replaced, as per the examples below</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[105]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[108]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Original figure</span>
@@ -4794,10 +5218,10 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_197_0.svg" src="../_images/examples_Plotting_197_0.svg" /></div>
+<img alt="../_images/examples_Plotting_203_0.svg" src="../_images/examples_Plotting_203_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[106]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[109]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replacing the legend in the same legend figure</span>
@@ -4810,10 +5234,10 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_198_0.svg" src="../_images/examples_Plotting_198_0.svg" /></div>
+<img alt="../_images/examples_Plotting_204_0.svg" src="../_images/examples_Plotting_204_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[107]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[110]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replacing the legend in a separate legend figure</span>
@@ -4826,16 +5250,16 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_199_0.svg" src="../_images/examples_Plotting_199_0.svg" /></div>
+<img alt="../_images/examples_Plotting_205_0.svg" src="../_images/examples_Plotting_205_0.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_199_1.svg" src="../_images/examples_Plotting_199_1.svg" /></div>
+<img alt="../_images/examples_Plotting_205_1.svg" src="../_images/examples_Plotting_205_1.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[108]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[111]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Adding a legend to a figure without any legend at all</span>
@@ -4848,7 +5272,7 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_200_0.svg" src="../_images/examples_Plotting_200_0.svg" /></div>
+<img alt="../_images/examples_Plotting_206_0.svg" src="../_images/examples_Plotting_206_0.svg" /></div>
 </div>
 </section>
 </section>
@@ -4858,7 +5282,7 @@ associated with one colour.</p>
 <h3>Flow rates<a class="headerlink" href="#Flow-rates" title="Link to this heading">¶</a></h3>
 <p>Flow rates are computed every timestep, but are normally annualized for plotting. For instance, the plot below of the vaccination rate has units ‘Number of people/year’</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[109]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[112]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">par_results</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;doth_rate:flow&#39;</span><span class="p">])</span>
@@ -4870,11 +5294,11 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_202_0.svg" src="../_images/examples_Plotting_202_0.svg" /></div>
+<img alt="../_images/examples_Plotting_208_0.svg" src="../_images/examples_Plotting_208_0.svg" /></div>
 </div>
 <p>Note that because time aggregation uses integration by default, the number of people is obtained by integrating the curve above. So for example, by visual inspection we would expect about <code class="docutils literal notranslate"><span class="pre">10*(5+0.5*(13-5))k</span> <span class="pre">=</span> <span class="pre">~90k</span></code> people transitioning from 2000-2010:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[110]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[113]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">par_results</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;doth_rate:flow&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -4886,7 +5310,7 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_204_0.svg" src="../_images/examples_Plotting_204_0.svg" /></div>
+<img alt="../_images/examples_Plotting_210_0.svg" src="../_images/examples_Plotting_210_0.svg" /></div>
 </div>
 <div class="admonition note">
 <p>Note how the plot axis y-label now shows units of ‘Number of people’ rather than ‘Number of people/year’.</p>
@@ -4894,7 +5318,7 @@ associated with one colour.</p>
 <p>In particular, note how the flow rate in the line plot is about 200000 people/year between 2020 and 2030. Thus the expected number of people transitioning in the decade from 2020-2030 would be <code class="docutils literal notranslate"><span class="pre">200000*10=2e6</span></code>, and we confirm that the bar graph shows approximately 2 million people have transitioned in that time period.</p>
 <p>Lastly, note that if you make a line plot of time-aggregated data, the units will correspond to the time aggregated values, so no further transformations will take place:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[111]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[114]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
@@ -4905,11 +5329,11 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_207_0.svg" src="../_images/examples_Plotting_207_0.svg" /></div>
+<img alt="../_images/examples_Plotting_213_0.svg" src="../_images/examples_Plotting_213_0.svg" /></div>
 </div>
 <p>For some quantities, aggregation over time by integration is not appropriate. For example, it doesn’t make sense to integrate probabilities over time. These quantities are averaged over time by default:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[112]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[115]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">par_results</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;doth_rate&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -4921,11 +5345,11 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_209_0.svg" src="../_images/examples_Plotting_209_0.svg" /></div>
+<img alt="../_images/examples_Plotting_215_0.svg" src="../_images/examples_Plotting_215_0.svg" /></div>
 </div>
 <p>You can override this by explicitly specifying that you want to use integration, by passing in the method as the <code class="docutils literal notranslate"><span class="pre">time_aggregation</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> constructor. In cases where the selected method is likely to be incorrect, a warning will be displayed:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[113]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[116]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">par_results</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;doth_rate&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">time_aggregation</span><span class="o">=</span><span class="s1">&#39;integrate&#39;</span><span class="p">)</span>
@@ -4945,7 +5369,7 @@ WARNING {plotting.py:535} - Units for series &#34;Series(Baseline,0-4,doth_rate)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_211_1.svg" src="../_images/examples_Plotting_211_1.svg" /></div>
+<img alt="../_images/examples_Plotting_217_1.svg" src="../_images/examples_Plotting_217_1.svg" /></div>
 </div>
 </section>
 </section>
@@ -4958,7 +5382,7 @@ WARNING {plotting.py:535} - Units for series &#34;Series(Baseline,0-4,doth_rate)
 </ul>
 <p>Setting colours directly via the <code class="docutils literal notranslate"><span class="pre">color</span></code> is typically cumbersome unless automated:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[114]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[117]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">par_results</span><span class="p">,</span><span class="n">scen_results</span><span class="p">],</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">,</span><span class="s1">&#39;lt_inf&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -4973,13 +5397,13 @@ WARNING {plotting.py:535} - Units for series &#34;Series(Baseline,0-4,doth_rate)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_213_0.svg" src="../_images/examples_Plotting_213_0.svg" /></div>
+<img alt="../_images/examples_Plotting_219_0.svg" src="../_images/examples_Plotting_219_0.svg" /></div>
 </div>
 <p>More typically, you would want to set colours for every instance of a result, pop, or output, across all other variables. For instance, you might want to set all of the outputs to the same colour, irrespective of result or pop. This can be done using the <code class="docutils literal notranslate"><span class="pre">set_colors</span></code> method of <code class="docutils literal notranslate"><span class="pre">PlotData</span></code>. You specify a set of filters for <code class="docutils literal notranslate"><span class="pre">result</span></code>, <code class="docutils literal notranslate"><span class="pre">pop</span></code>, and <code class="docutils literal notranslate"><span class="pre">output</span></code>, and a single color or list of colours to apply to the set of <code class="docutils literal notranslate"><span class="pre">Series</span></code> matching the filter. This filtering is best illustrated with
 some examples.</p>
 <p>One important factor to be aware of is that <code class="docutils literal notranslate"><span class="pre">set_colors</span></code> has an optional argument, <code class="docutils literal notranslate"><span class="pre">overwrite</span></code>, which decides whether to preserve manually set colors or not. In the example above, colours were only specified for 3 series. The remaining colours were assigned within <code class="docutils literal notranslate"><span class="pre">plotBars</span></code>. By default, the colour of a series is <code class="docutils literal notranslate"><span class="pre">None</span></code> which means it will be automatically determined when plotted. By default, <code class="docutils literal notranslate"><span class="pre">set_colors</span></code> will only update the colours if the series colour is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[115]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[118]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="o">.</span><span class="n">set_colors</span><span class="p">(</span><span class="n">outputs</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">outputs</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># Set automatic colours on a per-output basis</span>
@@ -4991,10 +5415,10 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_215_0.svg" src="../_images/examples_Plotting_215_0.svg" /></div>
+<img alt="../_images/examples_Plotting_221_0.svg" src="../_images/examples_Plotting_221_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[116]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[119]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="o">.</span><span class="n">set_colors</span><span class="p">(</span><span class="n">pops</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">pops</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># Set automatic colours on a per-population basis</span>
@@ -5006,10 +5430,10 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_216_0.svg" src="../_images/examples_Plotting_216_0.svg" /></div>
+<img alt="../_images/examples_Plotting_222_0.svg" src="../_images/examples_Plotting_222_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[117]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[120]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span><span class="o">.</span><span class="n">set_colors</span><span class="p">(</span><span class="n">results</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">results</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># Set automatic colours on a per-result basis</span>
@@ -5021,11 +5445,11 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_217_0.svg" src="../_images/examples_Plotting_217_0.svg" /></div>
+<img alt="../_images/examples_Plotting_223_0.svg" src="../_images/examples_Plotting_223_0.svg" /></div>
 </div>
 <p>Notice how the legend automatically groups quantities that share the same colour, rather than repeatedly showing the same color separately for each quantity.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[118]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[121]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter based only on result</span>
@@ -5038,10 +5462,10 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_219_0.svg" src="../_images/examples_Plotting_219_0.svg" /></div>
+<img alt="../_images/examples_Plotting_225_0.svg" src="../_images/examples_Plotting_225_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[119]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[122]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter based on both result and pops</span>
@@ -5054,11 +5478,11 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_220_0.svg" src="../_images/examples_Plotting_220_0.svg" /></div>
+<img alt="../_images/examples_Plotting_226_0.svg" src="../_images/examples_Plotting_226_0.svg" /></div>
 </div>
 <p>If your filter matches more than one quantity, and the colour is either the name of a colormap or a list of colours, then colours from that set will be distributed and assigned to the specified items. For example</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[120]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[123]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Only one result is specified, so only one colour will be used</span>
@@ -5071,10 +5495,10 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_222_0.svg" src="../_images/examples_Plotting_222_0.svg" /></div>
+<img alt="../_images/examples_Plotting_228_0.svg" src="../_images/examples_Plotting_228_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[121]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[124]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1 result and 2 pops are specified, so 1x2=2 colours will be used</span>
@@ -5087,10 +5511,10 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_223_0.svg" src="../_images/examples_Plotting_223_0.svg" /></div>
+<img alt="../_images/examples_Plotting_229_0.svg" src="../_images/examples_Plotting_229_0.svg" /></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[122]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[125]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2 results and 2 pops are specified, so 2x2=4 colours will be used</span>
@@ -5103,11 +5527,11 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_224_0.svg" src="../_images/examples_Plotting_224_0.svg" /></div>
+<img alt="../_images/examples_Plotting_230_0.svg" src="../_images/examples_Plotting_230_0.svg" /></div>
 </div>
 <p>Note that you can call <code class="docutils literal notranslate"><span class="pre">set_colors</span></code> multiple times on different subsets of the <code class="docutils literal notranslate"><span class="pre">series</span></code> to build up a complex colour scheme. This can be especially useful if you have a complex stacking arrangement. Suppose we wanted to break down the vaccination status of each population, for all populations, at three points in time. We would accomplish this as follows</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[123]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[126]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">(</span><span class="n">par_results</span><span class="p">,</span><span class="n">pops</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0-4&#39;</span><span class="p">,</span><span class="s1">&#39;5-14&#39;</span><span class="p">,</span><span class="s1">&#39;15-64&#39;</span><span class="p">,</span><span class="s1">&#39;65+&#39;</span><span class="p">],</span><span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;vac&#39;</span><span class="p">],</span><span class="n">t_bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># Retrieve all of the data</span>
@@ -5128,7 +5552,7 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_226_0.svg" src="../_images/examples_Plotting_226_0.svg" /></div>
+<img alt="../_images/examples_Plotting_232_0.svg" src="../_images/examples_Plotting_232_0.svg" /></div>
 </div>
 <p>Note that if there are no block labels and the number of inner group labels is the same as the number of bars, then the inner group labels will be ‘promoted’ to axis tick labels. This will not happen:</p>
 <ul class="simple">
@@ -5137,7 +5561,7 @@ some examples.</p>
 </ul>
 <p>Lastly, note that this colour system also applies to <code class="docutils literal notranslate"><span class="pre">plot_series</span></code>, and because the colours are stored in <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> they are automatically applied if you use <code class="docutils literal notranslate"><span class="pre">plot_series</span></code> to view the data:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[124]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[127]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figs</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
@@ -5148,25 +5572,25 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_229_0.svg" src="../_images/examples_Plotting_229_0.svg" /></div>
+<img alt="../_images/examples_Plotting_235_0.svg" src="../_images/examples_Plotting_235_0.svg" /></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_229_1.svg" src="../_images/examples_Plotting_229_1.svg" /></div>
+<img alt="../_images/examples_Plotting_235_1.svg" src="../_images/examples_Plotting_235_1.svg" /></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_229_2.svg" src="../_images/examples_Plotting_229_2.svg" /></div>
+<img alt="../_images/examples_Plotting_235_2.svg" src="../_images/examples_Plotting_235_2.svg" /></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_229_3.svg" src="../_images/examples_Plotting_229_3.svg" /></div>
+<img alt="../_images/examples_Plotting_235_3.svg" src="../_images/examples_Plotting_235_3.svg" /></div>
 </div>
 <p>although the example looks a bit unusual because there are only 3 timepoints (as the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object was temporally-aggregated)</p>
 <section id="Colour-design-patterns">

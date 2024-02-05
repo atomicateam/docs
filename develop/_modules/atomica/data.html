@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>atomica.data &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -33,7 +35,7 @@
             Atomica
           </a>
               <div class="version">
-                1.27.0
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -273,6 +275,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../examples/Plotting.html#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples/Plotting.html#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../examples/Plotting.html#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../examples/Plotting.html#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../examples/Plotting.html#Time-aggregation">Time aggregation</a></li>
@@ -2704,6 +2707,8 @@
 <span class="sd">        where the former is typically used when working with data and calibrations, and the latter is used in :class:`Model` and</span>
 <span class="sd">        is therefore encountered on the :class:`Result` and plotting side.</span>
 
+<span class="sd">        If retrieving values for a comp/charac/par and the databook contains an entry for &#39;all&#39; rather</span>
+<span class="sd">        than specific populations, then the &#39;all&#39; time series will be returned regardless of the key</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Exit immediately if the name is not specified</span>
@@ -2714,6 +2719,10 @@
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="s1">&#39;all&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="s1">&#39;All&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;All&#39;</span><span class="p">]</span>
 
         <span class="c1"># If the key is specified, then the name corresponds to the code name only, and we can just directly</span>
         <span class="c1"># use the name and the key. However, if the key is none, then the user has passed in the name as</span>
@@ -3049,11 +3058,15 @@
                         <span class="n">tdve_sheet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tdve_page</span><span class="p">(</span><span class="n">spec_name</span><span class="p">)</span>
                         <span class="n">location</span> <span class="o">=</span> <span class="s1">&#39;Error in TDVE table &quot;</span><span class="si">%s</span><span class="s1">&quot; on sheet &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tdve</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">tdve_sheet</span><span class="p">)</span>
                         <span class="k">assert</span> <span class="n">tdve</span><span class="o">.</span><span class="n">pop_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pop_types</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">. Population type &quot;</span><span class="si">%s</span><span class="s1">&quot; did not match any in the framework&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">tdve</span><span class="o">.</span><span class="n">pop_type</span><span class="p">)</span>
+                        <span class="n">required_pops</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">tdve</span><span class="o">.</span><span class="n">pop_type</span><span class="p">}</span>  <span class="c1"># The TDVE should contain values for all populations of that type, otherwise cannot construct the ParameterSet. Check that these populations are all present</span>
 
-                        <span class="n">required_pops</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">tdve</span><span class="o">.</span><span class="n">pop_type</span><span class="p">]</span>  <span class="c1"># The TDVE should contain values for all populations of that type, otherwise cannot construct the ParameterSet. Check that these populations are all present</span>
-                        <span class="n">missing_pops</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">required_pops</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">tdve</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                        <span class="k">if</span> <span class="n">missing_pops</span><span class="p">:</span>
-                            <span class="k">raise</span> <span class="n">InvalidDatabook</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">. The following populations were not supplied but are required: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">missing_pops</span><span class="p">))</span>
+                        <span class="c1"># Check that data is available for all populations. If the TDVE table contains an entry for &#39;all&#39;</span>
+                        <span class="c1"># then further checks are not necessary because a fallback value will be available for every population</span>
+                        <span class="n">tdve_pops</span> <span class="o">=</span> <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">tdve_pops</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">({</span><span class="s1">&#39;all&#39;</span><span class="p">,</span><span class="s1">&#39;All&#39;</span><span class="p">}):</span>
+                            <span class="n">missing_pops</span> <span class="o">=</span> <span class="n">required_pops</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">tdve_pops</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">missing_pops</span><span class="p">:</span>
+                                <span class="k">raise</span> <span class="n">InvalidDatabook</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">. The following populations were not supplied but are required: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">missing_pops</span><span class="p">))</span>
 
                         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec_name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                             <span class="k">assert</span> <span class="n">ts</span><span class="o">.</span><span class="n">has_data</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">. Data values missing for </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">tdve</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>

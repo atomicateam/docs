@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>atomica.plotting.plot_series &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -36,7 +38,7 @@
             Atomica
           </a>
               <div class="version">
-                1.27.0
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -276,6 +278,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Time-aggregation">Time aggregation</a></li>
@@ -2536,7 +2539,7 @@
 <h1>atomica.plotting.plot_series<a class="headerlink" href="#atomica-plotting-plot-series" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="atomica.plotting.plot_series">
-<span class="sig-prename descclassname"><span class="pre">atomica.plotting.</span></span><span class="sig-name descname"><span class="pre">plot_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plotdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'line'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#plot_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.plotting.plot_series" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">atomica.plotting.</span></span><span class="sig-name descname"><span class="pre">plot_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plotdata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'line'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/plotting.html#plot_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.plotting.plot_series" title="Link to this definition">¶</a></dt>
 <dd><p>Produce a time series plot</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2548,6 +2551,8 @@ be drawn for each of the selected quantity, and any other quantities will appear
 <li><p><strong>data</strong> – Draw scatter points for data wherever the output label matches a data label. Only draws data if the plot_type is ‘line’</p></li>
 <li><p><strong>legend_mode</strong> – override the default legend mode in settings</p></li>
 <li><p><strong>lw</strong> – override the default line width</p></li>
+<li><p><strong>n_cols</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – If None (default), separate figures will be created for each axis. If provided, axes will be tiled as subplots in a single figure
+window with the requested number of columns</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>T1 - Defining a model &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.27.0
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -279,6 +281,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Time-aggregation">Time aggregation</a></li>
@@ -2638,13 +2641,55 @@ required, depending on what layout would be most logical and useful for users fi
 </div>
 </div>
 <p>Next, load the framework file. A framework file gets loaded into a <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> object. When loading the framework file, it will automatically be checked for validity.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ProjectFramework</span><span class="p">(</span><span class="s1">&#39;assets/T1/t1_framework_1.xlsx&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
+/home/vsts/work/1/s/atomica/framework.py:659: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:660: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.comps[&#34;setup weight&#34;] = self.comps[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;setup weight&#34;][fill_ones] = 1
+</pre></div></div>
 </div>
 <p>The warning about the characteristics being underdetermined is because we have three compartments, but the databook only contains information for two compartments, so this is warning that Atomica will make assumptions to initialize compartments where required. We will examine this in more detail in a subsequent tutorial when looking at characteristics in more detail.</p>
 <p>Now that we have the framework loaded in, we can make a <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> object, which is the Python representation of the databook. We use the <code class="docutils literal notranslate"><span class="pre">ProjectData.new()</span></code> function to instantiate it, passing in the <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code>. We also need to specify the years that we want to enter data for, and the number of populations that we want to have. The <code class="docutils literal notranslate"><span class="pre">ProjectData</span></code> constructor also prompts for the number of transfers - which we will set to <code class="docutils literal notranslate"><span class="pre">0</span></code> for now, and examine in more detail in the next
@@ -2672,7 +2717,7 @@ tutorial.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Object saved to C:\Users\romesh\projects\atomica\docs\tutorial\t1_temp.xlsx.
+Object saved to /home/vsts/work/1/s/docs/tutorial/t1_temp.xlsx.
 </pre></div></div>
 </div>
 <p>We can now open the databook and examine what’s in it. There are three sheets</p>
@@ -2680,7 +2725,10 @@ Object saved to C:\Users\romesh\projects\atomica\docs\tutorial\t1_temp.xlsx.
 <li><p>‘Population definitions’, which provides data entry to set the names of each population</p></li>
 <li><p>‘Stocks’ and ‘Flows’, which are the databook pages defined on the ‘Databook Pages’ sheet in the framework file</p></li>
 </ul>
-<p>We can go ahead and fill in the the population definitions sheet now with an example population, ‘adults’:</p>
+<p>There are a few different colours that appear in the databook. Blue cells are shown for quantities where data needs to be entered before running the model. Grey cells are shown for quantities where the databook already had data entered (e.g., from default values in the framework). Red cells with a hatched pattern indicate values that have been entered but will not be used in the model (e.g., if you specify both a constant value and a time-specific value for a quantity, the constant value will be
+ignored and will be formatted red as a result).</p>
+<div class="alert alert-block alert-warning"><p>Grey cells do not mean that the values that are unused or that they cannot be changed! They simply reflect the fact that data has previously been entered for the quantity, so no further inputs are required in order to run the model. This is to help facilitate end-users filling out databooks by focusing on blue cells to populate missing data.</p>
+</div><p>We can go ahead and fill in the the population definitions sheet now with an example population, ‘adults’:</p>
 <p><img alt="t1-databook-1" src="../_images/t1_databook_1.png" /></p>
 <p>On the ‘Stocks’ sheet, we have two data entry tables, one for ‘Susceptible’, and one for ‘Infected’. These are the two compartments that we had assigned databook pages for in the framework. We will again go ahead and fill in some values for these compartments.</p>
 <p><img alt="t1-databook-2" src="../_images/t1_databook_2.png" /></p>
@@ -2716,7 +2764,7 @@ Object saved to C:\Users\romesh\projects\atomica\docs\tutorial\t1_temp.xlsx.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00751s
+Elapsed time for running &#34;default&#34;: 0.00741s
 </pre></div></div>
 </div>
 <p>When the project is loaded, a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> is automatically created, under <code class="docutils literal notranslate"><span class="pre">P.parsets</span></code></p>
@@ -2734,7 +2782,7 @@ Elapsed time for running &#34;default&#34;: 0.00751s
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #0: &#39;default&#39;:
-&lt;atomica.parameters.ParameterSet at 0x27778e77350&gt;
+&lt;atomica.parameters.ParameterSet at 0x7f7aa043cd10&gt;
 [&lt;class &#39;atomica.parameters.ParameterSet&#39;&gt;, &lt;class &#39;atomica.utils.NamedItem&#39;&gt;,
 &lt;class &#39;object&#39;&gt;]
 ————————————————————————————————————————————————————————————
@@ -2746,15 +2794,15 @@ Methods:
 Properties:
   y_factors
 ————————————————————————————————————————————————————————————
-     created: datetime.datetime(2023, 11, 7, 13, 6, 44, 379602,
+     created: datetime.datetime(2024, 2, 5, 3, 49, 52, 506843,
               tzinfo=tzutc())
 interactions: odict()
-    modified: datetime.datetime(2023, 11, 7, 13, 6, 44, 380603,
+    modified: datetime.datetime(2024, 2, 5, 3, 49, 52, 508750,
               tzinfo=tzutc())
         name: &#39;default&#39;
         pars: #0: &#39;sus&#39;:
-              &lt;atomica.parameters.Parameter at 0x27779bf2d10&gt;
-              [&lt;class &#39; [...]
+              &lt;atomica.parameters.Parameter at 0x7f7aa042f810&gt;
+              [&lt;class  [...]
   pop_labels: [&#39;Adults&#39;]
    pop_names: [&#39;adults&#39;]
    pop_types: [&#39;default&#39;]
@@ -2786,7 +2834,7 @@ interactions: odict()
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00600s
+Elapsed time for running &#34;default&#34;: 0.00652s
 </pre></div></div>
 </div>
 <p>We can now plot some results from this model:</p>
@@ -2803,8 +2851,7 @@ Elapsed time for running &#34;default&#34;: 0.00600s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T1-Defining-a-model_16_0.png" src="../_images/tutorial_T1-Defining-a-model_16_0.png" />
-</div>
+<img alt="../_images/tutorial_T1-Defining-a-model_17_0.svg" src="../_images/tutorial_T1-Defining-a-model_17_0.svg" /></div>
 </div>
 <p>The plotting system in Atomica is fairly large - refer to the code documentation <a class="reference external" href="http://atomica.tools/docs/master/examples/Plotting.html">http://atomica.tools/docs/master/examples/Plotting.html</a> for more information.</p>
 </section>

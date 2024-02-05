@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>T6 - Programs &mdash; Atomica  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -39,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.27.0
+                1.28.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -279,6 +281,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Time-accumulation">Time accumulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Subplots">Subplots</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Saving-figures">Saving figures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Plotting-bars">Plotting bars</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Time-aggregation">Time aggregation</a></li>
@@ -2572,8 +2575,43 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/home/vsts/work/1/s/atomica/cascade.py:186: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  cascade_dict[stage[0]] = [x.strip() for x in stage[1].split(&#34;,&#34;)]  # Split the name of the stage and the constituents
+/home/vsts/work/1/s/atomica/framework.py:135: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.sheets[&#34;about&#34;][0][&#34;name&#34;].iloc[0] = value
+/home/vsts/work/1/s/atomica/framework.py:659: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.comps[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:660: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.comps[&#34;setup weight&#34;] = self.comps[&#34;setup weight&#34;].fillna(0)
+/home/vsts/work/1/s/atomica/framework.py:730: FutureWarning: ChainedAssignmentError: behaviour will change in pandas 3.0!
+You are setting values through chained assignment. Currently this works in certain cases, but when using Copy-on-Write (which will become the default behaviour in pandas 3.0) this will never work to update the original DataFrame or Series, because the intermediate object on which we are setting values will behave as a copy.
+A typical example is when you are setting values in a column of a DataFrame, like:
+
+df[&#34;col&#34;][row_indexer] = value
+
+Use `df.loc[row_indexer, &#34;col&#34;] = values` instead, to perform the assignment in a single step and ensure this keeps updating the original `df`.
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+
+  self.characs[&#34;setup weight&#34;][fill_ones] = 1
+/home/vsts/work/1/s/atomica/framework.py:731: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
+  self.characs[&#34;setup weight&#34;] = self.characs[&#34;setup weight&#34;].fillna(0)
 </pre></div></div>
 </div>
 <p>This framework is much the same as the SIR framework in previous tutorials, except that on the parameters sheet, an additional column called ‘Targetable’ is present. This column specifies whether certain parameters should appear in program books. Since we know that the treatment program is going to change the value of the disease recovery rate, this parameter has a ‘y’ in the ‘Targetable’ column:</p>
@@ -2598,7 +2636,7 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00506s
+Elapsed time for running &#34;default&#34;: 0.00867s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -2731,13 +2769,20 @@ for that program, and <code class="docutils literal notranslate"><span class="pr
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.00491s
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00478s
-Elapsed time for running &#34;default&#34;: 0.00579s
+Elapsed time for running &#34;default&#34;: 0.00583s
 </pre></div></div>
 </div>
 <p>We can now plot the recovery rate parameter and the resulting number of people flowing into the ‘recovered’ state each year.</p>
@@ -2816,7 +2861,7 @@ match this scenario.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0258s
+Elapsed time for running &#34;default&#34;: 0.0104s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2851,58 +2896,77 @@ Elapsed time for running &#34;default&#34;: 0.0258s
 WARNING {reconciliation.py:243} - Reconcilation when parameter is in number units not fully tested
 </pre></div></div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Program set &#39;default&#39; will be ignored while running project &#39;default&#39; due to the absence of program set instructions
-Elapsed time for running &#34;default&#34;: 0.0121s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.00589s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 Reconciling in 2020.00, evaluating from 2020.00 up to 2021.00
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
 ASD: Launching with random seed None
-    step=1 choice=0, par=0, pm=0.0, origval=100.0, newval=110.0
-     step 1 (0.0 s) -- (orig:0.01210 | best:0.01210 | new:0.01397 | diff:0.001867)
-    step=2 choice=1, par=0, pm=1.0, origval=100.0, newval=90.0
-     step 2 (0.0 s) ++ (orig:0.01210 | best:0.01210 | new:0.01000 | diff:-0.002100)
-    step=3 choice=0, par=0, pm=0.0, origval=90.0, newval=95.0
-     step 3 (0.0 s) -- (orig:0.01210 | best:0.01000 | new:0.01108 | diff:0.001080)
-    step=4 choice=1, par=0, pm=1.0, origval=90.0, newval=70.0
-     step 4 (0.0 s) ++ (orig:0.01210 | best:0.01000 | new:0.005102 | diff:-0.004898)
-    step=5 choice=1, par=0, pm=1.0, origval=70.0, newval=30.0
-     step 5 (0.0 s) -- (orig:0.01210 | best:0.005102 | new:0.01000 | diff:0.004898)
-    step=6 choice=1, par=0, pm=1.0, origval=70.0, newval=50.0
-     step 6 (0.0 s) ++ (orig:0.01210 | best:0.005102 | new:0.0004000 | diff:-0.004702)
-    step=7 choice=1, par=0, pm=1.0, origval=50.0, newval=10.0
-     step 7 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.4900 | diff:0.4896)
+    step=1 choice=1, par=0, pm=1.0, origval=100.0, newval=90.0
+     step 1 (0.0 s) ++ (orig:0.01210 | best:0.01210 | new:0.01000 | diff:-0.002100)
+    step=2 choice=1, par=0, pm=1.0, origval=90.0, newval=70.0
+     step 2 (0.0 s) ++ (orig:0.01210 | best:0.01000 | new:0.005102 | diff:-0.004898)
+    step=3 choice=1, par=0, pm=1.0, origval=70.0, newval=30.0
+     step 3 (0.0 s) -- (orig:0.01210 | best:0.005102 | new:0.01000 | diff:0.004898)
+    step=4 choice=1, par=0, pm=1.0, origval=70.0, newval=50.0
+     step 4 (0.0 s) ++ (orig:0.01210 | best:0.005102 | new:0.0004000 | diff:-0.004702)
+    step=5 choice=0, par=0, pm=0.0, origval=50.0, newval=60.0
+     step 5 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.002500 | diff:0.002100)
+    step=6 choice=1, par=0, pm=1.0, origval=50.0, newval=10.0
+     step 6 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.4900 | diff:0.4896)
+    step=7 choice=0, par=0, pm=0.0, origval=50.0, newval=55.0
+     step 7 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.001322 | diff:0.0009223)
     step=8 choice=1, par=0, pm=1.0, origval=50.0, newval=30.0
      step 8 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.01000 | diff:0.009600)
     step=9 choice=1, par=0, pm=1.0, origval=50.0, newval=40.0
      step 9 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.0006250 | diff:0.0002250)
-    step=10 choice=0, par=0, pm=0.0, origval=50.0, newval=52.5
-     step 10 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.0008163 | diff:0.0004163)
-    step=11 choice=1, par=0, pm=1.0, origval=50.0, newval=45.0
-     step 11 (0.0 s) ++ (orig:0.01210 | best:0.0004000 | new:0.0000000000000000000000000000000007704 | diff:-0.0004000)
-    step=12 choice=1, par=0, pm=1.0, origval=45.0, newval=35.0
-     step 12 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.003265 | diff:0.003265)
-    step=13 choice=1, par=0, pm=1.0, origval=45.0, newval=40.0
-     step 13 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0006250 | diff:0.0006250)
-    step=14 choice=1, par=0, pm=1.0, origval=45.0, newval=42.5
-     step 14 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0001384 | diff:0.0001384)
+    step=10 choice=1, par=0, pm=1.0, origval=50.0, newval=45.0
+     step 10 (0.0 s) ++ (orig:0.01210 | best:0.0004000 | new:0.0000000000000000000000000000000007704 | diff:-0.0004000)
+    step=11 choice=1, par=0, pm=1.0, origval=45.0, newval=35.0
+     step 11 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.003265 | diff:0.003265)
+    step=12 choice=1, par=0, pm=1.0, origval=45.0, newval=40.0
+     step 12 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0006250 | diff:0.0006250)
+    step=13 choice=1, par=0, pm=1.0, origval=45.0, newval=42.5
+     step 13 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0001384 | diff:0.0001384)
+    step=14 choice=0, par=0, pm=0.0, origval=45.0, newval=47.5
+     step 14 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0001108 | diff:0.0001108)
     step=15 choice=0, par=0, pm=0.0, origval=45.0, newval=46.25
      step 15 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.00002922 | diff:0.00002922)
-    step=16 choice=1, par=0, pm=1.0, origval=45.0, newval=43.75
-     step 16 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.00003265 | diff:0.00003265)
-    step=17 choice=1, par=0, pm=1.0, origval=45.0, newval=44.375
-     step 17 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007935 | diff:0.000007935)
-    step=18 choice=0, par=0, pm=0.0, origval=45.0, newval=45.625
-     step 18 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007506 | diff:0.000007506)
-    step=19 choice=1, par=0, pm=1.0, origval=45.0, newval=44.6875
-     step 19 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000001956 | diff:0.000001956)
-    step=20 choice=1, par=0, pm=1.0, origval=45.0, newval=44.84375
-     step 20 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0000004856 | diff:0.0000004856)
-    step=21 choice=1, par=0, pm=1.0, origval=45.0, newval=44.921875
-     step 21 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0000001210 | diff:0.0000001210)
-===  Absolute improvement too small (0 &lt; 0.000001000) (21 steps, orig: 0.01210 | best: 0 | ratio: 0) ===
+    step=16 choice=0, par=0, pm=0.0, origval=45.0, newval=45.625
+     step 16 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007506 | diff:0.000007506)
+    step=17 choice=1, par=0, pm=1.0, origval=45.0, newval=43.75
+     step 17 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.00003265 | diff:0.00003265)
+    step=18 choice=1, par=0, pm=1.0, origval=45.0, newval=44.375
+     step 18 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007935 | diff:0.000007935)
+    step=19 choice=0, par=0, pm=0.0, origval=45.0, newval=45.3125
+     step 19 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000001902 | diff:0.000001902)
+    step=20 choice=1, par=0, pm=1.0, origval=45.0, newval=44.6875
+     step 20 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000001956 | diff:0.000001956)
+===  Absolute improvement too small (0 &lt; 0.000001000) (20 steps, orig: 0.01210 | best: 0 | ratio: 0) ===
 </pre></div></div>
 </div>
 <p>Regardless of how reconciliation is performed, the idea is that the result of reconciliation is a <em>reconciled progset</em> that provides a better match to a given parameter set in the program start year. We expected based on the un-reconciled result that reconciliation based on unit cost should result in decreasing the unit cost to achieve an increase in recovery rate. We can look at the reconciled unit cost to confirm this is what the automatic reconciliation has done:</p>
@@ -2942,7 +3006,7 @@ not be possible to reach the target recovery rate.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00580s
+Elapsed time for running &#34;default&#34;: 0.00625s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
