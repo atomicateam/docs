@@ -35,7 +35,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.1
+                1.28.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2650,7 +2650,7 @@
 
 <div class="viewcode-block" id="calibrate">
 <a class="viewcode-back" href="../../_autosummary/atomica.calibration.calibrate.html#atomica.calibration.calibrate">[docs]</a>
-<span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">parset</span><span class="p">:</span> <span class="n">ParameterSet</span><span class="p">,</span> <span class="n">pars_to_adjust</span><span class="p">,</span> <span class="n">output_quantities</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;asd&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterSet</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">calibrate</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">parset</span><span class="p">:</span> <span class="n">ParameterSet</span><span class="p">,</span> <span class="n">pars_to_adjust</span><span class="p">,</span> <span class="n">output_quantities</span><span class="p">,</span> <span class="n">max_time</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;asd&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParameterSet</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run automated calibration</span>
 
@@ -2664,6 +2664,7 @@
 <span class="sd">                              function. pop_name=None will expand to all pops. pop_name=&#39;all&#39; is not supported</span>
 <span class="sd">    :param max_time: If using ASD, the maximum run time</span>
 <span class="sd">    :param method: &#39;asd&#39; or &#39;pso&#39;. If using &#39;pso&#39; all upper and lower limits must be finite</span>
+<span class="sd">    :param kwargs: Dictionary of additional arguments to be passed to the optimization function, e.g. stepsize or pinitial</span>
 <span class="sd">    :return: A calibrated :class:`ParameterSet`</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2730,6 +2731,7 @@
                 <span class="s2">&quot;xmin&quot;</span><span class="p">:</span> <span class="n">xmin</span><span class="p">,</span>
                 <span class="s2">&quot;xmax&quot;</span><span class="p">:</span> <span class="n">xmax</span><span class="p">,</span>
             <span class="p">}</span>
+            <span class="n">optim_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">max_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">optim_args</span><span class="p">[</span><span class="s2">&quot;maxtime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_time</span>
