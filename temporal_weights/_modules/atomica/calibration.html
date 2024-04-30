@@ -15,7 +15,7 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -2613,6 +2613,7 @@
         <span class="n">inds</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_t</span> <span class="o">&gt;=</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data_t</span> <span class="o">&lt;=</span> <span class="n">end_time</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># If no time points remain after filtering down to the time points the user requested</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No data points remaining after filtering down to requested time period. Skipping...&#39;</span><span class="p">)</span>
             <span class="k">continue</span>
         <span class="n">data_t</span> <span class="o">=</span> <span class="n">data_t</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
         <span class="n">data_v</span> <span class="o">=</span> <span class="n">data_v</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
@@ -2688,15 +2689,22 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
+
     <span class="c1"># Expand out pop=None in pars_to_adjust</span>
     <span class="n">p2</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">par_tuple</span> <span class="ow">in</span> <span class="n">pars_to_adjust</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">par_tuple</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">initial_value</span> <span class="o">=</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">initial_value</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="k">if</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># If the pop name is None</span>
             <span class="n">par</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
             <span class="k">for</span> <span class="n">pop_name</span> <span class="ow">in</span> <span class="n">par</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
-                <span class="n">p2</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">par_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+                <span class="n">p2</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">par_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">initial_value</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">p2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">par_tuple</span><span class="p">)</span>
+            <span class="n">p2</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">par_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">par_tuple</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">initial_value</span><span class="p">))</span>
+
     <span class="n">pars_to_adjust</span> <span class="o">=</span> <span class="n">p2</span>
 
     <span class="c1"># Expand out pop=None in output_quantities</span>
@@ -2721,30 +2729,56 @@
 
     <span class="n">output_quantities</span> <span class="o">=</span> <span class="n">outputs</span>
 
-    <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="n">project</span><span class="p">,</span>
-        <span class="s2">&quot;parset&quot;</span><span class="p">:</span> <span class="n">parset</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
-        <span class="s2">&quot;pars_to_adjust&quot;</span><span class="p">:</span> <span class="n">pars_to_adjust</span><span class="p">,</span>
-        <span class="s2">&quot;output_quantities&quot;</span><span class="p">:</span> <span class="n">output_quantities</span><span class="p">,</span>
-    <span class="p">}</span>
-
     <span class="n">x0</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">xmin</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">xmax</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">filtered_pars_to_adjust</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">parset</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pars_to_adjust</span><span class="p">):</span>
-        <span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">scale_min</span><span class="p">,</span> <span class="n">scale_max</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">scale_min</span><span class="p">,</span> <span class="n">scale_max</span><span class="p">,</span> <span class="n">initial_value</span> <span class="o">=</span> <span class="n">x</span>
+
         <span class="k">if</span> <span class="n">par_name</span> <span class="ow">in</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">:</span>
             <span class="n">par</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">pop_name</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
-                <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">pop_name</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tokens</span> <span class="o">=</span> <span class="n">par_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_from_&quot;</span><span class="p">)</span>
             <span class="n">par</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">transfers</span><span class="p">[</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-            <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">pop_name</span><span class="p">])</span>
-        <span class="n">xmin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale_min</span><span class="p">)</span>
-        <span class="n">xmax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale_max</span><span class="p">)</span>
+
+        <span class="c1">#if initial_value has not been explicitly set in the tuple: use y_factor in parset</span>
+        <span class="k">if</span> <span class="n">initial_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pop_name</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+                <span class="n">initial_value</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">initial_value</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">pop_name</span><span class="p">]</span>
+            <span class="c1">#if this value is outside the min and max bounds, make it equal to min or max (whichever is closest)</span>
+            <span class="c1">#if min == max, this should make the initial value equal to min and max</span>
+            <span class="n">initial_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">initial_value</span><span class="p">,</span> <span class="n">scale_min</span><span class="p">,</span> <span class="n">scale_max</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">initial_value</span> <span class="o">&gt;=</span> <span class="n">scale_min</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">initial_value</span> <span class="o">&lt;=</span> <span class="n">scale_max</span><span class="p">),</span> <span class="s1">&#39;Initial value is not consistent with the lower/upper bounds&#39;</span>
+
+        <span class="c1">#update y_factors in parset</span>
+        <span class="k">if</span> <span class="n">initial_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1">#if statement redundant?</span>
+            <span class="k">if</span> <span class="n">pop_name</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">meta_y_factor</span> <span class="o">=</span> <span class="n">initial_value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">pop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_value</span>
+
+        <span class="k">if</span> <span class="n">scale_min</span> <span class="o">!=</span> <span class="n">scale_max</span><span class="p">:</span>
+            <span class="c1"># Only include the y-factor in the adjustments made in the optimization function if a range</span>
+            <span class="c1"># of y-factor values is permitted</span>
+            <span class="n">filtered_pars_to_adjust</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">x0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">initial_value</span><span class="p">)</span>
+            <span class="n">xmin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale_min</span><span class="p">)</span>
+            <span class="n">xmax</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scale_max</span><span class="p">)</span>
+
+
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="n">project</span><span class="p">,</span>
+        <span class="s2">&quot;parset&quot;</span><span class="p">:</span> <span class="n">parset</span><span class="p">,</span>
+        <span class="s2">&quot;pars_to_adjust&quot;</span><span class="p">:</span> <span class="n">filtered_pars_to_adjust</span><span class="p">,</span>
+        <span class="s2">&quot;output_quantities&quot;</span><span class="p">:</span> <span class="n">output_quantities</span><span class="p">,</span>
+    <span class="p">}</span>
 
     <span class="n">original_sim_end</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_end</span>
     <span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tvec</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">original_sim_end</span><span class="p">)</span>
@@ -2790,7 +2824,7 @@
     <span class="k">finally</span><span class="p">:</span>
         <span class="n">project</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">sim_end</span> <span class="o">=</span> <span class="n">original_sim_end</span>  <span class="c1"># Restore the simulation end year</span>
 
-    <span class="n">_update_parset</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;parset&quot;</span><span class="p">],</span> <span class="n">x1</span><span class="p">,</span> <span class="n">pars_to_adjust</span><span class="p">)</span>
+    <span class="n">_update_parset</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;parset&quot;</span><span class="p">],</span> <span class="n">x1</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;pars_to_adjust&quot;</span><span class="p">])</span>
 
     <span class="c1"># Log out the commands required for equivalent manual calibration if desired</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pars_to_adjust</span><span class="p">):</span>
