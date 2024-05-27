@@ -35,7 +35,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.3
+                1.28.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2056,6 +2056,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.apply"><code class="docutils literal notranslate"><span class="pre">Initialization.apply()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_excel"><code class="docutils literal notranslate"><span class="pre">Initialization.from_excel()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_result"><code class="docutils literal notranslate"><span class="pre">Initialization.from_result()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.hash_y_factors"><code class="docutils literal notranslate"><span class="pre">Initialization.hash_y_factors()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2079,6 +2080,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.get_par"><code class="docutils literal notranslate"><span class="pre">ParameterSet.get_par()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.initialization</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.load_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.load_calibration()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.make_constant"><code class="docutils literal notranslate"><span class="pre">ParameterSet.make_constant()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.sample"><code class="docutils literal notranslate"><span class="pre">ParameterSet.sample()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.save_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.save_calibration()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.y_factors"><code class="docutils literal notranslate"><span class="pre">ParameterSet.y_factors</span></code></a></li>
@@ -2744,7 +2746,7 @@
 <span class="sd">    as capturing metadata for validation purposes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_y_factor_hash</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct an Initialization with explicit initial values</span>
 
@@ -2761,10 +2763,13 @@
 <span class="sd">                       compartments are being used, the ``Initialization`` instance will not be reusable if the</span>
 <span class="sd">                       simulation step size is subsequently changed, and will need to be re-created using the new</span>
 <span class="sd">                       step size).</span>
+<span class="sd">        :param year: Optionally specify the year used to generate the initialization (for provenance)</span>
+<span class="sd">        :param init_y_factor_hash: Optionally specify the y-factor hash. If supplied, this will be checked against the parset when the initialization is applied</span>
+<span class="sd">        :param dt: Optionally specify the timestep used to generate the initialization (for provenance)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span> <span class="o">=</span> <span class="n">init_y_factor_hash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
 
 <div class="viewcode-block" id="Initialization.from_result">
@@ -2806,12 +2811,15 @@
 
         <span class="bp">self</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">year</span>  <span class="c1">#: Record year from which the initialization was originally computed</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">parset</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash_y_factors</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">)</span>  <span class="c1"># Record a hash of the Y-factors used for initialization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">parset</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">hash_y_factors</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">)</span>  <span class="c1"># Record a hash of the Y-factors used for initialization</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">dt</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_hash_y_factors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="Initialization.hash_y_factors">
+<a class="viewcode-back" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.hash_y_factors">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">hash_y_factors</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Hash y-factors used for initialization</span>
 
@@ -2831,7 +2839,8 @@
             <span class="n">d</span><span class="p">[</span><span class="n">quantity</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">quantity</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">)</span>
             <span class="n">d</span><span class="p">[</span><span class="n">quantity</span><span class="p">][</span><span class="s2">&quot;_meta_y_factor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">quantity</span><span class="p">]</span><span class="o">.</span><span class="n">meta_y_factor</span>  <span class="c1"># This might fail if there actually was a population called &#39;_meta_y_factor&#39; but that seems unlikely...</span>
 
-        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
+
 
 <div class="viewcode-block" id="Initialization.apply">
 <a class="viewcode-back" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.apply">[docs]</a>
@@ -2853,7 +2862,7 @@
 
         <span class="c1"># Check the y-factors</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">framework</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">parset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">init_y_factor_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hash_y_factors</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">)</span>
+            <span class="n">init_y_factor_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hash_y_factors</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">init_y_factor_hash</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Y-factors used for initialization have changed since the saved initialization was generated. These Y-factors will have no effect because a saved initialization is being used. Remove the initialization by setting `Parset.initialization=None` to return to using the Y-factors to adjust the initialization.&quot;</span><span class="p">)</span>
 
@@ -3101,6 +3110,27 @@
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">new</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
             <span class="n">par</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">constant</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new</span></div>
+
+
+<div class="viewcode-block" id="ParameterSet.make_constant">
+<a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.make_constant">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a constant copy of the ParameterSet</span>
+
+<span class="sd">        This function will return a copy of the ParameterSet where all parameter time series have been replaced</span>
+<span class="sd">        with temporally static versions.</span>
+
+<span class="sd">        :param year: Year to use for interpolation</span>
+<span class="sd">        :return: A copy of the ParameterSet with constant parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> (constant)&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">ps</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">year</span><span class="p">))</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">ps</span></div>
 
 
     <span class="c1"># SAVE AND LOAD CALIBRATION (Y-FACTORS)</span>
