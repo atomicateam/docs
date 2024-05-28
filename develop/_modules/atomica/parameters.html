@@ -35,7 +35,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.3
+                1.28.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2051,6 +2051,16 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/atomica.parameters.html">atomica.parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html">atomica.parameters.Initialization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization"><code class="docutils literal notranslate"><span class="pre">Initialization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.apply"><code class="docutils literal notranslate"><span class="pre">Initialization.apply()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_excel"><code class="docutils literal notranslate"><span class="pre">Initialization.from_excel()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_result"><code class="docutils literal notranslate"><span class="pre">Initialization.from_result()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.hash_y_factors"><code class="docutils literal notranslate"><span class="pre">Initialization.hash_y_factors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.parameters.Parameter.html">atomica.parameters.Parameter</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter"><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter.has_values"><code class="docutils literal notranslate"><span class="pre">Parameter.has_values()</span></code></a></li>
@@ -2065,9 +2075,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html">atomica.parameters.ParameterSet</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet"><code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.all_pars"><code class="docutils literal notranslate"><span class="pre">ParameterSet.all_pars()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.apply_initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.apply_initialization()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.calibration_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ParameterSet.calibration_spreadsheet()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.get_par"><code class="docutils literal notranslate"><span class="pre">ParameterSet.get_par()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.initialization</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.load_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.load_calibration()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.make_constant"><code class="docutils literal notranslate"><span class="pre">ParameterSet.make_constant()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.sample"><code class="docutils literal notranslate"><span class="pre">ParameterSet.sample()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.save_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.save_calibration()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.y_factors"><code class="docutils literal notranslate"><span class="pre">ParameterSet.y_factors</span></code></a></li>
@@ -2544,6 +2557,8 @@
 
 <span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">import</span> <span class="nn">atomica.excel</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
@@ -2551,6 +2566,9 @@
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">NamedItem</span><span class="p">,</span> <span class="n">TimeSeries</span>
 <span class="kn">from</span> <span class="nn">.system</span> <span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Parameter&quot;</span><span class="p">,</span> <span class="s2">&quot;ParameterSet&quot;</span><span class="p">]</span>
 
@@ -2715,6 +2733,206 @@
 
 
 
+<div class="viewcode-block" id="Initialization">
+<a class="viewcode-back" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization">[docs]</a>
+<span class="k">class</span> <span class="nc">Initialization</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class stores initial compartment sizes</span>
+
+<span class="sd">    In some cases it may be desirable to explicitly set initial compartment sizes rather than</span>
+<span class="sd">    having them calculated based on the databook values/characteristics. An example of this could</span>
+<span class="sd">    be wanting to initialize the model using steady-state compartment sizes computed from a</span>
+<span class="sd">    prior model run. This class facilitates storing/applying the initial compartment sizes as well</span>
+<span class="sd">    as capturing metadata for validation purposes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_y_factor_hash</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct an Initialization with explicit initial values</span>
+
+<span class="sd">        This function can be used to explicitly set initial compartment sizes. More typically, the initial compartment</span>
+<span class="sd">        sizes would be drawn from a previous model run. In that case, construct the ``Initialization`` using the</span>
+<span class="sd">        ``Initialization.from_result()`` method, passing in the parset and result. For users, this is typically handled</span>
+<span class="sd">        via ``ParameterSet.set_initialization(result)`` which allows easily passing a result into the ``ParameterSet``</span>
+<span class="sd">        to set the initialization in one step.</span>
+
+<span class="sd">        :param values: Provide a dictionary of values with compartment sizes. Keys should be tuples with</span>
+<span class="sd">                       (comp_name,pop_name) and values should be either scalars (for normal compartments) or</span>
+<span class="sd">                       arrays (for timed compartments). The size of the arrays for timed compartments will reflect</span>
+<span class="sd">                       both the duration of the timed compartment and the simulation step size (noting that if timed</span>
+<span class="sd">                       compartments are being used, the ``Initialization`` instance will not be reusable if the</span>
+<span class="sd">                       simulation step size is subsequently changed, and will need to be re-created using the new</span>
+<span class="sd">                       step size).</span>
+<span class="sd">        :param year: Optionally specify the year used to generate the initialization (for provenance)</span>
+<span class="sd">        :param init_y_factor_hash: Optionally specify the y-factor hash. If supplied, this will be checked against the parset when the initialization is applied</span>
+<span class="sd">        :param dt: Optionally specify the timestep used to generate the initialization (for provenance)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">year</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span> <span class="o">=</span> <span class="n">init_y_factor_hash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
+
+<div class="viewcode-block" id="Initialization.from_result">
+<a class="viewcode-back" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_result">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_result</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct an initialization based on a Result</span>
+
+<span class="sd">        This method is used to create an ``Initialization`` instance when the initial compartment sizes are</span>
+<span class="sd">        drawn from the state of a previously-run model. This facilitates initializing the model after numerically</span>
+<span class="sd">        converging to a steady state or after an initial transient has passed.</span>
+
+<span class="sd">        :param res: An Atomica ``Result`` instance</span>
+<span class="sd">        :param parset: Optionally specify a ``ParameterSet`` instance containing y-factor values. If provided, subsequent</span>
+<span class="sd">                       use of the initialization will check if the y-factors have changed since the initialization was</span>
+<span class="sd">                       saved and display a warning if so.</span>
+<span class="sd">        :param year: Optionally specify the year to draw compartment sizes from in the result. If not provided, the last</span>
+<span class="sd">                     time point will be used. The year must exactly match a year contained in the result.</span>
+<span class="sd">        :return: A new ``Initialization`` instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">atomica.model</span> <span class="kn">import</span> <span class="n">TimedCompartment</span>  <span class="c1"># Avoid circular import</span>
+
+        <span class="k">if</span> <span class="n">year</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">year</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">year</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Year </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2"> was not present in the result&quot;</span><span class="p">)</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">t</span> <span class="o">==</span> <span class="n">year</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>  <span class="c1">#: Dictionary of values with either {&#39;comp&#39;:val} or {&#39;comp&#39;:[vals]} depending on</span>
+
+        <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pops</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">comps</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="n">TimedCompartment</span><span class="p">):</span>
+                    <span class="n">values</span><span class="p">[(</span><span class="n">comp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">_vals</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">values</span><span class="p">[(</span><span class="n">comp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">comp</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="bp">self</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">year</span>  <span class="c1">#: Record year from which the initialization was originally computed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">parset</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">hash_y_factors</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">)</span>  <span class="c1"># Record a hash of the Y-factors used for initialization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">dt</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="Initialization.hash_y_factors">
+<a class="viewcode-back" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.hash_y_factors">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">hash_y_factors</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Hash y-factors used for initialization</span>
+
+<span class="sd">        This method calculates a hash of the y-factors for the purpose of identifying if they have</span>
+<span class="sd">        changed since the Initialization was originally created.</span>
+
+<span class="sd">        :param framework: An ``at.Framework`` instance containing setup weights for compartments/characteristics</span>
+<span class="sd">        :param parset: An ``at.ParameterSet`` instance containing y-factors</span>
+<span class="sd">        :return: A hash computed from the y-factors used for normal compartment initialization</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">init_quantities</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">framework</span><span class="o">.</span><span class="n">comps</span><span class="p">[</span><span class="s2">&quot;setup weight&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="n">init_quantities</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">framework</span><span class="o">.</span><span class="n">characs</span><span class="p">[</span><span class="s2">&quot;setup weight&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">quantity</span> <span class="ow">in</span> <span class="n">init_quantities</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">quantity</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">quantity</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">)</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">quantity</span><span class="p">][</span><span class="s2">&quot;_meta_y_factor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="n">quantity</span><span class="p">]</span><span class="o">.</span><span class="n">meta_y_factor</span>  <span class="c1"># This might fail if there actually was a population called &#39;_meta_y_factor&#39; but that seems unlikely...</span>
+
+        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Initialization.apply">
+<a class="viewcode-back" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.apply">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Insert saved values into compartments</span>
+
+<span class="sd">        The Initialization may contain a hash of the y-factors for initialization compartments/characteristics that were</span>
+<span class="sd">        used when the Initialization was generated, if the Initialization was generated based on a previous Result.</span>
+<span class="sd">        When applying the initialization, if a framework and parset are provided, then the y-factors will be checked to</span>
+<span class="sd">        determine if there are any differences in the initialization y-factors or not, and a warning will be displayed</span>
+<span class="sd">        if so.</span>
+
+<span class="sd">        :param pop: An at.model.Population instance</span>
+<span class="sd">        :param framework: Optionally specify a framework object containing the specification of which comps/characs are used for initialization</span>
+<span class="sd">        :param parset: Optionally specify the requested parset for initialization containing Y-factors to compare to the saved Y-factors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">atomica.model</span> <span class="kn">import</span> <span class="n">TimedCompartment</span>  <span class="c1"># Avoid circular import</span>
+
+        <span class="c1"># Check the y-factors</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">framework</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">parset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_y_factor_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hash_y_factors</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">parset</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">init_y_factor_hash</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Y-factors used for initialization have changed since the saved initialization was generated. These Y-factors will have no effect because a saved initialization is being used. Remove the initialization by setting `Parset.initialization=None` to return to using the Y-factors to adjust the initialization.&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">pop</span><span class="o">.</span><span class="n">comps</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="n">TimedCompartment</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+                    <span class="n">comp</span><span class="o">.</span><span class="n">_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">comp</span><span class="o">.</span><span class="n">_vals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[(</span><span class="n">comp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+                    <span class="n">comp</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">comp</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[(</span><span class="n">comp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pop</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span></div>
+
+
+    <span class="k">def</span> <span class="nf">to_excel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">writer</span><span class="p">):</span>
+        <span class="n">max_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">max_len</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">][:</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+            <span class="s2">&quot;init_y_factor_hash&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_y_factor_hash</span><span class="p">,</span>
+            <span class="s2">&quot;dt&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+
+        <span class="n">metadata</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Initialization&quot;</span><span class="p">,</span> <span class="n">startcol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">startrow</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Initialization&quot;</span><span class="p">,</span> <span class="n">startcol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">startrow</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">prepr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Initialization.from_excel">
+<a class="viewcode-back" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_excel">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_excel</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">excelfile</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelFile</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct an initialization from saved spreadsheet</span>
+
+<span class="sd">        :param excelfile: A ``pd.ExcelFile`` containing an &#39;Initialization&#39; sheet</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># excelfile = spreadsheet.pandas()</span>
+
+        <span class="n">metadata</span><span class="p">,</span> <span class="n">value_df</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">excel</span><span class="o">.</span><span class="n">read_dataframes</span><span class="p">(</span><span class="n">excelfile</span><span class="o">.</span><span class="n">book</span><span class="p">[</span><span class="s1">&#39;Initialization&#39;</span><span class="p">])</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">s</span> <span class="ow">in</span> <span class="n">value_df</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">v</span>
+
+        <span class="bp">self</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+</div>
+
+
+
 <div class="viewcode-block" id="ParameterSet">
 <a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet">[docs]</a>
 <span class="k">class</span> <span class="nc">ParameterSet</span><span class="p">(</span><span class="n">NamedItem</span><span class="p">):</span>
@@ -2741,6 +2959,8 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
         <span class="n">NamedItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>  <span class="c1"># Track versioning information</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gitinfo</span> <span class="o">=</span> <span class="n">gitinfo</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pop_names</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># : List of all population code names contained in the ``ParameterSet``</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pop_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">pop</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>  <span class="c1"># : List of corresponding full names for populations</span>
@@ -2749,6 +2969,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pars</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>  <span class="c1"># : Stores the Parameter instances contained by this ParameterSet associated with framework comps, characs, and parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>  <span class="c1"># : Stores the Parameter instances contained by this ParameterSet associated with databook transfers, keyed by source population</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>  <span class="c1"># : Stores the Parameter instances contained by this ParameterSet associated with framework interactions, keyed by source population</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialization</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Optionally store an ``Initialization`` instance to explicitly set initial compartment sizes</span>
 
         <span class="c1"># Instantiate all quantities that appear in the databook (compartments, characteristics, parameters)</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">tdve</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2815,6 +3037,13 @@
 
             <span class="k">for</span> <span class="n">source_pop</span><span class="p">,</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">ts_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">item_storage</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">source_pop</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_from_&quot;</span> <span class="o">+</span> <span class="n">source_pop</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">ts</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.migration</span> <span class="kn">import</span> <span class="n">migrate</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">d</span>
+        <span class="n">parset</span> <span class="o">=</span> <span class="n">migrate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">parset</span><span class="o">.</span><span class="vm">__dict__</span>
 
 <div class="viewcode-block" id="ParameterSet.all_pars">
 <a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.all_pars">[docs]</a>
@@ -2883,6 +3112,27 @@
         <span class="k">return</span> <span class="n">new</span></div>
 
 
+<div class="viewcode-block" id="ParameterSet.make_constant">
+<a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.make_constant">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a constant copy of the ParameterSet</span>
+
+<span class="sd">        This function will return a copy of the ParameterSet where all parameter time series have been replaced</span>
+<span class="sd">        with temporally static versions.</span>
+
+<span class="sd">        :param year: Year to use for interpolation</span>
+<span class="sd">        :return: A copy of the ParameterSet with constant parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> (constant)&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">ps</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">year</span><span class="p">))</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">ps</span></div>
+
+
     <span class="c1"># SAVE AND LOAD CALIBRATION (Y-FACTORS)</span>
 
     <span class="nd">@property</span>
@@ -2920,13 +3170,46 @@
 <span class="sd">        :return: Spreadsheet containing y-factors in tabular form</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="c1"># Initialize the bytestream</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelWriter</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;xlsxwriter&quot;</span><span class="p">)</span>
+        <span class="c1"># writer.book.set_properties({&quot;category&quot;: &quot;atomica:framework&quot;})</span>
+        <span class="c1"># standard_formats(writer.book)  # Apply formatting</span>
+
+        <span class="c1"># worksheet = writer.book.add_worksheet(&quot;Y-factors&quot;)</span>
+
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_factors</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
         <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">set_names</span><span class="p">([</span><span class="s2">&quot;par&quot;</span><span class="p">,</span> <span class="s2">&quot;pop&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Y-factors&quot;</span><span class="p">,</span> <span class="n">merge_cells</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Write index if present</span>
 
-        <span class="n">b</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">merge_cells</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialization</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialization</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">writer</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">b</span><span class="p">)</span></div>
+        <span class="c1"># Close the workbook</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">set_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialization</span> <span class="o">=</span> <span class="n">Initialization</span><span class="o">.</span><span class="n">from_result</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">parset</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ParameterSet.apply_initialization">
+<a class="viewcode-back" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.apply_initialization">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param pop: An ``at.Model.Population`` instance containing compartment objects that require initialization</span>
+<span class="sd">        :param framework: A Framework containing a specification of which compartments/characteristics are ordinarily</span>
+<span class="sd">                          used for initialization. If a framework is not provided, then the y-factors will not be</span>
+<span class="sd">                          validated.</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialization</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Attempted to apply an explicit compartment initialization but the parset does not contain an initialization&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialization</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pop</span><span class="p">,</span> <span class="n">framework</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ParameterSet.save_calibration">
@@ -2961,7 +3244,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spreadsheet</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">):</span>
             <span class="n">spreadsheet</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">spreadsheet</span><span class="p">)</span>
 
-        <span class="n">df</span> <span class="o">=</span> <span class="n">spreadsheet</span><span class="o">.</span><span class="n">pandas</span><span class="p">()</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="n">excelfile</span> <span class="o">=</span> <span class="n">spreadsheet</span><span class="o">.</span><span class="n">pandas</span><span class="p">()</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excelfile</span><span class="p">,</span> <span class="s2">&quot;Y-factors&quot;</span> <span class="k">if</span> <span class="s2">&quot;Y-factors&quot;</span> <span class="ow">in</span> <span class="n">excelfile</span><span class="o">.</span><span class="n">sheet_names</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;par&quot;</span><span class="p">,</span> <span class="s2">&quot;pop&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
@@ -2971,7 +3256,6 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">),</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">par</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_par</span><span class="p">(</span><span class="n">par_name</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
@@ -2992,6 +3276,9 @@
                         <span class="n">par</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The ParameterSet does not define a y-factor for </span><span class="si">{</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> in the </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> population (e.g., because the population type does not match the parameter) - skipping&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;Initialization&quot;</span> <span class="ow">in</span> <span class="n">excelfile</span><span class="o">.</span><span class="n">sheet_names</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialization</span> <span class="o">=</span> <span class="n">Initialization</span><span class="o">.</span><span class="n">from_excel</span><span class="p">(</span><span class="n">excelfile</span><span class="p">)</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loaded calibration from file&quot;</span><span class="p">)</span></div>
 </div>

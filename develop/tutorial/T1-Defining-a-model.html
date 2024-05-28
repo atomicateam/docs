@@ -41,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.3
+                1.28.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2057,6 +2057,16 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../_autosummary/atomica.parameters.html">atomica.parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/atomica.parameters.Initialization.html">atomica.parameters.Initialization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization"><code class="docutils literal notranslate"><span class="pre">Initialization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.apply"><code class="docutils literal notranslate"><span class="pre">Initialization.apply()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_excel"><code class="docutils literal notranslate"><span class="pre">Initialization.from_excel()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_result"><code class="docutils literal notranslate"><span class="pre">Initialization.from_result()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.hash_y_factors"><code class="docutils literal notranslate"><span class="pre">Initialization.hash_y_factors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../_autosummary/atomica.parameters.Parameter.html">atomica.parameters.Parameter</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter"><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter.has_values"><code class="docutils literal notranslate"><span class="pre">Parameter.has_values()</span></code></a></li>
@@ -2071,9 +2081,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html">atomica.parameters.ParameterSet</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet"><code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.all_pars"><code class="docutils literal notranslate"><span class="pre">ParameterSet.all_pars()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.apply_initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.apply_initialization()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.calibration_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ParameterSet.calibration_spreadsheet()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.get_par"><code class="docutils literal notranslate"><span class="pre">ParameterSet.get_par()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.initialization</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.load_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.load_calibration()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.make_constant"><code class="docutils literal notranslate"><span class="pre">ParameterSet.make_constant()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.sample"><code class="docutils literal notranslate"><span class="pre">ParameterSet.sample()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.save_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.save_calibration()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.y_factors"><code class="docutils literal notranslate"><span class="pre">ParameterSet.y_factors</span></code></a></li>
@@ -2722,7 +2735,7 @@ ignored and will be formatted red as a result).</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0115s
+Elapsed time for running &#34;default&#34;: 0.00842s
 </pre></div></div>
 </div>
 <p>When the project is loaded, a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> is automatically created, under <code class="docutils literal notranslate"><span class="pre">P.parsets</span></code></p>
@@ -2740,30 +2753,34 @@ Elapsed time for running &#34;default&#34;: 0.0115s
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #0: &#39;default&#39;:
-&lt;atomica.parameters.ParameterSet at 0x7fe370e60f50&gt;
+&lt;atomica.parameters.ParameterSet at 0x7fa39f47af50&gt;
 [&lt;class &#39;atomica.parameters.ParameterSet&#39;&gt;, &lt;class &#39;atomica.utils.NamedItem&#39;&gt;]
 ————————————————————————————————————————————————————————————————————————
 Methods:
   all_pars()              get_par()               save_calibration()
-  calibration_spreads...  load_calibration()      copy()
+  apply_initialization()  load_calibration()      set_initialization()
+  calibration_spreads...  make_constant()         copy()
   sample()
 ————————————————————————————————————————————————————————————————————————
 Properties:
   y_factors
 ————————————————————————————————————————————————————————————————————————
-     created: datetime.datetime(2024, 5, 16, 3, 25, 1, 862146,
-              tzinfo=tzutc())
-interactions: odict()
-    modified: datetime.datetime(2024, 5, 16, 3, 25, 1, 864525,
-              tzinfo=tzutc())
-        name: &#39;default&#39;
-        pars: #0: &#39;sus&#39;:       [sc.prepr(): not shown, recursion
-              exceeded (6&gt;5)]
-              # [...]
-  pop_labels: [&#39;Adults&#39;]
-   pop_names: [&#39;adults&#39;]
-   pop_types: [&#39;default&#39;]
-   transfers: odict()
+       created: datetime.datetime(2024, 5, 28, 4, 17, 1, 424208,
+                tzinfo=tzutc())
+       gitinfo: {&#39;branch&#39;: &#39;Detached head (no branch)&#39;, &#39;hash&#39;:
+                &#39;8ca425c&#39;, &#39;date&#39;: [...]
+initialization: None
+  interactions: odict()
+      modified: datetime.datetime(2024, 5, 28, 4, 17, 1, 426462,
+                tzinfo=tzutc())
+          name: &#39;default&#39;
+          pars: #0: &#39;sus&#39;:       [sc.prepr(): not shown, recursion
+                exceeded (6&gt;5)] [...]
+    pop_labels: [&#39;Adults&#39;]
+     pop_names: [&#39;adults&#39;]
+     pop_types: [&#39;default&#39;]
+     transfers: odict()
+       version: &#39;1.28.4&#39;
 ————————————————————————————————————————————————————————————————————————
 
 </pre></div></div>
@@ -2791,7 +2808,7 @@ interactions: odict()
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00747s
+Elapsed time for running &#34;default&#34;: 0.00728s
 </pre></div></div>
 </div>
 <p>We can now plot some results from this model:</p>
