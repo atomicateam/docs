@@ -35,7 +35,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.1
+                1.28.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2051,6 +2051,16 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/atomica.parameters.html">atomica.parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html">atomica.parameters.Initialization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization"><code class="docutils literal notranslate"><span class="pre">Initialization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.apply"><code class="docutils literal notranslate"><span class="pre">Initialization.apply()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_excel"><code class="docutils literal notranslate"><span class="pre">Initialization.from_excel()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_result"><code class="docutils literal notranslate"><span class="pre">Initialization.from_result()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.hash_y_factors"><code class="docutils literal notranslate"><span class="pre">Initialization.hash_y_factors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.parameters.Parameter.html">atomica.parameters.Parameter</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter"><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter.has_values"><code class="docutils literal notranslate"><span class="pre">Parameter.has_values()</span></code></a></li>
@@ -2065,9 +2075,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html">atomica.parameters.ParameterSet</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet"><code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.all_pars"><code class="docutils literal notranslate"><span class="pre">ParameterSet.all_pars()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.apply_initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.apply_initialization()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.calibration_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ParameterSet.calibration_spreadsheet()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.get_par"><code class="docutils literal notranslate"><span class="pre">ParameterSet.get_par()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.initialization</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.load_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.load_calibration()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.make_constant"><code class="docutils literal notranslate"><span class="pre">ParameterSet.make_constant()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.sample"><code class="docutils literal notranslate"><span class="pre">ParameterSet.sample()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.save_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.save_calibration()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.y_factors"><code class="docutils literal notranslate"><span class="pre">ParameterSet.y_factors</span></code></a></li>
@@ -4391,7 +4404,12 @@
     <span class="k">if</span> <span class="n">order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
     <span class="k">elif</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;reverse&quot;</span><span class="p">:</span>
-        <span class="n">order</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">legend</span><span class="o">.</span><span class="n">legendHandles</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># matplotlib&lt;3.8</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">legend</span><span class="o">.</span><span class="n">legendHandles</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="c1"># matplotlib&gt;=3.9</span>
+            <span class="n">order</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">legend</span><span class="o">.</span><span class="n">legend_handles</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">max</span><span class="p">(</span><span class="n">order</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">vpacker</span><span class="o">.</span><span class="n">_children</span><span class="p">),</span> <span class="s2">&quot;Requested index greater than number of legend entries&quot;</span>
 

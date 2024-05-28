@@ -35,7 +35,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.1
+                1.28.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -2051,6 +2051,16 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/atomica.parameters.html">atomica.parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html">atomica.parameters.Initialization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization"><code class="docutils literal notranslate"><span class="pre">Initialization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.apply"><code class="docutils literal notranslate"><span class="pre">Initialization.apply()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_excel"><code class="docutils literal notranslate"><span class="pre">Initialization.from_excel()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_result"><code class="docutils literal notranslate"><span class="pre">Initialization.from_result()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Initialization.html#atomica.parameters.Initialization.hash_y_factors"><code class="docutils literal notranslate"><span class="pre">Initialization.hash_y_factors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.parameters.Parameter.html">atomica.parameters.Parameter</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter"><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.Parameter.html#atomica.parameters.Parameter.has_values"><code class="docutils literal notranslate"><span class="pre">Parameter.has_values()</span></code></a></li>
@@ -2065,9 +2075,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html">atomica.parameters.ParameterSet</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet"><code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.all_pars"><code class="docutils literal notranslate"><span class="pre">ParameterSet.all_pars()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.apply_initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.apply_initialization()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.calibration_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ParameterSet.calibration_spreadsheet()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.get_par"><code class="docutils literal notranslate"><span class="pre">ParameterSet.get_par()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.initialization</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.load_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.load_calibration()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.make_constant"><code class="docutils literal notranslate"><span class="pre">ParameterSet.make_constant()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.sample"><code class="docutils literal notranslate"><span class="pre">ParameterSet.sample()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.save_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.save_calibration()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.parameters.ParameterSet.html#atomica.parameters.ParameterSet.y_factors"><code class="docutils literal notranslate"><span class="pre">ParameterSet.y_factors</span></code></a></li>
@@ -2686,11 +2699,12 @@
 <span class="sd">                      - None (this should generally not be used though!)</span>
 <span class="sd">    :param databook: The path to a databook file. The databook will be loaded into Project.data and the spreadsheet saved to Project.databook</span>
 <span class="sd">    :param do_run: If True, a simulation will be run upon project construction</span>
-<span class="sd">    :param kwargs: These are passed to the :class`ProjectSettings` constructor</span>
-
+<span class="sd">    :param sim_start: Optionally specify the sim start year (otherwise will default to the first year in the databook)</span>
+<span class="sd">    :param sim_end: Optionally specify simulation end year</span>
+<span class="sd">    :param sim_dt: Optionally specify simulation timestep</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">databook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">databook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">do_run</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">sim_start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sim_end</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sim_dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">NamedItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">ProjectFramework</span><span class="p">):</span>
@@ -2715,13 +2729,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">progbook</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># This will contain an sc.Spreadsheet when the user loads one</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">ProjectSettings</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># Global settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">ProjectSettings</span><span class="p">()</span>  <span class="c1"># Global settings</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_required</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># This flag is set to True by migration is the result objects contained in this Project are out of date due to a migration change</span>
 
         <span class="c1"># Load project data, if available</span>
         <span class="k">if</span> <span class="n">framework</span> <span class="ow">and</span> <span class="n">databook</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">load_databook</span><span class="p">(</span><span class="n">databook_path</span><span class="o">=</span><span class="n">databook</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="n">do_run</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_databook</span><span class="p">(</span><span class="n">databook_path</span><span class="o">=</span><span class="n">databook</span><span class="p">,</span> <span class="n">make_default_parset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">do_run</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">databook</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Project was constructed without a Framework - databook spreadsheet is being saved to project, but data is not being loaded&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">databook</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">Spreadsheet</span><span class="p">(</span><span class="n">databook</span><span class="p">)</span>  <span class="c1"># Just load the spreadsheet in so that it isn&#39;t lost</span>
@@ -2729,6 +2743,14 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">databook</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># This will contain an sc.Spreadsheet when the user loads one</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># If the user has overridden any of these, apply those values after the databook is loaded</span>
+        <span class="c1"># Otherwise, the default logic in `Project.load_databook()` will be used</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update_time_vector</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">sim_start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">sim_end</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">sim_dt</span><span class="p">)</span>
+
+        <span class="c1"># Run the model, but only if both a framework and databook were provided</span>
+        <span class="k">if</span> <span class="n">framework</span> <span class="ow">and</span> <span class="n">databook</span> <span class="ow">and</span> <span class="n">do_run</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">store_results</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print out useful information when called&quot;&quot;&quot;</span>

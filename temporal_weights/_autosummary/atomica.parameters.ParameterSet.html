@@ -38,7 +38,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.1
+                1.28.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2054,6 +2054,16 @@
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="atomica.parameters.html">atomica.parameters</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="atomica.parameters.Initialization.html">atomica.parameters.Initialization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="atomica.parameters.Initialization.html#atomica.parameters.Initialization"><code class="docutils literal notranslate"><span class="pre">Initialization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="atomica.parameters.Initialization.html#atomica.parameters.Initialization.apply"><code class="docutils literal notranslate"><span class="pre">Initialization.apply()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_excel"><code class="docutils literal notranslate"><span class="pre">Initialization.from_excel()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="atomica.parameters.Initialization.html#atomica.parameters.Initialization.from_result"><code class="docutils literal notranslate"><span class="pre">Initialization.from_result()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="atomica.parameters.Initialization.html#atomica.parameters.Initialization.hash_y_factors"><code class="docutils literal notranslate"><span class="pre">Initialization.hash_y_factors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="atomica.parameters.Parameter.html">atomica.parameters.Parameter</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="atomica.parameters.Parameter.html#atomica.parameters.Parameter"><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="atomica.parameters.Parameter.html#atomica.parameters.Parameter.has_values"><code class="docutils literal notranslate"><span class="pre">Parameter.has_values()</span></code></a></li>
@@ -2068,9 +2078,12 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.parameters.ParameterSet</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#atomica.parameters.ParameterSet"><code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.parameters.ParameterSet.all_pars"><code class="docutils literal notranslate"><span class="pre">ParameterSet.all_pars()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#atomica.parameters.ParameterSet.apply_initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.apply_initialization()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.parameters.ParameterSet.calibration_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ParameterSet.calibration_spreadsheet()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.parameters.ParameterSet.get_par"><code class="docutils literal notranslate"><span class="pre">ParameterSet.get_par()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#atomica.parameters.ParameterSet.initialization"><code class="docutils literal notranslate"><span class="pre">ParameterSet.initialization</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.parameters.ParameterSet.load_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.load_calibration()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#atomica.parameters.ParameterSet.make_constant"><code class="docutils literal notranslate"><span class="pre">ParameterSet.make_constant()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.parameters.ParameterSet.sample"><code class="docutils literal notranslate"><span class="pre">ParameterSet.sample()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.parameters.ParameterSet.save_calibration"><code class="docutils literal notranslate"><span class="pre">ParameterSet.save_calibration()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.parameters.ParameterSet.y_factors"><code class="docutils literal notranslate"><span class="pre">ParameterSet.y_factors</span></code></a></li>
@@ -2577,6 +2590,9 @@ the difference in how they are formatted in the databook)</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.y_factors" title="atomica.parameters.ParameterSet.y_factors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y_factors</span></code></a></p></td>
 <td><p>Return y-values in a dictionary</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.initialization" title="atomica.parameters.ParameterSet.initialization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialization</span></code></a></p></td>
+<td><p>Optionally store an <code class="docutils literal notranslate"><span class="pre">Initialization</span></code> instance to explicitly set initial compartment sizes</p></td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
@@ -2585,23 +2601,36 @@ the difference in how they are formatted in the databook)</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.all_pars" title="atomica.parameters.ParameterSet.all_pars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_pars</span></code></a></p></td>
 <td><p>Return an iterator over all Parameters</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.calibration_spreadsheet" title="atomica.parameters.ParameterSet.calibration_spreadsheet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calibration_spreadsheet</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.apply_initialization" title="atomica.parameters.ParameterSet.apply_initialization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_initialization</span></code></a></p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">type pop<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.calibration_spreadsheet" title="atomica.parameters.ParameterSet.calibration_spreadsheet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calibration_spreadsheet</span></code></a></p></td>
 <td><p>Return y-values in a spreadsheet</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.get_par" title="atomica.parameters.ParameterSet.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.get_par" title="atomica.parameters.ParameterSet.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a></p></td>
 <td><p>Retrieve parameter instance</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.load_calibration" title="atomica.parameters.ParameterSet.load_calibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_calibration</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.load_calibration" title="atomica.parameters.ParameterSet.load_calibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_calibration</span></code></a></p></td>
 <td><p>Load calibration y-factors</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.make_constant" title="atomica.parameters.ParameterSet.make_constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_constant</span></code></a></p></td>
+<td><p>Return a constant copy of the ParameterSet</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.sample" title="atomica.parameters.ParameterSet.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample</span></code></a></p></td>
 <td><p>Return a sampled copy of the ParameterSet</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#atomica.parameters.ParameterSet.save_calibration" title="atomica.parameters.ParameterSet.save_calibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_calibration</span></code></a></p></td>
 <td><p>Save y-values to file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_initialization</span></code></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -2614,6 +2643,27 @@ nested dictionaries, so it’s not trivial to iterate over all of them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Generator over all <a class="reference internal" href="atomica.parameters.Parameter.html#atomica.parameters.Parameter" title="atomica.parameters.Parameter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parameter</span></code></a> instances contained in the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet.apply_initialization">
+<span class="sig-name descname"><span class="pre">apply_initialization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">framework</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.apply_initialization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.apply_initialization" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pop</strong> – An <code class="docutils literal notranslate"><span class="pre">at.Model.Population</span></code> instance containing compartment objects that require initialization</p></li>
+<li><p><strong>framework</strong> – A Framework containing a specification of which compartments/characteristics are ordinarily
+used for initialization. If a framework is not provided, then the y-factors will not be
+validated.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2659,6 +2709,12 @@ to return a <a class="reference internal" href="atomica.parameters.Parameter.htm
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet.initialization">
+<span class="sig-name descname"><span class="pre">initialization</span></span><a class="headerlink" href="#atomica.parameters.ParameterSet.initialization" title="Link to this definition">¶</a></dt>
+<dd><p>Optionally store an <code class="docutils literal notranslate"><span class="pre">Initialization</span></code> instance to explicitly set initial compartment sizes</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="atomica.parameters.ParameterSet.load_calibration">
 <span class="sig-name descname"><span class="pre">load_calibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spreadsheet</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.load_calibration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.load_calibration" title="Link to this definition">¶</a></dt>
@@ -2679,6 +2735,22 @@ will be skipped</p></li>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="atomica.parameters.ParameterSet.make_constant">
+<span class="sig-name descname"><span class="pre">make_constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/parameters.html#ParameterSet.make_constant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.parameters.ParameterSet.make_constant" title="Link to this definition">¶</a></dt>
+<dd><p>Return a constant copy of the ParameterSet</p>
+<p>This function will return a copy of the ParameterSet where all parameter time series have been replaced
+with temporally static versions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>year</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – Year to use for interpolation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A copy of the ParameterSet with constant parameters</p>
 </dd>
 </dl>
 </dd></dl>
