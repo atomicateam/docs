@@ -2593,9 +2593,11 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 
-<span class="k">def</span> <span class="nf">_calculate_objective</span><span class="p">(</span><span class="n">y_factors</span><span class="p">,</span> <span class="n">pars_to_adjust</span><span class="p">,</span> <span class="n">output_quantities</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_calculate_objective</span><span class="p">(</span><span class="n">y_factors</span><span class="p">,</span> <span class="n">pars_to_adjust</span><span class="p">,</span> <span class="n">output_quantities</span><span class="p">,</span> <span class="n">parset</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run the model for a given set of y-factors and return the objective/goodness-of-fit</span>
+
+<span class="sd">    Additional extra arguments will be ignored but will not raise an error.</span>
 
 <span class="sd">    :param y_factors: array of y-factors to apply to specified output_quantities</span>
 <span class="sd">    :param pars_to_adjust: list of tuples (par_name,pop_name,...) recognized by parset.update()</span>
@@ -2614,7 +2616,7 @@
 
     <span class="n">objective</span> <span class="o">=</span> <span class="mf">0.0</span>
 
-    <span class="k">for</span> <span class="n">var_label</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span> <span class="ow">in</span> <span class="n">output_quantities</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">var_label</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">start_year</span><span class="p">,</span> <span class="n">end_year</span> <span class="ow">in</span> <span class="n">output_quantities</span><span class="p">:</span>
 
         <span class="n">target</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get_ts</span><span class="p">(</span><span class="n">var_label</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">)</span>  <span class="c1"># This is the TimeSeries with the data for the requested quantity</span>
         <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2623,7 +2625,7 @@
             <span class="k">continue</span>
         <span class="n">var</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_pop</span><span class="p">(</span><span class="n">pop_name</span><span class="p">)</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">var_label</span><span class="p">)</span>
         <span class="n">data_t</span><span class="p">,</span> <span class="n">data_v</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_arrays</span><span class="p">()</span>
-        <span class="n">inds</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_t</span> <span class="o">&gt;=</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data_t</span> <span class="o">&lt;=</span> <span class="n">end_time</span><span class="p">)</span>
+        <span class="n">inds</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_t</span> <span class="o">&gt;=</span> <span class="n">start_year</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data_t</span> <span class="o">&lt;=</span> <span class="n">end_year</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># If no time points remain after filtering down to the time points the user requested</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No data points remaining after filtering down to requested time period. Skipping...&#39;</span><span class="p">)</span>
@@ -2684,13 +2686,13 @@
 
 <span class="sd">    :param project: A project instance to provide data and sim settings</span>
 <span class="sd">    :param parset: A :class:`ParameterSet` instance to calibrate</span>
-<span class="sd">    :param pars_to_adjust: list of tuples, (par_name,pop_name,lower_limit,upper_limit)</span>
+<span class="sd">    :param pars_to_adjust: list of tuples, `(par_name, pop_name, lower_bound, upper_bound, initial_value)`</span>
 <span class="sd">                           the pop name can be None, which will be expanded to all populations</span>
 <span class="sd">                           relevant to the parameter independently, or &#39;all&#39; which will instead operate</span>
 <span class="sd">                           on the meta y factor.</span>
 <span class="sd">    :param output_quantities: list of tuples, (var_label,pop_name,weight,metric), for use in the objective</span>
 <span class="sd">                              function. pop_name=None will expand to all pops. pop_name=&#39;all&#39; is not supported. The</span>
-<span class="sd">                              output can optionally contain (var_label, pop_name, weight, metric, start_year, end_year)</span>
+<span class="sd">                              output can optionally contain `(var_label, pop_name, weight, metric, start_year, end_year)`</span>
 <span class="sd">                              to select a subset of the data for evaluating the objective. The start year and end year</span>
 <span class="sd">                              specified here will take precedence over the time_period argument</span>
 <span class="sd">    :param max_time: If using ASD, the maximum run time</span>
@@ -2728,17 +2730,17 @@
         <span class="n">weight</span> <span class="o">=</span> <span class="n">output_tuple</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">metric</span> <span class="o">=</span> <span class="n">output_tuple</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output_tuple</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
-            <span class="n">start_time</span> <span class="o">=</span> <span class="n">output_tuple</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-            <span class="n">end_time</span> <span class="o">=</span> <span class="n">output_tuple</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+            <span class="n">start_year</span> <span class="o">=</span> <span class="n">output_tuple</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">end_year</span> <span class="o">=</span> <span class="n">output_tuple</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time_period</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">end_time</span> <span class="o">=</span> <span class="n">time_period</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">start_year</span> <span class="o">=</span> <span class="n">time_period</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">end_year</span> <span class="o">=</span> <span class="n">time_period</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">pop_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># If the pop name is None</span>
             <span class="k">for</span> <span class="n">pop</span> <span class="ow">in</span> <span class="n">project</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">pops</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">var_label</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">))</span>
+                <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">var_label</span><span class="p">,</span> <span class="n">pop</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">start_year</span><span class="p">,</span> <span class="n">end_year</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">var_label</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">))</span>
+            <span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">var_label</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">start_year</span><span class="p">,</span> <span class="n">end_year</span><span class="p">))</span>
 
     <span class="n">output_quantities</span> <span class="o">=</span> <span class="n">outputs</span>
 
