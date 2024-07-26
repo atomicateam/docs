@@ -35,7 +35,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.4
+                1.28.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -372,6 +372,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/T2-Calibration.html">T2 - Calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Calibration-scale-factors">Calibration scale factors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Calibrating-compartment-sizes">Calibrating compartment sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Calibrating-transfers">Calibrating transfers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Automatic-calibration">Automatic calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Automated-calibration-of-transfers">Automated calibration of transfers</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Calibration-tips">Calibration tips</a></li>
 </ul>
 </li>
@@ -3078,7 +3085,10 @@
 <span class="sd">        The parameter values for interactions and transfers are stored keyed by</span>
 <span class="sd">        the source/from population. Thus, if the quantity name is an interaction</span>
 <span class="sd">        or transfer, it is also necessary to specify the source population in order</span>
-<span class="sd">        to return a :class:`Parameter` instance.</span>
+<span class="sd">        to return a :class:`Parameter` instance. However, transfer parameters can</span>
+<span class="sd">        also be identified by a parameter name &quot;&lt;transfer_name&gt;_from_&lt;pop&gt;&quot; such</span>
+<span class="sd">        that ``ParameterSet.get_par(&#39;age&#39;,&#39;5-14&#39;)`` is equivalent to</span>
+<span class="sd">        ``ParameterSet.get_par(&#39;age_from_5-14&#39;)``.</span>
 
 <span class="sd">        :param name: The code name of a parameter, interaction, or transfer</span>
 <span class="sd">        :param pop:</span>
@@ -3095,7 +3105,12 @@
             <span class="k">assert</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">pop</span><span class="p">),</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is an interaction, so the ``pop`` must be specified&#39;</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interactions</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">pop</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parameter &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; not found&#39;</span><span class="p">)</span></div>
+            <span class="k">for</span> <span class="n">transfer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transfers</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">transfer</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">par</span>
+
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parameter &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; not found&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ParameterSet.sample">

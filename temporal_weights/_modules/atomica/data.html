@@ -35,7 +35,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.4
+                1.28.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -372,6 +372,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/T2-Calibration.html">T2 - Calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Calibration-scale-factors">Calibration scale factors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Calibrating-compartment-sizes">Calibrating compartment sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Calibrating-transfers">Calibrating transfers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Automatic-calibration">Automatic calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Automated-calibration-of-transfers">Automated calibration of transfers</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../tutorial/T2-Calibration.html#Calibration-tips">Calibration tips</a></li>
 </ul>
 </li>
@@ -2986,7 +2993,9 @@
                                 <span class="n">ts</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">tdve</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;databook page&quot;</span><span class="p">]:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;A TDVE table for &quot;</span><span class="si">%s</span><span class="s1">&quot; (</span><span class="si">%s</span><span class="s1">) was read in and will be used, but the Framework did not mark this quantity as appearing in the databook&#39;</span><span class="p">,</span> <span class="n">tdve</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">code_name</span><span class="p">)</span>
+                        <span class="c1"># Note that if the parameter doesn&#39;t have a databook page and the framework is valid, then the parameter must have a function. Therefore,</span>
+                        <span class="c1"># if data is also read in, it will not change the simulation outputs and would only be used for calibration/validation</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;A TDVE table for &quot;</span><span class="si">%s</span><span class="s1">&quot; (</span><span class="si">%s</span><span class="s1">) was read in and data will be available for calibration, but the Framework did not mark this quantity as appearing in the databook&#39;</span><span class="p">,</span> <span class="n">tdve</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">code_name</span><span class="p">)</span>
                     <span class="n">tdve</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;guidance&quot;</span><span class="p">]</span>
 
                     <span class="k">if</span> <span class="n">code_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="p">:</span>

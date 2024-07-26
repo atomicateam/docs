@@ -41,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.4
+                1.28.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -378,6 +378,13 @@
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">T2 - Calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Calibration-scale-factors">Calibration scale factors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Calibrating-compartment-sizes">Calibrating compartment sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Calibrating-transfers">Calibrating transfers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Automatic-calibration">Automatic calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Automated-calibration-of-transfers">Automated calibration of transfers</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#Calibration-tips">Calibration tips</a></li>
 </ul>
 </li>
@@ -2585,14 +2592,15 @@ existing data. These same parameters are then used for future projections.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00872s
+Elapsed time for running &#34;default&#34;: 0.0111s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_4_1.svg" src="../_images/tutorial_T2-Calibration_4_1.svg" /></div>
+<img alt="../_images/tutorial_T2-Calibration_4_1.svg" src="../_images/tutorial_T2-Calibration_4_1.svg" />
+</div>
 </div>
 <p>Notice how the number of susceptible people and infected people exactly match the data points in the simulation start year - as noted above, this is because the model is initialized from the data values in that year. There are some conditions under which the model won’t exactly match the data in the initial year, such as if the initialization characteristics are overdetermined, but these situations are rare.</p>
 <p>We can see, however, that the model does not predict enough susceptible people in 2020. There could be many reasons for this, and determining what parts of the model should be changed can often be something of an art. It typically reflects your understanding of the assumptions that were made in designing the framework, and also uncertainties and bias present in the input data. For example, the methodology used to gather data used for the calibration might provide hints as to which parameters to
@@ -2623,20 +2631,23 @@ change first.</p>
 </li></ul></td><tr><td><p>Cons?</p>
 </td><td><p>Can cause confusion in the databook around what is data and what is not data</p>
 </td><td><p>Can lack transparency about how parameters are being adjusted without careful review</p>
-</td></tr></tbody></table><p>An example of a suitable parameter for databook calibration is <code class="docutils literal notranslate"><span class="pre">relative</span> <span class="pre">seasonality</span> <span class="pre">of</span> <span class="pre">mosquito</span> <span class="pre">population</span> <span class="pre">size</span></code> - no hard data can exist, but it might be possible to calculate proxy values from other data such as rainfall patterns in different years, adjust annual values manually to match historical epidemic patterns, and then assume a median value for future years. Having this assumption in the databook allows for those calculations to be used as a starting point in the databook before
-manually editing, and allows for comparability with other projects that use the same parameter.</p>
+</td></tr></tbody></table><p>An example of a suitable parameter for databook calibration is <code class="docutils literal notranslate"><span class="pre">relative</span> <span class="pre">seasonality</span> <span class="pre">of</span> <span class="pre">mosquito</span> <span class="pre">population</span> <span class="pre">size</span></code> - it is unlikely that any existing data would be able to directly provide a value for this parameter, but it might be possible to calculate proxy values from other data such as rainfall patterns in different years, adjust annual values manually to match historical epidemic patterns, and then assume a median value for future years. Having this assumption in the databook allows for
+those calculations to be used as a starting point in the databook before manually editing, and allows for comparability with other projects that use the same parameter.</p>
 <div class="alert alert-block alert-success"><p>Suggestion: When designing a databook, it is recommended that all parameters intended for explicit databook calibration are placed on a single ‘Calibration’ sheet to provide clarity about what is data and what are calibrated assumptions.</p>
 </div><p>An example of a suitable parameter for scale factor calibration is <code class="docutils literal notranslate"><span class="pre">treatment</span> <span class="pre">initiation</span></code> used to determine model transitions from diagnosed to treated - a country has reported data for the number of people initiating treatment, and it is important to accurately maintain the official numbers in the databook. Nevertheless, there may be systematic under-reporting by an unknown degree and we want to account for those additional treatments in the model to ensure outcomes are representative, so it
 is appropriate to adjust the scale factor.</p>
 <p>An example of a parameter that could be adjusted in either way depending on the circumstances or just personal preference would be <code class="docutils literal notranslate"><span class="pre">force</span> <span class="pre">of</span> <span class="pre">infection</span></code> - this is a clear calibration parameter that is not based on data, and could be adjusted in a databook if it’s necessary to reflect changing circumstances external to the model over time, calibrated automatically with a scale factor via the <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> function below in order to achieve the best fit to data, or even a mixture of the two
 methods.</p>
+<section id="Calibration-scale-factors">
+<h2>Calibration scale factors<a class="headerlink" href="#Calibration-scale-factors" title="Link to this heading">¶</a></h2>
+<p>The values in the databook are intended to serve as a record of the original input data used to inform the model. Therefore, if a parameter needs to be scaled up or down to calibrate the model, it is typically preferable to do this by setting a ‘scale factor’ (also referred to as a ‘y-factor’) in the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>, rather than changing the data.</p>
 <div class="alert alert-block alert-info"><p>The web interfaces (such as the Cascade Analysis Tool) perform calibration using scale factors. The scale factors shown on the website correspond to the values being set here.</p>
-</div><p>To set a scale factor, create a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> either by copying an existing one, or creating a new one. Then, access the <code class="docutils literal notranslate"><span class="pre">pars</span></code> attribute to look up the parameter you wish to change, and set the <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> for the population you want to change:</p>
+</div><p>To set a scale factor, create a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> either by copying an existing one, or by creating a new one. Then, access the <code class="docutils literal notranslate"><span class="pre">pars</span></code> attribute to look up the parameter you wish to change, and set the <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> for the population you want to change:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># Copy an existing ParameterSet</span>
 <span class="n">p2</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s1">&#39;adults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
@@ -2657,20 +2668,272 @@ methods.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00886s
+Elapsed time for running &#34;default&#34;: 0.0143s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_8_1.svg" src="../_images/tutorial_T2-Calibration_8_1.svg" /></div>
+<img alt="../_images/tutorial_T2-Calibration_9_1.svg" src="../_images/tutorial_T2-Calibration_9_1.svg" />
+</div>
 </div>
 <p>We can see that we have considerably overshot the data, indicating that doubling the birth rate was much too big a change. This would typically be the first step in an iterative process, where you adjust the scale factor, inspect the data, and then make further adjustments.</p>
+</section>
+<section id="Calibrating-compartment-sizes">
+<h2>Calibrating compartment sizes<a class="headerlink" href="#Calibrating-compartment-sizes" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> contains parameters for quantities entered on the ‘Compartments’ and ‘Characteristics’ sheet of the databook. These are used to calculate the initial compartment sizes used at the start of the simulation. Y-factors can be set for these quantities, the same as for any other parameter. This will not change the data points - just the calculated initial compartment size. For example, we can initialize the model with half as many susceptible people by setting a y-factor of 0.5 on
+the <code class="docutils literal notranslate"><span class="pre">sus</span></code> compartment size:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ParameterSet</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="c1"># Make a new ParameterSet</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s1">&#39;adults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p2</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;Decreased initial sus&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r2</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0180s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_12_1.svg" src="../_images/tutorial_T2-Calibration_12_1.svg" />
+</div>
+</div>
+<p>Unlike setting y-factors for parameters, y-factors for compartment sizes may result in invalid initializations. This can occur if the scaled compartment sizes or characteristics are inconsistent with each other. For example, if the calibrated number of initial susceptible people results in needing more people than the total population size, an error will occur:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ParameterSet</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="c1"># Make a new ParameterSet</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s1">&#39;adults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p2</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;Decreased initial sus&#39;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Negative initial popsizes:
+Compartment adults rec - Calculated -100.000000
+Characteristic &#39;alive&#39;: Target value = [1500.]
+        Compartment sus: Computed value = 1100.000000
+        Compartment inf: Computed value = 500.000000
+        Compartment rec: Computed value = -100.000000
+
+</pre></div></div>
+</div>
+<p>In this case, such an error could be resolved by also increasing the y-factor for the ‘alive’ characteristic, thereby increasing the total population size:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p2</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">ParameterSet</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">framework</span><span class="p">,</span> <span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="c1"># Make a new ParameterSet</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s1">&#39;adults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.1</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;alive&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s1">&#39;adults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.2</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p2</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;Increased initial sus&#39;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">PlotData</span><span class="p">([</span><span class="n">result</span><span class="p">,</span><span class="n">r2</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sus&#39;</span><span class="p">,</span><span class="s1">&#39;alive&#39;</span><span class="p">],</span><span class="n">project</span><span class="o">=</span><span class="n">P</span><span class="p">)</span>
+<span class="n">at</span><span class="o">.</span><span class="n">plot_series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;results&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">P</span><span class="o">.</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.0105s
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_16_1.svg" src="../_images/tutorial_T2-Calibration_16_1.svg" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_T2-Calibration_16_2.svg" src="../_images/tutorial_T2-Calibration_16_2.svg" />
+</div>
+</div>
+<p>See <a class="reference external" href="https://atomica.tools/docs/master/general/Compartment-Initialization.html">https://atomica.tools/docs/master/general/Compartment-Initialization.html</a> for more information on how the initialization of compartment sizes is carried out by Atomica.</p>
+</section>
+<section id="Calibrating-transfers">
+<h2>Calibrating transfers<a class="headerlink" href="#Calibrating-transfers" title="Link to this heading">¶</a></h2>
+<p>It is also possible to set y-factors to calibrate transfers, that move people from one population to another. A transfer moves people from one population to another e.g., aging from 5-14 to 15-64. Therefore, a y-factor for a transfer must be identified by two populations rather than one. Further, the transfer parameter does not appear in the framework, because they are population-specific. Instead, the transfer is defined in the databook, and then a corresponding parameter is automatically
+created in the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>. For example, we can load the TB demo in Atomica and inspect the transfers:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P2</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">demo</span><span class="p">(</span><span class="s1">&#39;tb&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed time for running &#34;default&#34;: 0.841s
+</pre></div></div>
+</div>
+<p>In the databook, there are two transfers, relating to aging and incarceration:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P2</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">transfers</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;TDC Transfer &#34;age&#34;&gt;, &lt;TDC Transfer &#34;inc&#34;&gt;]
+</pre></div></div>
+</div>
+<p>These both appear in the <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> under the ‘transfers’ attribute:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P2</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transfers</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;age&#39;, &#39;inc&#39;]
+</pre></div></div>
+</div>
+<p>To set a scale factor, it is necessary to define both the source and destination population. The transfer is indexed first by the source population, and then by the ‘to’ population. The top level key in the transfer corresponds to the source population:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P2</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transfers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="c1"># Source populations</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;0-4&#39;, &#39;5-14&#39;, &#39;15-64&#39;]
+</pre></div></div>
+</div>
+<p>If we index the transfers using this code name, we can access a <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> that contains <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> entries for all of the destination populations.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P2</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transfers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">][</span><span class="s1">&#39;5-14&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;atomica.parameters.Parameter at 0x7f73e53ee240&gt;
+[&lt;class &#39;atomica.parameters.Parameter&#39;&gt;, &lt;class &#39;atomica.utils.NamedItem&#39;&gt;]
+————————————————————————————————————————————————————————————————————————
+Methods:
+  copy()                  interpolate()           smooth()
+  has_values()            sample()
+————————————————————————————————————————————————————————————————————————
+Properties:
+  pops
+————————————————————————————————————————————————————————————————————————
+_interpolation_method: &#39;linear&#39;
+              created: datetime.datetime(2024, 7, 26, 6, 22, 13,
+                       929329, tzinfo=tz [...]
+        meta_y_factor: 1.0
+             modified: datetime.datetime(2024, 7, 26, 6, 22, 13,
+                       929341, tzinfo=tz [...]
+                 name: &#39;age_from_5-14&#39;
+        skip_function: #0: &#39;15-64&#39;: None
+                   ts: {&#39;15-64&#39;: &lt;atomica.utils.TimeSeries at
+                       0x7f73e5238680&gt;
+                       [&lt;cl [...]
+             y_factor: #0: &#39;15-64&#39;: 1.0
+————————————————————————————————————————————————————————————————————————
+</pre></div></div>
+</div>
+<p>Notice how this parameter only contains y-factors for the destination populations associated with the ‘age’ transfer out of the ‘5-14’ population</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P2</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transfers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">][</span><span class="s1">&#39;5-14&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+#0: &#39;15-64&#39;: 1.0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<p>This corresponds to the fact that the aging transfer can only move people in 5-14 population to the 15-64 population. To set a y-factor for this transfer, assign a value to this entry in the <code class="docutils literal notranslate"><span class="pre">y_factor</span></code> attribute:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P2</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">transfers</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">][</span><span class="s1">&#39;5-14&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span><span class="p">[</span><span class="s1">&#39;15-64&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.5</span>
+</pre></div>
+</div>
+</div>
+<p>The example above will increase the transfer rate for aging from 5-14 to 15-64.</p>
+</section>
+<section id="Automatic-calibration">
+<h2>Automatic calibration<a class="headerlink" href="#Automatic-calibration" title="Link to this heading">¶</a></h2>
 <p>Automated calibration is also available via the project’s <code class="docutils literal notranslate"><span class="pre">calibrate</span></code> method. This will automatically adjust parameter values to match the data. To use this function, you need to specify which parameters to set scale factors for, and which variables in the databook to compute calibration quality from. The framework can provide defaults for which parameters to automatically calibrate, or you can pass a list of those parameters in directly. In this example, we will pass in <code class="docutils literal notranslate"><span class="pre">b_rate</span></code> because we
 want to adjust the birth rate, and we will use <code class="docutils literal notranslate"><span class="pre">sus</span></code> as a measurable since we want to match the number of susceptible people. The configuration therefore corresponds to the example shown above.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">at</span><span class="o">.</span><span class="n">Quiet</span><span class="p">():</span>
@@ -2680,7 +2943,7 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <p>The result of automated calibration is another <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code>. We can inspect the scale factor that the algorithm found:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p3</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y_factor</span>
@@ -2692,11 +2955,11 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-#0: &#39;adults&#39;: np.float64(1.3187053087167442)
+#0: &#39;adults&#39;: 1.3187018543481828
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -2706,7 +2969,7 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <p>and we can run the model to compare the automated calibration to the original default calibration:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r3</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">p3</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;Auto calibration&#39;</span><span class="p">)</span>
@@ -2720,15 +2983,21 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00817s
+Elapsed time for running &#34;default&#34;: 0.0113s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_14_1.svg" src="../_images/tutorial_T2-Calibration_14_1.svg" /></div>
+<img alt="../_images/tutorial_T2-Calibration_38_1.svg" src="../_images/tutorial_T2-Calibration_38_1.svg" />
 </div>
+</div>
+<section id="Automated-calibration-of-transfers">
+<h3>Automated calibration of transfers<a class="headerlink" href="#Automated-calibration-of-transfers" title="Link to this heading">¶</a></h3>
+<p>As described above, transfers are identified by two populations rather than one. The ‘adjustable’ for a transfer parameter is therefore identified by concatenating the name of the transfer and the name of the source population, separated by <code class="docutils literal notranslate"><span class="pre">'_from_'</span></code>. For example, we could specify an adjustable of <code class="docutils literal notranslate"><span class="pre">'age_from_5-14'</span></code> to calibrate the aging transfer out of the 5-14 population.</p>
+</section>
+</section>
 <section id="Calibration-tips">
 <h2>Calibration tips<a class="headerlink" href="#Calibration-tips" title="Link to this heading">¶</a></h2>
 <p>While calibrations can vary significantly from model-to-model, it’s generally a good idea to try and match coarse-grained quantities first, followed by fine-grained quantities. For example, for TB you might calibrate it in the following order:</p>
@@ -2743,7 +3012,7 @@ Elapsed time for running &#34;default&#34;: 0.00817s
 changing the rate at which people are infected and changing the rate at which people recover. Disease-related deaths (<code class="docutils literal notranslate"><span class="pre">m_num</span></code>) can be considered last if it is not already closely matched from calibrating to prevalence. Because this may adjust the population size, an iterative cycle of calibration may be appropriate to get the best overall fit.</p>
 <p>A calibration might then proceed in the following order with three repeats:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cal_par</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">parsets</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -2756,7 +3025,7 @@ changing the rate at which people are infected and changing the rate at which pe
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r4</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">run_sim</span><span class="p">(</span><span class="n">parset</span><span class="o">=</span><span class="n">cal_par</span><span class="p">,</span><span class="n">result_name</span> <span class="o">=</span> <span class="s1">&#39;Auto calibration repeated&#39;</span><span class="p">)</span>
@@ -2771,32 +3040,36 @@ changing the rate at which people are infected and changing the rate at which pe
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.00800s
+Elapsed time for running &#34;default&#34;: 0.0143s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_17_1.svg" src="../_images/tutorial_T2-Calibration_17_1.svg" /></div>
+<img alt="../_images/tutorial_T2-Calibration_42_1.svg" src="../_images/tutorial_T2-Calibration_42_1.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_17_2.svg" src="../_images/tutorial_T2-Calibration_17_2.svg" /></div>
+<img alt="../_images/tutorial_T2-Calibration_42_2.svg" src="../_images/tutorial_T2-Calibration_42_2.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_17_3.svg" src="../_images/tutorial_T2-Calibration_17_3.svg" /></div>
+<img alt="../_images/tutorial_T2-Calibration_42_3.svg" src="../_images/tutorial_T2-Calibration_42_3.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_T2-Calibration_17_4.svg" src="../_images/tutorial_T2-Calibration_17_4.svg" /></div>
+<img alt="../_images/tutorial_T2-Calibration_42_4.svg" src="../_images/tutorial_T2-Calibration_42_4.svg" />
+</div>
 </div>
 <p>There are a few major dangers in calibration, including but not limited to:</p>
 <p><strong>1. Solution-rich spaces</strong></p>
@@ -2814,7 +3087,7 @@ wrong in the model, perhaps this high prevalence is because of Males 40-49 aging
 child incidence through mother-to-child transmission.</p>
 <p>In order to avoid these kinds of modelling outcomes it is critical to (a) review calibration values/<code class="docutils literal notranslate"><span class="pre">y_factors</span></code> to ensure they are within expected bounds, and (b) if there are extreme values conduct further investigation, as there will be something else that should be changed to improve how the model represents reality, and this will result in better recommendations using the model.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;b_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;doth_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;foi&#39;</span><span class="p">,</span> <span class="s1">&#39;rec_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;m_rate&#39;</span><span class="p">]:</span>
@@ -2827,11 +3100,11 @@ child incidence through mother-to-child transmission.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-b_rate: y_factor = 1.816817866927013
-doth_rate: y_factor = 0.8789404392242431
-foi: y_factor = 1.1637890625000005
-rec_rate: y_factor = 0.025681114196777342
-m_rate: y_factor = 0.12456624737475047
+b_rate: y_factor = 1.1477087020874026
+doth_rate: y_factor = 0.3132797224813235
+foi: y_factor = 1.4994330444931985
+rec_rate: y_factor = 0.1329129144602221
+m_rate: y_factor = 0.12467523309326477
 </pre></div></div>
 </div>
 <p>Some of these values are low at around 0.15, and this can be attributed to the high value for prevalence (<code class="docutils literal notranslate"><span class="pre">inf</span></code>) in the databook requiring a low value for each of <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code>, <code class="docutils literal notranslate"><span class="pre">rec_rate</span></code>, and <code class="docutils literal notranslate"><span class="pre">m_rate</span></code>. Individually these are not outside of a ‘reasonable’ range for calibration <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> but as they are all needed to fit a single data point this might suggest a second look at the reliability of original data values for prevalence in this project.</p>

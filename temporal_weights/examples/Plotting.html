@@ -41,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.4
+                1.28.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -378,6 +378,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorial/T2-Calibration.html">T2 - Calibration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/T2-Calibration.html#Calibration-scale-factors">Calibration scale factors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/T2-Calibration.html#Calibrating-compartment-sizes">Calibrating compartment sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/T2-Calibration.html#Calibrating-transfers">Calibrating transfers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../tutorial/T2-Calibration.html#Automatic-calibration">Automatic calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tutorial/T2-Calibration.html#Automated-calibration-of-transfers">Automated calibration of transfers</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../tutorial/T2-Calibration.html#Calibration-tips">Calibration tips</a></li>
 </ul>
 </li>
@@ -2692,8 +2699,8 @@ figs = at.plot_series(d,data=proj.data)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.523s
-Elapsed time for running &#34;default&#34;: 0.519s
+Elapsed time for running &#34;default&#34;: 0.718s
+Elapsed time for running &#34;default&#34;: 0.610s
 </pre></div></div>
 </div>
 </section>
@@ -2739,7 +2746,8 @@ customizations.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_6_0.svg" src="../_images/examples_Plotting_6_0.svg" /></div>
+<img alt="../_images/examples_Plotting_6_0.svg" src="../_images/examples_Plotting_6_0.svg" />
+</div>
 </div>
 <p>Data in a <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object can be aggregated in one of three ways</p>
 <ul class="simple">
@@ -2762,7 +2770,8 @@ customizations.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_8_0.svg" src="../_images/examples_Plotting_8_0.svg" /></div>
+<img alt="../_images/examples_Plotting_8_0.svg" src="../_images/examples_Plotting_8_0.svg" />
+</div>
 </div>
 <p>As shown above, <code class="docutils literal notranslate"><span class="pre">pops</span></code> and <code class="docutils literal notranslate"><span class="pre">outputs</span></code> are specified as lists. If you want to specify an aggregation, instead of a string, pass in a dict where the key is name of your new aggregated output, and the value is the list of raw outputs to aggregate</p>
 <div class="nbinput docutils container">
@@ -2778,7 +2787,8 @@ customizations.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_10_0.svg" src="../_images/examples_Plotting_10_0.svg" /></div>
+<img alt="../_images/examples_Plotting_10_0.svg" src="../_images/examples_Plotting_10_0.svg" />
+</div>
 </div>
 <p>You can mix and match aggregations and raw outputs</p>
 <div class="nbinput docutils container">
@@ -2794,7 +2804,8 @@ customizations.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_12_0.svg" src="../_images/examples_Plotting_12_0.svg" /></div>
+<img alt="../_images/examples_Plotting_12_0.svg" src="../_images/examples_Plotting_12_0.svg" />
+</div>
 </div>
 <p>You can define multiple aggregations either by listing multiple dicts, or having multiple keys in a single dict:</p>
 <div class="nbinput docutils container">
@@ -2811,7 +2822,8 @@ customizations.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_14_0.svg" src="../_images/examples_Plotting_14_0.svg" /></div>
+<img alt="../_images/examples_Plotting_14_0.svg" src="../_images/examples_Plotting_14_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -2827,7 +2839,8 @@ customizations.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_15_0.svg" src="../_images/examples_Plotting_15_0.svg" /></div>
+<img alt="../_images/examples_Plotting_15_0.svg" src="../_images/examples_Plotting_15_0.svg" />
+</div>
 </div>
 <p>You can also aggregate across both outputs and pops. Output aggregations are performed first, followed by population aggregations.</p>
 <div class="nbinput docutils container">
@@ -2843,7 +2856,8 @@ customizations.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_17_0.svg" src="../_images/examples_Plotting_17_0.svg" /></div>
+<img alt="../_images/examples_Plotting_17_0.svg" src="../_images/examples_Plotting_17_0.svg" />
+</div>
 </div>
 <p>It is common to require aggregation over all populations. The special keyword <code class="docutils literal notranslate"><span class="pre">'total'</span></code> is provided for this purpose</p>
 <div class="nbinput docutils container">
@@ -2859,7 +2873,8 @@ customizations.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_19_0.svg" src="../_images/examples_Plotting_19_0.svg" /></div>
+<img alt="../_images/examples_Plotting_19_0.svg" src="../_images/examples_Plotting_19_0.svg" />
+</div>
 </div>
 <p>By default, aggregation is performed by summing all of the values together. You can use the arguments <code class="docutils literal notranslate"><span class="pre">output_aggregation</span></code> and <code class="docutils literal notranslate"><span class="pre">pop_aggregation</span></code> to specify a different method. For example, to average the outputs:</p>
 <div class="nbinput docutils container">
@@ -2875,7 +2890,8 @@ customizations.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_21_0.svg" src="../_images/examples_Plotting_21_0.svg" /></div>
+<img alt="../_images/examples_Plotting_21_0.svg" src="../_images/examples_Plotting_21_0.svg" />
+</div>
 </div>
 <p>For outputs, a weighted average is based on compartment size (within populations), while for populations, a weighted average is based on the population size. The example below simply shows a weighted average of the compartment sizes, but in practice, the weighted average would be most useful for flow rates where the source compartment size is different to the flow rate.</p>
 <div class="nbinput docutils container">
@@ -2891,7 +2907,8 @@ customizations.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_23_0.svg" src="../_images/examples_Plotting_23_0.svg" /></div>
+<img alt="../_images/examples_Plotting_23_0.svg" src="../_images/examples_Plotting_23_0.svg" />
+</div>
 </div>
 <p>Some aggregations do not make sense. For instance, if you aggregate prevalances, they should be averaged, not summed. In cases where the code is able to identify this, a warning will be displayed:</p>
 <div class="nbinput docutils container">
@@ -2915,7 +2932,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_25_1.svg" src="../_images/examples_Plotting_25_1.svg" /></div>
+<img alt="../_images/examples_Plotting_25_1.svg" src="../_images/examples_Plotting_25_1.svg" />
+</div>
 </div>
 <p>If you do not specify an aggregation method, the aggregation method will automatically be selected based on the units of the quantity being plotted. Non-dimensional quantities, proportions, fractions, and prevalances will be averaged instead of summed.</p>
 <div class="nbinput docutils container">
@@ -2931,7 +2949,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_27_0.svg" src="../_images/examples_Plotting_27_0.svg" /></div>
+<img alt="../_images/examples_Plotting_27_0.svg" src="../_images/examples_Plotting_27_0.svg" />
+</div>
 </div>
 </section>
 <section id="Function-aggregations">
@@ -2950,7 +2969,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_29_0.svg" src="../_images/examples_Plotting_29_0.svg" /></div>
+<img alt="../_images/examples_Plotting_29_0.svg" src="../_images/examples_Plotting_29_0.svg" />
+</div>
 </div>
 <p>The variables that can appear inside the function are</p>
 <ul class="simple">
@@ -2973,7 +2993,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_31_0.svg" src="../_images/examples_Plotting_31_0.svg" /></div>
+<img alt="../_images/examples_Plotting_31_0.svg" src="../_images/examples_Plotting_31_0.svg" />
+</div>
 </div>
 <p>One thing to be careful of in general is that fraction quantities should be aggregating by averaging, not summing. So if we wanted to compute the overall fraction of uninfected individuals, the following is not correct:</p>
 <div class="nbinput docutils container">
@@ -2989,7 +3010,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_33_0.svg" src="../_images/examples_Plotting_33_0.svg" /></div>
+<img alt="../_images/examples_Plotting_33_0.svg" src="../_images/examples_Plotting_33_0.svg" />
+</div>
 </div>
 <p>This is obviously incorrect because the value is greater than 1. Instead, we need to specify that we are averaging across populations. However, note that because the aggregation is an arbitrary function, the units of the output quantity are unknown. Therefore, a warning is not displayed (because the code does not know what the units are).</p>
 <p>Because the populations have very different sizes, a popsize-weighted average would be most appropriate:</p>
@@ -3006,7 +3028,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_35_0.svg" src="../_images/examples_Plotting_35_0.svg" /></div>
+<img alt="../_images/examples_Plotting_35_0.svg" src="../_images/examples_Plotting_35_0.svg" />
+</div>
 </div>
 </section>
 <section id="Axis-units">
@@ -3036,7 +3059,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_37_0.svg" src="../_images/examples_Plotting_37_0.svg" /></div>
+<img alt="../_images/examples_Plotting_37_0.svg" src="../_images/examples_Plotting_37_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -3052,7 +3076,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_38_0.svg" src="../_images/examples_Plotting_38_0.svg" /></div>
+<img alt="../_images/examples_Plotting_38_0.svg" src="../_images/examples_Plotting_38_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
@@ -3068,7 +3093,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_39_0.svg" src="../_images/examples_Plotting_39_0.svg" /></div>
+<img alt="../_images/examples_Plotting_39_0.svg" src="../_images/examples_Plotting_39_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -3084,7 +3110,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_40_0.svg" src="../_images/examples_Plotting_40_0.svg" /></div>
+<img alt="../_images/examples_Plotting_40_0.svg" src="../_images/examples_Plotting_40_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
@@ -3100,7 +3127,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_41_0.svg" src="../_images/examples_Plotting_41_0.svg" /></div>
+<img alt="../_images/examples_Plotting_41_0.svg" src="../_images/examples_Plotting_41_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
@@ -3116,7 +3144,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_42_0.svg" src="../_images/examples_Plotting_42_0.svg" /></div>
+<img alt="../_images/examples_Plotting_42_0.svg" src="../_images/examples_Plotting_42_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
@@ -3132,7 +3161,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_43_0.svg" src="../_images/examples_Plotting_43_0.svg" /></div>
+<img alt="../_images/examples_Plotting_43_0.svg" src="../_images/examples_Plotting_43_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
@@ -3148,7 +3178,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_44_0.svg" src="../_images/examples_Plotting_44_0.svg" /></div>
+<img alt="../_images/examples_Plotting_44_0.svg" src="../_images/examples_Plotting_44_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
@@ -3164,7 +3195,8 @@ WARNING {plotting.py:387} - Output &#39;ac_prev&#39; is not in number units, so 
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_45_0.svg" src="../_images/examples_Plotting_45_0.svg" /></div>
+<img alt="../_images/examples_Plotting_45_0.svg" src="../_images/examples_Plotting_45_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
@@ -3189,7 +3221,8 @@ WARNING {plotting.py:352} - Aggregation for output &#39;Mix&#39; is mixing times
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_46_1.svg" src="../_images/examples_Plotting_46_1.svg" /></div>
+<img alt="../_images/examples_Plotting_46_1.svg" src="../_images/examples_Plotting_46_1.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
@@ -3206,7 +3239,8 @@ WARNING {plotting.py:352} - Aggregation for output &#39;Mix&#39; is mixing times
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_47_0.svg" src="../_images/examples_Plotting_47_0.svg" /></div>
+<img alt="../_images/examples_Plotting_47_0.svg" src="../_images/examples_Plotting_47_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
@@ -3222,7 +3256,8 @@ WARNING {plotting.py:352} - Aggregation for output &#39;Mix&#39; is mixing times
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_48_0.svg" src="../_images/examples_Plotting_48_0.svg" /></div>
+<img alt="../_images/examples_Plotting_48_0.svg" src="../_images/examples_Plotting_48_0.svg" />
+</div>
 </div>
 <div class="admonition warning">
 <p>Remember that function aggregations <em>always</em> result in unknown units, even if there is only one item in the function. So for example, <code class="docutils literal notranslate"><span class="pre">outputs={'Susceptible':'sus'}</span></code> will have unknown units because the value of <code class="docutils literal notranslate"><span class="pre">'Susceptible'</span></code> in the dictionary is a string. In contrast,<code class="docutils literal notranslate"><span class="pre">outputs={'Susceptible':['sus']}</span></code> will not have unknown units, because the value <code class="docutils literal notranslate"><span class="pre">'Susceptible'</span></code> is a list, and function aggregation is not used</p>
@@ -3242,7 +3277,8 @@ WARNING {plotting.py:352} - Aggregation for output &#39;Mix&#39; is mixing times
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_51_0.svg" src="../_images/examples_Plotting_51_0.svg" /></div>
+<img alt="../_images/examples_Plotting_51_0.svg" src="../_images/examples_Plotting_51_0.svg" />
+</div>
 </div>
 <p>This approach would be most commonly used to label plots generated using function aggregations, as demonstrated above.</p>
 </section>
@@ -3263,7 +3299,8 @@ WARNING {plotting.py:352} - Aggregation for output &#39;Mix&#39; is mixing times
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_54_0.svg" src="../_images/examples_Plotting_54_0.svg" /></div>
+<img alt="../_images/examples_Plotting_54_0.svg" src="../_images/examples_Plotting_54_0.svg" />
+</div>
 </div>
 <p>Suppose instead we wanted to look at just one of these links, for instance, the flow from susceptible straight to death. This can be accomplished using the <code class="docutils literal notranslate"><span class="pre">:</span></code> syntax supported by <code class="docutils literal notranslate"><span class="pre">Population.get_variable</span></code>. If you have a population, in addition to getting variables based on their name, you can retrieve links by source compartment and/or destination compartment, filtered by parameter label. Supported syntax is</p>
 <ul class="simple">
@@ -3347,7 +3384,8 @@ WARNING {plotting.py:352} - Aggregation for output &#39;Mix&#39; is mixing times
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_60_0.svg" src="../_images/examples_Plotting_60_0.svg" /></div>
+<img alt="../_images/examples_Plotting_60_0.svg" src="../_images/examples_Plotting_60_0.svg" />
+</div>
 </div>
 <p>So, if we want to plot the disaggregated rate of death by other causes, we need to build up a list of all of the compartment pairs associated with <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code> and then use them as outputs</p>
 <div class="nbinput docutils container">
@@ -3365,7 +3403,8 @@ WARNING {plotting.py:352} - Aggregation for output &#39;Mix&#39; is mixing times
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_62_0.svg" src="../_images/examples_Plotting_62_0.svg" /></div>
+<img alt="../_images/examples_Plotting_62_0.svg" src="../_images/examples_Plotting_62_0.svg" />
+</div>
 </div>
 </section>
 </section>
@@ -3387,25 +3426,29 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_65_0.svg" src="../_images/examples_Plotting_65_0.svg" /></div>
+<img alt="../_images/examples_Plotting_65_0.svg" src="../_images/examples_Plotting_65_0.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_65_1.svg" src="../_images/examples_Plotting_65_1.svg" /></div>
+<img alt="../_images/examples_Plotting_65_1.svg" src="../_images/examples_Plotting_65_1.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_65_2.svg" src="../_images/examples_Plotting_65_2.svg" /></div>
+<img alt="../_images/examples_Plotting_65_2.svg" src="../_images/examples_Plotting_65_2.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_65_3.svg" src="../_images/examples_Plotting_65_3.svg" /></div>
+<img alt="../_images/examples_Plotting_65_3.svg" src="../_images/examples_Plotting_65_3.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
@@ -3424,25 +3467,29 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_66_0.svg" src="../_images/examples_Plotting_66_0.svg" /></div>
+<img alt="../_images/examples_Plotting_66_0.svg" src="../_images/examples_Plotting_66_0.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_66_1.svg" src="../_images/examples_Plotting_66_1.svg" /></div>
+<img alt="../_images/examples_Plotting_66_1.svg" src="../_images/examples_Plotting_66_1.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_66_2.svg" src="../_images/examples_Plotting_66_2.svg" /></div>
+<img alt="../_images/examples_Plotting_66_2.svg" src="../_images/examples_Plotting_66_2.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_66_3.svg" src="../_images/examples_Plotting_66_3.svg" /></div>
+<img alt="../_images/examples_Plotting_66_3.svg" src="../_images/examples_Plotting_66_3.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
@@ -3457,25 +3504,29 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_67_0.svg" src="../_images/examples_Plotting_67_0.svg" /></div>
+<img alt="../_images/examples_Plotting_67_0.svg" src="../_images/examples_Plotting_67_0.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_67_1.svg" src="../_images/examples_Plotting_67_1.svg" /></div>
+<img alt="../_images/examples_Plotting_67_1.svg" src="../_images/examples_Plotting_67_1.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_67_2.svg" src="../_images/examples_Plotting_67_2.svg" /></div>
+<img alt="../_images/examples_Plotting_67_2.svg" src="../_images/examples_Plotting_67_2.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_67_3.svg" src="../_images/examples_Plotting_67_3.svg" /></div>
+<img alt="../_images/examples_Plotting_67_3.svg" src="../_images/examples_Plotting_67_3.svg" />
+</div>
 </div>
 <p>Another common task is superimposing data on the plot. This can be done by passing a <code class="docutils literal notranslate"><span class="pre">Data</span></code> dict to <code class="docutils literal notranslate"><span class="pre">plot_series</span></code>. Typically, this is just <code class="docutils literal notranslate"><span class="pre">proj.data</span></code> . If data does not exist, then it will not be plotted.</p>
 <div class="nbinput docutils container">
@@ -3490,25 +3541,29 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_69_0.svg" src="../_images/examples_Plotting_69_0.svg" /></div>
+<img alt="../_images/examples_Plotting_69_0.svg" src="../_images/examples_Plotting_69_0.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_69_1.svg" src="../_images/examples_Plotting_69_1.svg" /></div>
+<img alt="../_images/examples_Plotting_69_1.svg" src="../_images/examples_Plotting_69_1.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_69_2.svg" src="../_images/examples_Plotting_69_2.svg" /></div>
+<img alt="../_images/examples_Plotting_69_2.svg" src="../_images/examples_Plotting_69_2.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_69_3.svg" src="../_images/examples_Plotting_69_3.svg" /></div>
+<img alt="../_images/examples_Plotting_69_3.svg" src="../_images/examples_Plotting_69_3.svg" />
+</div>
 </div>
 <p>Finally, there are three types of plots</p>
 <ul class="simple">
@@ -3530,7 +3585,8 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_71_0.svg" src="../_images/examples_Plotting_71_0.svg" /></div>
+<img alt="../_images/examples_Plotting_71_0.svg" src="../_images/examples_Plotting_71_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
@@ -3544,7 +3600,8 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_72_0.svg" src="../_images/examples_Plotting_72_0.svg" /></div>
+<img alt="../_images/examples_Plotting_72_0.svg" src="../_images/examples_Plotting_72_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
@@ -3558,7 +3615,8 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_73_0.svg" src="../_images/examples_Plotting_73_0.svg" /></div>
+<img alt="../_images/examples_Plotting_73_0.svg" src="../_images/examples_Plotting_73_0.svg" />
+</div>
 </div>
 <p>The stacking order is determined by the order that the quantities are specified when instantiating the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object. The bottom-most color on the plot is the quantity that appears first in the list. For example</p>
 <div class="nbinput docutils container">
@@ -3574,7 +3632,8 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_75_0.svg" src="../_images/examples_Plotting_75_0.svg" /></div>
+<img alt="../_images/examples_Plotting_75_0.svg" src="../_images/examples_Plotting_75_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
@@ -3589,7 +3648,8 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_76_0.svg" src="../_images/examples_Plotting_76_0.svg" /></div>
+<img alt="../_images/examples_Plotting_76_0.svg" src="../_images/examples_Plotting_76_0.svg" />
+</div>
 </div>
 <section id="Overriding-data">
 <h3>Overriding data<a class="headerlink" href="#Overriding-data" title="Link to this heading">¶</a></h3>
@@ -3607,13 +3667,15 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_78_0.svg" src="../_images/examples_Plotting_78_0.svg" /></div>
+<img alt="../_images/examples_Plotting_78_0.svg" src="../_images/examples_Plotting_78_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_78_1.svg" src="../_images/examples_Plotting_78_1.svg" /></div>
+<img alt="../_images/examples_Plotting_78_1.svg" src="../_images/examples_Plotting_78_1.svg" />
+</div>
 </div>
 <p>To change the output - for example, to compare the model output for <code class="docutils literal notranslate"><span class="pre">alive</span></code> in <code class="docutils literal notranslate"><span class="pre">0-4</span></code> to the data in the <code class="docutils literal notranslate"><span class="pre">5-14</span></code> population, we can change the <code class="docutils literal notranslate"><span class="pre">data_pop</span></code>:</p>
 <div class="nbinput docutils container">
@@ -3630,7 +3692,8 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_80_0.svg" src="../_images/examples_Plotting_80_0.svg" /></div>
+<img alt="../_images/examples_Plotting_80_0.svg" src="../_images/examples_Plotting_80_0.svg" />
+</div>
 </div>
 <p>We can also specify <code class="docutils literal notranslate"><span class="pre">data_label</span></code> to change the quantity being plotted. For example, to compare the model birth date in <code class="docutils literal notranslate"><span class="pre">0-4</span></code> to the data for <code class="docutils literal notranslate"><span class="pre">alive</span></code> in <code class="docutils literal notranslate"><span class="pre">5-14</span></code> we can use:</p>
 <div class="nbinput docutils container">
@@ -3648,7 +3711,8 @@ of the remaining dimensions. The example below has a <code class="docutils liter
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_82_0.svg" src="../_images/examples_Plotting_82_0.svg" /></div>
+<img alt="../_images/examples_Plotting_82_0.svg" src="../_images/examples_Plotting_82_0.svg" />
+</div>
 </div>
 <p>Notice that in the first example, the <code class="docutils literal notranslate"><span class="pre">Series</span></code> was directly accessed by index using <code class="docutils literal notranslate"><span class="pre">d.series[0]</span></code>. Accessing the <code class="docutils literal notranslate"><span class="pre">Series</span></code> by index is useful when there is only one <code class="docutils literal notranslate"><span class="pre">Series</span></code>, or if you want to iterate over the <code class="docutils literal notranslate"><span class="pre">Series</span></code> instances. However, if there are multiple <code class="docutils literal notranslate"><span class="pre">Series</span></code> and you want to look up a specific one, then index the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> using <code class="docutils literal notranslate"><span class="pre">d[result_name,pop_name,output_name]</span></code>. You can double check what valid options for these names are by printing the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object:</p>
 <div class="nbinput docutils container">
@@ -3688,7 +3752,8 @@ Outputs: [&#39;b_rate&#39;]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_86_0.svg" src="../_images/examples_Plotting_86_0.svg" /></div>
+<img alt="../_images/examples_Plotting_86_0.svg" src="../_images/examples_Plotting_86_0.svg" />
+</div>
 </div>
 <p>If you display this as a stacked plot instead, data will still be shown. The logic is that each Series is plotted above a baseline corresponding to the sum of all Series displayed below it. For example, the <code class="docutils literal notranslate"><span class="pre">15-64</span></code> population is plotted above both <code class="docutils literal notranslate"><span class="pre">(0-4)</span></code> and <code class="docutils literal notranslate"><span class="pre">(5-14)</span></code>. To render the data, the baseline value (from the model) is added to the data points prior to plotting. Thus, if the model output matches the data well, the data points will line up model output.</p>
 <div class="nbinput docutils container">
@@ -3703,7 +3768,8 @@ Outputs: [&#39;b_rate&#39;]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_88_0.svg" src="../_images/examples_Plotting_88_0.svg" /></div>
+<img alt="../_images/examples_Plotting_88_0.svg" src="../_images/examples_Plotting_88_0.svg" />
+</div>
 </div>
 <p>As shown above, interpreting this plot is quite natural when the model output matches the data well, as for the healthy populations. However, in the case where the model output is not a good match, it is possible that the stacking order of the data points could appear visually incorrect. Data points should be interpreted relative to their corresponding series only. If for instance the model underestimates one of the quantities, the data points for that quantity could appear above the shaded area
 and data points for the next quantity in the stack. Thus, while the plotting library provides the ability to render data on top of a stacked line plot, this feature should be used carefully.</p>
@@ -3726,7 +3792,8 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_91_0.svg" src="../_images/examples_Plotting_91_0.svg" /></div>
+<img alt="../_images/examples_Plotting_91_0.svg" src="../_images/examples_Plotting_91_0.svg" />
+</div>
 </div>
 <p>Here, <code class="docutils literal notranslate"><span class="pre">v_rate</span></code> is a Parameter label, so the value being plotted is for the transition parameter which here was defined in fraction units. The data points correspond to this same data.</p>
 <div class="nbinput docutils container">
@@ -3742,7 +3809,8 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_93_0.svg" src="../_images/examples_Plotting_93_0.svg" /></div>
+<img alt="../_images/examples_Plotting_93_0.svg" src="../_images/examples_Plotting_93_0.svg" />
+</div>
 </div>
 <p>Now, <code class="docutils literal notranslate"><span class="pre">v_rate:flow</span></code> is the transition derived from <code class="docutils literal notranslate"><span class="pre">v_rate</span></code>. Therefore, it is in units of <code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">people</span> <span class="pre">per</span> <span class="pre">year</span></code>. Note that the data points have not plotted, because the parameter is not in the same units.</p>
 </section>
@@ -3776,7 +3844,8 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_96_1.svg" src="../_images/examples_Plotting_96_1.svg" /></div>
+<img alt="../_images/examples_Plotting_96_1.svg" src="../_images/examples_Plotting_96_1.svg" />
+</div>
 </div>
 <p>Note that you can manually set labels in these dictionaries if you wish to apply any manual or additional renaming prior to plotting e.g.</p>
 <div class="nbinput docutils container">
@@ -3793,7 +3862,8 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_98_0.svg" src="../_images/examples_Plotting_98_0.svg" /></div>
+<img alt="../_images/examples_Plotting_98_0.svg" src="../_images/examples_Plotting_98_0.svg" />
+</div>
 </div>
 </section>
 <section id="Further-formatting">
@@ -3821,7 +3891,8 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_100_0.svg" src="../_images/examples_Plotting_100_0.svg" /></div>
+<img alt="../_images/examples_Plotting_100_0.svg" src="../_images/examples_Plotting_100_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
@@ -3844,7 +3915,8 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_101_0.svg" src="../_images/examples_Plotting_101_0.svg" /></div>
+<img alt="../_images/examples_Plotting_101_0.svg" src="../_images/examples_Plotting_101_0.svg" />
+</div>
 </div>
 <p>Note that this functionality is mainly intended for figures used in presentations or reports, and so the customization commands would typically be encapsulated inside an application plotting function, rather than being something that is frequently interacted with by end users. It is suggested that this type of customization be one of the final steps in the figure production process.</p>
 <p>Note also that because these are raw <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> commands, searching online for code snippets for how to perform common tasks in <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> (such as drawing vertical lines or text) will yield results that can be directly used.</p>
@@ -3899,13 +3971,15 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_108_0.svg" src="../_images/examples_Plotting_108_0.svg" /></div>
+<img alt="../_images/examples_Plotting_108_0.svg" src="../_images/examples_Plotting_108_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_108_1.svg" src="../_images/examples_Plotting_108_1.svg" /></div>
+<img alt="../_images/examples_Plotting_108_1.svg" src="../_images/examples_Plotting_108_1.svg" />
+</div>
 </div>
 <p>Don’t forget to change the setting back, or otherwise all subsequent plots will also have their legend in a separate figure</p>
 <div class="nbinput nblast docutils container">
@@ -3930,13 +4004,15 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_112_0.svg" src="../_images/examples_Plotting_112_0.svg" /></div>
+<img alt="../_images/examples_Plotting_112_0.svg" src="../_images/examples_Plotting_112_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_112_1.svg" src="../_images/examples_Plotting_112_1.svg" /></div>
+<img alt="../_images/examples_Plotting_112_1.svg" src="../_images/examples_Plotting_112_1.svg" />
+</div>
 </div>
 </section>
 </section>
@@ -3960,19 +4036,22 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_114_0.svg" src="../_images/examples_Plotting_114_0.svg" /></div>
+<img alt="../_images/examples_Plotting_114_0.svg" src="../_images/examples_Plotting_114_0.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_114_1.svg" src="../_images/examples_Plotting_114_1.svg" /></div>
+<img alt="../_images/examples_Plotting_114_1.svg" src="../_images/examples_Plotting_114_1.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_114_2.svg" src="../_images/examples_Plotting_114_2.svg" /></div>
+<img alt="../_images/examples_Plotting_114_2.svg" src="../_images/examples_Plotting_114_2.svg" />
+</div>
 </div>
 <p>Notice how the both accumulation methods result in the axis label changing to ‘Cumulative…’ but in the integration case, the units are also changed to ‘person-years’. Accumulation can also be performed for flow rates. However, in this case, an additional validation step is performed such that only integration is permitted.</p>
 <div class="nbinput docutils container">
@@ -3990,13 +4069,15 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_116_0.svg" src="../_images/examples_Plotting_116_0.svg" /></div>
+<img alt="../_images/examples_Plotting_116_0.svg" src="../_images/examples_Plotting_116_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_116_1.svg" src="../_images/examples_Plotting_116_1.svg" /></div>
+<img alt="../_images/examples_Plotting_116_1.svg" src="../_images/examples_Plotting_116_1.svg" />
+</div>
 </div>
 <p>You can use cumulative flows to count the total number of people making a transition, similar to having a sink compartment. For example, the cumulative flow into the death compartments should match the number of people in the death compartments. Of course, this is only the case because there is no outflow from the death compartments, whereas the cumulative flow could be plotted for any transition.</p>
 <div class="nbinput docutils container">
@@ -4014,13 +4095,15 @@ to the end.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_118_0.svg" src="../_images/examples_Plotting_118_0.svg" /></div>
+<img alt="../_images/examples_Plotting_118_0.svg" src="../_images/examples_Plotting_118_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_118_1.svg" src="../_images/examples_Plotting_118_1.svg" /></div>
+<img alt="../_images/examples_Plotting_118_1.svg" src="../_images/examples_Plotting_118_1.svg" />
+</div>
 </div>
 <div class="admonition note">
 <p>For consistency, time <em>accumulation</em> takes place after time <em>aggregation</em>. That is, if you both aggregate amd accumulate a flow rate over time, it will first be integrated into a total number of people within each time period, and then can either be summed or integrated again. Accumulation by integration would produce a result in units of ‘people years’. However, in general it is not anticipated that both aggregation and accumulation would be used - accumulation is most appropriate for time
@@ -4043,7 +4126,8 @@ series plots, and aggregation is most appropriate for bar plots.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_121_0.svg" src="../_images/examples_Plotting_121_0.svg" /></div>
+<img alt="../_images/examples_Plotting_121_0.svg" src="../_images/examples_Plotting_121_0.svg" />
+</div>
 </div>
 <p>With <code class="docutils literal notranslate"><span class="pre">n_cols=3</span></code> the tiling and dimensions of the figure are different:</p>
 <div class="nbinput docutils container">
@@ -4058,7 +4142,8 @@ series plots, and aggregation is most appropriate for bar plots.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_123_0.svg" src="../_images/examples_Plotting_123_0.svg" /></div>
+<img alt="../_images/examples_Plotting_123_0.svg" src="../_images/examples_Plotting_123_0.svg" />
+</div>
 </div>
 <p>If a separate legend is requested together with subplots, it will be plotted into a separate panel of the same figure, rather than opening an additional figure:</p>
 <div class="nbinput docutils container">
@@ -4073,7 +4158,8 @@ series plots, and aggregation is most appropriate for bar plots.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_125_0.svg" src="../_images/examples_Plotting_125_0.svg" /></div>
+<img alt="../_images/examples_Plotting_125_0.svg" src="../_images/examples_Plotting_125_0.svg" />
+</div>
 </div>
 </section>
 <section id="Saving-figures">
@@ -4332,7 +4418,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_147_0.svg" src="../_images/examples_Plotting_147_0.svg" /></div>
+<img alt="../_images/examples_Plotting_147_0.svg" src="../_images/examples_Plotting_147_0.svg" />
+</div>
 </div>
 <p>The example above illustrates the difference between the ‘block’, the ‘inner group’ and the ‘outer group’</p>
 <ul class="simple">
@@ -4353,7 +4440,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_149_0.svg" src="../_images/examples_Plotting_149_0.svg" /></div>
+<img alt="../_images/examples_Plotting_149_0.svg" src="../_images/examples_Plotting_149_0.svg" />
+</div>
 </div>
 <p>Notice how the labels above and below the graph are now swapped.</p>
 </section>
@@ -4373,7 +4461,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_152_0.svg" src="../_images/examples_Plotting_152_0.svg" /></div>
+<img alt="../_images/examples_Plotting_152_0.svg" src="../_images/examples_Plotting_152_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[82]:
@@ -4388,7 +4477,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_153_0.svg" src="../_images/examples_Plotting_153_0.svg" /></div>
+<img alt="../_images/examples_Plotting_153_0.svg" src="../_images/examples_Plotting_153_0.svg" />
+</div>
 </div>
 <p>If you specify a partial list of stackings, then any pops or outputs that do not appear in the stack will automatically be added as separate unstacked bars. For example, if we have</p>
 <div class="nbinput nblast docutils container">
@@ -4412,7 +4502,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_157_0.svg" src="../_images/examples_Plotting_157_0.svg" /></div>
+<img alt="../_images/examples_Plotting_157_0.svg" src="../_images/examples_Plotting_157_0.svg" />
+</div>
 </div>
 <p>You can specify an output multiple times if you want it to appear in more than one stack</p>
 <div class="nbinput docutils container">
@@ -4427,7 +4518,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_159_0.svg" src="../_images/examples_Plotting_159_0.svg" /></div>
+<img alt="../_images/examples_Plotting_159_0.svg" src="../_images/examples_Plotting_159_0.svg" />
+</div>
 </div>
 <p>The stacking order is the same as the order of the list that you use to specify the stacks:</p>
 <div class="nbinput docutils container">
@@ -4442,7 +4534,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_161_0.svg" src="../_images/examples_Plotting_161_0.svg" /></div>
+<img alt="../_images/examples_Plotting_161_0.svg" src="../_images/examples_Plotting_161_0.svg" />
+</div>
 </div>
 <p>You can also specify multiple levels of stacking, although be aware that this can potentially make the plot difficult to read</p>
 <div class="nbinput docutils container">
@@ -4458,7 +4551,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_163_0.svg" src="../_images/examples_Plotting_163_0.svg" /></div>
+<img alt="../_images/examples_Plotting_163_0.svg" src="../_images/examples_Plotting_163_0.svg" />
+</div>
 </div>
 <p>Notice how the legend text automatically changes depending on the stacking. However, if you stack both pops and outputs, then there won’t be any text labelling the bars within a block.</p>
 <p>Finally, if you want to stack all of the items of a given type, you can specify <code class="docutils literal notranslate"><span class="pre">all</span></code> instead of a list of quantities to stack:</p>
@@ -4474,7 +4568,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_165_0.svg" src="../_images/examples_Plotting_165_0.svg" /></div>
+<img alt="../_images/examples_Plotting_165_0.svg" src="../_images/examples_Plotting_165_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
@@ -4488,7 +4583,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_166_0.svg" src="../_images/examples_Plotting_166_0.svg" /></div>
+<img alt="../_images/examples_Plotting_166_0.svg" src="../_images/examples_Plotting_166_0.svg" />
+</div>
 </div>
 <p>An <em>aggregation</em> maps multiple time series onto a single quantity, while <em>stacking</em> puts two quantities in the same bar. A general rule of thumb is that an <em>aggregation</em> should be used if you want the two quantities to share the same colour, while <em>stacking</em> should be used if the quantities need to be visually disaggregated.</p>
 </section>
@@ -4517,7 +4613,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_169_0.svg" src="../_images/examples_Plotting_169_0.svg" /></div>
+<img alt="../_images/examples_Plotting_169_0.svg" src="../_images/examples_Plotting_169_0.svg" />
+</div>
 </div>
 <p>Notice how the stacks are the same, but the positive quantities and negative quantities stack in opposite directions</p>
 </section>
@@ -4537,7 +4634,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_172_0.svg" src="../_images/examples_Plotting_172_0.svg" /></div>
+<img alt="../_images/examples_Plotting_172_0.svg" src="../_images/examples_Plotting_172_0.svg" />
+</div>
 </div>
 </section>
 <section id="Labelling-bars">
@@ -4556,7 +4654,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_174_0.svg" src="../_images/examples_Plotting_174_0.svg" /></div>
+<img alt="../_images/examples_Plotting_174_0.svg" src="../_images/examples_Plotting_174_0.svg" />
+</div>
 </div>
 <p>The logic for the labelling is divided into two streams - a stream if you specify any user labels (by specifying the output and/or pop stacks using a <code class="docutils literal notranslate"><span class="pre">dict</span></code>) or a stream if the labels are to be determined automatically.</p>
 <p>In the automatic stream - Each bar is assigned a pop label and an output label based on which items are stacked in that bar. The label is empty if more than one item is stacked. - The colour scheme will be automatically determined based on whether pops, outputs, or both are stacked - If the colour scheme separates outputs, then the bars will be labelled by population, and vice-versa - If all of the bars have the same name, then that name will be automatically suppressed</p>
@@ -4574,7 +4673,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_176_0.svg" src="../_images/examples_Plotting_176_0.svg" /></div>
+<img alt="../_images/examples_Plotting_176_0.svg" src="../_images/examples_Plotting_176_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
@@ -4590,7 +4690,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_177_0.svg" src="../_images/examples_Plotting_177_0.svg" /></div>
+<img alt="../_images/examples_Plotting_177_0.svg" src="../_images/examples_Plotting_177_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
@@ -4606,7 +4707,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_178_0.svg" src="../_images/examples_Plotting_178_0.svg" /></div>
+<img alt="../_images/examples_Plotting_178_0.svg" src="../_images/examples_Plotting_178_0.svg" />
+</div>
 </div>
 <p>For user specified labels - A user specified label will always be printed - If you specify only the output labels, and there is more than one automatic pop label, then the pop labels will be shown. And vice-versa if you specify only the pop labels</p>
 <div class="nbinput docutils container">
@@ -4622,7 +4724,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_180_0.svg" src="../_images/examples_Plotting_180_0.svg" /></div>
+<img alt="../_images/examples_Plotting_180_0.svg" src="../_images/examples_Plotting_180_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
@@ -4637,7 +4740,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_181_0.svg" src="../_images/examples_Plotting_181_0.svg" /></div>
+<img alt="../_images/examples_Plotting_181_0.svg" src="../_images/examples_Plotting_181_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
@@ -4652,7 +4756,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_182_0.svg" src="../_images/examples_Plotting_182_0.svg" /></div>
+<img alt="../_images/examples_Plotting_182_0.svg" src="../_images/examples_Plotting_182_0.svg" />
+</div>
 </div>
 <p>If you want to set custom labels for <em>every</em> bar, then you can set the <code class="docutils literal notranslate"><span class="pre">xlabels</span></code> for the plot after rendering</p>
 <div class="nbinput docutils container">
@@ -4669,7 +4774,8 @@ array([3445675.3496115 , 3023573.00562325, 2664574.44619388,
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_184_0.svg" src="../_images/examples_Plotting_184_0.svg" /></div>
+<img alt="../_images/examples_Plotting_184_0.svg" src="../_images/examples_Plotting_184_0.svg" />
+</div>
 </div>
 </section>
 </section>
@@ -4692,7 +4798,8 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_186_0.svg" src="../_images/examples_Plotting_186_0.svg" /></div>
+<img alt="../_images/examples_Plotting_186_0.svg" src="../_images/examples_Plotting_186_0.svg" />
+</div>
 </div>
 <p>Notice how the order of the legend is exactly reversed compared to the original plot. However, you might want a more complex reordering e.g. to have the populations appear together in the legend. To achieve this, you can explicitly specify a new ordering for the legend. The input argument is a list, where the index represents the new legend order, and the value indicates the original position. For example, the original plot had the items in the order
 <code class="docutils literal notranslate"><span class="pre">[5-14-vac,0-4-vac,5-14-lt_inf,5-14-sus,0-4-lt_inf,0-4-sus]</span></code>. If we want the new order to be <code class="docutils literal notranslate"><span class="pre">[0-4-sus,0-4-vac,0-4-lt_inf,5-14-vac,5-14-sus,5-14-lt_inf]</span></code> then we need to specify a list with the original indices of those labels. The first item in that list would be 5, because we want <code class="docutils literal notranslate"><span class="pre">0-4-sus</span></code> to appear first, and its index in the original order was 5. You will need to render and examine the plot first to determine the original index order. So the final order list would be <code class="docutils literal notranslate"><span class="pre">[5,1,4,3,0,2]</span></code></p>
@@ -4709,7 +4816,8 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_188_0.svg" src="../_images/examples_Plotting_188_0.svg" /></div>
+<img alt="../_images/examples_Plotting_188_0.svg" src="../_images/examples_Plotting_188_0.svg" />
+</div>
 </div>
 <p>Lastly, you can use the ordering to remove items from the legend by specifying only a partial list</p>
 <div class="nbinput docutils container">
@@ -4725,7 +4833,8 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_190_0.svg" src="../_images/examples_Plotting_190_0.svg" /></div>
+<img alt="../_images/examples_Plotting_190_0.svg" src="../_images/examples_Plotting_190_0.svg" />
+</div>
 </div>
 </section>
 <section id="Relabeling-legend-entries">
@@ -4744,7 +4853,8 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_193_0.svg" src="../_images/examples_Plotting_193_0.svg" /></div>
+<img alt="../_images/examples_Plotting_193_0.svg" src="../_images/examples_Plotting_193_0.svg" />
+</div>
 </div>
 <p>Alternatively, you can specify a dict where the key is the index of the label you want to change, and the value is the new label name</p>
 <div class="nbinput docutils container">
@@ -4760,7 +4870,8 @@ operates in two ways. First, you can request that the existing order is reversed
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_195_0.svg" src="../_images/examples_Plotting_195_0.svg" /></div>
+<img alt="../_images/examples_Plotting_195_0.svg" src="../_images/examples_Plotting_195_0.svg" />
+</div>
 </div>
 </section>
 <section id="Making-a-new-legend">
@@ -4782,7 +4893,8 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_197_0.svg" src="../_images/examples_Plotting_197_0.svg" /></div>
+<img alt="../_images/examples_Plotting_197_0.svg" src="../_images/examples_Plotting_197_0.svg" />
+</div>
 </div>
 <p>The items are rendered from top to bottom in the order of <code class="docutils literal notranslate"><span class="pre">entries.keys()</span></code> so if you reorder the items, the legend will change accordingly. Similarly, if you pass in a <code class="docutils literal notranslate"><span class="pre">dict</span></code> instead of an <code class="docutils literal notranslate"><span class="pre">odict</span></code>, the order of the items will be arbitrary.</p>
 <div class="nbinput docutils container">
@@ -4800,7 +4912,8 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_199_0.svg" src="../_images/examples_Plotting_199_0.svg" /></div>
+<img alt="../_images/examples_Plotting_199_0.svg" src="../_images/examples_Plotting_199_0.svg" />
+</div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">plot_legend</span></code> optionally takes in the type of legend being made (patch or line). So if the legend is intended for use with a line plot, you could use:</p>
 <div class="nbinput docutils container">
@@ -4815,7 +4928,8 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_201_0.svg" src="../_images/examples_Plotting_201_0.svg" /></div>
+<img alt="../_images/examples_Plotting_201_0.svg" src="../_images/examples_Plotting_201_0.svg" />
+</div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">plot_legend</span></code> can also optionally take in the handle to an existing figure. In that case, any existing legend will be replaced, as per the examples below</p>
 <div class="nbinput docutils container">
@@ -4832,7 +4946,8 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_203_0.svg" src="../_images/examples_Plotting_203_0.svg" /></div>
+<img alt="../_images/examples_Plotting_203_0.svg" src="../_images/examples_Plotting_203_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[109]:
@@ -4848,7 +4963,8 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_204_0.svg" src="../_images/examples_Plotting_204_0.svg" /></div>
+<img alt="../_images/examples_Plotting_204_0.svg" src="../_images/examples_Plotting_204_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[110]:
@@ -4864,13 +4980,15 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_205_0.svg" src="../_images/examples_Plotting_205_0.svg" /></div>
+<img alt="../_images/examples_Plotting_205_0.svg" src="../_images/examples_Plotting_205_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_205_1.svg" src="../_images/examples_Plotting_205_1.svg" /></div>
+<img alt="../_images/examples_Plotting_205_1.svg" src="../_images/examples_Plotting_205_1.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[111]:
@@ -4886,7 +5004,8 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_206_0.svg" src="../_images/examples_Plotting_206_0.svg" /></div>
+<img alt="../_images/examples_Plotting_206_0.svg" src="../_images/examples_Plotting_206_0.svg" />
+</div>
 </div>
 </section>
 </section>
@@ -4908,7 +5027,8 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_208_0.svg" src="../_images/examples_Plotting_208_0.svg" /></div>
+<img alt="../_images/examples_Plotting_208_0.svg" src="../_images/examples_Plotting_208_0.svg" />
+</div>
 </div>
 <p>Note that because time aggregation uses integration by default, the number of people is obtained by integrating the curve above. So for example, by visual inspection we would expect about <code class="docutils literal notranslate"><span class="pre">10*(5+0.5*(13-5))k</span> <span class="pre">=</span> <span class="pre">~90k</span></code> people transitioning from 2000-2010:</p>
 <div class="nbinput docutils container">
@@ -4924,7 +5044,8 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_210_0.svg" src="../_images/examples_Plotting_210_0.svg" /></div>
+<img alt="../_images/examples_Plotting_210_0.svg" src="../_images/examples_Plotting_210_0.svg" />
+</div>
 </div>
 <div class="admonition note">
 <p>Note how the plot axis y-label now shows units of ‘Number of people’ rather than ‘Number of people/year’.</p>
@@ -4943,7 +5064,8 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_213_0.svg" src="../_images/examples_Plotting_213_0.svg" /></div>
+<img alt="../_images/examples_Plotting_213_0.svg" src="../_images/examples_Plotting_213_0.svg" />
+</div>
 </div>
 <p>For some quantities, aggregation over time by integration is not appropriate. For example, it doesn’t make sense to integrate probabilities over time. These quantities are averaged over time by default:</p>
 <div class="nbinput docutils container">
@@ -4959,7 +5081,8 @@ associated with one colour.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_215_0.svg" src="../_images/examples_Plotting_215_0.svg" /></div>
+<img alt="../_images/examples_Plotting_215_0.svg" src="../_images/examples_Plotting_215_0.svg" />
+</div>
 </div>
 <p>You can override this by explicitly specifying that you want to use integration, by passing in the method as the <code class="docutils literal notranslate"><span class="pre">time_aggregation</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> constructor. In cases where the selected method is likely to be incorrect, a warning will be displayed:</p>
 <div class="nbinput docutils container">
@@ -4983,7 +5106,8 @@ WARNING {plotting.py:535} - Units for series &#34;Series(Baseline,0-4,doth_rate)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_217_1.svg" src="../_images/examples_Plotting_217_1.svg" /></div>
+<img alt="../_images/examples_Plotting_217_1.svg" src="../_images/examples_Plotting_217_1.svg" />
+</div>
 </div>
 </section>
 </section>
@@ -5011,7 +5135,8 @@ WARNING {plotting.py:535} - Units for series &#34;Series(Baseline,0-4,doth_rate)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_219_0.svg" src="../_images/examples_Plotting_219_0.svg" /></div>
+<img alt="../_images/examples_Plotting_219_0.svg" src="../_images/examples_Plotting_219_0.svg" />
+</div>
 </div>
 <p>More typically, you would want to set colours for every instance of a result, pop, or output, across all other variables. For instance, you might want to set all of the outputs to the same colour, irrespective of result or pop. This can be done using the <code class="docutils literal notranslate"><span class="pre">set_colors</span></code> method of <code class="docutils literal notranslate"><span class="pre">PlotData</span></code>. You specify a set of filters for <code class="docutils literal notranslate"><span class="pre">result</span></code>, <code class="docutils literal notranslate"><span class="pre">pop</span></code>, and <code class="docutils literal notranslate"><span class="pre">output</span></code>, and a single color or list of colours to apply to the set of <code class="docutils literal notranslate"><span class="pre">Series</span></code> matching the filter. This filtering is best illustrated with
 some examples.</p>
@@ -5029,7 +5154,8 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_221_0.svg" src="../_images/examples_Plotting_221_0.svg" /></div>
+<img alt="../_images/examples_Plotting_221_0.svg" src="../_images/examples_Plotting_221_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[119]:
@@ -5044,7 +5170,8 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_222_0.svg" src="../_images/examples_Plotting_222_0.svg" /></div>
+<img alt="../_images/examples_Plotting_222_0.svg" src="../_images/examples_Plotting_222_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[120]:
@@ -5059,7 +5186,8 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_223_0.svg" src="../_images/examples_Plotting_223_0.svg" /></div>
+<img alt="../_images/examples_Plotting_223_0.svg" src="../_images/examples_Plotting_223_0.svg" />
+</div>
 </div>
 <p>Notice how the legend automatically groups quantities that share the same colour, rather than repeatedly showing the same color separately for each quantity.</p>
 <div class="nbinput docutils container">
@@ -5076,7 +5204,8 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_225_0.svg" src="../_images/examples_Plotting_225_0.svg" /></div>
+<img alt="../_images/examples_Plotting_225_0.svg" src="../_images/examples_Plotting_225_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[122]:
@@ -5092,7 +5221,8 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_226_0.svg" src="../_images/examples_Plotting_226_0.svg" /></div>
+<img alt="../_images/examples_Plotting_226_0.svg" src="../_images/examples_Plotting_226_0.svg" />
+</div>
 </div>
 <p>If your filter matches more than one quantity, and the colour is either the name of a colormap or a list of colours, then colours from that set will be distributed and assigned to the specified items. For example</p>
 <div class="nbinput docutils container">
@@ -5109,7 +5239,8 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_228_0.svg" src="../_images/examples_Plotting_228_0.svg" /></div>
+<img alt="../_images/examples_Plotting_228_0.svg" src="../_images/examples_Plotting_228_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[124]:
@@ -5125,7 +5256,8 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_229_0.svg" src="../_images/examples_Plotting_229_0.svg" /></div>
+<img alt="../_images/examples_Plotting_229_0.svg" src="../_images/examples_Plotting_229_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[125]:
@@ -5141,7 +5273,8 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_230_0.svg" src="../_images/examples_Plotting_230_0.svg" /></div>
+<img alt="../_images/examples_Plotting_230_0.svg" src="../_images/examples_Plotting_230_0.svg" />
+</div>
 </div>
 <p>Note that you can call <code class="docutils literal notranslate"><span class="pre">set_colors</span></code> multiple times on different subsets of the <code class="docutils literal notranslate"><span class="pre">series</span></code> to build up a complex colour scheme. This can be especially useful if you have a complex stacking arrangement. Suppose we wanted to break down the vaccination status of each population, for all populations, at three points in time. We would accomplish this as follows</p>
 <div class="nbinput docutils container">
@@ -5166,7 +5299,8 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_232_0.svg" src="../_images/examples_Plotting_232_0.svg" /></div>
+<img alt="../_images/examples_Plotting_232_0.svg" src="../_images/examples_Plotting_232_0.svg" />
+</div>
 </div>
 <p>Note that if there are no block labels and the number of inner group labels is the same as the number of bars, then the inner group labels will be ‘promoted’ to axis tick labels. This will not happen:</p>
 <ul class="simple">
@@ -5186,25 +5320,29 @@ some examples.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_235_0.svg" src="../_images/examples_Plotting_235_0.svg" /></div>
+<img alt="../_images/examples_Plotting_235_0.svg" src="../_images/examples_Plotting_235_0.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_235_1.svg" src="../_images/examples_Plotting_235_1.svg" /></div>
+<img alt="../_images/examples_Plotting_235_1.svg" src="../_images/examples_Plotting_235_1.svg" />
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_235_2.svg" src="../_images/examples_Plotting_235_2.svg" /></div>
+<img alt="../_images/examples_Plotting_235_2.svg" src="../_images/examples_Plotting_235_2.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Plotting_235_3.svg" src="../_images/examples_Plotting_235_3.svg" /></div>
+<img alt="../_images/examples_Plotting_235_3.svg" src="../_images/examples_Plotting_235_3.svg" />
+</div>
 </div>
 <p>although the example looks a bit unusual because there are only 3 timepoints (as the <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> object was temporally-aggregated)</p>
 <section id="Colour-design-patterns">
