@@ -2627,6 +2627,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">re</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="s1">&#39;run&#39;</span><span class="p">]</span>
 
@@ -2888,16 +2889,30 @@
 <span class="sd">        Pre-parse calibration inputs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="k">def</span> <span class="nf">separate_keys</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Separate inputs that kave been defined together as one key in the YAML file</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">s1</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\(.*?\)&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+            <span class="n">s2</span> <span class="o">=</span> <span class="n">s</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s1</span><span class="p">:</span>
+                <span class="n">s2</span> <span class="o">=</span> <span class="n">s2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">all_strings</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s1</span> <span class="k">if</span> <span class="n">x</span><span class="p">]</span>
+            <span class="n">s2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(,\s)+&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">s2</span> <span class="o">!=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]:</span>
+                <span class="n">all_strings</span> <span class="o">+=</span> <span class="n">s2</span>
+            <span class="k">return</span> <span class="n">all_strings</span>
+
         <span class="k">def</span> <span class="nf">process_key</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Sanitize key name with optional commas or spaces separating pop name/s from par name</span>
 <span class="sd">            &quot;&quot;&quot;</span>
-            <span class="k">if</span> <span class="s1">&#39;,&#39;</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
-                <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s1">&#39;(&#39;</span> <span class="ow">and</span> <span class="s1">&#39;)&#39;</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;() &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="p">])</span>
             <span class="k">elif</span> <span class="s1">&#39; &#39;</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
-                <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="p">])</span>
+                <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">process_inputs</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">defaults</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2920,19 +2935,35 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
                 <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
                     <span class="n">l</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">promotetolist</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+                    <span class="c1">#TODO enable and test transfers in full list format</span>
                     <span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span> <span class="o">=</span> <span class="n">process_key</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
                     <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_list</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">defaults</span><span class="p">)</span>
                     <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">),</span> <span class="p">{}),</span> <span class="n">d</span><span class="p">)</span>
+
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">keys</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
-                        <span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span> <span class="o">=</span> <span class="n">process_key</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+                    <span class="n">separated_keys</span> <span class="o">=</span> <span class="n">separate_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">separated_keys</span><span class="p">:</span>
+                        <span class="c1">#separate par name from pop name/s</span>
+                        <span class="n">keyspops</span> <span class="o">=</span> <span class="n">process_key</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keyspops</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                            <span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span> <span class="o">=</span> <span class="n">keyspops</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">keyspops</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Number of populations must be 1, 2 or None)&#39;</span>
+                            <span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">pop_name2</span> <span class="o">=</span> <span class="n">keyspops</span>
+
+                        <span class="c1">#process values</span>
                         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
                             <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_list</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">defaults</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">d</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-                        <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">),</span> <span class="p">{}),</span> <span class="n">d</span><span class="p">)</span>
 
+                        <span class="c1">#add keys and values to outputs dict</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keyspops</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                            <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">),</span> <span class="p">{}),</span> <span class="n">d</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">,</span> <span class="n">pop_name2</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">mergedicts</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">pop_name</span><span class="p">),</span> <span class="p">{}),</span> <span class="n">d</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">out</span>
 
         <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;adjustables&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">process_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;adjustables&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">adj_defaults</span><span class="p">)</span>
