@@ -7,7 +7,7 @@
   <title>Probability rescaling &mdash; Atomica  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
   <!--[if lt IE 9]>
@@ -41,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.6
+                1.28.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2615,7 +2615,8 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_3_0.svg" src="../_images/examples_Probability-Rescaling_3_0.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_3_0.svg" src="../_images/examples_Probability-Rescaling_3_0.svg" />
+</div>
 </div>
 <p>This is the most realistic case, where durations are modelling most accurately. Notice how the number of people in <span class="math notranslate nohighlight">\(c_1\)</span> linearly increases for the first 3 years, because nobody has started to leave yet. Similarly, it takes some time before people start arriving in <span class="math notranslate nohighlight">\(c_2\)</span>. On the other hand, in the model, where we work with Markov processes and state transitions behave as Poisson processes, we would typically be sampling from an exponential distribution.</p>
 <div class="nbinput docutils container">
@@ -2649,7 +2650,8 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_5_0.svg" src="../_images/examples_Probability-Rescaling_5_0.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_5_0.svg" src="../_images/examples_Probability-Rescaling_5_0.svg" />
+</div>
 </div>
 <p>Now, people immediately start flowing from <span class="math notranslate nohighlight">\(c_1\)</span> to <span class="math notranslate nohighlight">\(c_2\)</span> so the system converges to its steady state with dynamics that are different to the model with normally-distributed durations. However, the end result is the same.</p>
 <p>Note that this is a proper continuous system - we have imposed no constraints as to when transitions can occur, so the idea is that the figures above are what our discrete system should approximate, subject to conditions like sufficiently small time steps (and indeed, we would expect that the steady state solution above is converged to in the limit of small time steps).</p>
@@ -2734,7 +2736,8 @@ Ratio of steady state compartments: 1.4634
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_11_1.svg" src="../_images/examples_Probability-Rescaling_11_1.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_11_1.svg" src="../_images/examples_Probability-Rescaling_11_1.svg" />
+</div>
 </div>
 <p>However, we can see that this clearly does not approach the same limit as the continuous agent-based calculation.</p>
 <p>As an alternate approach, the discrete steps of the Euler integrator mean that transitions between compartments can be treated as a Bernoulli process, with a fixed probability of success at each time, and the duration spent in each compartment would then follow a geometric distribution. The mean of a geometric distribution is simply <span class="math notranslate nohighlight">\(1/p\)</span> where <span class="math notranslate nohighlight">\(p\)</span> is the transition probability. In this conceptualization, the appropriate probabilities to use would be <span class="math notranslate nohighlight">\(p_1=1/3\)</span> and
@@ -2768,7 +2771,8 @@ Ratio of steady state compartments: 2.0009
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_13_1.svg" src="../_images/examples_Probability-Rescaling_13_1.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_13_1.svg" src="../_images/examples_Probability-Rescaling_13_1.svg" />
+</div>
 </div>
 <p>We could analytically solve to find the steady state solution, which is</p>
 <div class="math notranslate nohighlight">
@@ -2834,7 +2838,8 @@ Ratio of steady state compartments: 1.9216
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_17_1.svg" src="../_images/examples_Probability-Rescaling_17_1.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_17_1.svg" src="../_images/examples_Probability-Rescaling_17_1.svg" />
+</div>
 </div>
 <p>This is somewhat better than before, so this approach exhibits the correct limiting behaviour as the step size becomes very small. If we use the geometric calculation’s annual probabilies, but the traditional formula to convert from annual to timestep probabilities, we get:</p>
 <div class="nbinput docutils container">
@@ -2885,7 +2890,8 @@ Ratio of steady state compartments: 2.4923
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_20_1.svg" src="../_images/examples_Probability-Rescaling_20_1.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_20_1.svg" src="../_images/examples_Probability-Rescaling_20_1.svg" />
+</div>
 </div>
 <p>The problem with this case is that the simulation at step size 1 with these probabilities looked fine, yet at <code class="docutils literal notranslate"><span class="pre">dt=0.1</span></code> the results are now very different. This suggests that the conversion <code class="docutils literal notranslate"><span class="pre">1.</span> <span class="pre">-</span> <span class="pre">(1.</span> <span class="pre">-</span> <span class="pre">p)**dt</span></code> does not preserve the steady state limit. This is clearly the case because that conversion is a nonlinear transformation, which will change the ratio of <span class="math notranslate nohighlight">\(p_1\)</span> to <span class="math notranslate nohighlight">\(p_2\)</span> and thus change the steady state solution as well.</p>
 <p>On the other hand, with the geometric distribution based conversion, we would use the linear transformation:</p>
@@ -2937,7 +2943,8 @@ Ratio of steady state compartments: 2.0033
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_23_1.svg" src="../_images/examples_Probability-Rescaling_23_1.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_23_1.svg" src="../_images/examples_Probability-Rescaling_23_1.svg" />
+</div>
 </div>
 <p>so we continue to converge to the correct continuous-time solution. Indeed, with the smaller timestep, with the smaller step we achieve a closer match to the continuous-time case.</p>
 <p>It is worth noting that we do expect the Poisson duration calculation to converge to the geometric calculation, because the duration conversion from the Poisson distribution <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">=</span> <span class="pre">(1.0</span> <span class="pre">-</span> <span class="pre">np.exp(-dt/dur)))</span></code> and the geometric conversion with <code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">=</span> <span class="pre">dt/dur</span></code> have the same limit for small <code class="docutils literal notranslate"><span class="pre">dt</span></code>. Consider the series expansion of <span class="math notranslate nohighlight">\(e^x\)</span> which is</p>
@@ -2981,7 +2988,8 @@ significantly overestimated due to the large step size. If we consider a short d
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_25_0.svg" src="../_images/examples_Probability-Rescaling_25_0.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_25_0.svg" src="../_images/examples_Probability-Rescaling_25_0.svg" />
+</div>
 </div>
 <p>The analogous geometric probability system would have a transition probability of 1 at each timestep, not 0.63. Although this means that the compartment is emptied at every timestep, it also implies that the mean duration is correctly captured. Indeed, with a transition probability of 1, we recover the correct steady state solution:</p>
 <div class="nbinput docutils container">
@@ -3013,7 +3021,8 @@ Ratio of steady state compartments: 1.0000
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_27_1.svg" src="../_images/examples_Probability-Rescaling_27_1.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_27_1.svg" src="../_images/examples_Probability-Rescaling_27_1.svg" />
+</div>
 </div>
 <p>But if we use the Poisson-derived value of 0.63, as with the other examples, we get a different solution:</p>
 <div class="nbinput docutils container">
@@ -3045,7 +3054,8 @@ Ratio of steady state compartments: 1.0000
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_29_1.svg" src="../_images/examples_Probability-Rescaling_29_1.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_29_1.svg" src="../_images/examples_Probability-Rescaling_29_1.svg" />
+</div>
 </div>
 </section>
 <section id="Preserving-durations-vs-preserving-annual-flows">
@@ -3110,7 +3120,8 @@ compartment would be due to transition out at the next timestep, so the transiti
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_34_0.svg" src="../_images/examples_Probability-Rescaling_34_0.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_34_0.svg" src="../_images/examples_Probability-Rescaling_34_0.svg" />
+</div>
 </div>
 <p>Similar results are observed with the HIV dynamic model</p>
 <div class="nbinput docutils container">
@@ -3135,7 +3146,8 @@ compartment would be due to transition out at the next timestep, so the transiti
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_36_0.svg" src="../_images/examples_Probability-Rescaling_36_0.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_36_0.svg" src="../_images/examples_Probability-Rescaling_36_0.svg" />
+</div>
 </div>
 <p>And also in the cervical cancer model, which does not have any durations (only probability and number transition parameters). Note below that the dynamics and convergence are different in different parts of the system. Also note that the plot of compartment size alone is insufficient to fully gauge the flow rate through the compartment - the outflow is equal to the inflow in the steady state, regardless of the number of people actually in the compartment.</p>
 <div class="nbinput docutils container">
@@ -3160,13 +3172,15 @@ compartment would be due to transition out at the next timestep, so the transiti
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_38_0.svg" src="../_images/examples_Probability-Rescaling_38_0.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_38_0.svg" src="../_images/examples_Probability-Rescaling_38_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_38_1.svg" src="../_images/examples_Probability-Rescaling_38_1.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_38_1.svg" src="../_images/examples_Probability-Rescaling_38_1.svg" />
+</div>
 </div>
 <p>For TB, convergence is somewhat slower, but even just switching from annual to quarterly timesteps provides a large improvement.</p>
 <div class="nbinput nblast docutils container">
@@ -3198,7 +3212,8 @@ compartment would be due to transition out at the next timestep, so the transiti
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Probability-Rescaling_41_0.svg" src="../_images/examples_Probability-Rescaling_41_0.svg" /></div>
+<img alt="../_images/examples_Probability-Rescaling_41_0.svg" src="../_images/examples_Probability-Rescaling_41_0.svg" />
+</div>
 </div>
 </section>
 <section id="Conclusions">

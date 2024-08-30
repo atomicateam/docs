@@ -7,7 +7,7 @@
   <title>Uncertainty &mdash; Atomica  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
   <!--[if lt IE 9]>
@@ -41,7 +41,7 @@
             Atomica
           </a>
               <div class="version">
-                1.28.6
+                1.28.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -2640,7 +2640,7 @@ WARNING {framework.py:1010} - Parameter &#34;fail_rate&#34; is in rate units and
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0339s
+Elapsed time for running &#34;default&#34;: 0.0349s
 </pre></div></div>
 </div>
 <p>Above, we have loaded in a databook with uncertainty values, and also loaded in two different program books, one with low uncertainty, and one with high uncertainty. We can inspect the objects to see how the uncertainty entered in the spreadsheets is reflected in code.</p>
@@ -2658,7 +2658,7 @@ Elapsed time for running &#34;default&#34;: 0.0339s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.utils.TimeSeries at 0x7f5533627c90&gt;
+&lt;atomica.utils.TimeSeries at 0x7f1f8fd77600&gt;
 [&lt;class &#39;atomica.utils.TimeSeries&#39;&gt;]
 ————————————————————————————————————————————————————————————————————————
 Methods:
@@ -2696,14 +2696,15 @@ assumption: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0339s
+Elapsed time for running &#34;default&#34;: 0.0342s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_11_1.svg" src="../_images/examples_Uncertainty_11_1.svg" /></div>
+<img alt="../_images/examples_Uncertainty_11_1.svg" src="../_images/examples_Uncertainty_11_1.svg" />
+</div>
 </div>
 <p>If there is uncertainty, we can obtain a sampled epidemiological prediction by sampling from all of the quantities containing uncertinty. For example, replacing the value of <code class="docutils literal notranslate"><span class="pre">214</span></code> above with a sample from the distribution <span class="math notranslate nohighlight">\(\ \mathcal{N}(214,20)\)</span> - along with all of the other quantities. The input to the model is effectively a parameter set derived from the original set of parameters, but with values replaced by sampled values where appropriate. You can obtain a sampled parameter set
 simply by calling the <code class="docutils literal notranslate"><span class="pre">ParameterSet.sample()</span></code> method:</p>
@@ -2770,14 +2771,15 @@ Sampling has already been performed - can only sample once
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0318s
+Elapsed time for running &#34;default&#34;: 0.0360s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_19_1.svg" src="../_images/examples_Uncertainty_19_1.svg" /></div>
+<img alt="../_images/examples_Uncertainty_19_1.svg" src="../_images/examples_Uncertainty_19_1.svg" />
+</div>
 </div>
 <p>Exactly the same procedure is used for programs - the <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> has a <code class="docutils literal notranslate"><span class="pre">sample()</span></code> method which returns a sampled <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> that can be used instead of the original <code class="docutils literal notranslate"><span class="pre">ProgramSet</span></code> to perform a sampled simulation:</p>
 <div class="nbinput docutils container">
@@ -2797,15 +2799,16 @@ Elapsed time for running &#34;default&#34;: 0.0318s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0447s
-Elapsed time for running &#34;default&#34;: 0.0536s
+Elapsed time for running &#34;default&#34;: 0.0544s
+Elapsed time for running &#34;default&#34;: 0.0559s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_21_1.svg" src="../_images/examples_Uncertainty_21_1.svg" /></div>
+<img alt="../_images/examples_Uncertainty_21_1.svg" src="../_images/examples_Uncertainty_21_1.svg" />
+</div>
 </div>
 <p>Of course, we can combine the sampled parset and the sampled progset in a single simulation to sample from both sources of uncertainty simultaneously:</p>
 <div class="nbinput docutils container">
@@ -2823,14 +2826,15 @@ Elapsed time for running &#34;default&#34;: 0.0536s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0516s
+Elapsed time for running &#34;default&#34;: 0.0433s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_23_1.svg" src="../_images/examples_Uncertainty_23_1.svg" /></div>
+<img alt="../_images/examples_Uncertainty_23_1.svg" src="../_images/examples_Uncertainty_23_1.svg" />
+</div>
 </div>
 <p>One issue when sampling is that of satisfying initial conditions. Databooks often require some work to ensure that none of the initial compartment sizes are negative. If uncertainties are specified for characteristics that are used for initialization, it is possible that the independently-sampled characteristic values yield a bad initialization (where some of the compartment sizes are negative, or the characteristic values are otherwise inconsistent). If this happens, a <code class="docutils literal notranslate"><span class="pre">BadInitialization</span></code>
 error is raised. Therefore, to write reliable sampling code, it is essential to catch this exception:</p>
@@ -2883,8 +2887,8 @@ Characteristic &#39;all_screened&#39;: Target value = [470.76487173]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0341s
-[[&lt;atomica.results.Result at 0x7f5531414b00&gt;
+Elapsed time for running &#34;default&#34;: 0.0324s
+[[&lt;atomica.results.Result at 0x7f1f8dd19cd0&gt;
 [&lt;class &#39;atomica.results.Result&#39;&gt;, &lt;class &#39;atomica.utils.NamedItem&#39;&gt;]
 ————————————————————————————————————————————————————————————————————————
 Methods:
@@ -2897,18 +2901,18 @@ Properties:
   dt                      pop_labels              used_programs
   framework               t
 ————————————————————————————————————————————————————————————————————————
-    created: datetime.datetime(2024, 7, 12, 4, 38, 52, 616650,
+    created: datetime.datetime(2024, 8, 30, 0, 55, 29, 557182,
              tzinfo=tzutc())
     gitinfo: {&#39;branch&#39;: &#39;Detached head (no branch)&#39;, &#39;hash&#39;:
-             &#39;e5d6857&#39;, &#39;date&#39;: &#39;2 [...]
-      model: &lt;atomica.model.Model object at 0x7f553148d790&gt;
-   modified: datetime.datetime(2024, 7, 12, 4, 38, 52, 616703,
+             &#39;a64da57&#39;, &#39;date&#39;: &#39;2 [...]
+      model: &lt;atomica.model.Model object at 0x7f1f8dd18fe0&gt;
+   modified: datetime.datetime(2024, 8, 30, 0, 55, 29, 557258,
              tzinfo=tzutc())
        name: &#39;default&#39;
 parset_name: &#39;default&#39;
   pop_names: [&#39;m_rural&#39;, &#39;f_rural&#39;, &#39;m_urban&#39;, &#39;f_urban&#39;]
-        uid: UUID(&#39;e9c70eab-ee7d-4249-a28a-7efe1faccde1&#39;)
-    version: &#39;1.28.6&#39;
+        uid: UUID(&#39;33b44261-b471-4aaf-a6d1-fc9a23ba8156&#39;)
+    version: &#39;1.28.7&#39;
 ————————————————————————————————————————————————————————————————————————
 ]]
 </pre></div></div>
@@ -2928,7 +2932,7 @@ parset_name: &#39;default&#39;
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 5/5 [00:00&lt;00:00, 20.36it/s]
+100%|██████████| 5/5 [00:00&lt;00:00, 23.06it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -2965,7 +2969,7 @@ parset_name: &#39;default&#39;
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:06&lt;00:00, 14.93it/s]
+100%|██████████| 100/100 [00:06&lt;00:00, 14.83it/s]
 </pre></div></div>
 </div>
 <p>For comparison, we will also run a ‘baseline’ simulation with no sampling. A plot of the baseline results looks like this:</p>
@@ -2984,14 +2988,15 @@ parset_name: &#39;default&#39;
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0320s
+Elapsed time for running &#34;default&#34;: 0.0353s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_34_1.svg" src="../_images/examples_Uncertainty_34_1.svg" /></div>
+<img alt="../_images/examples_Uncertainty_34_1.svg" src="../_images/examples_Uncertainty_34_1.svg" />
+</div>
 </div>
 <section id="Basic-plotting">
 <h3>Basic plotting<a class="headerlink" href="#Basic-plotting" title="Link to this heading">¶</a></h3>
@@ -3047,7 +3052,8 @@ Elapsed time for running &#34;default&#34;: 0.0320s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_42_0.svg" src="../_images/examples_Uncertainty_42_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_42_0.svg" src="../_images/examples_Uncertainty_42_0.svg" />
+</div>
 </div>
 <p>As we have only loaded in the sampled results, the dashed line corresponds to the median of the samples. The shaded areas show the area between the first and third quartiles for the samples. To start with, instead of showing the median of the samples, it is generally more appropriate to show the actual baseline results. To do this, we can load the baseline results into the Ensemble and then regenerate the plot.</p>
 <div class="admonition warning">
@@ -3068,7 +3074,8 @@ Elapsed time for running &#34;default&#34;: 0.0320s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_44_0.svg" src="../_images/examples_Uncertainty_44_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_44_0.svg" src="../_images/examples_Uncertainty_44_0.svg" />
+</div>
 </div>
 <p>As with the rest of the plotting library, the legend is ‘maximally informative’ in that it contains as much information as possible. This is because the most appropriate labelling for the figure (whether the axis labels, titles, or legend entries) varies greatly with context, and it is often necessary to relabel the figure on a plot-by-plot basis. This relabelling is facilitating by having all of the necessary content on the figure, rather than having to keep track of it separately. Thus, it is
 expected that the labels may need to be edited afterwards depending on usage.</p>
@@ -3086,7 +3093,8 @@ expected that the labels may need to be edited afterwards depending on usage.</p
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_46_0.svg" src="../_images/examples_Uncertainty_46_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_46_0.svg" src="../_images/examples_Uncertainty_46_0.svg" />
+</div>
 </div>
 <p>Now, the baseline results are displayed as solid lines. Other types of plots can be generated too.</p>
 <div class="nbinput docutils container">
@@ -3102,13 +3110,15 @@ expected that the labels may need to be edited afterwards depending on usage.</p
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_48_0.svg" src="../_images/examples_Uncertainty_48_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_48_0.svg" src="../_images/examples_Uncertainty_48_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_48_1.svg" src="../_images/examples_Uncertainty_48_1.svg" /></div>
+<img alt="../_images/examples_Uncertainty_48_1.svg" src="../_images/examples_Uncertainty_48_1.svg" />
+</div>
 </div>
 <p>Because the <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> stores <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> objects, you can perform any aggregation operations in the same way as normal. For example, we can plot the years lost to disability by integrating the number of people in the disease compartments.</p>
 <div class="nbinput nblast docutils container">
@@ -3133,7 +3143,8 @@ expected that the labels may need to be edited afterwards depending on usage.</p
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_52_0.svg" src="../_images/examples_Uncertainty_52_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_52_0.svg" src="../_images/examples_Uncertainty_52_0.svg" />
+</div>
 </div>
 <p>With uncertainty, we simply make the plot via an <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> instead</p>
 <div class="nbinput docutils container">
@@ -3151,13 +3162,15 @@ expected that the labels may need to be edited afterwards depending on usage.</p
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_54_0.svg" src="../_images/examples_Uncertainty_54_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_54_0.svg" src="../_images/examples_Uncertainty_54_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_54_1.svg" src="../_images/examples_Uncertainty_54_1.svg" /></div>
+<img alt="../_images/examples_Uncertainty_54_1.svg" src="../_images/examples_Uncertainty_54_1.svg" />
+</div>
 </div>
 <p>You can also use the <code class="docutils literal notranslate"><span class="pre">Ensemble.summary_statistics()</span></code> method to get a dataframe with summary statistics</p>
 <div class="nbinput docutils container">
@@ -3356,8 +3369,8 @@ expected that the labels may need to be edited afterwards depending on usage.</p
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0728s
-Elapsed time for running &#34;default&#34;: 0.0768s
+Elapsed time for running &#34;default&#34;: 0.0618s
+Elapsed time for running &#34;default&#34;: 0.0471s
 </pre></div></div>
 </div>
 <p>Comparing results across budget scenarios is extremely common, so Atomica has built-in functionality to facilitate this. You can pass multiple instructions and result names to <code class="docutils literal notranslate"><span class="pre">Project.run_sampled_sims()</span></code> to generate results as shown above</p>
@@ -3375,7 +3388,7 @@ Elapsed time for running &#34;default&#34;: 0.0768s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:13&lt;00:00,  7.37it/s]
+100%|██████████| 100/100 [00:13&lt;00:00,  7.44it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -3408,7 +3421,7 @@ Elapsed time for running &#34;default&#34;: 0.0768s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:13&lt;00:00,  7.35it/s]
+100%|██████████| 100/100 [00:13&lt;00:00,  7.45it/s]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -3426,7 +3439,8 @@ Elapsed time for running &#34;default&#34;: 0.0768s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_63_0.svg" src="../_images/examples_Uncertainty_63_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_63_0.svg" src="../_images/examples_Uncertainty_63_0.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
@@ -3442,7 +3456,8 @@ Elapsed time for running &#34;default&#34;: 0.0768s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_64_0.svg" src="../_images/examples_Uncertainty_64_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_64_0.svg" src="../_images/examples_Uncertainty_64_0.svg" />
+</div>
 </div>
 <p>To aid comparison, it may be clearer to plot individual populations at a time. For example:</p>
 <div class="nbinput docutils container">
@@ -3457,7 +3472,8 @@ Elapsed time for running &#34;default&#34;: 0.0768s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_66_0.svg" src="../_images/examples_Uncertainty_66_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_66_0.svg" src="../_images/examples_Uncertainty_66_0.svg" />
+</div>
 </div>
 <p>In this case, there isn’t much difference because as shown in the time series, most of the variability is encountered in the initial simulation years. We can see this if we plot a quantity with more variability - for example, the number of undiagnosed people in the first simulation year</p>
 <div class="nbinput docutils container">
@@ -3475,7 +3491,8 @@ Elapsed time for running &#34;default&#34;: 0.0768s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_68_0.svg" src="../_images/examples_Uncertainty_68_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_68_0.svg" src="../_images/examples_Uncertainty_68_0.svg" />
+</div>
 </div>
 <p>If you pass in a figure to <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_bars()</span></code>, it will attempt to append new bars into the existing figure. For example:</p>
 <div class="nbinput docutils container">
@@ -3491,7 +3508,8 @@ Elapsed time for running &#34;default&#34;: 0.0768s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_70_0.svg" src="../_images/examples_Uncertainty_70_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_70_0.svg" src="../_images/examples_Uncertainty_70_0.svg" />
+</div>
 </div>
 <p>In this case, it was not essential to do this because multiple <code class="docutils literal notranslate"><span class="pre">years</span></code> can be plotted in a single <code class="docutils literal notranslate"><span class="pre">plot_bars</span></code> call. However, you could superimpose bars from entirely separate Ensemble objects, if you wanted to compare quantities computed using different mapping functions.</p>
 <p>Another important type of plot is the sampled distribution of a quantity. Effectively, the entire Atomica model is a function that maps probabilitity distributions for model inputs into distributions of model outputs. These distributions can be plotted directly. For example:</p>
@@ -3507,7 +3525,8 @@ Elapsed time for running &#34;default&#34;: 0.0768s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_72_0.svg" src="../_images/examples_Uncertainty_72_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_72_0.svg" src="../_images/examples_Uncertainty_72_0.svg" />
+</div>
 </div>
 <p>The distributions that are plotted are effectively vertical cross-sections of the time series plots. They can be important to inspect to check for multi-modal distributions, or asymmetric distributions, which have implications for the validity of reporting summary statistics.</p>
 <p>There are two ways to compare distributions</p>
@@ -3539,7 +3558,8 @@ Elapsed time for running &#34;default&#34;: 0.0768s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_74_0.svg" src="../_images/examples_Uncertainty_74_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_74_0.svg" src="../_images/examples_Uncertainty_74_0.svg" />
+</div>
 </div>
 </section>
 <section id="Distributions-of-differences-between-results">
@@ -3572,7 +3592,8 @@ containing differences rather than raw values. For example</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_78_0.svg" src="../_images/examples_Uncertainty_78_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_78_0.svg" src="../_images/examples_Uncertainty_78_0.svg" />
+</div>
 </div>
 </section>
 </section>
@@ -3612,13 +3633,15 @@ generate the plot via <code class="docutils literal notranslate"><span class="pr
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_84_0.svg" src="../_images/examples_Uncertainty_84_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_84_0.svg" src="../_images/examples_Uncertainty_84_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_84_1.svg" src="../_images/examples_Uncertainty_84_1.svg" /></div>
+<img alt="../_images/examples_Uncertainty_84_1.svg" src="../_images/examples_Uncertainty_84_1.svg" />
+</div>
 </div>
 <p>Notice how the bars are automatically grouped by cascade stage and labelled appropriately. It’s also possible to call standard plotting functions that are inherited from the <code class="docutils literal notranslate"><span class="pre">Ensemble</span></code> class. For example, we could plot the time series of cascade stages using <code class="docutils literal notranslate"><span class="pre">Ensemble.plot_series</span></code>:</p>
 <div class="nbinput docutils container">
@@ -3633,7 +3656,8 @@ generate the plot via <code class="docutils literal notranslate"><span class="pr
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_86_0.svg" src="../_images/examples_Uncertainty_86_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_86_0.svg" src="../_images/examples_Uncertainty_86_0.svg" />
+</div>
 </div>
 <section id="Virtual-stages">
 <h3>Virtual stages<a class="headerlink" href="#Virtual-stages" title="Link to this heading">¶</a></h3>
@@ -3670,7 +3694,8 @@ generate the plot via <code class="docutils literal notranslate"><span class="pr
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_90_0.svg" src="../_images/examples_Uncertainty_90_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_90_0.svg" src="../_images/examples_Uncertainty_90_0.svg" />
+</div>
 </div>
 <div class="alert alert-success"><p>Notice that because the model outputs are converted to <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> on a per-sample basis, uncertainty is automatically propagated to the derived quantity (i.e. ‘pre-diagnosed’ has uncertainty even though it was defined on the fly). This would be the case for any <code class="docutils literal notranslate"><span class="pre">PlotData</span></code> operation.</p>
 </div></section>
@@ -3710,106 +3735,106 @@ generate the plot via <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0432s
-Elapsed time for running &#34;default&#34;: 0.0435s
-Elapsed time for running &#34;default&#34;: 0.0515s
-Elapsed time for running &#34;default&#34;: 0.0440s
-Elapsed time for running &#34;default&#34;: 0.0445s
-Elapsed time for running &#34;default&#34;: 0.0629s
-Elapsed time for running &#34;default&#34;: 0.0464s
-Elapsed time for running &#34;default&#34;: 0.0875s
-Elapsed time for running &#34;default&#34;: 0.0432s
-Elapsed time for running &#34;default&#34;: 0.0593s
-Elapsed time for running &#34;default&#34;: 0.0658s
-Elapsed time for running &#34;default&#34;: 0.0898s
-Elapsed time for running &#34;default&#34;: 0.0704s
-Elapsed time for running &#34;default&#34;: 0.0919s
-Elapsed time for running &#34;default&#34;: 0.0530s
-Elapsed time for running &#34;default&#34;: 0.0528s
-Elapsed time for running &#34;default&#34;: 0.0610s
-Elapsed time for running &#34;default&#34;: 0.0521s
-Elapsed time for running &#34;default&#34;: 0.0596s
-Elapsed time for running &#34;default&#34;: 0.0898s
-Elapsed time for running &#34;default&#34;: 0.0425s
-Elapsed time for running &#34;default&#34;: 0.0691s
-Elapsed time for running &#34;default&#34;: 0.0891s
-Elapsed time for running &#34;default&#34;: 0.0447s
-Elapsed time for running &#34;default&#34;: 0.0891s
-Elapsed time for running &#34;default&#34;: 0.0445s
-Elapsed time for running &#34;default&#34;: 0.0457s
-Elapsed time for running &#34;default&#34;: 0.0610s
-Elapsed time for running &#34;default&#34;: 0.0453s
-Elapsed time for running &#34;default&#34;: 0.0900s
-Elapsed time for running &#34;default&#34;: 0.0605s
-Elapsed time for running &#34;default&#34;: 0.0499s
-Elapsed time for running &#34;default&#34;: 0.0575s
-Elapsed time for running &#34;default&#34;: 0.0854s
-Elapsed time for running &#34;default&#34;: 0.0518s
-Elapsed time for running &#34;default&#34;: 0.0480s
-Elapsed time for running &#34;default&#34;: 0.0549s
-Elapsed time for running &#34;default&#34;: 0.0431s
-Elapsed time for running &#34;default&#34;: 0.0450s
-Elapsed time for running &#34;default&#34;: 0.0485s
-Elapsed time for running &#34;default&#34;: 0.0568s
-Elapsed time for running &#34;default&#34;: 0.0732s
-Elapsed time for running &#34;default&#34;: 0.0574s
-Elapsed time for running &#34;default&#34;: 0.0897s
-Elapsed time for running &#34;default&#34;: 0.0926s
-Elapsed time for running &#34;default&#34;: 0.0435s
-Elapsed time for running &#34;default&#34;: 0.0616s
-Elapsed time for running &#34;default&#34;: 0.0416s
-Elapsed time for running &#34;default&#34;: 0.0624s
-Elapsed time for running &#34;default&#34;: 0.0442s
-Elapsed time for running &#34;default&#34;: 0.0628s
-Elapsed time for running &#34;default&#34;: 0.0998s
-Elapsed time for running &#34;default&#34;: 0.0443s
-Elapsed time for running &#34;default&#34;: 0.0444s
-Elapsed time for running &#34;default&#34;: 0.0614s
-Elapsed time for running &#34;default&#34;: 0.0687s
-Elapsed time for running &#34;default&#34;: 0.102s
-Elapsed time for running &#34;default&#34;: 0.0466s
-Elapsed time for running &#34;default&#34;: 0.0455s
-Elapsed time for running &#34;default&#34;: 0.0767s
-Elapsed time for running &#34;default&#34;: 0.0452s
-Elapsed time for running &#34;default&#34;: 0.0435s
-Elapsed time for running &#34;default&#34;: 0.0453s
-Elapsed time for running &#34;default&#34;: 0.0448s
-Elapsed time for running &#34;default&#34;: 0.0647s
-Elapsed time for running &#34;default&#34;: 0.0445s
-Elapsed time for running &#34;default&#34;: 0.0454s
-Elapsed time for running &#34;default&#34;: 0.0458s
-Elapsed time for running &#34;default&#34;: 0.0412s
-Elapsed time for running &#34;default&#34;: 0.0425s
-Elapsed time for running &#34;default&#34;: 0.0415s
-Elapsed time for running &#34;default&#34;: 0.0435s
-Elapsed time for running &#34;default&#34;: 0.0435s
-Elapsed time for running &#34;default&#34;: 0.0429s
-Elapsed time for running &#34;default&#34;: 0.0427s
-Elapsed time for running &#34;default&#34;: 0.0442s
-Elapsed time for running &#34;default&#34;: 0.0429s
-Elapsed time for running &#34;default&#34;: 0.0436s
-Elapsed time for running &#34;default&#34;: 0.0429s
-Elapsed time for running &#34;default&#34;: 0.0463s
-Elapsed time for running &#34;default&#34;: 0.0501s
-Elapsed time for running &#34;default&#34;: 0.0472s
-Elapsed time for running &#34;default&#34;: 0.0423s
-Elapsed time for running &#34;default&#34;: 0.0435s
-Elapsed time for running &#34;default&#34;: 0.0420s
-Elapsed time for running &#34;default&#34;: 0.0467s
-Elapsed time for running &#34;default&#34;: 0.0438s
-Elapsed time for running &#34;default&#34;: 0.0456s
 Elapsed time for running &#34;default&#34;: 0.0449s
-Elapsed time for running &#34;default&#34;: 0.0450s
+Elapsed time for running &#34;default&#34;: 0.0419s
+Elapsed time for running &#34;default&#34;: 0.0419s
+Elapsed time for running &#34;default&#34;: 0.0614s
+Elapsed time for running &#34;default&#34;: 0.106s
+Elapsed time for running &#34;default&#34;: 0.0529s
+Elapsed time for running &#34;default&#34;: 0.0859s
+Elapsed time for running &#34;default&#34;: 0.0433s
+Elapsed time for running &#34;default&#34;: 0.0425s
+Elapsed time for running &#34;default&#34;: 0.0574s
+Elapsed time for running &#34;default&#34;: 0.0831s
+Elapsed time for running &#34;default&#34;: 0.0546s
+Elapsed time for running &#34;default&#34;: 0.0426s
+Elapsed time for running &#34;default&#34;: 0.0666s
+Elapsed time for running &#34;default&#34;: 0.0752s
+Elapsed time for running &#34;default&#34;: 0.0684s
+Elapsed time for running &#34;default&#34;: 0.0668s
+Elapsed time for running &#34;default&#34;: 0.0922s
+Elapsed time for running &#34;default&#34;: 0.0449s
+Elapsed time for running &#34;default&#34;: 0.0459s
+Elapsed time for running &#34;default&#34;: 0.0412s
+Elapsed time for running &#34;default&#34;: 0.0433s
+Elapsed time for running &#34;default&#34;: 0.0882s
+Elapsed time for running &#34;default&#34;: 0.0535s
+Elapsed time for running &#34;default&#34;: 0.0854s
+Elapsed time for running &#34;default&#34;: 0.101s
+Elapsed time for running &#34;default&#34;: 0.0776s
+Elapsed time for running &#34;default&#34;: 0.0996s
+Elapsed time for running &#34;default&#34;: 0.0624s
+Elapsed time for running &#34;default&#34;: 0.0623s
+Elapsed time for running &#34;default&#34;: 0.0544s
+Elapsed time for running &#34;default&#34;: 0.0461s
+Elapsed time for running &#34;default&#34;: 0.0515s
+Elapsed time for running &#34;default&#34;: 0.0564s
+Elapsed time for running &#34;default&#34;: 0.0461s
+Elapsed time for running &#34;default&#34;: 0.0438s
+Elapsed time for running &#34;default&#34;: 0.0433s
+Elapsed time for running &#34;default&#34;: 0.0697s
+Elapsed time for running &#34;default&#34;: 0.0476s
+Elapsed time for running &#34;default&#34;: 0.0552s
+Elapsed time for running &#34;default&#34;: 0.0443s
+Elapsed time for running &#34;default&#34;: 0.102s
+Elapsed time for running &#34;default&#34;: 0.0530s
+Elapsed time for running &#34;default&#34;: 0.0508s
 Elapsed time for running &#34;default&#34;: 0.0435s
-Elapsed time for running &#34;default&#34;: 0.0453s
-Elapsed time for running &#34;default&#34;: 0.0485s
+Elapsed time for running &#34;default&#34;: 0.0656s
+Elapsed time for running &#34;default&#34;: 0.108s
+Elapsed time for running &#34;default&#34;: 0.0860s
+Elapsed time for running &#34;default&#34;: 0.0425s
+Elapsed time for running &#34;default&#34;: 0.0748s
+Elapsed time for running &#34;default&#34;: 0.0422s
+Elapsed time for running &#34;default&#34;: 0.0461s
+Elapsed time for running &#34;default&#34;: 0.0625s
+Elapsed time for running &#34;default&#34;: 0.0865s
+Elapsed time for running &#34;default&#34;: 0.0839s
+Elapsed time for running &#34;default&#34;: 0.0503s
+Elapsed time for running &#34;default&#34;: 0.103s
+Elapsed time for running &#34;default&#34;: 0.0896s
+Elapsed time for running &#34;default&#34;: 0.0460s
+Elapsed time for running &#34;default&#34;: 0.0513s
+Elapsed time for running &#34;default&#34;: 0.0458s
+Elapsed time for running &#34;default&#34;: 0.0461s
+Elapsed time for running &#34;default&#34;: 0.0447s
+Elapsed time for running &#34;default&#34;: 0.0450s
 Elapsed time for running &#34;default&#34;: 0.0446s
-Elapsed time for running &#34;default&#34;: 0.0445s
-Elapsed time for running &#34;default&#34;: 0.0445s
-Elapsed time for running &#34;default&#34;: 0.0446s
+Elapsed time for running &#34;default&#34;: 0.0440s
+Elapsed time for running &#34;default&#34;: 0.0481s
+Elapsed time for running &#34;default&#34;: 0.0464s
+Elapsed time for running &#34;default&#34;: 0.0455s
+Elapsed time for running &#34;default&#34;: 0.0460s
+Elapsed time for running &#34;default&#34;: 0.0413s
+Elapsed time for running &#34;default&#34;: 0.0478s
+Elapsed time for running &#34;default&#34;: 0.0421s
+Elapsed time for running &#34;default&#34;: 0.0403s
+Elapsed time for running &#34;default&#34;: 0.0490s
+Elapsed time for running &#34;default&#34;: 0.0442s
+Elapsed time for running &#34;default&#34;: 0.0487s
+Elapsed time for running &#34;default&#34;: 0.0424s
+Elapsed time for running &#34;default&#34;: 0.0486s
+Elapsed time for running &#34;default&#34;: 0.0433s
+Elapsed time for running &#34;default&#34;: 0.0451s
+Elapsed time for running &#34;default&#34;: 0.0425s
+Elapsed time for running &#34;default&#34;: 0.0411s
+Elapsed time for running &#34;default&#34;: 0.0440s
+Elapsed time for running &#34;default&#34;: 0.0432s
+Elapsed time for running &#34;default&#34;: 0.0503s
+Elapsed time for running &#34;default&#34;: 0.0429s
+Elapsed time for running &#34;default&#34;: 0.0428s
 Elapsed time for running &#34;default&#34;: 0.0479s
-Elapsed time for running &#34;default&#34;: 0.0469s
-Elapsed time for running &#34;default&#34;: 0.0465s
+Elapsed time for running &#34;default&#34;: 0.0457s
+Elapsed time for running &#34;default&#34;: 0.0418s
+Elapsed time for running &#34;default&#34;: 0.0428s
+Elapsed time for running &#34;default&#34;: 0.0424s
+Elapsed time for running &#34;default&#34;: 0.0417s
+Elapsed time for running &#34;default&#34;: 0.0410s
+Elapsed time for running &#34;default&#34;: 0.0549s
+Elapsed time for running &#34;default&#34;: 0.0435s
+Elapsed time for running &#34;default&#34;: 0.0432s
+Elapsed time for running &#34;default&#34;: 0.0423s
+Elapsed time for running &#34;default&#34;: 0.0474s
 </pre></div></div>
 </div>
 <p>Now, the peak amount of memory required is only that of 1 simulation. We can then plot the ensemble as usual:</p>
@@ -3825,7 +3850,8 @@ Elapsed time for running &#34;default&#34;: 0.0465s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_97_0.svg" src="../_images/examples_Uncertainty_97_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_97_0.svg" src="../_images/examples_Uncertainty_97_0.svg" />
+</div>
 </div>
 <p>To perform this procedure seamlessly, instead of calling <code class="docutils literal notranslate"><span class="pre">P.run_sampled_sims</span></code>, you can instead call <code class="docutils literal notranslate"><span class="pre">Ensemble.run_sims</span></code>. The idea is that <code class="docutils literal notranslate"><span class="pre">Ensemble.run_sims</span></code> runs simulations specifically for that Ensemble - instead of returning results, it adds them to the Ensemble. Under the hood, it adds the results as they are generated without storing them internally.</p>
 <div class="nbinput docutils container">
@@ -3843,14 +3869,15 @@ Elapsed time for running &#34;default&#34;: 0.0465s
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 100/100 [00:07&lt;00:00, 13.97it/s]
+100%|██████████| 100/100 [00:07&lt;00:00, 14.13it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_99_1.svg" src="../_images/examples_Uncertainty_99_1.svg" /></div>
+<img alt="../_images/examples_Uncertainty_99_1.svg" src="../_images/examples_Uncertainty_99_1.svg" />
+</div>
 </div>
 <p>Note that if you use <code class="docutils literal notranslate"><span class="pre">Ensemble.run_sims</span></code> is that a baseline simulation without sampling will automatically be performed and stored in the Ensemble.</p>
 <div class="alert alert-success"><ul class="simple">
@@ -3895,7 +3922,8 @@ Elapsed time for running &#34;default&#34;: 0.0465s
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_105_2.svg" src="../_images/examples_Uncertainty_105_2.svg" /></div>
+<img alt="../_images/examples_Uncertainty_105_2.svg" src="../_images/examples_Uncertainty_105_2.svg" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
@@ -3910,13 +3938,15 @@ Elapsed time for running &#34;default&#34;: 0.0465s
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_106_0.svg" src="../_images/examples_Uncertainty_106_0.svg" /></div>
+<img alt="../_images/examples_Uncertainty_106_0.svg" src="../_images/examples_Uncertainty_106_0.svg" />
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_Uncertainty_106_1.svg" src="../_images/examples_Uncertainty_106_1.svg" /></div>
+<img alt="../_images/examples_Uncertainty_106_1.svg" src="../_images/examples_Uncertainty_106_1.svg" />
+</div>
 </div>
 </section>
 </section>
