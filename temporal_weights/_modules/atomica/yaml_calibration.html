@@ -2623,6 +2623,7 @@
 
 <span class="kn">import</span> <span class="nn">sciris</span> <span class="k">as</span> <span class="nn">sc</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">atomica</span> <span class="k">as</span> <span class="nn">at</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
@@ -2683,16 +2684,19 @@
 <span class="sd">    :return new_parset: A calibrated `at.ParameterSet` instance</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">BaseNode</span><span class="p">):</span>
-        <span class="n">node</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-
-    <span class="n">parset</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">parset</span><span class="p">(</span><span class="n">parset</span><span class="p">))</span>
-
     <span class="k">if</span> <span class="n">savedir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">savedir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">savedir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">savedir</span><span class="p">)</span>
     <span class="n">savedir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">BaseNode</span><span class="p">):</span>
+        <span class="c1"># Save a copy of the yaml-file if saving log output</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">log_output</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">savedir</span> <span class="o">/</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="n">parset</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">parset</span><span class="p">(</span><span class="n">parset</span><span class="p">))</span>
 
     <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">walk</span><span class="p">())</span> <span class="c1"># Make a flat list of all nodes to execute in order</span>
     <span class="n">n_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nodes</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">SectionNode</span><span class="p">)])</span>
