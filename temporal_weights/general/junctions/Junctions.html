@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -6,21 +8,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Junction overview &mdash; Atomica  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -39,9 +37,6 @@
           <a href="../../index.html" class="icon icon-home">
             Atomica
           </a>
-              <div class="version">
-                1.29.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -2623,16 +2618,19 @@
 <h1>Junction overview<a class="headerlink" href="#junction-overview" title="Link to this heading">¶</a></h1>
 <p>Junctions offer a way to re-parametrize transitions when the relative proportions of outflows are constrained. As discussed in other pages, they are special compartments that are emptied entirely at the end of each timestep. As a result, the total number of people leaving the compartment is not determined by any parameter values, because it directly corresponds to the number of people in the compartment. Instead, the parameter values are all proportions that govern the relative outflows.</p>
 <p>The general layout of a junction is shown below:</p>
-<a class="reference internal image-reference" href="../../_images/junction_example.png"><img alt="../../_images/junction_example.png" src="../../_images/junction_example.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/junction_example.png"><img alt="../../_images/junction_example.png" src="../../_images/junction_example.png" style="width: 600px;" />
+</a>
 <p>In this example, any parameters supplying values for transitions <cite>A</cite>, <cite>B</cite>, and <cite>C</cite> all need to be in ‘proportion’ units. During simulation, the sum of outflows A, B, and C would equal 100 people. Junctions come in two varieties</p>
 <ol class="arabic simple">
 <li><p>A junction where all of the outflows have been explicitly specified. In this case, outflows are proportionately rescaled across all transitions. This is implemented in the <code class="docutils literal notranslate"><span class="pre">Junction</span></code> class.</p></li>
 <li><p>A junction where all outflows <em>except one</em> have been specified. In this case, any residual outflow is flushed to a single compartment. This is implemented in the <code class="docutils literal notranslate"><span class="pre">ResidualJunction</span></code> class.</p></li>
 </ol>
 <p>The type of junction depends on the ‘Transitions’ sheet in the Framework file. For a regular junction, simply enter the transitions the same as for any compartment. The schematic above could be implemented as</p>
-<a class="reference internal image-reference" href="../../_images/j_framework_1.png"><img alt="../../_images/j_framework_1.png" src="../../_images/j_framework_1.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/j_framework_1.png"><img alt="../../_images/j_framework_1.png" src="../../_images/j_framework_1.png" style="width: 600px;" />
+</a>
 <p>The role of a residual junction is to make it easier to implement junctions where one of the outflows balances all of the others. For example, if the schematic at the top of the page satisfied <span class="math notranslate nohighlight">\(C=1-A-B\)</span>. In that case, rather than defining a parameter for <code class="docutils literal notranslate"><span class="pre">C</span></code>, the junction could instead be written as</p>
-<a class="reference internal image-reference" href="../../_images/j_framework_2.png"><img alt="../../_images/j_framework_2.png" src="../../_images/j_framework_2.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/j_framework_2.png"><img alt="../../_images/j_framework_2.png" src="../../_images/j_framework_2.png" style="width: 600px;" />
+</a>
 <p>This syntax means that the flow from the junction to <code class="docutils literal notranslate"><span class="pre">compartment_3</span></code> would equal <code class="docutils literal notranslate"><span class="pre">max(0,1-A-B)</span></code>. That is, if <span class="math notranslate nohighlight">\(A+B&lt;1\)</span> then the residual will be assigned to <span class="math notranslate nohighlight">\(C\)</span>. Consider the following examples for the compartments shown in the schematic above:</p>
 <table class="docutils align-default" id="id1">
 <caption><span class="caption-text">Example 1 - scale up, normal junction</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
