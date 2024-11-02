@@ -255,6 +255,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../examples/Plotting.html#Plotting-system-design">Plotting system design</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../examples/Plotting.html#Data-preparation-and-aggregation">Data preparation and aggregation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../examples/Plotting.html#Characteristic-aggregations">Characteristic aggregations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../examples/Plotting.html#Function-aggregations">Function aggregations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../examples/Plotting.html#Axis-units">Axis units</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../examples/Plotting.html#Flow-rate-aggregations-and-disaggregations">Flow rate aggregations and disaggregations</a></li>
@@ -2994,7 +2995,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># excelfile = spreadsheet.pandas()</span>
 
-        <span class="n">metadata</span><span class="p">,</span> <span class="n">value_df</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">excel</span><span class="o">.</span><span class="n">read_dataframes</span><span class="p">(</span><span class="n">excelfile</span><span class="o">.</span><span class="n">book</span><span class="p">[</span><span class="s1">&#39;Initialization&#39;</span><span class="p">])</span>
+        <span class="n">metadata</span><span class="p">,</span> <span class="n">value_df</span> <span class="o">=</span> <span class="n">atomica</span><span class="o">.</span><span class="n">excel</span><span class="o">.</span><span class="n">read_dataframes</span><span class="p">(</span><span class="n">excelfile</span><span class="o">.</span><span class="n">book</span><span class="p">[</span><span class="s2">&quot;Initialization&quot;</span><span class="p">])</span>
 
         <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">value_df</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
@@ -3210,7 +3211,7 @@
 <span class="sd">        :param year: Year to use for interpolation</span>
 <span class="sd">        :return: A copy of the ParameterSet with constant parameters</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">ps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> (constant)&#39;</span><span class="p">)</span>
+        <span class="n">ps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (constant)&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">ps</span><span class="o">.</span><span class="n">all_pars</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">ts</span> <span class="ow">in</span> <span class="n">par</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                 <span class="n">ts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">year</span><span class="p">))</span>

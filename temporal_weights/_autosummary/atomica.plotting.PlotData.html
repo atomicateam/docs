@@ -258,6 +258,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../examples/Plotting.html#Plotting-system-design">Plotting system design</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Data-preparation-and-aggregation">Data preparation and aggregation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Characteristic-aggregations">Characteristic aggregations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Function-aggregations">Function aggregations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Axis-units">Axis units</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../examples/Plotting.html#Flow-rate-aggregations-and-disaggregations">Flow rate aggregations and disaggregations</a></li>
@@ -2649,22 +2650,65 @@ automatically be summed over</p></li>
 <li><p><strong>pops</strong> – The name of an output population, or list of names. Like
 outputs, can specify a dict with a list of pops to aggregate over them</p></li>
 <li><p><strong>output_aggregation</strong> – <p>If an output aggregation is requested, combine the outputs listed using one of</p>
-<ul>
-<li><p>’sum’ - just add values together</p></li>
-<li><p>’average’ - unweighted average of quantities</p></li>
-<li><p>’weighted’ - weighted average where the weight is the
-compartment size, characteristic value, or link source
-compartment size (summed over duplicate links). ‘weighted’
-method cannot be used with non-transition parameters and a
-KeyError will result in that case</p></li>
+<blockquote>
+<div><blockquote>
+<div><ul>
+<li><dl class="simple">
+<dt>’sum’ - just add values together. If summing together characteristics with a denominator, then</dt><dd><p>all of the items being included in the sum must have the same denominator. This denominator
+will then continue to be tracked for the sum.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’average’ - unweighted average of quantities. If averaging characteristics with a denominator, then</dt><dd><p>the denominator will be dropped afterwards (so subsequent population aggregation will be
+performed based on total population size)</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>’weighted’ - weighted average where the weight is the</dt><dd><blockquote>
+<div><ul class="simple">
+<li><p>Link source compartment size, or</p></li>
+<li><p>Characteristic denominator size, or</p></li>
+<li><p>Compartment size</p></li>
 </ul>
+</div></blockquote>
+<p>depending on the quantities being aggregated. If one quantity has a denominator, then
+all quantities must have denominators. This method cannot be used with non-transition parameters and a
+KeyError will result in that case. Note that if using this method to aggregate characteristics, there
+should generally not be any overlap in the compartments contributing to the denominators.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>For aggregating characteristics, the behaviour for combining characteristics <code class="docutils literal notranslate"><span class="pre">a/b</span></code> and <code class="docutils literal notranslate"><span class="pre">c/d</span></code> is as follows:</p>
+<blockquote>
+<div><ul>
+<li><p>’sum’ will give <code class="docutils literal notranslate"><span class="pre">(a+c)/b</span></code> and raise an error if <code class="docutils literal notranslate"><span class="pre">b!=d</span></code>. The denominator <code class="docutils literal notranslate"><span class="pre">b</span></code> can be used for weighted population aggregation.</p></li>
+<li><p>’average’ will give <code class="docutils literal notranslate"><span class="pre">((a/b)+(c/d))/2</span></code>. No denominator is tracked for weighted population aggregation, so such aggregation would use the total population size.</p></li>
+<li><p>’weighted’ will give <code class="docutils literal notranslate"><span class="pre">(a+c)/(b+d)</span></code>. The denominator <code class="docutils literal notranslate"><span class="pre">b+d</span></code> can be used for weighted population aggregation.</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p>The default is ‘weighted’ for dimensionless units, probabilities, rates, and fractions, and ‘sum’ for everything else, with the exception of characteristics
+with denominators, where</p>
+<blockquote>
+<div><ul>
+<li><p>’sum’ is used if the characteristics all have the same denominator</p></li>
+<li><p>’weighted’ is used if the characteristics all have different denominators</p></li>
+<li><p>’average’ is used otherwise</p></li>
+</ul>
+</div></blockquote>
 </p></li>
-<li><p><strong>pop_aggregation</strong> – Same as output_aggregation, except that ‘weighted’
-uses population sizes. Note that output aggregation is performed
-before population aggregation. This also means that population
+<li><p><strong>pop_aggregation</strong> – Same options as output_aggregation, except
+- ‘weighted’ uses population sizes OR characteristic denominator size. Note that output aggregation
+is performed before population aggregation. This also means that population
 aggregation can be used to combine already aggregated outputs (e.g.
 can first sum ‘sus’+’vac’ within populations, and then take weighted
-average across populations)</p></li>
+average across populations). This weighting is principally intended for aggregating
+nondimensional quantities (fractions, proportions etc.).
+- By default, quantities in ‘duration’ units are averaged across populations rather than summed.</p></li>
 <li><p><strong>project</strong> – Optionally provide a <code class="xref py py-class docutils literal notranslate"><span class="pre">Project</span></code> object, which will be used to convert names to labels in the outputs for plotting.</p></li>
 <li><p><strong>time_aggregation</strong> – Optionally specify time aggregation method. Supported methods are ‘integrate’ and ‘average’ (no weighting). When aggregating
 times, <em>non-annualized</em> flow rates will be used.</p></li>
