@@ -1472,6 +1472,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.from_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ProjectData.from_spreadsheet()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.get_tdve_page"><code class="docutils literal notranslate"><span class="pre">ProjectData.get_tdve_page()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.get_ts"><code class="docutils literal notranslate"><span class="pre">ProjectData.get_ts()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.gitinfo"><code class="docutils literal notranslate"><span class="pre">ProjectData.gitinfo</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.interpops"><code class="docutils literal notranslate"><span class="pre">ProjectData.interpops</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.new"><code class="docutils literal notranslate"><span class="pre">ProjectData.new()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.pops"><code class="docutils literal notranslate"><span class="pre">ProjectData.pops</span></code></a></li>
@@ -1489,6 +1490,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.transfers"><code class="docutils literal notranslate"><span class="pre">ProjectData.transfers</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.tvec"><code class="docutils literal notranslate"><span class="pre">ProjectData.tvec</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.validate"><code class="docutils literal notranslate"><span class="pre">ProjectData.validate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.version"><code class="docutils literal notranslate"><span class="pre">ProjectData.version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1569,6 +1571,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.assumption_heading"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.assumption_heading</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.comment"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.comment</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.default_all"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.default_all</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.from_rows"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.from_rows()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.has_data"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.has_data</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.name"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.name</span></code></a></li>
@@ -2695,6 +2698,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span><span class="p">,</span> <span class="n">gitinfo</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;InvalidDatabook&quot;</span><span class="p">,</span> <span class="s2">&quot;ProjectData&quot;</span><span class="p">]</span>
 
@@ -2737,10 +2741,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tdve_pages</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">odict</span><span class="p">()</span>  <span class="c1">#: This is an odict mapping worksheet name to an (ordered) list of TDVE code names appearing on that sheet</span>
 
         <span class="c1"># Internal storage used with methods while writing</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pop_types</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">framework</span><span class="o">.</span><span class="n">pop_types</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>  <span class="c1"># : Store set of valid population types from framework</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pop_types</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">framework</span><span class="o">.</span><span class="n">pop_types</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>  <span class="c1">#: Store set of valid population types from framework</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_formats</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Temporary storage for the Excel formatting while writing a databook</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_book</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Temporary storage for the workbook while writing a databook</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_references</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Temporary storage for cell references while writing a databook</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>  <span class="c1">#: Current Atomica version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gitinfo</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="n">gitinfo</span><span class="p">)</span>  <span class="c1">#: Atomica Git version information, if being run in a Git repository</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.migration</span><span class="w"> </span><span class="kn">import</span> <span class="n">migrate</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">d</span>
+        <span class="n">projectdata</span> <span class="o">=</span> <span class="n">migrate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="n">projectdata</span><span class="o">.</span><span class="vm">__dict__</span>
 
 <div class="viewcode-block" id="ProjectData.tables">
 <a class="viewcode-back" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.tables">[docs]</a>
@@ -2954,13 +2968,15 @@
                     <span class="n">pop_type</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;population type&quot;</span><span class="p">)</span>
                     <span class="n">databook_order</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;databook order&quot;</span><span class="p">)</span>
                     <span class="n">full_name</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;display name&quot;</span><span class="p">]</span>
+                    <span class="n">default_all</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;databook default all&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span>
+                    <span class="n">allowed_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">framework</span><span class="o">.</span><span class="n">get_databook_units</span><span class="p">(</span><span class="n">full_name</span><span class="p">)]</span>
 
                     <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">databook_order</span><span class="p">):</span>
                         <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">order</span> <span class="o">=</span> <span class="n">databook_order</span>
                     <span class="n">pages</span><span class="p">[</span><span class="n">databook_page</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">order</span><span class="p">))</span>
-                    <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TimeDependentValuesEntry</span><span class="p">(</span><span class="n">full_name</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">tvec</span><span class="p">,</span> <span class="n">allowed_units</span><span class="o">=</span><span class="p">[</span><span class="n">framework</span><span class="o">.</span><span class="n">get_databook_units</span><span class="p">(</span><span class="n">full_name</span><span class="p">)],</span> <span class="n">comment</span><span class="o">=</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;guidance&quot;</span><span class="p">],</span> <span class="n">pop_type</span><span class="o">=</span><span class="n">pop_type</span><span class="p">)</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TimeDependentValuesEntry</span><span class="p">(</span><span class="n">full_name</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">tvec</span><span class="p">,</span> <span class="n">allowed_units</span><span class="o">=</span><span class="n">allowed_units</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;guidance&quot;</span><span class="p">],</span> <span class="n">pop_type</span><span class="o">=</span><span class="n">pop_type</span><span class="p">,</span> <span class="n">default_all</span><span class="o">=</span><span class="n">default_all</span><span class="p">)</span>
                     <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">write_units</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">if</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s2">&quot;pars&quot;</span><span class="p">:</span>
@@ -2969,6 +2985,10 @@
                             <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">tvec</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># If parameter is timed, don&#39;t show any years</span>
                             <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">write_uncertainty</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Don&#39;t show uncertainty for timed parameters. In theory users could manually add the column and sample over it, but because the duration is rounded to the timestep, it&#39;s likely to have confusing stepped effects</span>
                     <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">pop_type</span> <span class="o">=</span> <span class="n">pop_type</span>
+
+                    <span class="k">if</span> <span class="n">default_all</span><span class="p">:</span>
+                        <span class="c1"># add_pop normally adds TDVE rows, but it won&#39;t operate on any TDVEs that default to &#39;All&#39; so we need to add the &#39;All&#39; rows here</span>
+                        <span class="n">data</span><span class="o">.</span><span class="n">tdve</span><span class="p">[</span><span class="n">spec</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">allowed_units</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
         <span class="c1"># Now convert pages to full names and sort them into the correct order</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">framework</span><span class="o">.</span><span class="n">sheets</span><span class="p">[</span><span class="s2">&quot;databook pages&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
@@ -3338,7 +3358,7 @@
 
 <span class="sd">        :param code_name: The code name for the new population</span>
 <span class="sd">        :param full_name: The full name/label for the new population</span>
-<span class="sd">        :param pop_type: String with the population type code name</span>
+<span class="sd">        :param pop_type: String with the population type code name (optional) - default is the type of the first population</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -3364,8 +3384,11 @@
         <span class="k">for</span> <span class="n">tdve</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdve</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="c1"># Since TDVEs in databooks must have the unit set in the framework, all ts objects must share the same units</span>
             <span class="c1"># And, there is only supposed to be one type of unit allowed for TDVE tables (if the unit is empty, it will be &#39;N.A.&#39;)</span>
-            <span class="c1"># so can just pick the first of the allowed units</span>
-            <span class="k">if</span> <span class="n">tdve</span><span class="o">.</span><span class="n">pop_type</span> <span class="o">==</span> <span class="n">pop_type</span><span class="p">:</span>
+            <span class="c1"># so can just pick the first of the allowed units. We will add the population row if the pop type matches and if</span>
+            <span class="c1"># the TDVE is either not a &#39;default_all&#39; or if the user has removed the &#39;All&#39; row from the TDVE despite it being default_all</span>
+            <span class="k">if</span> <span class="n">tdve</span><span class="o">.</span><span class="n">pop_type</span> <span class="o">!=</span> <span class="n">pop_type</span> <span class="ow">or</span> <span class="p">(</span><span class="n">tdve</span><span class="o">.</span><span class="n">default_all</span> <span class="ow">and</span> <span class="p">(</span><span class="s2">&quot;All&quot;</span> <span class="ow">in</span> <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span> <span class="ow">or</span> <span class="s2">&quot;all&quot;</span> <span class="ow">in</span> <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span><span class="p">)):</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
                 <span class="n">tdve</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">tdve</span><span class="o">.</span><span class="n">allowed_units</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 
 

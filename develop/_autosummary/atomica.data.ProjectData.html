@@ -1475,6 +1475,7 @@
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.from_spreadsheet"><code class="docutils literal notranslate"><span class="pre">ProjectData.from_spreadsheet()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.get_tdve_page"><code class="docutils literal notranslate"><span class="pre">ProjectData.get_tdve_page()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.get_ts"><code class="docutils literal notranslate"><span class="pre">ProjectData.get_ts()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.gitinfo"><code class="docutils literal notranslate"><span class="pre">ProjectData.gitinfo</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.interpops"><code class="docutils literal notranslate"><span class="pre">ProjectData.interpops</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.new"><code class="docutils literal notranslate"><span class="pre">ProjectData.new()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.pops"><code class="docutils literal notranslate"><span class="pre">ProjectData.pops</span></code></a></li>
@@ -1492,6 +1493,7 @@
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.transfers"><code class="docutils literal notranslate"><span class="pre">ProjectData.transfers</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.tvec"><code class="docutils literal notranslate"><span class="pre">ProjectData.tvec</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.validate"><code class="docutils literal notranslate"><span class="pre">ProjectData.validate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#atomica.data.ProjectData.version"><code class="docutils literal notranslate"><span class="pre">ProjectData.version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1572,6 +1574,7 @@
 <li class="toctree-l4"><a class="reference internal" href="atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.assumption_heading"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.assumption_heading</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.comment"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.comment</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.default_all"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.default_all</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.from_rows"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.from_rows()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.has_data"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.has_data</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="atomica.excel.TimeDependentValuesEntry.html#atomica.excel.TimeDependentValuesEntry.name"><code class="docutils literal notranslate"><span class="pre">TimeDependentValuesEntry.name</span></code></a></li>
@@ -2724,6 +2727,12 @@ the static methods</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#atomica.data.ProjectData.tdve_pages" title="atomica.data.ProjectData.tdve_pages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tdve_pages</span></code></a></p></td>
 <td><p>This is an odict mapping worksheet name to an (ordered) list of TDVE code names appearing on that sheet</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#atomica.data.ProjectData.version" title="atomica.data.ProjectData.version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></a></p></td>
+<td><p>Current Atomica version</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#atomica.data.ProjectData.gitinfo" title="atomica.data.ProjectData.gitinfo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gitinfo</span></code></a></p></td>
+<td><p>Atomica Git version information, if being run in a Git repository</p></td>
+</tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
@@ -2822,7 +2831,7 @@ one of the population types in the framework</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>code_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The code name for the new population</p></li>
 <li><p><strong>full_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The full name/label for the new population</p></li>
-<li><p><strong>pop_type</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – String with the population type code name</p></li>
+<li><p><strong>pop_type</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – String with the population type code name (optional) - default is the type of the first population</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -2963,6 +2972,12 @@ to names like ‘age_0-4_to_5-14’</p></li>
 is therefore encountered on the <code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code> and plotting side.</p>
 <p>If retrieving values for a comp/charac/par and the databook contains an entry for ‘all’ rather
 than specific populations, then the ‘all’ time series will be returned regardless of the key</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="atomica.data.ProjectData.gitinfo">
+<span class="sig-name descname"><span class="pre">gitinfo</span></span><a class="headerlink" href="#atomica.data.ProjectData.gitinfo" title="Link to this definition">¶</a></dt>
+<dd><p>Atomica Git version information, if being run in a Git repository</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -3202,6 +3217,12 @@ the FE might want to perform this check at a different point if the databook man
 <dd class="field-odd"><p>True if ProjectData is valid. An error will be raised otherwise</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="atomica.data.ProjectData.version">
+<span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#atomica.data.ProjectData.version" title="Link to this definition">¶</a></dt>
+<dd><p>Current Atomica version</p>
 </dd></dl>
 
 </dd></dl>
