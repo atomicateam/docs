@@ -2741,7 +2741,7 @@ autocalibrating Atomica models to a reasonable level, but additional tweaking ma
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 5.15s
+Elapsed time for running &#34;default&#34;: 5.30s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -3162,30 +3162,35 @@ yaml_instructions = yaml.load(file, Loader=yaml.FullLoader)
 <p><strong>Question 1.</strong><em>We want to do a basic population calibration, where we calibrate the birth rate and migration rate to match the data corresponding to the total number of people alive. We also want to calibrate the death rate. What should this YAML file look like?</em></p>
 <p><strong>Hint</strong>: Open the framework and look at the <code class="docutils literal notranslate"><span class="pre">Compartments</span></code>, <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> and <code class="docutils literal notranslate"><span class="pre">Characteristics</span></code> pages. The <code class="docutils literal notranslate"><span class="pre">Code</span> <span class="pre">Names</span></code> and <code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">Names</span></code> show us how we have to write the parameter names in the YAML file, and what quantities they correspond to. Those with a value in the <code class="docutils literal notranslate"><span class="pre">Databook</span> <span class="pre">Page</span></code> column have data values supplied, and can therefore be used as measurables.</p>
 <p><strong>Hint 2</strong>: Some of the parameter <code class="docutils literal notranslate"><span class="pre">Code</span> <span class="pre">Names</span></code> and <code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">Names</span></code> in the databook are as follows:</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Framework Sheet</p></th>
-<th class="head"><p>Code Name</p></th>
-<th class="head"><p>Display Name</p></th>
-<th class="head"><p>Databook Page</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>| COMPARTMENTS |</p>
-<td colspan=3><p>| | | birth | Birth | none | | | death | Death | none | | PARAMETERS |</p>
-<td colspan=3><p>| | | b_rate | Birth rate | demographic | | | deaths | All-cause deaths | demographic | | | d_rate | Background mortality rate | demographic | | | mig_rate | Migration Rate | demographic | | CHARACTERISTICS |</p>
-<td colspan=3><div class="line-block">
-<div class="line"><br /></div>
-<div class="line">                | alive | Total population | demographic |</div>
-</div>
-<p><strong>Question 2.</strong><em>A single calibration run may not be enough to get good results, so let’s loop over our simple population calibration ten times. How would we make that change to the YAML file?</em></p>
+<table class="docutils align-default"><thead><tr><th><p>Framework Sheet</p>
+</th><th><p>Code Name</p>
+</th><th><p>Display Name</p>
+</th><th><p>Databook Page</p>
+</th></tr></thead><tbody><tr><td rowspan="2"><p>Compartments</p>
+</td><td><p>birth</p>
+</td><td><p>Birth</p>
+</td><td><p>none</p>
+</td></tr><tr><td><p>death</p>
+</td><td><p>Death</p>
+</td><td><p>none</p>
+</td></tr><tr><td rowspan="4"><p>Parameters</p>
+</td><td><p>b_rate</p>
+</td><td><p>Birth rate</p>
+</td><td><p>demographic</p>
+</td></tr><tr><td><p>deaths</p>
+</td><td><p>All-cause deaths</p>
+</td><td><p>demographic</p>
+</td></tr><tr><td><p>d_rate</p>
+</td><td><p>Background mortality rate</p>
+</td><td><p>demographic</p>
+</td></tr><tr><td><p>mig_rate</p>
+</td><td><p>Migration Rate</p>
+</td><td><p>demographic</p>
+</td></tr><tr><td rowspan="1"><p>Characteristics</p>
+</td><td><p>alive</p>
+</td><td><p>Total population</p>
+</td><td><p>demographic</p>
+</td></tr></tbody></table><p><strong>Question 2.</strong><em>A single calibration run may not be enough to get good results, so let’s loop over our simple population calibration ten times. How would we make that change to the YAML file?</em></p>
 <p><strong>Hint</strong>: Use the <code class="docutils literal notranslate"><span class="pre">repeats</span></code> keyword.</p>
 <p><strong>Question 3.</strong><em>Say that, for this particular project, we are only interested in calibrating results from 2005 to 2040. How would we specify this in the YAML file to reduce calibration time?</em></p>
 <p><strong>Hint</strong>: Using the <code class="docutils literal notranslate"><span class="pre">cal_start</span></code> and <code class="docutils literal notranslate"><span class="pre">cal_end</span></code> keywords.</p>
