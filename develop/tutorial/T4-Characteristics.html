@@ -2684,7 +2684,7 @@
 <h1>T4 - Characteristics<a class="headerlink" href="#T4---Characteristics" title="Link to this heading">¶</a></h1>
 <p>Characteristics can be conceptually difficult to define, but are fairly simple in practice. They are essentially special parameters, that are specific to working with compartments and groups of compartments. We will motivate their design with a worked example that builds on the multi-population framework from T3, and then conclude by discussing other aspects of their design that differ from parameters.</p>
 <p>The key functionality provided by characteristics is this - the example in T3 had users initialize the compartment sizes by directly entering values for the number of people in the ‘Susceptible’ and ‘Infected’ compartments, both of which appeared on the ‘Stocks’ sheet in the databook.</p>
-<p><img alt="t4-framework1" src="../_images/t4_framework_1.png" /></p>
+<img alt="t4-framework1" src="../_images/t4_framework_1.png" />
 <p>However, typically country data does not correspond directly to the compartments in the databook. For example, suppose we know</p>
 <ul class="simple">
 <li><p>The total number of people alive</p></li>
@@ -2706,10 +2706,10 @@
 </ul>
 <p>and have these quantities appear in the databook instead of the compartments themselves. We could achieve the required data entry using parameters. However, we can’t use the parameters to initialize compartments. This is why there is a separate system, ‘characteristics’, that allows expressions of groups of compartments to be used for initialization.</p>
 <p>We can set up the three characteristics defined above in a fairly straightforward way on the ‘Characteristics’ sheet. Rather than writing the formulas above with ‘+’ and ‘/’ operations, we instead provide a comma separated list of compartments (or other characteristics) to sum (in the ‘components’ column) and we provide the denominator separately in the ‘denominator’ column. So the corresponding characteristics sheet is</p>
-<p><img alt="t4-framework2" src="../_images/t4_framework_2.png" /></p>
+<img alt="t4-framework2" src="../_images/t4_framework_2.png" />
 <p>We will also remove the ‘Databook page’ for the compartments on the the compartments sheet, since we want to initialize the model using characteristics only.</p>
 <p>If we create a databook from the framework as usual, we will have updated data entry tables on the ‘Stocks’ sheet. We can then go ahead and fill them out with the initialization described above:</p>
-<p><img alt="t4-databook1" src="../_images/t4_databook_1.png" /></p>
+<img alt="t4-databook1" src="../_images/t4_databook_1.png" />
 <p>The framework and databook are available in the Atomica repository under <code class="docutils literal notranslate"><span class="pre">atomica/docs/tutorial/assets/t4_framework_1.xlsx</span></code> and <code class="docutils literal notranslate"><span class="pre">atomica/docs/tutorial/assets/t4_databook_1.xlsx</span></code>, respectively. We can now load these files in and run a simulation:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -2726,7 +2726,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0299s
+Elapsed time for running &#34;default&#34;: 0.0225s
 </pre></div></div>
 </div>
 <p>We now want to check that the initialization has been performed correctly. In the <code class="docutils literal notranslate"><span class="pre">result</span></code> we can retrieve the variables for the compartment sizes and inspect their values at the first timestep</p>
@@ -2773,7 +2773,7 @@ the ‘minimum norm’ solution which means that the inputs are distributed equa
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0281s
+Elapsed time for running &#34;default&#34;: 0.0219s
 sus = 600.00
 inf = 200.00
 rec = 200.00
@@ -2800,7 +2800,7 @@ rec = 200.00
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0282s
+Elapsed time for running &#34;default&#34;: 0.0209s
 sus = 0.00
 inf = 200.00
 rec = 200.00

@@ -2711,7 +2711,7 @@ existing data. These same parameters are then used for future projections.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0162s
+Elapsed time for running &#34;default&#34;: 0.0124s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2787,7 +2787,7 @@ methods.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0161s
+Elapsed time for running &#34;default&#34;: 0.0120s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2820,7 +2820,7 @@ the <code class="docutils literal notranslate"><span class="pre">sus</span></cod
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0212s
+Elapsed time for running &#34;default&#34;: 0.0110s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -2877,7 +2877,7 @@ Characteristic &#39;alive&#39;: Target value = [1500.]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0142s
+Elapsed time for running &#34;default&#34;: 0.00986s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -2913,7 +2913,7 @@ created in the <code class="docutils literal notranslate"><span class="pre">Para
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.857s
+Elapsed time for running &#34;default&#34;: 0.635s
 </pre></div></div>
 </div>
 <p>In the databook, there are two transfers, relating to aging and incarceration:</p>
@@ -2985,7 +2985,7 @@ Elapsed time for running &#34;default&#34;: 0.857s
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;atomica.parameters.Parameter at 0x7f8aceb29790&gt;
+&lt;atomica.parameters.Parameter at 0x7fb7645cd010&gt;
 [&lt;class &#39;atomica.parameters.Parameter&#39;&gt;, &lt;class &#39;atomica.utils.NamedItem&#39;&gt;]
 ————————————————————————————————————————————————————————————————————————
 Methods:
@@ -2996,15 +2996,15 @@ Properties:
   pops
 ————————————————————————————————————————————————————————————————————————
 _interpolation_method: &#39;linear&#39;
-              created: datetime.datetime(2025, 3, 10, 3, 6, 33,
-                       724607, tzinfo=tzu [...]
+              created: datetime.datetime(2025, 6, 18, 0, 58, 58,
+                       808689, tzinfo=tz [...]
         meta_y_factor: 1.0
-             modified: datetime.datetime(2025, 3, 10, 3, 6, 33,
-                       724620, tzinfo=tzu [...]
+             modified: datetime.datetime(2025, 6, 18, 0, 58, 58,
+                       808695, tzinfo=tz [...]
                  name: &#39;age_from_5-14&#39;
         skip_function: #0: &#39;15-64&#39;: None
                    ts: {&#39;15-64&#39;: &lt;atomica.utils.TimeSeries at
-                       0x7f8acd90a250&gt;
+                       0x7fb761e54590&gt;
                        [&lt;cl [...]
              y_factor: #0: &#39;15-64&#39;: 1.0
 ————————————————————————————————————————————————————————————————————————
@@ -3074,7 +3074,7 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-#0: &#39;adults&#39;: 1.3187073759094348
+#0: &#39;adults&#39;: 1.318704541772604
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -3102,7 +3102,7 @@ want to adjust the birth rate, and we will use <code class="docutils literal not
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0145s
+Elapsed time for running &#34;default&#34;: 0.0124s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -3126,7 +3126,7 @@ Elapsed time for running &#34;default&#34;: 0.0145s
 <li><p>Match drug-resistant/drug-susceptible split (adjusting proportion of infections that are drug-resistant)</p></li>
 </ol>
 <p>For complex models when considering how to proceed with a calibration, it can help to start with mapping the expected relationships between key input parameters that will be used for calibration and key output parameters for which data exists and that should be matched by the calibration, in terms of how changes might flow throughout the model.</p>
-<p><img alt="t2-calibration-mapping.png" src="../_images/t2_calibration_mapping.png" /></p>
+<img alt="t2-calibration-mapping.png" src="../_images/t2_calibration_mapping.png" />
 <p>From the diagram above, it can be seen that as is typically the case, population size (<code class="docutils literal notranslate"><span class="pre">alive</span></code>) has a large impact on everything else, but the number of disease-related deaths have only a minor impact on population size in return, so population size needs to be matched first. Incidence (<code class="docutils literal notranslate"><span class="pre">inci</span></code>) and prevalence (<code class="docutils literal notranslate"><span class="pre">inf</span></code>) have a strong cyclical relationship should be considered together, but force of infection and recovery rate have direct links to modifying each of those individually through
 changing the rate at which people are infected and changing the rate at which people recover. Disease-related deaths (<code class="docutils literal notranslate"><span class="pre">m_num</span></code>) can be considered last if it is not already closely matched from calibrating to prevalence. Because this may adjust the population size, an iterative cycle of calibration may be appropriate to get the best overall fit.</p>
 <p>A calibration might then proceed in the following order with three repeats:</p>
@@ -3159,7 +3159,7 @@ changing the rate at which people are infected and changing the rate at which pe
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0177s
+Elapsed time for running &#34;default&#34;: 0.0141s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -3222,11 +3222,11 @@ more likely there is a risk-based transition from a key population such as peopl
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-b_rate: y_factor = 1.0
-doth_rate: y_factor = 0.18439436075685067
-foi: y_factor = 1.3561435442794116
-rec_rate: y_factor = 0.12594321595907795
-m_rate: y_factor = 0.12464824049106461
+b_rate: y_factor = 1.9510181365002648
+doth_rate: y_factor = 0.979406194812327
+foi: y_factor = 1.4994731217622757
+rec_rate: y_factor = 0.12254807223188242
+m_rate: y_factor = 0.177967836893991
 </pre></div></div>
 </div>
 <p>Some of these values are low at around 0.15, and this can be attributed to the high value for prevalence (<code class="docutils literal notranslate"><span class="pre">inf</span></code>) in the databook requiring a low value for each of <code class="docutils literal notranslate"><span class="pre">doth_rate</span></code>, <code class="docutils literal notranslate"><span class="pre">rec_rate</span></code>, and <code class="docutils literal notranslate"><span class="pre">m_rate</span></code>. Individually these are not outside of a ‘reasonable’ range for calibration <code class="docutils literal notranslate"><span class="pre">y_factors</span></code> but as they are all needed to fit a single data point this might suggest a second look at the reliability of original data values for prevalence in this project.</p>

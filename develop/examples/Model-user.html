@@ -2711,7 +2711,7 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.06s
+Elapsed time for running &#34;default&#34;: 0.553s
 </pre></div></div>
 </div>
 <p>The plotting documentation discusses how to generate plots in detail. This documentation will thus focus on methods and functionality of the <code class="docutils literal notranslate"><span class="pre">Result</span></code> object itself, with a view to</p>
@@ -3018,11 +3018,11 @@ WARNING {plotting.py:1186} - Series(parset_default,total,im_act_div) contains Na
 </pre></div></div>
 </div>
 <p>This produces a spreadsheet like the one shown below:</p>
-<p><img alt="resultsexport1" src="../_images/results_export1.jpg" /></p>
+<img alt="resultsexport1" src="../_images/results_export1.jpg" />
 <p>Additional sheets will be present showing with numerical values for any cascades that are present:</p>
-<p><img alt="resultsexport1cascades" src="../_images/results_export1_cascades.jpg" /></p>
+<img alt="resultsexport1cascades" src="../_images/results_export1_cascades.jpg" />
 <p>If any parameters are targetable by programs, the exported results will also include the value of those parameters, which facilitates monitoring program overwrites.</p>
-<p><img alt="resultsexport1targets" src="../_images/results_export1_targets.jpg" /></p>
+<img alt="resultsexport1targets" src="../_images/results_export1_targets.jpg" />
 <p>If programs are present, an additional sheet will be written with program-related outputs. To demonstrate this, we will now first generate some scenario results:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -3039,9 +3039,9 @@ WARNING {plotting.py:1186} - Series(parset_default,total,im_act_div) contains Na
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 1.66s
-Elapsed time for running &#34;default&#34;: 1.39s
-Elapsed time for running &#34;default&#34;: 1.14s
+Elapsed time for running &#34;default&#34;: 0.736s
+Elapsed time for running &#34;default&#34;: 0.928s
+Elapsed time for running &#34;default&#34;: 0.826s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -3054,7 +3054,7 @@ WARNING {plotting.py:1186} - Series(Default budget,total,im_act_div) contains Na
 </pre></div></div>
 </div>
 <p>We have now exported results for a single simulation with programs active. The exported spreadsheet now contains a ‘Programs’ sheet with contents like:</p>
-<p><img alt="resultsexport2programs" src="../_images/results_export2_programs.jpg" /></p>
+<img alt="resultsexport2programs" src="../_images/results_export2_programs.jpg" />
 <p>We next turn to the question of exporting multiple results. The scenario set that we ran above produced 3 results. We can write all three to a workbook by passing all of them to <code class="docutils literal notranslate"><span class="pre">at.export_results</span></code></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -3079,7 +3079,7 @@ WARNING {plotting.py:1186} - Series(Zero budget,total,im_act_div) contains NaNs
 </pre></div></div>
 </div>
 <p>This produces a workbook where all of the results are displayed together. For example, the original ‘Plot data’ sheet now shows:</p>
-<p><img alt="resultsexport3plotdata" src="../_images/results_export3_plotdata.jpg" /></p>
+<img alt="resultsexport3plotdata" src="../_images/results_export3_plotdata.jpg" />
 <p>with similar changes to the other sheets as well.</p>
 <p>By default, the results are shown with each quantity (e.g. parameter, program) being in a separate table, that is grouped by result, then by population. So in the screenshot above, the table is for the ‘Population size’ quantity, on the left there are blocks for the ‘Default budget’ scenario, the ‘Doubled budget’ scenario etc. and then within each block, the population are shown.</p>
 <p>Sometimes it is useful to group the quantities differently. For example, if we wanted to compare the number of people in each of the populations under each scenario. To do this, simply specify a different grouping order. The default grouping order described and shown above is <code class="docutils literal notranslate"><span class="pre">('output','result','pop')</span></code>. If we wanted to place all of the same populations together, specify the order as <code class="docutils literal notranslate"><span class="pre">('output','pop','result')</span></code> instead.</p>
@@ -3106,7 +3106,7 @@ WARNING {plotting.py:1186} - Series(Zero budget,total,im_act_div) contains NaNs
 </pre></div></div>
 </div>
 <p>This produces the following output</p>
-<p><img alt="resultsexport4plotdata" src="../_images/results_export4_plotdata.jpg" /></p>
+<img alt="resultsexport4plotdata" src="../_images/results_export4_plotdata.jpg" />
 <p>Notice how the values are grouped differently now. The ordering is specified independently for the plot data, cascades, and programs - see the documentation for the <code class="docutils literal notranslate"><span class="pre">export_results</span></code> function for full details.</p>
 <p>Finally, note that it was only necessary to pass a list of results to <code class="docutils literal notranslate"><span class="pre">at.export_results</span></code> - this means that it is possible to combine arbitrary results into a single spreadsheet as required (they do not all have to come from the same set of scenarios or optimization).</p>
 </section>
@@ -3122,7 +3122,7 @@ WARNING {plotting.py:1186} - Series(Zero budget,total,im_act_div) contains NaNs
 </div>
 </div>
 <p>This produces an Excel file with the following content:</p>
-<p><img alt="resultsexport5a" src="../_images/results_export5a.jpg" /></p>
+<img alt="resultsexport5a" src="../_images/results_export5a.jpg" />
 <p>Some rows have been hidden for clarity (see row numbers above). The raw output is quite detailed - for the TB example model, there are over 2000 rows of output.</p>
 <p>In addition, <code class="docutils literal notranslate"><span class="pre">Result.export_raw()</span></code> returns a Pandas <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> with the contents that get written to the file - in fact, if you provide a filename when calling <code class="docutils literal notranslate"><span class="pre">export_raw()</span></code>, the only difference is that <code class="docutils literal notranslate"><span class="pre">export_raw()</span></code> automatically writes the returned dataframe to the specified file.</p>
 <div class="nbinput docutils container">
