@@ -2697,10 +2697,10 @@
 ‘Recovered’.</p>
 <p>In the calculation above, the natural recovery rate of 20% is readily entered in the databook. However, we wish to parametrize the effect of the intervention in terms of spending, unit cost, and the impact of the intervention for those it reaches. Although it would be possible to implement the calculation via parameter functions, it quickly becomes cumbersome if there are multiple interventions affecting the same model parameter. Therefore, we introduce a second pathway for calculating parameter
 values, using <strong>‘Programs’</strong>. A schematic overview of how programs relate to model parameter values is shown below:</p>
-<p><img alt="t6-parameter-overview" src="../_images/t6_parameter_overwrite.png" /></p>
+<img alt="t6-parameter-overview" src="../_images/t6_parameter_overwrite.png" />
 <p>The role of programs is to generate parameter values as a function of spending and coverage. These parameter values then replace the parameter values from the databook during a simulation.</p>
 <p>Parameter values from the <em>databook</em> are stored in a <em>ParameterSet</em> which is used to produce results for any given databook and calibration. Similarly, program-specific inputs are read in from the <em>program book</em> which maps to a <em>ProgramSet</em>. A ProgramSet together with a set of <em>program instructions</em> is used to generate results incorporating the effect of programs. A schematic overview of how these inputs relate to results is shown below:</p>
-<p><img alt="t6-model-structure" src="../_images/t6_model_structure.png" /></p>
+<img alt="t6-model-structure" src="../_images/t6_model_structure.png" />
 <p>We will now implement the SIR model with a treatment program described above, to see how these different components are instantiated and used within Atomica. First, we will load in a framework and databook for a simple SIR model:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -2714,7 +2714,7 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 </div>
 </div>
 <p>This framework is much the same as the SIR framework in previous tutorials, except that on the parameters sheet, an additional column called ‘Targetable’ is present. This column specifies whether certain parameters should appear in program books. Since we know that the treatment program is going to change the value of the disease recovery rate, this parameter has a ‘y’ in the ‘Targetable’ column:</p>
-<p><img alt="t6-framework-targetable" src="../_images/t6_framework_targetable.png" /></p>
+<img alt="t6-framework-targetable" src="../_images/t6_framework_targetable.png" />
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -2735,7 +2735,7 @@ values, using <strong>‘Programs’</strong>. A schematic overview of how progr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0278s
+Elapsed time for running &#34;default&#34;: 0.0106s
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -2809,11 +2809,11 @@ Object saved to /home/vsts/work/1/s/docs/tutorial/temp.xlsx.
 </pre></div></div>
 </div>
 <p>The program book contains three sheets, corresponding to the three key attributes being captured. On the ‘Program targeting’ sheet, the populations and compartments reached by the program are entered. For the treatment program here, we select only the ‘Infected’ compartment. We also need to enter ‘Y’ for the ‘Adults’ population.</p>
-<p><img alt="t6-sheet-targeting" src="../_images/t6_sheet_targeting.png" /></p>
+<img alt="t6-sheet-targeting" src="../_images/t6_sheet_targeting.png" />
 <div class="alert alert-block alert-info"><p>Note that this is essentially specifying the coverage denominator for the program - the denominator at any point in time is the sum of the number of people in all selected compartments within all selected populations</p>
 </div><p>This sheet should also be used to set the name of the programs. To add and remove programs, it is easiest to use the corresponding methods of the ‘ProgramSet’ object, rather than manually editing the program book.</p>
 <p>On the spending data sheet, we enter the unit cost of the program, and also spending on the program.</p>
-<p><img alt="t6-sheet-spending" src="../_images/t6_sheet_spending.png" /></p>
+<img alt="t6-sheet-spending" src="../_images/t6_sheet_spending.png" />
 <p>Analogous to the databook, the program book should contain actual data values or future projections not dependent on the model. Typically, this would mean that</p>
 <ul class="simple">
 <li><p>The spending values would only correspond to past years, reflecting actual investment in the program</p></li>
@@ -2828,7 +2828,7 @@ Object saved to /home/vsts/work/1/s/docs/tutorial/temp.xlsx.
 <p>Therefore, outside of coverage scenarios (discussed in Tutorial 7), the number of people and fraction covered is an <em>output</em> resulting from spending input and the compartment sizes during a simulation.</p>
 <div class="alert alert-block alert-danger"><p>The ‘coverage’ row on the ‘Spending data’ sheet is for entering real-world reference coverage values only. This allows the computed coverage in the model to be readily compared to existing data. The values entered on this row do not affect the simulation in any way.</p>
 </div><p>Finally, the impact of the program is entered on the ‘Program effects’ sheet:</p>
-<p><img alt="t6-sheet-effects" src="../_images/t6_sheet_effects.png" /></p>
+<img alt="t6-sheet-effects" src="../_images/t6_sheet_effects.png" />
 <p>This sheet consists of a set of sub-tables. Each sub-table corresponds to a parameter in the model - any parameter marked as ‘Targetable’ in the framework will appear on this sheet. There are input cells provided for the baseline value for the parameter in the absence of any programs. Then there are columns for each program specifying the parameter value that applies to individuals covered by the program (or equivalently, the parameter value that would apply if the program coverage was <code class="docutils literal notranslate"><span class="pre">1.0</span></code>
 for that program, and <code class="docutils literal notranslate"><span class="pre">0</span></code> for all other programs). If nobody receives the treatment intervention, then the parameter value that should apply is the natural recovery rate. Therefore, we enter a value of 0.2 in the ‘baseline’ column. Then, the treatment program is defined to have a 90% treatment success rate so we enter 0.9 as the program effect.</p>
 <div class="alert alert-block alert-info"><p>For single programs in isolation, the final parameter value is equal to the baseline value, plus the coverage multiplied by the program’s effect value. If there are multiple programs, the results are qualitatively similar, but see the full program documentation for details on how to capture interactions between programs.</p>
@@ -2875,8 +2875,8 @@ for that program, and <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0161s
-Elapsed time for running &#34;default&#34;: 0.0109s
+Elapsed time for running &#34;default&#34;: 0.00792s
+Elapsed time for running &#34;default&#34;: 0.00938s
 </pre></div></div>
 </div>
 <p>We can now plot the recovery rate parameter and the resulting number of people flowing into the ‘recovered’ state each year.</p>
@@ -2959,7 +2959,7 @@ match this scenario.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0107s
+Elapsed time for running &#34;default&#34;: 0.00953s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -3001,48 +3001,54 @@ WARNING {reconciliation.py:243} - Reconcilation when parameter is in number unit
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Program set &#39;default&#39; will be ignored while running project &#39;default&#39; due to the absence of program set instructions
-Elapsed time for running &#34;default&#34;: 0.0230s
+Elapsed time for running &#34;default&#34;: 0.00746s
 Reconciling in 2020.00, evaluating from 2020.00 up to 2021.00
 ASD: Launching with random seed None
-    step=1 choice=0, par=0, pm=0.0, origval=100.0, newval=110.0
-     step 1 (0.0 s) -- (orig:0.01210 | best:0.01210 | new:0.01397 | diff:0.001867)
-    step=2 choice=1, par=0, pm=1.0, origval=100.0, newval=90.0
-     step 2 (0.0 s) ++ (orig:0.01210 | best:0.01210 | new:0.01000 | diff:-0.002100)
+    step=1 choice=1, par=0, pm=1.0, origval=100.0, newval=90.0
+     step 1 (0.0 s) ++ (orig:0.01210 | best:0.01210 | new:0.01000 | diff:-0.002100)
+    step=2 choice=0, par=0, pm=0.0, origval=90.0, newval=100.0
+     step 2 (0.0 s) -- (orig:0.01210 | best:0.01000 | new:0.01210 | diff:0.002100)
     step=3 choice=1, par=0, pm=1.0, origval=90.0, newval=70.0
      step 3 (0.0 s) ++ (orig:0.01210 | best:0.01000 | new:0.005102 | diff:-0.004898)
     step=4 choice=1, par=0, pm=1.0, origval=70.0, newval=30.0
      step 4 (0.0 s) -- (orig:0.01210 | best:0.005102 | new:0.01000 | diff:0.004898)
-    step=5 choice=1, par=0, pm=1.0, origval=70.0, newval=50.0
-     step 5 (0.0 s) ++ (orig:0.01210 | best:0.005102 | new:0.0004000 | diff:-0.004702)
-    step=6 choice=1, par=0, pm=1.0, origval=50.0, newval=10.0
-     step 6 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.4900 | diff:0.4896)
-    step=7 choice=1, par=0, pm=1.0, origval=50.0, newval=30.0
-     step 7 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.01000 | diff:0.009600)
-    step=8 choice=1, par=0, pm=1.0, origval=50.0, newval=40.0
-     step 8 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.0006250 | diff:0.0002250)
-    step=9 choice=1, par=0, pm=1.0, origval=50.0, newval=45.0
-     step 9 (0.0 s) ++ (orig:0.01210 | best:0.0004000 | new:0.0000000000000000000000000000000007704 | diff:-0.0004000)
-    step=10 choice=1, par=0, pm=1.0, origval=45.0, newval=35.0
-     step 10 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.003265 | diff:0.003265)
-    step=11 choice=0, par=0, pm=0.0, origval=45.0, newval=50.0
-     step 11 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0004000 | diff:0.0004000)
-    step=12 choice=1, par=0, pm=1.0, origval=45.0, newval=40.0
-     step 12 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0006250 | diff:0.0006250)
-    step=13 choice=0, par=0, pm=0.0, origval=45.0, newval=47.5
-     step 13 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0001108 | diff:0.0001108)
-    step=14 choice=0, par=0, pm=0.0, origval=45.0, newval=46.25
-     step 14 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.00002922 | diff:0.00002922)
+    step=5 choice=0, par=0, pm=0.0, origval=70.0, newval=75.0
+     step 5 (0.0 s) -- (orig:0.01210 | best:0.005102 | new:0.006400 | diff:0.001298)
+    step=6 choice=0, par=0, pm=0.0, origval=70.0, newval=72.5
+     step 6 (0.0 s) -- (orig:0.01210 | best:0.005102 | new:0.005755 | diff:0.0006530)
+    step=7 choice=1, par=0, pm=1.0, origval=70.0, newval=50.0
+     step 7 (0.0 s) ++ (orig:0.01210 | best:0.005102 | new:0.0004000 | diff:-0.004702)
+    step=8 choice=1, par=0, pm=1.0, origval=50.0, newval=10.0
+     step 8 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.4900 | diff:0.4896)
+    step=9 choice=1, par=0, pm=1.0, origval=50.0, newval=30.0
+     step 9 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.01000 | diff:0.009600)
+    step=10 choice=1, par=0, pm=1.0, origval=50.0, newval=40.0
+     step 10 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.0006250 | diff:0.0002250)
+    step=11 choice=0, par=0, pm=0.0, origval=50.0, newval=51.25
+     step 11 (0.0 s) -- (orig:0.01210 | best:0.0004000 | new:0.0005949 | diff:0.0001949)
+    step=12 choice=1, par=0, pm=1.0, origval=50.0, newval=45.0
+     step 12 (0.0 s) ++ (orig:0.01210 | best:0.0004000 | new:0.0000000000000000000000000000000007704 | diff:-0.0004000)
+    step=13 choice=1, par=0, pm=1.0, origval=45.0, newval=35.0
+     step 13 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.003265 | diff:0.003265)
+    step=14 choice=1, par=0, pm=1.0, origval=45.0, newval=40.0
+     step 14 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0006250 | diff:0.0006250)
     step=15 choice=1, par=0, pm=1.0, origval=45.0, newval=42.5
      step 15 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0001384 | diff:0.0001384)
     step=16 choice=1, par=0, pm=1.0, origval=45.0, newval=43.75
      step 16 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.00003265 | diff:0.00003265)
-    step=17 choice=0, par=0, pm=0.0, origval=45.0, newval=45.625
-     step 17 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007506 | diff:0.000007506)
-    step=18 choice=0, par=0, pm=0.0, origval=45.0, newval=45.3125
-     step 18 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000001902 | diff:0.000001902)
-    step=19 choice=1, par=0, pm=1.0, origval=45.0, newval=44.375
-     step 19 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007935 | diff:0.000007935)
-===  Absolute improvement too small (0 &lt; 0.000001000) (19 steps, orig: 0.01210 | best: 0.0000000000000000000000000000000007704 | ratio: 6.366710559957805e-32) ===
+    step=17 choice=1, par=0, pm=1.0, origval=45.0, newval=44.375
+     step 17 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007935 | diff:0.000007935)
+    step=18 choice=0, par=0, pm=0.0, origval=45.0, newval=45.625
+     step 18 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000007506 | diff:0.000007506)
+    step=19 choice=1, par=0, pm=1.0, origval=45.0, newval=44.6875
+     step 19 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000001956 | diff:0.000001956)
+    step=20 choice=0, par=0, pm=0.0, origval=45.0, newval=45.3125
+     step 20 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.000001902 | diff:0.000001902)
+    step=21 choice=0, par=0, pm=0.0, origval=45.0, newval=45.15625
+     step 21 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0000004789 | diff:0.0000004789)
+    step=22 choice=1, par=0, pm=1.0, origval=45.0, newval=44.84375
+     step 22 (0.0 s) -- (orig:0.01210 | best:0.0000000000000000000000000000000007704 | new:0.0000004856 | diff:0.0000004856)
+===  Absolute improvement too small (0 &lt; 0.000001000) (22 steps, orig: 0.01210 | best: 0.0000000000000000000000000000000007704 | ratio: 6.366710559957805e-32) ===
 </pre></div></div>
 </div>
 <p>Regardless of how reconciliation is performed, the idea is that the result of reconciliation is a <em>reconciled progset</em> that provides a better match to a given parameter set in the program start year. We expected based on the un-reconciled result that reconciliation based on unit cost should result in decreasing the unit cost to achieve an increase in recovery rate. We can look at the reconciled unit cost to confirm this is what the automatic reconciliation has done:</p>
@@ -3082,7 +3088,7 @@ not be possible to reach the target recovery rate.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0241s
+Elapsed time for running &#34;default&#34;: 0.00986s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">

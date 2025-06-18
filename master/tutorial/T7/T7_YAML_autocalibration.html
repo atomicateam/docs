@@ -2744,7 +2744,7 @@ autocalibrating Atomica models to a reasonable level, but additional tweaking ma
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 5.97s
+Elapsed time for running &#34;default&#34;: 3.93s
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -3162,7 +3162,7 @@ yaml_instructions = yaml.load(file, Loader=yaml.FullLoader)
 <section id="Exercise:-Worked-Example">
 <h2>Exercise: Worked Example<a class="headerlink" href="#Exercise:-Worked-Example" title="Link to this heading">¶</a></h2>
 <p>Now that we understand what all the working parts of a YAML file are, let’s put it all together. For each question, write a YAML file to calibrate the model as described. Each question will consist of incremental additions to the previous solution.</p>
-<p><strong>Question 1.</strong><em>We want to do a basic population calibration, where we calibrate the birth rate and migration rate to match the data corresponding to the total number of people alive. We also want to calibrate the death rate. What should this YAML file look like?</em></p>
+<p><strong>Question 1.</strong> <em>We want to do a basic population calibration, where we calibrate the birth rate and migration rate to match the data corresponding to the total number of people alive. We also want to calibrate the death rate. What should this YAML file look like?</em></p>
 <p><strong>Hint</strong>: Open the framework and look at the <code class="docutils literal notranslate"><span class="pre">Compartments</span></code>, <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> and <code class="docutils literal notranslate"><span class="pre">Characteristics</span></code> pages. The <code class="docutils literal notranslate"><span class="pre">Code</span> <span class="pre">Names</span></code> and <code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">Names</span></code> show us how we have to write the parameter names in the YAML file, and what quantities they correspond to. Those with a value in the <code class="docutils literal notranslate"><span class="pre">Databook</span> <span class="pre">Page</span></code> column have data values supplied, and can therefore be used as measurables.</p>
 <p><strong>Hint 2</strong>: Some of the parameter <code class="docutils literal notranslate"><span class="pre">Code</span> <span class="pre">Names</span></code> and <code class="docutils literal notranslate"><span class="pre">Display</span> <span class="pre">Names</span></code> in the databook are as follows:</p>
 <table class="docutils align-default"><thead><tr><th><p>Framework Sheet</p>
@@ -3193,19 +3193,19 @@ yaml_instructions = yaml.load(file, Loader=yaml.FullLoader)
 </td><td><p>alive</p>
 </td><td><p>Total population</p>
 </td><td><p>demographic</p>
-</td></tr></tbody></table><p><strong>Question 2.</strong><em>A single calibration run may not be enough to get good results, so let’s loop over our simple population calibration ten times. How would we make that change to the YAML file?</em></p>
+</td></tr></tbody></table><p><strong>Question 2.</strong> <em>A single calibration run may not be enough to get good results, so let’s loop over our simple population calibration ten times. How would we make that change to the YAML file?</em></p>
 <p><strong>Hint</strong>: Use the <code class="docutils literal notranslate"><span class="pre">repeats</span></code> keyword.</p>
-<p><strong>Question 3.</strong><em>Say that, for this particular project, we are only interested in calibrating results from 2005 to 2040. How would we specify this in the YAML file to reduce calibration time?</em></p>
+<p><strong>Question 3.</strong> <em>Say that, for this particular project, we are only interested in calibrating results from 2005 to 2040. How would we specify this in the YAML file to reduce calibration time?</em></p>
 <p><strong>Hint</strong>: Using the <code class="docutils literal notranslate"><span class="pre">cal_start</span></code> and <code class="docutils literal notranslate"><span class="pre">cal_end</span></code> keywords.</p>
-<p><strong>Question 4.</strong><em>When calibrating the birth rate, it only really makes sense to calibrate the 0-4 population. Modify the YAML file to reflect this.</em></p>
+<p><strong>Question 4.</strong> <em>When calibrating the birth rate, it only really makes sense to calibrate the 0-4 population. Modify the YAML file to reflect this.</em></p>
 <p><strong>Hint</strong>: We place the parameter code name and population name in a tuple.</p>
-<p><strong>Question 5.</strong><em>Say we know that our data source underestimates the birth rate. Let’s set the starting y_factor for this parameter to 1.2 to speed up the optimization.</em></p>
+<p><strong>Question 5.</strong> <em>Say we know that our data source underestimates the birth rate. Let’s set the starting y_factor for this parameter to 1.2 to speed up the optimization.</em></p>
 <p><strong>Hint</strong>: Use <code class="docutils literal notranslate"><span class="pre">starting_y_factor</span></code>.</p>
-<p><strong>Question 6.</strong><em>We want to avoid the presence of transients in our calibrated simulation. Let’s initialize the calibration in order to eliminate any jumps.</em></p>
+<p><strong>Question 6.</strong> <em>We want to avoid the presence of transients in our calibrated simulation. Let’s initialize the calibration in order to eliminate any jumps.</em></p>
 <p><strong>Hint</strong>: Use <code class="docutils literal notranslate"><span class="pre">set_initialization</span></code> after the calibration blocks, and make sure the initialization gets re-calculated in every loop!</p>
-<p><strong>Question 7.</strong><em>We also want to clear the previous initialization every time we make a new one, instead of using information from the previous initialization. How can we update the YAML file to reflect this?</em></p>
+<p><strong>Question 7.</strong> <em>We also want to clear the previous initialization every time we make a new one, instead of using information from the previous initialization. How can we update the YAML file to reflect this?</em></p>
 <p><strong>Hint</strong>: Use <code class="docutils literal notranslate"><span class="pre">clear_initialization</span></code>, and make sure the initialization gets cleared and re-calculated in every loop!</p>
-<p><strong>Question 8.</strong><em>We are almost ready to run the YAML calibration! Now, what instructions do we need to add to automatically save our population calibration once it is done?</em></p>
+<p><strong>Question 8.</strong> <em>We are almost ready to run the YAML calibration! Now, what instructions do we need to add to automatically save our population calibration once it is done?</em></p>
 <p><strong>Hint</strong>: Use <code class="docutils literal notranslate"><span class="pre">save_calibration</span></code> and specify a <code class="docutils literal notranslate"><span class="pre">fname</span></code>.</p>
 <p>All solutions to the worked example can be found in the <code class="docutils literal notranslate"><span class="pre">docs/tutorial/T7/calibrations</span></code> folder of the Atomica repository. The calibration obtained after running the last YAML file in this exercise yields the following simulation result:</p>
 <p><img alt="Worked example calibration result" src="../../_images/T7_plot_3_worked_example.png" /></p>

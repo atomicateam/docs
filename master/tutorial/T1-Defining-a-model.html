@@ -2684,14 +2684,14 @@
 <h1>T1 - Defining a model<a class="headerlink" href="#T1---Defining-a-model" title="Link to this heading">¶</a></h1>
 <p><em>This tutorial assumes that you have already installed Atomica</em></p>
 <p>Atomica is a Python-based toolbox for simulating compartment models, primarily in epidemiology. The Cascade Analysis Tool is a web application that uses Atomica to perform simulations.</p>
-<p><img alt="t1-atomica-overview" src="../_images/t1_atomica_overview.png" /></p>
+<img alt="t1-atomica-overview" src="../_images/t1_atomica_overview.png" />
 <p>On the input side, Atomica takes in three Excel files. These are</p>
 <ul class="simple">
 <li><p>The <strong>framework file</strong>, which specifies the model itself</p></li>
 <li><p>The <strong>databook</strong>, which takes in values for model parameters</p></li>
 <li><p>The <strong>program book</strong>, which both defines available programs and takes in values (spending and effects)</p></li>
 </ul>
-<p><img alt="t1-atomica-tasks" src="../_images/t1_atomica_tasks.png" /></p>
+<img alt="t1-atomica-tasks" src="../_images/t1_atomica_tasks.png" />
 <p>In this tutorial, we will go through the process of implementing a basic SIR model with population dynamics and transmission dynamics.</p>
 <p>The first step in implementing a disease model is to plan the dynamics of the disease itself. There are broadly two types of models</p>
 <ul class="simple">
@@ -2706,9 +2706,9 @@
 </ul>
 <p>The main point to keep in mind at the initial stage of designing the compartment structure of the disease is that the structure is replicated across populations. In the second stage of model design, we think about interactions between populations and movement of people between populations (e.g. aging, HIV infection, incarceration), but at the initial stage, we focus on the flow of the disease itself.</p>
 <p>Thus, the first step in model development is to design the compartment structure representing individual stages. For the SIR model, this corresponds to ‘susceptible, ‘infected’, and ‘recovered’. These are all of the states that we would need in order to implement a simple cohort model.</p>
-<p><img alt="t1-schematic-1" src="../_images/t1_schematic_1.png" /></p>
+<img alt="t1-schematic-1" src="../_images/t1_schematic_1.png" />
 <p>For a fully dynamic model, we need to also account for births and deaths. These are implemented as special compartments. Source compartments (used to model births, and external migration) have an inexhaustible supply of people, and people in sink compartments (used to model deaths, emigration) do not count towards to the total population size. Transitions into source compartments are prohibited, as are transitions out of sink compartments.</p>
-<p><img alt="t1-schematic-2" src="../_images/t1_schematic_2.png" /></p>
+<img alt="t1-schematic-2" src="../_images/t1_schematic_2.png" />
 <p>We also need to outline the transitions between compartments in the model. Each arrow on the diagram is referred to as a <em>link</em>. The value of each link - that is, the number of people that are moved from one compartment to another via that arrow in a single timestep - is governed by a <em>parameter</em>. The parameters correspond to the labels on the diagram. Note that</p>
 <ul class="simple">
 <li><p>The same parameter can be used for multiple links. For example, we can define a single background death rate (‘Other death’) and have that death rate apply to everyone in the model</p></li>
@@ -2728,7 +2728,7 @@
 <li><p>Transitions</p></li>
 </ul>
 <p>To start with, we need to specify the compartments in the model. We provide both a short name (used internally, easy to read and type) and a display name (used for plotting and presentation). Further, we also need to mark the source and sink compartments. The completed compartments sheet for the model schematic above is shown below.</p>
-<p><img alt="t1-framework-1" src="../_images/t1_framework_1.png" /></p>
+<img alt="t1-framework-1" src="../_images/t1_framework_1.png" />
 <p>Next, we need to define the parameters in the model. Our initial pass at filling out the parameters sheet will focus on the parameters that we require for transitions. For parameters associated with transitions, we need to specify what units they are in. The 4 available unit types are</p>
 <ul class="simple">
 <li><p>Number (default is per year)</p></li>
@@ -2738,9 +2738,9 @@
 </ul>
 <p>Since we cannot define a proportion of a source compartment (as the source compartment represents an infinite reservoir of people), the outflows from the source compartment must come from parameters in ‘number’ units. For the other transitions, we could choose any units (apart from proportion) depending on available data or what would be easiest to calculate. Probability tends to be the simplest to work with in models, but harder to obtain data for. In this case, we will specify all of the
 remaining quantities in probability units. Our framework now has the following content on the parameters sheet:</p>
-<p><img alt="t1-framework-2" src="../_images/t1_framework_2.png" /></p>
+<img alt="t1-framework-2" src="../_images/t1_framework_2.png" />
 <p>Next, we need to fill out the transitions sheet. The transitions sheet contains a matrix with the names of all of the compartments in the model in the first row and first column. Each cell represents a transition from the row compartment, to the column compartment. If a transition between compartments exists, enter the name of the parameter(s) governing that transition in the cell. For the compartments and parameters defined above, the transition structure in the framework is as follows:</p>
-<p><img alt="t1-framework-3" src="../_images/t1_framework_3.png" /></p>
+<img alt="t1-framework-3" src="../_images/t1_framework_3.png" />
 <p>This is a matrix/table representation of the location of the arrows in the original schematic diagram. Notice how a comma separated list of parameters <code class="docutils literal notranslate"><span class="pre">'doth_rate,m_rate'</span></code> is used for the transition between <code class="docutils literal notranslate"><span class="pre">inf</span></code> and <code class="docutils literal notranslate"><span class="pre">death</span></code>, which has two arrows in the schematic.</p>
 <p>Finally, in order to run a simulation, we need to specify</p>
 <ul class="simple">
@@ -2756,12 +2756,12 @@ required, depending on what layout would be most logical and useful for users fi
 <li><p>Separating quantities that the user is more or less likely to need to edit (e.g. a separate sheet for constants they are unlikely to need to change)</p></li>
 </ul>
 <p>If you specify a ‘default value’ for a quantity in the framework, then that quantity will be pre-filled in the databook. This can be useful for constants that the user is likely to need to modify. We will introduce an ‘infectiousness’ parameter, and assign databook pages for all of the quantities that need to appear in the databook. We will also enter default values for infectiousness and the background death rate, to illustrate how these are pre-filled. The parameters sheet now reads:</p>
-<p><img alt="t1-framework-4" src="../_images/t1_framework_4.png" /></p>
+<img alt="t1-framework-4" src="../_images/t1_framework_4.png" />
 <p>Lastly, we need to define the force of infection. This is done by entering a formula to calculate the value of the <code class="docutils literal notranslate"><span class="pre">foi</span></code> parameter at each timestep. The formula can refer to any other parameter or compartment in the model. Suppose that the probability of being infected was given by the infectiousness multiplied by the prevalance. The prevalance is given by dividing the number of people infected by the sum of all people in the model. So a suitable formula to use would be
 <code class="docutils literal notranslate"><span class="pre">infx*inf/(sus+inf+rec)</span></code> and we can enter this as the parameter’s function. So our parameters sheet finally reads:</p>
-<p><img alt="t1-framework-5" src="../_images/t1_framework_5.png" /></p>
+<img alt="t1-framework-5" src="../_images/t1_framework_5.png" />
 <p>On the compartments sheet, we need to obtain the initial compartment sizes via the databook. At least one compartment needs to have a value drawn from the databook (although this can be done indirectly, as we will see later on). This can be done by entering a databook page for the compartment. Otherwise, if a compartment does not have any databook information provided in order to initialize it, it will be assigned an initial value of 0. Our compartment sheet is then finally:</p>
-<p><img alt="t1-framework-6" src="../_images/t1_framework_6.png" /></p>
+<img alt="t1-framework-6" src="../_images/t1_framework_6.png" />
 <p>Lastly, the ‘Characteristics’ sheet contains some placeholder content in the template. As we do not have any characteristics yet, remove all of the rows other than the header row. Similarly, remove the placeholder content in the ‘Interactions’ sheet, the ‘Cascades’ sheet, and the ‘Plots’ sheet.</p>
 <p>Now we have finished writing the framework file. This example is saved in the Atomica repository under <code class="docutils literal notranslate"><span class="pre">atomica/docs/tutorial/assets/t1_framework_1.xlsx</span></code>.</p>
 <section id="Generating-a-databook">
@@ -2830,15 +2830,15 @@ Object saved to /home/vsts/work/1/s/docs/tutorial/t1_temp.xlsx.
 ignored and will be formatted red as a result).</p>
 <div class="alert alert-block alert-warning"><p>Grey cells do not mean that the values that are unused or that they cannot be changed! They simply reflect the fact that data has previously been entered for the quantity, so no further inputs are required in order to run the model. This is to help facilitate end-users filling out databooks by focusing on blue cells to populate missing data.</p>
 </div><p>We can go ahead and fill in the the population definitions sheet now with an example population, ‘adults’:</p>
-<p><img alt="t1-databook-1" src="../_images/t1_databook_1.png" /></p>
+<img alt="t1-databook-1" src="../_images/t1_databook_1.png" />
 <p>On the ‘Stocks’ sheet, we have two data entry tables, one for ‘Susceptible’, and one for ‘Infected’. These are the two compartments that we had assigned databook pages for in the framework. We will again go ahead and fill in some values for these compartments.</p>
-<p><img alt="t1-databook-2" src="../_images/t1_databook_2.png" /></p>
+<img alt="t1-databook-2" src="../_images/t1_databook_2.png" />
 <p>When a simulation is run, the initial compartment sizes are obtained by interpolating the values entered into the databook onto the simulation start year. If only a single value is provided, that value will be used for any simulation start year.</p>
 <div class="alert alert-block alert-success"><p>Uncertainty values can be used to account for uncertainty in Atomica results. However, this is computationally expensive and therefore is not performed automatically. Usually, the uncertainty cells can be left empty, but it is best practice to have users estimate and enter uncertainty in the databook from the outset, even if it won’t be used initially.</p>
 </div><p>Finally, the ‘Flows’ sheet with parameters has an additional data entry column for a ‘constant’ value. This allows time-independent constant values to be specified without having to assign them to a specific year.</p>
-<p><img alt="t1-databook-3" src="../_images/t1_databook_3.png" /></p>
+<img alt="t1-databook-3" src="../_images/t1_databook_3.png" />
 <p>Notice how the default values in the framework have been pre-filled in the ‘constant’ column. Grey cells represent cells that users do not need to enter any values for, so when filling out a databook, they can focus on just the blue cells. We will now go ahead and fill in some values for the parameters</p>
-<p><img alt="t1-databook-4" src="../_images/t1_databook_4.png" /></p>
+<img alt="t1-databook-4" src="../_images/t1_databook_4.png" />
 <p>Some additional things to notice in the example above</p>
 <ul class="simple">
 <li><p>Time-specific values take precedence over constant values. If any time-specific values are provided, the ‘constant’ cell in the relevant row will be locked out. It will turn red if a value has been entered in that cell, to indicate that the value won’t be used</p></li>
@@ -2865,7 +2865,7 @@ ignored and will be formatted red as a result).</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0214s
+Elapsed time for running &#34;default&#34;: 0.00963s
 </pre></div></div>
 </div>
 <p>When the project is loaded, a <code class="docutils literal notranslate"><span class="pre">ParameterSet</span></code> is automatically created, under <code class="docutils literal notranslate"><span class="pre">P.parsets</span></code></p>
@@ -2883,7 +2883,7 @@ Elapsed time for running &#34;default&#34;: 0.0214s
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 #0: &#39;default&#39;:
-&lt;atomica.parameters.ParameterSet at 0x7f7eda2866f0&gt;
+&lt;atomica.parameters.ParameterSet at 0x7f66cbb92cf0&gt;
 [&lt;class &#39;atomica.parameters.ParameterSet&#39;&gt;, &lt;class &#39;atomica.utils.NamedItem&#39;&gt;]
 ————————————————————————————————————————————————————————————————————————
 Methods:
@@ -2895,13 +2895,13 @@ Methods:
 Properties:
   y_factors
 ————————————————————————————————————————————————————————————————————————
-       created: datetime.datetime(2025, 3, 10, 3, 50, 59, 792634,
+       created: datetime.datetime(2025, 6, 18, 4, 27, 23, 623474,
                 tzinfo=tzutc())
        gitinfo: {&#39;branch&#39;: &#39;Detached head (no branch)&#39;, &#39;hash&#39;:
-                &#39;0599e8a&#39;, &#39;date&#39;: [...]
+                &#39;cd1ddeb&#39;, &#39;date&#39;: [...]
 initialization: None
   interactions: odict()
-      modified: datetime.datetime(2025, 3, 10, 3, 50, 59, 798538,
+      modified: datetime.datetime(2025, 6, 18, 4, 27, 23, 625805,
                 tzinfo=tzutc())
           name: &#39;default&#39;
           pars: #0: &#39;sus&#39;:       [sc.prepr(): not shown, recursion
@@ -2910,7 +2910,7 @@ initialization: None
      pop_names: [&#39;adults&#39;]
      pop_types: [&#39;default&#39;]
      transfers: odict()
-       version: &#39;1.31.0&#39;
+       version: &#39;1.31.1&#39;
 ————————————————————————————————————————————————————————————————————————
 
 </pre></div></div>
@@ -2938,7 +2938,7 @@ initialization: None
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Elapsed time for running &#34;default&#34;: 0.0121s
+Elapsed time for running &#34;default&#34;: 0.0199s
 </pre></div></div>
 </div>
 <p>We can now plot some results from this model:</p>
@@ -2963,7 +2963,7 @@ Elapsed time for running &#34;default&#34;: 0.0121s
 <section id="Exercise">
 <h2>Exercise<a class="headerlink" href="#Exercise" title="Link to this heading">¶</a></h2>
 <p>Write a framework file implementing the following model:</p>
-<p><img alt="t1-schematic-3" src="../_images/t1_schematic_3.png" /></p>
+<img alt="t1-schematic-3" src="../_images/t1_schematic_3.png" />
 <div class="alert alert-block alert-success"><p>Tip: Use the frameworks in the Atomica library has a wide range of different types of models, and may help provide ideas of how to implement specific disease features in Atomica.</p>
 </div><div class="alert alert-block alert-info"><p>Further reading: What do the other columns in the framework file do? Read the CAT framework file documentation</p>
 </div><div class="alert alert-block alert-info"><p>Further reading: What Python data structure is the framework file loaded into? How do you read parts of the framework in your code? See Framework internal structure documentation</p>

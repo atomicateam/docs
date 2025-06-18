@@ -2702,7 +2702,7 @@ intended as technical documentation on the implementation of the framework.</p>
 <section id="ProjectFramework-basics">
 <h2><code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> basics<a class="headerlink" href="#ProjectFramework-basics" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> class stores a parsed, validated representation of the framework file. The framework file consists of a set of sheets, with content on each of the sheets. An example from the TB framework is shown below</p>
-<p><img alt="framework-overview-example" src="../_images/framework_overview_example.png" /></p>
+<img alt="framework-overview-example" src="../_images/framework_overview_example.png" />
 <p>Here we can see that there are a number of worksheets in the file (‘Databook Pages’, ‘Compartments’, ‘Transitions’,…) and there is of course content on each sheet.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">ProjectFramework</span></code> contains a member variable, <code class="docutils literal notranslate"><span class="pre">sheets</span></code>, which is an odict where the key is the sheet name and the value is a list of Pandas <code class="docutils literal notranslate"><span class="pre">DataFrames</span></code> that contains all of the tables on that sheet. A table is defined as a rectangular range of cells terminated by an empty row.</p>
 <div class="nbinput docutils container">
@@ -2827,7 +2827,7 @@ intended as technical documentation on the implementation of the framework.</p>
 </div></div>
 </div>
 <p>Some sheets contain multiple elements. For example, consider the ‘Cascades’ sheet here:</p>
-<p><img alt="framework-cascade-example" src="../_images/framework_cascade_example.png" /></p>
+<img alt="framework-cascade-example" src="../_images/framework_cascade_example.png" />
 <p>Intuitively, this sheet contains two separate ‘tables’ that each have a heading row, and they are separated by a blank row. When a worksheet is parsed, if there are any blank rows, multiple <code class="docutils literal notranslate"><span class="pre">DataFrames</span></code> will be instantiated, one for each ‘table’ present on the page. As shown below, <code class="docutils literal notranslate"><span class="pre">F.sheets['cascades']</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">DataFrames</span></code>, and each <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> stores the contents of one of the tables:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
