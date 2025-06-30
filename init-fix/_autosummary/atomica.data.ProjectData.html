@@ -2971,7 +2971,11 @@ to names like ‘age_0-4_to_5-14’</p></li>
 <p>where the former is typically used when working with data and calibrations, and the latter is used in <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code> and
 is therefore encountered on the <code class="xref py py-class docutils literal notranslate"><span class="pre">Result</span></code> and plotting side.</p>
 <p>If retrieving values for a comp/charac/par and the databook contains an entry for ‘all’ rather
-than specific populations, then the ‘all’ time series will be returned regardless of the key</p>
+than specific populations, then the ‘all’ time series will be returned if the key does not match
+any population names.</p>
+<p>Note that the TDVE can contain time series for population names that don’t correspond to actual populations.
+For example, users could add an extra row for ‘Total’, or anything else. <cite>get_ts()</cite> will retrieve these
+rows without an error, so population names are not validated against the populations in the databook.</p>
 </dd></dl>
 
 <dl class="py attribute">
