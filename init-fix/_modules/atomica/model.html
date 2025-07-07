@@ -2505,6 +2505,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.append"><code class="docutils literal notranslate"><span class="pre">NDict.append()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.clear"><code class="docutils literal notranslate"><span class="pre">NDict.clear()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.copy"><code class="docutils literal notranslate"><span class="pre">NDict.copy()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.dcp"><code class="docutils literal notranslate"><span class="pre">NDict.dcp()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.dict_items"><code class="docutils literal notranslate"><span class="pre">NDict.dict_items()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.dict_keys"><code class="docutils literal notranslate"><span class="pre">NDict.dict_keys()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.dict_values"><code class="docutils literal notranslate"><span class="pre">NDict.dict_values()</span></code></a></li>
@@ -3337,7 +3338,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration_group</span><span class="p">:</span>
                 <span class="n">link</span><span class="o">.</span><span class="n">_vals</span><span class="p">[:,</span> <span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="n">flow</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">link</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="n">flow</span></div>
+                <span class="n">link</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="n">flow</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="ResidualJunctionCompartment.initial_flush">
@@ -4841,7 +4842,7 @@
 
         <span class="c1"># Otherwise, insert the values</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">comps</span><span class="p">):</span>
-            <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span></div>
+            <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span></div>
 </div>
 
 
@@ -5547,7 +5548,7 @@
 
                 <span class="k">for</span> <span class="n">par</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">par_vals</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">skip_function</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">par</span><span class="o">.</span><span class="n">skip_function</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">par</span><span class="o">.</span><span class="n">skip_function</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>  <span class="c1"># Careful - note how the &lt; here matches &gt;= in Parameter.update()</span>
-                        <span class="n">par</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">val</span>
+                        <span class="n">par</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="c1"># Restrict the parameter&#39;s value if a limiting range was defined</span>
             <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">pars</span><span class="p">:</span>
