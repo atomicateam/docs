@@ -2565,6 +2565,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html">atomica.utils.TimeSeries</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries"><code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.assumption"><code class="docutils literal notranslate"><span class="pre">TimeSeries.assumption</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.clear"><code class="docutils literal notranslate"><span class="pre">TimeSeries.clear()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.copy"><code class="docutils literal notranslate"><span class="pre">TimeSeries.copy()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.get"><code class="docutils literal notranslate"><span class="pre">TimeSeries.get()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.get_arrays"><code class="docutils literal notranslate"><span class="pre">TimeSeries.get_arrays()</span></code></a></li>
@@ -3347,8 +3348,27 @@
             <span class="n">new</span><span class="o">.</span><span class="n">_sampled</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">return</span> <span class="n">new</span></div>
-</div>
 
+
+<div class="viewcode-block" id="TimeSeries.clear">
+<a class="viewcode-back" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.clear">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clear the TimeSeries</span>
+
+<span class="sd">        This method resets TimeSeries but keeps the units present, so it is useful when</span>
+<span class="sd">        wanting to replace the values associated with a particular TimeSeries instance.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assumption</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sampled</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</div>
 
 
 <div class="viewcode-block" id="evaluate_plot_string">
@@ -3739,7 +3759,7 @@
 <a class="viewcode-back" href="../../_autosummary/atomica.utils.get_sigfigs_necessary.html#atomica.utils.get_sigfigs_necessary">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_sigfigs_necessary</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">min_sigfigs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get how many significant figures are necessary to tell the difference berween two numbers</span>
+<span class="sd">    Get how many significant figures are necessary to tell the difference between two numbers</span>
 
 <span class="sd">    :param x, y: numbers to compare</span>
 <span class="sd">    :param min_sigfigs: minimum number of sigfigs to use if no difference</span>
