@@ -2505,6 +2505,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.append"><code class="docutils literal notranslate"><span class="pre">NDict.append()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.clear"><code class="docutils literal notranslate"><span class="pre">NDict.clear()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.copy"><code class="docutils literal notranslate"><span class="pre">NDict.copy()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.dcp"><code class="docutils literal notranslate"><span class="pre">NDict.dcp()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.dict_items"><code class="docutils literal notranslate"><span class="pre">NDict.dict_items()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.dict_keys"><code class="docutils literal notranslate"><span class="pre">NDict.dict_keys()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.NDict.html#atomica.utils.NDict.dict_values"><code class="docutils literal notranslate"><span class="pre">NDict.dict_values()</span></code></a></li>
@@ -2564,6 +2565,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html">atomica.utils.TimeSeries</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries"><code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code></a><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.assumption"><code class="docutils literal notranslate"><span class="pre">TimeSeries.assumption</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.clear"><code class="docutils literal notranslate"><span class="pre">TimeSeries.clear()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.copy"><code class="docutils literal notranslate"><span class="pre">TimeSeries.copy()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.get"><code class="docutils literal notranslate"><span class="pre">TimeSeries.get()</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/atomica.utils.TimeSeries.html#atomica.utils.TimeSeries.get_arrays"><code class="docutils literal notranslate"><span class="pre">TimeSeries.get_arrays()</span></code></a></li>
@@ -2694,19 +2696,57 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">sciris</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sc</span>
 
 <span class="c1"># Restrict imports to user-facing modules</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ddict&#39;</span><span class="p">,</span> <span class="s1">&#39;odict&#39;</span><span class="p">,</span> <span class="s1">&#39;objdict&#39;</span><span class="p">,</span> <span class="s1">&#39;dictobj&#39;</span><span class="p">,</span> <span class="s1">&#39;asobj&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ddict&#39;</span><span class="p">,</span> <span class="s1">&#39;counter&#39;</span><span class="p">,</span> <span class="s1">&#39;odict&#39;</span><span class="p">,</span> <span class="s1">&#39;objdict&#39;</span><span class="p">,</span> <span class="s1">&#39;dictobj&#39;</span><span class="p">,</span> <span class="s1">&#39;asobj&#39;</span><span class="p">]</span>
 
 <span class="n">ddict</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">defaultdict</span> <span class="c1"># Define alias</span>
-<span class="n">OD</span> <span class="o">=</span> <span class="nb">dict</span> <span class="c1"># Base class; was OrderedDict before v3.0.0</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">odict</span><span class="p">(</span><span class="n">OD</span><span class="p">):</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">counter</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">Counter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Like ``collections.Counter``, but with additional supported mathematical operations.</span>
+
+<span class="sd">    ``sc.counter`` has an &quot;array&quot; property, which converts the values to a NumPy array;</span>
+<span class="sd">    methods not available to a ``Counter`` object are performed on the array instead.</span>
+
+<span class="sd">    **Examples**::</span>
+
+<span class="sd">        vals = [1,1,12,3,4,2,4,2,53,5,5,6,2,3,5]</span>
+<span class="sd">        counts = sc.counter(vals)</span>
+<span class="sd">        counts.max() # returns 3</span>
+
+<span class="sd">    | *New in version 3.2.3.*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; NumPy array of values &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">disp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">pr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; For all other operations, try to perform them on the array &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s1">&quot; is not a recognized method of Counter or array objects&#39;</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">odict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ordered dictionary with integer indexing</span>
 
 <span class="sd">    An ordered dictionary, like the OrderedDict class, but supports list methods like integer</span>
 <span class="sd">    indexing, key slicing, and item inserting. It can also replicate defaultdict behavior</span>
 <span class="sd">    via the ``defaultdict`` argument.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        args (dict): convert an existing dict, e.g. ``sc.odict({&#39;a&#39;:1})``</span>
 <span class="sd">        defaultdict (class): if provided, create as a defaultdict as well</span>
@@ -2760,18 +2800,18 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">defaultdict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Combine the init properties of both OrderedDict and defaultdict &quot;&quot;&quot;</span>
-        
+
         <span class="c1"># Standard init</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="nb">dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)</span>
-        
+
         <span class="c1"># Handle defaultdict</span>
         <span class="k">if</span> <span class="n">defaultdict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">defaultdict</span> <span class="o">!=</span> <span class="s1">&#39;nested&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">defaultdict</span><span class="p">):</span> <span class="c1"># pragma: no cover</span>
                 <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;The defaultdict argument must be either &quot;nested&quot; or callable, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">defaultdict</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_setattr</span><span class="p">(</span><span class="s1">&#39;_defaultdict&#39;</span><span class="p">,</span> <span class="n">defaultdict</span><span class="p">)</span> <span class="c1"># Use OD.__setattr__() since setattr() is overridden by sc.objdict()</span>
-        
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setattr</span><span class="p">(</span><span class="s1">&#39;_defaultdict&#39;</span><span class="p">,</span> <span class="n">defaultdict</span><span class="p">)</span> <span class="c1"># Use dict.__setattr__() since setattr() is overridden by sc.objdict()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_cache_keys</span><span class="p">()</span>
         <span class="k">return</span>
 
@@ -2791,12 +2831,12 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Shortcut to OrderedDict method &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Shortcut to OrderedDict method &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">allow_default</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -2804,14 +2844,14 @@
 
         <span class="c1"># First, try just getting the item</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">output</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">_stringtypes</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span> <span class="c1"># Normal use case: just use a string key</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span> <span class="c1"># We already encountered an exception, usually a KeyError</span>
                     <span class="k">try</span><span class="p">:</span> <span class="c1"># Handle defaultdict behavior by first checking if it exists</span>
-                        <span class="n">_defaultdict</span> <span class="o">=</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_defaultdict&#39;</span><span class="p">)</span>
+                        <span class="n">_defaultdict</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_defaultdict&#39;</span><span class="p">)</span>
                     <span class="k">except</span><span class="p">:</span>
                         <span class="n">_defaultdict</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">if</span> <span class="n">_defaultdict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">allow_default</span><span class="p">:</span> <span class="c1"># If it does, use it, then get the key again</span>
@@ -2831,12 +2871,12 @@
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">_numtype</span><span class="p">):</span> <span class="c1"># Convert automatically from float</span>
                 <span class="n">thiskey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ikey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thiskey</span><span class="p">)</span> <span class="c1"># Note that defaultdict behavior isn&#39;t supported for non-string lookup</span>
+                <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thiskey</span><span class="p">)</span> <span class="c1"># Note that defaultdict behavior isn&#39;t supported for non-string lookup</span>
 
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span> <span class="c1"># Handle a slice -- complicated</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">slicekeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slicetokeys</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-                    <span class="n">slicevals</span> <span class="o">=</span> <span class="p">[</span><span class="n">OD</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">slicekeys</span><span class="p">]</span>
+                    <span class="n">slicevals</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">slicekeys</span><span class="p">]</span>
                     <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_items</span><span class="p">(</span><span class="n">slicevals</span><span class="p">)</span>
                     <span class="k">return</span> <span class="n">output</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
@@ -2852,7 +2892,7 @@
                 <span class="k">return</span> <span class="n">output</span>
 
             <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover # Handle everything else (rare)</span>
-                <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -2874,13 +2914,13 @@
                 <span class="n">slicelen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">slicekeys</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">valuelen</span> <span class="o">==</span> <span class="n">slicelen</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">valind</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">slicekeys</span><span class="p">):</span>
-                        <span class="n">OD</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="n">valind</span><span class="p">])</span>  <span class="c1"># e.g. odict[:] = arr[:]</span>
+                        <span class="nb">dict</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="n">valind</span><span class="p">])</span>  <span class="c1"># e.g. odict[:] = arr[:]</span>
                 <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
                     <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Slice &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; and values &quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">&quot; have different lengths! (</span><span class="si">{</span><span class="n">slicelen</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">slicekeys</span><span class="p">:</span>
-                    <span class="n">OD</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1"># e.g. odict[:] = 4</span>
+                    <span class="nb">dict</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1"># e.g. odict[:] = 4</span>
 
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_odict_iterable</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span> <span class="c1"># Iterate over items</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -2903,8 +2943,8 @@
         <span class="k">return</span>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">showmultilines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">divider</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dividerthresh</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> 
-                 <span class="n">numindents</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">recursionlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">numformat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxitems</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> 
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">showmultilines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">divider</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dividerthresh</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                 <span class="n">numindents</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">recursionlevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigfigs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">numformat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxitems</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
                  <span class="n">classname</span><span class="o">=</span><span class="s1">&#39;odict&#39;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">numleft</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">numsep</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">keysep</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">dividerchar</span><span class="o">=</span><span class="s1">&#39;—&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Print a meaningful representation of the odict &quot;&quot;&quot;</span>
 
@@ -3051,11 +3091,11 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Default delitem, except set stale to true and allow numeric values; slices etc are not supported &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setattr</span><span class="p">(</span><span class="s1">&#39;_stale&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="c1"># Flag to refresh the cached keys</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">_numtype</span><span class="p">):</span> <span class="c1"># If it&#39;s a number, use that</span>
                 <span class="n">thiskey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ikey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thiskey</span><span class="p">)</span> <span class="c1"># Note that defaultdict behavior isn&#39;t supported for non-string lookup</span>
+                <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thiskey</span><span class="p">)</span> <span class="c1"># Note that defaultdict behavior isn&#39;t supported for non-string lookup</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">E</span>
 
@@ -3088,16 +3128,16 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_slicetokeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Validate a key supplied as a slice object &quot;&quot;&quot;</span>
-        
+
         <span class="n">startstop</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">raw</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">raw</span><span class="o">.</span><span class="n">stop</span><span class="p">)</span> <span class="c1"># start, stop, step</span>
-        
+
         <span class="c1"># Handle possible string values for start and stop</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span> <span class="ow">in</span> <span class="n">startstop</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">startstop</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;stop&#39;</span><span class="p">:</span>
                     <span class="n">startstop</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># +1 on stop since otherwise confusing with names</span>
-        
+
         <span class="c1"># Turn from a slice into keys</span>
         <span class="n">sli</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">startstop</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">],</span> <span class="n">startstop</span><span class="p">[</span><span class="s1">&#39;stop&#39;</span><span class="p">],</span> <span class="n">raw</span><span class="o">.</span><span class="n">step</span><span class="p">)</span>
         <span class="n">inds</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="n">sli</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
@@ -3174,14 +3214,14 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Allows pop to support strings, integers, slices, lists, or arrays &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setattr</span><span class="p">(</span><span class="s1">&#39;_stale&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="c1"># Flag to refresh the cached keys</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">_stringtypes</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">_numtype</span><span class="p">):</span> <span class="c1"># Convert automatically from float...dangerous?</span>
             <span class="n">thiskey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ikey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thiskey</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thiskey</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span> <span class="c1"># Handle a slice -- complicated</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">slicekeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slicetokeys</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-                <span class="n">slicevals</span> <span class="o">=</span> <span class="p">[</span><span class="n">OD</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">slicekeys</span><span class="p">]</span>
+                <span class="n">slicevals</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">slicekeys</span><span class="p">]</span>
                 <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_items</span><span class="p">(</span><span class="n">slicevals</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">output</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
@@ -3197,7 +3237,7 @@
                 <span class="k">return</span> <span class="n">listvals</span>
         <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover # Handle string but also everything else</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">OD</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span> <span class="c1"># Duplicated from __getitem__</span>
                 <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span> <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;odict key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; not found; available keys are:</span><span class="se">\n</span><span class="si">{</span><span class="n">sc</span><span class="o">.</span><span class="n">newlinejoin</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -3274,17 +3314,17 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find matching keys in the odict, and return a new odict</span>
-<span class="sd">        </span>
+
 <span class="sd">        Filter the odict keys and return a new odict which is a subset. If keys is a list,</span>
 <span class="sd">        then uses that for matching. If the first argument is a string, then treats as a pattern</span>
 <span class="sd">        for matching using :meth:`findkeys() &lt;odict.findkeys`.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            keys (list): the list of keys to keep (or exclude)</span>
 <span class="sd">            pattern (str): the pattern by which to match keys; see :meth:`findkeys() &lt;odict.findkeys` for details</span>
 <span class="sd">            method (str): the method by which to match keys; see :meth:`findkeys() &lt;odict.findkeys` for details</span>
 <span class="sd">            exclude (bool): if exclude=True, then exclude rather than include matches</span>
-<span class="sd">            </span>
+
 <span class="sd">        See also :meth:`sort() &lt;odict.sort&gt;`, which includes filtering by position.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">isstring</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="ow">and</span> <span class="n">pattern</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># Assume first argument, transfer</span>
@@ -3377,16 +3417,16 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make a (shallow) copy of the dict.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            deep (bool): if True, do a deep rather than shallow copy</span>
-<span class="sd">            </span>
+
 <span class="sd">        **Examples**::</span>
-<span class="sd">            </span>
+
 <span class="sd">            d1 = sc.odict(a=[1,2,3], b=&#39;foo&#39;)</span>
 <span class="sd">            d2 = d1.copy()</span>
 <span class="sd">            d3 = d1.copy(deep=True)</span>
-<span class="sd">            </span>
+
 <span class="sd">            d1.pop(&#39;b&#39;) # affects d1 but not d2 or d3</span>
 <span class="sd">            d1[0].append(4) # affects d1 and d2 but not d3</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3395,6 +3435,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">dcp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">dcp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shortcut to odict.copy(deep=True).</span>
+
+<span class="sd">        | *New in version 3.2.3.*</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oldkey</span><span class="p">,</span> <span class="n">newkey</span><span class="p">):</span>
@@ -3417,24 +3466,24 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sortby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a sorted version of the odict. </span>
-<span class="sd">        </span>
-<span class="sd">        By default, this method sorts alphabetically by key, but many other options </span>
+<span class="sd">        Create a sorted version of the odict.</span>
+
+<span class="sd">        By default, this method sorts alphabetically by key, but many other options</span>
 <span class="sd">        are possible:</span>
-<span class="sd">            </span>
+
 <span class="sd">            - &#39;keys&#39; sorts alphabetically by key</span>
 <span class="sd">            - &#39;values&#39; sorts in ascending order by value</span>
 <span class="sd">            - if a list of keys is provided, sort by that order (any keys not provided will be omitted from the sorted dict!)</span>
 <span class="sd">            - if a list of numbers is provided, treat these as indices and sort by that order</span>
 <span class="sd">            - if a list of boolean values is provided, then omit False entries</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            sortby (str or list): what to sort by; see above for options</span>
 <span class="sd">            reverse (bool): whether to return results in reverse order</span>
 <span class="sd">            copy (bool): whether to return a copy (same as :meth:`sorted() &lt;odict.sorted&gt;`)</span>
-<span class="sd">        </span>
+
 <span class="sd">        For filtering by string matching on keys, see :meth:`filter() &lt;odict.filter&gt;`.</span>
-<span class="sd">        </span>
+
 <span class="sd">        | *New in version 3.0.0:* removed &quot;verbose&quot; argument</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">origkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
@@ -3446,7 +3495,7 @@
                 <span class="n">sortby</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">origvals</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="n">origvals</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">)</span> <span class="c1"># Reset sortby based on https://stackoverflow.com/questions/3382352/equivalent-of-numpy-argsort-in-basic-python</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">sc</span><span class="o">.</span><span class="n">isiterable</span><span class="p">(</span><span class="n">sortby</span><span class="p">):</span> <span class="c1"># pragma: no cover</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Please provide a list to determine the sort order.&#39;</span><span class="p">)</span>
-            
+
             <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">_stringtypes</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sortby</span><span class="p">]):</span> <span class="c1"># Going to sort by keys</span>
                 <span class="n">allkeys</span> <span class="o">=</span> <span class="n">sortby</span> <span class="c1"># Assume the user knows what s/he is doing</span>
             <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">bool</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sortby</span><span class="p">]):</span> <span class="c1"># Using Boolean values to filter</span>
@@ -3456,7 +3505,7 @@
             <span class="k">else</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
                 <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot figure out how to sort by &quot;</span><span class="si">{</span><span class="n">sortby</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
-        
+
         <span class="n">tmpdict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">reverse</span><span class="p">:</span>
             <span class="n">allkeys</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span> <span class="c1"># If requested, reverse order</span>
@@ -3740,15 +3789,15 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Return a list of keys (as in Python 2), not a dict_keys object. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Return a list of values (as in Python 2). &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Return a list of items (as in Python 2). &quot;&quot;&quot;</span>
-        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">OD</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">transpose</span><span class="p">:</span> <span class="n">iterator</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">transposelist</span><span class="p">(</span><span class="n">iterator</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">iterator</span>
 
@@ -3793,29 +3842,29 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An ``odict`` that acts like an object -- allow keys to be set/retrieved by object</span>
 <span class="sd">    notation.</span>
-<span class="sd">    </span>
+
 <span class="sd">    In general, operations that would normally act on attributes (e.g. ``obj.x = 3``)</span>
 <span class="sd">    instead act on dict keys (e.g. ``obj[&#39;x&#39;] = 3``). If you want to actually get/set</span>
 <span class="sd">    an attribute, use ``obj.getattribute()``/``obj.setattribute()``.</span>
-<span class="sd">    </span>
+
 <span class="sd">    For a lighter-weight example (an object that acts like a dict), see :func:`sc.dictobj() &lt;dictobj&gt;`.</span>
-<span class="sd">    </span>
+
 <span class="sd">    **Examples**::</span>
-<span class="sd">        </span>
+
 <span class="sd">        import sciris as sc</span>
-<span class="sd">        </span>
+
 <span class="sd">        obj = sc.objdict(foo=3, bar=2)</span>
 <span class="sd">        obj.foo + obj.bar # Gives 5</span>
 <span class="sd">        for key in obj.keys(): # It&#39;s still a dict</span>
 <span class="sd">            obj[key] = 10</span>
-<span class="sd">        </span>
+
 <span class="sd">        od = sc.objdict({&#39;height&#39;:1.65, &#39;mass&#39;:59})</span>
 <span class="sd">        od.bmi = od.mass/od.height**2</span>
 <span class="sd">        od[&#39;bmi&#39;] = od[&#39;mass&#39;]/od[&#39;height&#39;]**2 # Vanilla syntax still works</span>
 <span class="sd">        od.keys = 3 # This raises an exception (you can&#39;t overwrite the keys() method)</span>
-<span class="sd">    </span>
+
 <span class="sd">    Nested logic based in part on addict: https://github.com/mewwts/addict</span>
-<span class="sd">    </span>
+
 <span class="sd">    For a lighter-weight equivalent (based on ``dict`` instead of :class:`odict`), see</span>
 <span class="sd">    :func:`sc.dictobj() &lt;dictobj&gt;`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -3934,8 +3983,8 @@
 <span class="sd">        print(obj.items())</span>
 
 <span class="sd">    For a more powerful alternative, see :class:`sc.objdict() &lt;objdict&gt;`.</span>
-<span class="sd">    </span>
-<span class="sd">    **Note**: because ``dictobj`` is halfway between a dict and an object, it can&#39;t </span>
+
+<span class="sd">    **Note**: because ``dictobj`` is halfway between a dict and an object, it can&#39;t</span>
 <span class="sd">    be automatically converted to a JSON (but will fail silently). Use :meth:`to_json() &lt;dictobj.to_json&gt;`</span>
 <span class="sd">    instead.</span>
 
@@ -3943,7 +3992,7 @@
 <span class="sd">    | *New in version 1.3.1:* inherit from dict</span>
 <span class="sd">    | *New in version 2.0.0:* allow positional arguments</span>
 <span class="sd">    | *New in version 3.0.0:* &quot;fromkeys&quot; now a class method; ``to_json()`` method</span>
-<span class="sd">    | *New in version 3.1.6:* &quot;copy&quot; returns another dictobj </span>
+<span class="sd">    | *New in version 3.1.6:* &quot;copy&quot; returns another dictobj</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -3964,7 +4013,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">fromkeys</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Create a new dictobj from keys &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
-    
+
     <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Create a shallow copy &quot;&quot;&quot;</span>
         <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">()</span>
