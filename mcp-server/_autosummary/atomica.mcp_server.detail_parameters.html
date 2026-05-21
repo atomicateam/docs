@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>atomica.mcp_server.generate_framework_doc &mdash; Atomica  documentation</title>
+  <title>atomica.mcp_server.detail_parameters &mdash; Atomica  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="atomica.migration" href="atomica.migration.html" />
+    <link rel="next" title="atomica.mcp_server.list_parameters" href="atomica.mcp_server.list_parameters.html" />
     <link rel="prev" title="atomica.mcp_server" href="atomica.mcp_server.html" /> 
 </head>
 
@@ -1651,8 +1651,12 @@
 </ul>
 </li>
 <li class="toctree-l2 current"><a class="reference internal" href="atomica.mcp_server.html">atomica.mcp_server</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.mcp_server.generate_framework_doc</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#atomica.mcp_server.generate_framework_doc"><code class="docutils literal notranslate"><span class="pre">generate_framework_doc()</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">atomica.mcp_server.detail_parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#atomica.mcp_server.detail_parameters"><code class="docutils literal notranslate"><span class="pre">detail_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="atomica.mcp_server.list_parameters.html">atomica.mcp_server.list_parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="atomica.mcp_server.list_parameters.html#atomica.mcp_server.list_parameters"><code class="docutils literal notranslate"><span class="pre">list_parameters()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2678,7 +2682,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="atomica.html">atomica</a></li>
           <li class="breadcrumb-item"><a href="atomica.mcp_server.html">atomica.mcp_server</a></li>
-      <li class="breadcrumb-item active">atomica.mcp_server.generate_framework_doc</li>
+      <li class="breadcrumb-item active">atomica.mcp_server.detail_parameters</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -2687,26 +2691,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="atomica-mcp-server-generate-framework-doc">
-<h1>atomica.mcp_server.generate_framework_doc<a class="headerlink" href="#atomica-mcp-server-generate-framework-doc" title="Link to this heading">¶</a></h1>
+  <section id="atomica-mcp-server-detail-parameters">
+<h1>atomica.mcp_server.detail_parameters<a class="headerlink" href="#atomica-mcp-server-detail-parameters" title="Link to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="atomica.mcp_server.generate_framework_doc">
-<span class="sig-prename descclassname"><span class="pre">atomica.mcp_server.</span></span><span class="sig-name descname"><span class="pre">generate_framework_doc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">framework_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">databook_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/mcp_server.html#generate_framework_doc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.mcp_server.generate_framework_doc" title="Link to this definition">¶</a></dt>
-<dd><p>Return a plain-text Markdown description of an Atomica framework file.</p>
-<p>Use this whenever the user asks questions about model structure, compartments,
-parameters, characteristics, or any quantity defined in the framework.</p>
+<dt class="sig sig-object py" id="atomica.mcp_server.detail_parameters">
+<span class="sig-prename descclassname"><span class="pre">atomica.mcp_server.</span></span><span class="sig-name descname"><span class="pre">detail_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">framework_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">par_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/atomica/mcp_server.html#detail_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#atomica.mcp_server.detail_parameters" title="Link to this definition">¶</a></dt>
+<dd><p>Return the full metadata row for a single parameter.</p>
+<p>Use this when the user asks for specifics about a parameter: its format,
+default value, min/max bounds, function definition, databook page,
+whether it is targetable, timescale, etc. Requires the parameter’s code
+name — call list_parameters first if only a display name is known.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>framework_path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Path to the framework .xlsx file</p></li>
-<li><p><strong>databook_only</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – If True, only include quantities that appear in the databook</p></li>
+<li><p><strong>par_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Code name of the parameter (from list_parameters)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Markdown string describing the framework</p>
+<dd class="field-odd"><p>Dict of column name to value for the parameter’s row</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2718,7 +2724,7 @@ parameters, characteristics, or any quantity defined in the framework.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="atomica.mcp_server.html" class="btn btn-neutral float-left" title="atomica.mcp_server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="atomica.migration.html" class="btn btn-neutral float-right" title="atomica.migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="atomica.mcp_server.list_parameters.html" class="btn btn-neutral float-right" title="atomica.mcp_server.list_parameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

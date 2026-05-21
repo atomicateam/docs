@@ -1648,8 +1648,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.html">atomica.mcp_server</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.generate_framework_doc.html">atomica.mcp_server.generate_framework_doc</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.generate_framework_doc.html#atomica.mcp_server.generate_framework_doc"><code class="docutils literal notranslate"><span class="pre">generate_framework_doc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.detail_parameters.html">atomica.mcp_server.detail_parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.detail_parameters.html#atomica.mcp_server.detail_parameters"><code class="docutils literal notranslate"><span class="pre">detail_parameters()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.list_parameters.html">atomica.mcp_server.list_parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.list_parameters.html#atomica.mcp_server.list_parameters"><code class="docutils literal notranslate"><span class="pre">list_parameters()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2691,32 +2695,49 @@
 <span class="n">mcp</span> <span class="o">=</span> <span class="n">FastMCP</span><span class="p">(</span>
     <span class="s2">&quot;atomica&quot;</span><span class="p">,</span>
     <span class="n">instructions</span><span class="o">=</span><span class="p">(</span>
-        <span class="s2">&quot;Use the generate_framework_doc tool whenever the user asks questions about &quot;</span>
-        <span class="s2">&quot;model structure, compartments, characteristics, parameters, or any quantity &quot;</span>
-        <span class="s2">&quot;defined in a framework file. Call it with the path to the framework .xlsx file &quot;</span>
-        <span class="s2">&quot;before answering, so your response is grounded in the actual framework contents.&quot;</span>
+        <span class="s2">&quot;These tools work with Atomica framework .xlsx files. &quot;</span>
+        <span class="s2">&quot;Use list_parameters to discover what parameters exist in a framework — &quot;</span>
+        <span class="s2">&quot;it returns a mapping of code names to human-readable display names. &quot;</span>
+        <span class="s2">&quot;Use detail_parameters to get the full metadata for a single parameter &quot;</span>
+        <span class="s2">&quot;(format, default value, min/max, function, databook page, etc.) — &quot;</span>
+        <span class="s2">&quot;it requires the parameter&#39;s code name, so call list_parameters first if &quot;</span>
+        <span class="s2">&quot;the code name is unknown.&quot;</span>
     <span class="p">),</span>
 <span class="p">)</span>
 
-
-<div class="viewcode-block" id="generate_framework_doc">
-<a class="viewcode-back" href="../../_autosummary/atomica.mcp_server.generate_framework_doc.html#atomica.mcp_server.generate_framework_doc">[docs]</a>
+<div class="viewcode-block" id="list_parameters">
+<a class="viewcode-back" href="../../_autosummary/atomica.mcp_server.list_parameters.html#atomica.mcp_server.list_parameters">[docs]</a>
 <span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">generate_framework_doc</span><span class="p">(</span><span class="n">framework_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">databook_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_parameters</span><span class="p">(</span><span class="n">framework_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return a plain-text Markdown description of an Atomica framework file.</span>
+<span class="sd">    Return all parameters in a framework as a mapping of code name to display name.</span>
 
-<span class="sd">    Use this whenever the user asks questions about model structure, compartments,</span>
-<span class="sd">    parameters, characteristics, or any quantity defined in the framework.</span>
+<span class="sd">    Use this to discover what parameters exist, or to resolve a human-readable</span>
+<span class="sd">    name to the code name required by detail_parameters.</span>
 
 <span class="sd">    :param framework_path: Path to the framework .xlsx file</span>
-<span class="sd">    :param databook_only: If True, only include quantities that appear in the databook</span>
-<span class="sd">    :return: Markdown string describing the framework</span>
+<span class="sd">    :return: Dict mapping parameter code names to their display names</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">framework</span> <span class="o">=</span> <span class="n">ProjectFramework</span><span class="p">(</span><span class="n">framework_path</span><span class="p">)</span>
-    <span class="n">buf</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
-    <span class="n">_generate_framework_doc</span><span class="p">(</span><span class="n">framework</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">databook_only</span><span class="o">=</span><span class="n">databook_only</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
+    <span class="k">return</span> <span class="n">ProjectFramework</span><span class="p">(</span><span class="n">framework_path</span><span class="p">)</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;display name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="detail_parameters">
+<a class="viewcode-back" href="../../_autosummary/atomica.mcp_server.detail_parameters.html#atomica.mcp_server.detail_parameters">[docs]</a>
+<span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">detail_parameters</span><span class="p">(</span><span class="n">framework_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">par_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the full metadata row for a single parameter.</span>
+
+<span class="sd">    Use this when the user asks for specifics about a parameter: its format,</span>
+<span class="sd">    default value, min/max bounds, function definition, databook page,</span>
+<span class="sd">    whether it is targetable, timescale, etc. Requires the parameter&#39;s code</span>
+<span class="sd">    name — call list_parameters first if only a display name is known.</span>
+
+<span class="sd">    :param framework_path: Path to the framework .xlsx file</span>
+<span class="sd">    :param par_name: Code name of the parameter (from list_parameters)</span>
+<span class="sd">    :return: Dict of column name to value for the parameter&#39;s row</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ProjectFramework</span><span class="p">(</span><span class="n">framework_path</span><span class="p">)</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
 
 
 
