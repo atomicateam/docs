@@ -1,0 +1,254 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "0",
+   "metadata": {},
+   "source": [
+    "# Comparison with ODEs"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import atomica as at\n",
+    "import sciris as sc\n",
+    "from scipy.integrate import solve_ivp\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2",
+   "metadata": {},
+   "source": [
+    "Atomica is a compartment modelling toolbox that fundamentally is equivalent to a system of ODEs. In this example we demonstrate this by looking at a simple SIR model and reproducing the ODE structure in Atomica. The SIR model has structure\n",
+    "\n",
+    "![SIR model](sir.png)\n",
+    "\n",
+    "with two transitions - a transition from 'susceptible' to 'infected' where the rate depends on the number of people that are currently infected (and are therefore assumed to be infectious) and a transition from 'infected' to 'recovered' where the rate reflects the duration of infection. This model can be characterised by the following system of equations:\n",
+    "\n",
+    "$$\n",
+    "\\begin{align}\n",
+    "dS &= -\\beta S\\frac{I}{N} \\\\\n",
+    "dI &= -\\beta S\\frac{I}{N} - \\gamma I\\\\\n",
+    "dR &= \\gamma I\n",
+    "\\end{align}\n",
+    "$$\n",
+    "\n",
+    "where $\\beta = N_c\\theta$ with $N_c$ being the number of contacts per person per unit time, $\\theta$ being the probability of transmission per contact, and $\\gamma = 1/\\tau_I$ where $\\tau_I$ is the duration of infection. \n",
+    "\n",
+    "Suppose we assign the following parameter values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "N_c = 80\n",
+    "θ = 0.08\n",
+    "τ_i = 0.5\n",
+    "\n",
+    "N = 1000 # Population size\n",
+    "I_0 = 10 # Number initially infected"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4",
+   "metadata": {},
+   "source": [
+    "We can then implement a function representing the ODEs above, and solve the initial value problem using standard ODE methods, such as `solve_ivp` from [scipy](https://scipy.org/):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def rhs(t, y) -> np.array:\n",
+    "    new_inf = N_c * θ* y[0] * y[1] / N\n",
+    "    dS = -new_inf\n",
+    "    dI = new_inf - (1/τ_i)*y[1]\n",
+    "    dR = (1/τ_i)*y[1]\n",
+    "    return np.array([dS, dI, dR])\n",
+    "\n",
+    "y0 = np.array([N-I_0,I_0,0])\n",
+    "\n",
+    "sol = solve_ivp(\n",
+    "    rhs,\n",
+    "    (2020,2030),\n",
+    "    y0,\n",
+    "    t_eval = np.arange(2020,2030,0.1),\n",
+    ")\n",
+    "\n",
+    "for i, color in enumerate(sc.gridcolors(3)):\n",
+    "    plt.plot(sol.t, sol.y[i,:], color=color, linestyle='-',linewidth=3)\n",
+    "plt.legend(['S','I','R'])\n",
+    "plt.ylim(0,1100)\n",
+    "plt.xlim(2020,2030)\n",
+    "plt.xlabel('Year')\n",
+    "plt.ylabel('Number of people');"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6",
+   "metadata": {},
+   "source": [
+    "Consider implementing the same model in Atomica. First we define the three compartments for the model on the 'Compartments' sheet:\n",
+    "\n",
+    "![compartments](compartments.png)\n",
+    "\n",
+    "To save having to write a separate databook, we can insert the value for `I_0` (the initial number of people infected) as a default value in the framework file. We will also set the initial number recovered to `0`. We omit the number of susceptible people and do not have the compartment appear in the databook, so that it can be computed based on the total population size.\n",
+    "\n",
+    "Next, we define a characteristic for `N`, the total number of people:\n",
+    "\n",
+    "![characteristics](characteristics.png)\n",
+    "\n",
+    "By including this characteristic in the databook, we are able to replicate the calculation from the explicit ODE model above, with `y0 = np.array([N-I_0,I_0,0])` - we have defined values for `N`, `I_0`, and set the initial number of recovered to `0`, and Atomica will carry out the initialization using these values to calculate the initial number susceptible as `N-I_0`. \n",
+    "\n",
+    "Now we define the model parameters. Notice that we are free to use unicode symbols in the framework file, and can define them using the same characters used above:\n",
+    "\n",
+    "![parameters](parameters.png)\n",
+    "\n",
+    "The first three parameters are straightforward constants. The force of infection is defined using a function. The form of the equation is largely the same as in the explicit model above. However, two key points to note are\n",
+    "\n",
+    "- The parameter value is positive/unsigned, similar to the `new_inf` variable above. When this quantity acts on compartment sizes, the sign (negative for the outflow in `dS = -new_inf`, positive in `dI = +new_inf...`) comes from the transition matrix\n",
+    "- In Atomica, when a transition is defined between one compartment and another, the number of people to move is calculated (for a parameter in 'rate' units) by multiplying the parameter value by the size of the compartment that people are flowing out of. This allows us to define the function for the `foi` parameter consistent with the traditional definition 'the rate at which susceptible people become infected' i.e., a rate that is be multiplied by the number of susceptible people to calculate the number of new infections. Hence this parameter is defined as `N_c*θ*I/N` without `S` appearing in the function.\n",
+    "\n",
+    "Finally, we need to write out the transition matrix. For the SIR model, only two transitions are required. Notice that we can specify the duration-related transition directly by setting the duration `τ_i` as the transition parameter. This will automatically drive the transition using the inverse of the duration as the equivalent rate (`1/τ_i`) so it is not necessary to define an additional parameter for this.   \n",
+    "\n",
+    "\n",
+    "![transitions](transitions.png)\n",
+    "\n",
+    "The framework is available to download [here](sir_analytic_framework.xlsx). We can now go ahead and run the model in Atomica:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "F = at.ProjectFramework('sir_analytic_framework.xlsx')\n",
+    "P = at.Project(framework=F,databook=at.ProjectData.new(F, [2024],1,0), do_run=False)\n",
+    "P.settings.update_time_vector(2020,2030,0.01)\n",
+    "res = P.run_sim()\n",
+    "at.plot_series(at.PlotData(res));\n",
+    "plt.xlim(2020,2030)\n",
+    "plt.ylim(0,1100)\n",
+    "\n",
+    "plt.title('Compartment sizes');"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8",
+   "metadata": {},
+   "source": [
+    "With a small step size, Atomica is able to reproduce the same solution as `solve_ivp` - the solid lines show output from Atomica and the dashed line show output from `solve_ivp`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure()\n",
+    "at.plot_series(at.PlotData(res));\n",
+    "for i, color in enumerate(sc.gridcolors(3)):\n",
+    "    plt.plot(sol.t, sol.y[i,:], color=color, linestyle='--',linewidth=5)\n",
+    "plt.title('Compartment size comparison');               "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "10",
+   "metadata": {},
+   "source": [
+    "Atomica effectively uses the Euler method for integration - this is helpful for the implementation of discontinuities in parameter values which can sometimes be difficult to parametrise. If we use a larger step size in Atomica, we can see how the shape of the output does slightly differ from the previous solution that used a smalelr step size (which in general indicates the model needs to be run with the smaller step size) and we can also confirm that the results exactly match actually performing the Euler integration directly (instead of using `solve_ivp`):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "11",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Plot Atomica output with a larger step size\n",
+    "P.settings.sim_dt = 0.25\n",
+    "res = P.run_sim()\n",
+    "at.plot_series(at.PlotData(res));\n",
+    "\n",
+    "# Perform Euler integration with the same step size\n",
+    "y0 = np.array([N-I_0,I_0,0])\n",
+    "t = res.t\n",
+    "dt = t[1]-t[0]\n",
+    "y = np.zeros((3,len(t)))\n",
+    "y[:,0] = y0\n",
+    "for i in range(len(t)-1):\n",
+    "    y[:,i+1] = y[:,i]+dt*rhs(t[i],y[:,i])\n",
+    "\n",
+    "# Plot output from manual integration\n",
+    "for i, color in enumerate(sc.gridcolors(3)):\n",
+    "    plt.plot(t, y[i,:], color=color, linestyle='--',linewidth=5)\n",
+    "    \n",
+    "plt.title('Compartment size comparison (Euler integration, dt=0.25)');               "
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python [conda env:atomica311]",
+   "language": "python",
+   "name": "conda-env-atomica311-py"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.3"
+  },
+  "toc": {
+   "base_numbering": 1,
+   "nav_menu": {},
+   "number_sections": true,
+   "sideBar": true,
+   "skip_h1_title": false,
+   "title_cell": "Table of Contents",
+   "title_sidebar": "Contents",
+   "toc_cell": false,
+   "toc_position": {
+    "height": "calc(100% - 180px)",
+    "left": "10px",
+    "top": "150px",
+    "width": "318.817px"
+   },
+   "toc_section_display": true,
+   "toc_window_display": true
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
