@@ -1648,12 +1648,16 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.html">atomica.mcp_server</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.detail_parameters.html">atomica.mcp_server.detail_parameters</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.detail_parameters.html#atomica.mcp_server.detail_parameters"><code class="docutils literal notranslate"><span class="pre">detail_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.detail_parameter.html">atomica.mcp_server.detail_parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.detail_parameter.html#atomica.mcp_server.detail_parameter"><code class="docutils literal notranslate"><span class="pre">detail_parameter()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.list_parameters.html">atomica.mcp_server.list_parameters</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.list_parameters.html#atomica.mcp_server.list_parameters"><code class="docutils literal notranslate"><span class="pre">list_parameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.detail_variable.html">atomica.mcp_server.detail_variable</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.detail_variable.html#atomica.mcp_server.detail_variable"><code class="docutils literal notranslate"><span class="pre">detail_variable()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.list_variables.html">atomica.mcp_server.list_variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/atomica.mcp_server.list_variables.html#atomica.mcp_server.list_variables"><code class="docutils literal notranslate"><span class="pre">list_variables()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -2689,55 +2693,122 @@
              
   <h1>Source code for atomica.mcp_server</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.fastmcp</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastMCP</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">atomica</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProjectFramework</span><span class="p">,</span> <span class="n">generate_framework_doc</span> <span class="k">as</span> <span class="n">_generate_framework_doc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">atomica.function_parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_function</span>
 
 <span class="n">mcp</span> <span class="o">=</span> <span class="n">FastMCP</span><span class="p">(</span>
     <span class="s2">&quot;atomica&quot;</span><span class="p">,</span>
     <span class="n">instructions</span><span class="o">=</span><span class="p">(</span>
-        <span class="s2">&quot;These tools work with Atomica framework .xlsx files. &quot;</span>
-        <span class="s2">&quot;Use list_parameters to discover what parameters exist in a framework — &quot;</span>
-        <span class="s2">&quot;it returns a mapping of code names to human-readable display names. &quot;</span>
-        <span class="s2">&quot;Use detail_parameters to get the full metadata for a single parameter &quot;</span>
-        <span class="s2">&quot;(format, default value, min/max, function, databook page, etc.) — &quot;</span>
-        <span class="s2">&quot;it requires the parameter&#39;s code name, so call list_parameters first if &quot;</span>
-        <span class="s2">&quot;the code name is unknown.&quot;</span>
+        <span class="s2">&quot;Tools for querying Atomica framework .xlsx files. &quot;</span>
+        <span class="s2">&quot;A framework defines compartmental model structure and all variable definitions &quot;</span>
+        <span class="s2">&quot;(compartments, characteristics, parameters, interactions); &quot;</span>
+        <span class="s2">&quot;population and calibration data lives in the databook, not the framework.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Use list_variables as the first step whenever the user asks which parameter, &quot;</span>
+        <span class="s2">&quot;compartment, or variable corresponds to a concept (e.g. &#39;which parameter is TB incidence?&#39;, &quot;</span>
+        <span class="s2">&quot;&#39;what does inci_per_100k mean?&#39;). Do not search code or files for this until after you have tried &quot;</span>
+        <span class="s2">&quot;these tools, as they are the authoritative source for framework variable lookups. &quot;</span>
+        <span class="s2">&quot;Use detail_parameter for parameters (includes transition compartment info); &quot;</span>
+        <span class="s2">&quot;use detail_variable for compartments, characteristics, and interactions.&quot;</span>
     <span class="p">),</span>
 <span class="p">)</span>
 
-<div class="viewcode-block" id="list_parameters">
-<a class="viewcode-back" href="../../_autosummary/atomica.mcp_server.list_parameters.html#atomica.mcp_server.list_parameters">[docs]</a>
+<div class="viewcode-block" id="list_variables">
+<a class="viewcode-back" href="../../_autosummary/atomica.mcp_server.list_variables.html#atomica.mcp_server.list_variables">[docs]</a>
 <span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">list_parameters</span><span class="p">(</span><span class="n">framework_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_variables</span><span class="p">(</span>
+    <span class="n">framework_path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Absolute path to the .xlsx framework file&quot;</span><span class="p">)],</span>
+    <span class="n">search_terms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return all parameters in a framework as a mapping of code name to display name.</span>
-
-<span class="sd">    Use this to discover what parameters exist, or to resolve a human-readable</span>
-<span class="sd">    name to the code name required by detail_parameters.</span>
-
-<span class="sd">    :param framework_path: Path to the framework .xlsx file</span>
-<span class="sd">    :return: Dict mapping parameter code names to their display names</span>
+<span class="sd">    Return {code_name: {&quot;display name&quot;: ..., &quot;type&quot;: ...}} for all variables.</span>
+<span class="sd">    Types: &quot;comp&quot; (compartment), &quot;charac&quot; (characteristic), &quot;par&quot; (parameter), &quot;interpop&quot; (interaction).</span>
+<span class="sd">    search_terms filters by case-insensitive substring against code name or display name; any term matches.</span>
+<span class="sd">    Use this as the first step when the user asks which variable corresponds to a concept</span>
+<span class="sd">    (e.g. &quot;incidence&quot;, &quot;mortality&quot;). Pass the concept as a search term.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ProjectFramework</span><span class="p">(</span><span class="n">framework_path</span><span class="p">)</span><span class="o">.</span><span class="n">pars</span><span class="p">[</span><span class="s1">&#39;display name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+    <span class="n">fw</span> <span class="o">=</span> <span class="n">ProjectFramework</span><span class="p">(</span><span class="n">framework_path</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">df</span><span class="p">,</span> <span class="n">vtype</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="p">,</span> <span class="s2">&quot;comp&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">fw</span><span class="o">.</span><span class="n">characs</span><span class="p">,</span> <span class="s2">&quot;charac&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">fw</span><span class="o">.</span><span class="n">pars</span><span class="p">,</span> <span class="s2">&quot;par&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">fw</span><span class="o">.</span><span class="n">interactions</span><span class="p">,</span> <span class="s2">&quot;interpop&quot;</span><span class="p">),</span>
+    <span class="p">]:</span>
+        <span class="n">display</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;display name&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">search_terms</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">display</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">display</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">search_terms</span><span class="p">:</span>
+                <span class="n">mask</span> <span class="o">|=</span> <span class="p">(</span>
+                    <span class="n">idx</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">|</span>
+                    <span class="n">display</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="n">display</span> <span class="o">=</span> <span class="n">display</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">code_name</span><span class="p">,</span> <span class="n">display_name</span> <span class="ow">in</span> <span class="n">display</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">code_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;display name&quot;</span><span class="p">:</span> <span class="n">display_name</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">vtype</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">result</span></div>
 
 
-<div class="viewcode-block" id="detail_parameters">
-<a class="viewcode-back" href="../../_autosummary/atomica.mcp_server.detail_parameters.html#atomica.mcp_server.detail_parameters">[docs]</a>
+<div class="viewcode-block" id="detail_variable">
+<a class="viewcode-back" href="../../_autosummary/atomica.mcp_server.detail_variable.html#atomica.mcp_server.detail_variable">[docs]</a>
 <span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">detail_parameters</span><span class="p">(</span><span class="n">framework_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">par_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">detail_variable</span><span class="p">(</span>
+    <span class="n">framework_path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Absolute path to the .xlsx framework file&quot;</span><span class="p">)],</span>
+    <span class="n">code_name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Code name or display name of the variable&quot;</span><span class="p">)],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return the full metadata row for a single parameter.</span>
-
-<span class="sd">    Use this when the user asks for specifics about a parameter: its format,</span>
-<span class="sd">    default value, min/max bounds, function definition, databook page,</span>
-<span class="sd">    whether it is targetable, timescale, etc. Requires the parameter&#39;s code</span>
-<span class="sd">    name — call list_parameters first if only a display name is known.</span>
-
-<span class="sd">    :param framework_path: Path to the framework .xlsx file</span>
-<span class="sd">    :param par_name: Code name of the parameter (from list_parameters)</span>
-<span class="sd">    :return: Dict of column name to value for the parameter&#39;s row</span>
+<span class="sd">    Return the full metadata row for a compartment, characteristic, or interaction.</span>
+<span class="sd">    For parameters, use detail_parameter instead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ProjectFramework</span><span class="p">(</span><span class="n">framework_path</span><span class="p">)</span><span class="o">.</span><span class="n">pars</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">par_name</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+    <span class="n">fw</span> <span class="o">=</span> <span class="n">ProjectFramework</span><span class="p">(</span><span class="n">framework_path</span><span class="p">)</span>
+    <span class="n">series</span><span class="p">,</span> <span class="n">var_type</span> <span class="o">=</span> <span class="n">fw</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">code_name</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">var_type</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="detail_parameter">
+<a class="viewcode-back" href="../../_autosummary/atomica.mcp_server.detail_parameter.html#atomica.mcp_server.detail_parameter">[docs]</a>
+<span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">detail_parameter</span><span class="p">(</span>
+    <span class="n">framework_path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Absolute path to the .xlsx framework file&quot;</span><span class="p">)],</span>
+    <span class="n">code_name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Code name or display name of the parameter&quot;</span><span class="p">)],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the full metadata row for a parameter, including transition and dependency information.</span>
+<span class="sd">    &quot;transitions&quot;: [[from_comp, to_comp], ...] pairs governed by this parameter.</span>
+<span class="sd">    &quot;transition_compartments&quot;: full metadata for each compartment in those transitions.</span>
+<span class="sd">    &quot;function_dependencies&quot;: {code_name: display_name} for variables referenced in the parameter function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fw</span> <span class="o">=</span> <span class="n">ProjectFramework</span><span class="p">(</span><span class="n">framework_path</span><span class="p">)</span>
+    <span class="n">series</span><span class="p">,</span> <span class="n">var_type</span> <span class="o">=</span> <span class="n">fw</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">code_name</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">var_type</span>
+
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">fw</span><span class="o">.</span><span class="n">transitions</span><span class="p">[</span><span class="n">series</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;transitions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">]</span>
+    <span class="n">comp_codes</span> <span class="o">=</span> <span class="p">{</span><span class="n">comp</span> <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">}</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;transition_compartments&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="n">fw</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">comp_codes</span><span class="p">}</span>
+
+    <span class="n">fcn</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;function&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fcn</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">fcn</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">deps</span> <span class="o">=</span> <span class="n">parse_function</span><span class="p">(</span><span class="n">fcn</span><span class="p">)</span>
+        <span class="n">deps_out</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">deps</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dep_series</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">fw</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span><span class="n">dep</span><span class="p">)</span>
+                <span class="n">deps_out</span><span class="p">[</span><span class="n">dep</span><span class="p">]</span> <span class="o">=</span> <span class="n">dep_series</span><span class="p">[</span><span class="s1">&#39;display name&#39;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">deps_out</span><span class="p">[</span><span class="n">dep</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;function_dependencies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deps_out</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;function_dependencies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
 
 
 
