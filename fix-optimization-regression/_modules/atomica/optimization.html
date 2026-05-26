@@ -4274,7 +4274,12 @@
             <span class="n">errormsg</span> <span class="o">=</span> <span class="s2">&quot;PSO optimization requires finite upper and lower bounds to specify the search domain (i.e. every Adjustable needs to have finite bounds)&quot;</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
 
-        <span class="n">x_opt</span> <span class="o">=</span> <span class="n">pyswarm</span><span class="o">.</span><span class="n">pso</span><span class="p">(</span><span class="n">_objective_fcn</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">optim_args</span><span class="p">)</span><span class="o">.</span><span class="n">x</span>
+        <span class="k">if</span> <span class="n">sc</span><span class="o">.</span><span class="n">compareversions</span><span class="p">(</span><span class="n">pyswarm</span><span class="p">,</span> <span class="s2">&quot;&gt;1.0.0&quot;</span><span class="p">):</span>
+            <span class="n">x_opt</span> <span class="o">=</span> <span class="n">pyswarm</span><span class="o">.</span><span class="n">pso</span><span class="p">(</span><span class="n">_objective_fcn</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">optim_args</span><span class="p">)</span><span class="o">.</span><span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># On Mac OS, Pyswarm 1.0.0 is not installing yet. This can be revisited and hopefully</span>
+            <span class="c1"># removed once the incompatibility is resolved (possibly by switching to more recent UV pipeline)</span>
+            <span class="n">x_opt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pyswarm</span><span class="o">.</span><span class="n">pso</span><span class="p">(</span><span class="n">_objective_fcn</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">optim_args</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">optimization</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;hyperopt&quot;</span><span class="p">:</span>
 
