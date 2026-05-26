@@ -2684,21 +2684,20 @@
 <span class="sd">    - :class:`sc.odict() &lt;odict&gt;`: flexible container representing the best-of-all-worlds across dicts, lists, and arrays</span>
 <span class="sd">    - :class:`objdict`: like an odict, but allows get/set via e.g. ``foo.bar`` instead of ``foo[&#39;bar&#39;]``</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="c1">##############################################################################</span>
-<span class="c1">#%% odict class</span>
-<span class="c1">##############################################################################</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">co</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sciris</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sc</span>
 
 <span class="c1"># Restrict imports to user-facing modules</span>
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ddict&#39;</span><span class="p">,</span> <span class="s1">&#39;counter&#39;</span><span class="p">,</span> <span class="s1">&#39;odict&#39;</span><span class="p">,</span> <span class="s1">&#39;objdict&#39;</span><span class="p">,</span> <span class="s1">&#39;dictobj&#39;</span><span class="p">,</span> <span class="s1">&#39;asobj&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ddict&#39;</span><span class="p">,</span> <span class="s1">&#39;counter&#39;</span><span class="p">,</span> <span class="s1">&#39;odict&#39;</span><span class="p">,</span> <span class="s1">&#39;objdict&#39;</span><span class="p">,</span> <span class="s1">&#39;dictobj&#39;</span><span class="p">,</span> <span class="s1">&#39;asobj&#39;</span><span class="p">,</span> <span class="s1">&#39;argparse&#39;</span><span class="p">]</span>
 
 <span class="n">ddict</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">defaultdict</span> <span class="c1"># Define alias</span>
+
+<span class="c1"># Critical attributes that should be resolved immediately, not via any special handling</span>
+<span class="n">_fundamental_attrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="s1">&#39;__reduce__&#39;</span><span class="p">,</span> <span class="s1">&#39;__reduce_ex__&#39;</span><span class="p">,</span> <span class="s1">&#39;__getstate__&#39;</span><span class="p">,</span> <span class="s1">&#39;__setstate__&#39;</span><span class="p">,</span> <span class="s1">&#39;__copy__&#39;</span><span class="p">,</span><span class="s1">&#39;__deepcopy__&#39;</span><span class="p">]</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">counter</span><span class="p">(</span><span class="n">co</span><span class="o">.</span><span class="n">Counter</span><span class="p">):</span>
@@ -2732,11 +2731,19 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; For all other operations, try to perform them on the array &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s1">&quot; is not a recognized method of Counter or array objects&#39;</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">_fundamental_attrs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s1">&quot; is not a recognized method of Counter or array objects&#39;</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+
+<span class="c1">##############################################################################</span>
+<span class="c1">#%% odict class</span>
+<span class="c1">##############################################################################</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">odict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -2810,7 +2817,7 @@
             <span class="k">if</span> <span class="n">defaultdict</span> <span class="o">!=</span> <span class="s1">&#39;nested&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">defaultdict</span><span class="p">):</span> <span class="c1"># pragma: no cover</span>
                 <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;The defaultdict argument must be either &quot;nested&quot; or callable, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">defaultdict</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_setattr</span><span class="p">(</span><span class="s1">&#39;_defaultdict&#39;</span><span class="p">,</span> <span class="n">defaultdict</span><span class="p">)</span> <span class="c1"># Use dict.__setattr__() since setattr() is overridden by sc.objdict()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_setattr</span><span class="p">(</span><span class="s1">&#39;_defaultdict&#39;</span><span class="p">,</span> <span class="n">defaultdict</span><span class="p">)</span> <span class="c1"># Use object.__setattr__() since setattr() is overridden by sc.objdict()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cache_keys</span><span class="p">()</span>
         <span class="k">return</span>
@@ -2830,12 +2837,12 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Shortcut to OrderedDict method &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Shortcut to object method &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Shortcut to OrderedDict method &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Shortcut to dict method &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 
@@ -2851,7 +2858,7 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">_stringtypes</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span> <span class="c1"># Normal use case: just use a string key</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span> <span class="c1"># We already encountered an exception, usually a KeyError</span>
                     <span class="k">try</span><span class="p">:</span> <span class="c1"># Handle defaultdict behavior by first checking if it exists</span>
-                        <span class="n">_defaultdict</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_defaultdict&#39;</span><span class="p">)</span>
+                        <span class="n">_defaultdict</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_defaultdict&#39;</span><span class="p">)</span>
                     <span class="k">except</span><span class="p">:</span>
                         <span class="n">_defaultdict</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">if</span> <span class="n">_defaultdict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">allow_default</span><span class="p">:</span> <span class="c1"># If it does, use it, then get the key again</span>
@@ -2940,6 +2947,13 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Use regular dictionary ``setitem``, rather than odict&#39;s &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setattr</span><span class="p">(</span><span class="s1">&#39;_stale&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="c1"># Flag to refresh the cached keys</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setitem</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Update dict contents; set _stale so _cached_keys is refreshed on next use &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setattr</span><span class="p">(</span><span class="s1">&#39;_stale&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="c1"># Flag to refresh the cached keys</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span>
 
 
@@ -3873,8 +3887,8 @@
         <span class="n">nested_parent</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;_nested_parent&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">nested_attr</span>  <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;_nested_attr&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">nested_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">odict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_nested_parent&#39;</span><span class="p">,</span> <span class="n">nested_parent</span><span class="p">)</span>
-            <span class="n">odict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_nested_attr&#39;</span><span class="p">,</span> <span class="n">nested_attr</span><span class="p">)</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_nested_parent&#39;</span><span class="p">,</span> <span class="n">nested_parent</span><span class="p">)</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_nested_attr&#39;</span><span class="p">,</span> <span class="n">nested_attr</span><span class="p">)</span>
         <span class="n">odict</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c1"># Standard init</span>
         <span class="k">return</span>
 
@@ -3886,23 +3900,27 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Handle as attributes first, then as dict keys &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span> <span class="c1"># First, try to get the attribute as an attribute</span>
-            <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># If that fails, try to get it as a dict item, but pass along the original exception</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">exception</span><span class="o">=</span><span class="n">E</span><span class="p">)</span>
+        <span class="c1"># Pickle/copy protocol: must resolve from class, not as dict keys</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">_fundamental_attrs</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span> <span class="c1"># First, try to get the attribute as an attribute</span>
+                <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E</span><span class="p">:</span> <span class="c1"># If that fails, try to get it as a dict item, but pass along the original exception</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">exception</span><span class="o">=</span><span class="n">E</span><span class="p">)</span>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Set key in dict, not attribute! &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">odict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="c1"># Try retrieving this as an attribute, expect AttributeError...</span>
-            <span class="k">if</span> <span class="n">name</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span><span class="p">:</span> <span class="c1"># If it starts with a double underscore, it&#39;s almost certainly an attribute, not a key</span>
-                <span class="n">odict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;__&#39;</span><span class="p">:</span> <span class="c1"># If it starts with a double underscore, it&#39;s almost certainly an attribute, not a key</span>
+            <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="c1"># Try retrieving this as an attribute, expect AttributeError...</span>
                 <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; exists as an attribute, so cannot be set as key; use setattribute() instead&#39;</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1"># If so, simply return</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="c1"># If so, simply return</span>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">exception</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -3911,7 +3929,7 @@
             <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">allow_default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Do not allow odict to handle default</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">E2</span><span class="p">:</span> <span class="c1"># If that fails, raise the original exception</span>
             <span class="k">try</span><span class="p">:</span> <span class="c1"># Handle defaultdict behavior by first checking if it exists</span>
-                <span class="n">_defaultdict</span> <span class="o">=</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_defaultdict&#39;</span><span class="p">)</span>
+                <span class="n">_defaultdict</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_defaultdict&#39;</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">_defaultdict</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">_defaultdict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># If it does, use it, then get the key again</span>
@@ -3949,13 +3967,13 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="k">except</span><span class="p">:</span> <span class="c1"># pragma: no cover</span>
-            <span class="n">odict</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="k">return</span>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">getattribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Get attribute if truly desired &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">setattribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -3963,12 +3981,12 @@
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">force</span><span class="p">:</span>
             <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;objdict attribute &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; is read-only&#39;</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">delattribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Delete attribute if truly desired &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">odict</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">dictobj</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -4098,6 +4116,103 @@
 
 
     <span class="k">return</span> <span class="n">objobj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">argparse</span><span class="p">(</span><span class="n">objdict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Ultra-simple argument parser</span>
+
+<span class="sd">    Accepts positional or keyword arguments, and converts them to the correct type.</span>
+<span class="sd">    While Python&#39;s built in argparse has more features (such as help for each argument),</span>
+<span class="sd">    this allows single-line parsing of arguments.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        parse (bool): whether to parse the arguments immediately (default True)</span>
+<span class="sd">        **kwargs (dict): keyword arguments to add to the parser</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        args (objdict): a dictionary-like object with the arguments</span>
+
+<span class="sd">    **Examples**::</span>
+
+<span class="sd">        # Option 1: Supply arguments directly</span>
+<span class="sd">        args = sc.argparse(iterations=10, output_file=&#39;results.csv&#39;)</span>
+
+<span class="sd">        # Option 2: Add arguments one by one</span>
+<span class="sd">        args = sc.argparse()</span>
+<span class="sd">        args.add(iterations=10)</span>
+<span class="sd">        args.add(output_file=&#39;results.csv&#39;)</span>
+<span class="sd">        args.parse()</span>
+
+<span class="sd">        # Command-line usage</span>
+<span class="sd">        python argparse_example.py 100 &#39;data.csv&#39;</span>
+<span class="sd">        python argparse_example.py 100 output_file=&#39;data.csv&#39;</span>
+<span class="sd">        python argparse_example.py iterations=100 --output_file=&#39;data.csv&#39;</span>
+
+<span class="sd">        # Result</span>
+<span class="sd">        args.iterations == 10</span>
+<span class="sd">        args.output_file == &#39;data.csv&#39;</span>
+
+<span class="sd">    *New in version 3.2.6.*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parse</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span> <span class="c1"># If supplied, parse immediately</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setattribute</span><span class="p">(</span><span class="s1">&#39;_parsed&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Add an argument &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parsed</span><span class="p">:</span>
+            <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Cannot and an argument to an already parsed object&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Parse the arguments into the dictionary &quot;&quot;&quot;</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">kw</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">kw_supplied</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+                <span class="n">kw</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+                <span class="n">kw_supplied</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">kw_supplied</span><span class="p">:</span>
+                    <span class="n">errormsg</span> <span class="o">=</span> <span class="s1">&#39;Cannot supply a positional argument after a keyword argument&#39;</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">keep_type</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">arg</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">default_type</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">out</span> <span class="o">=</span> <span class="n">default_type</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Could not convert &quot;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s1">&quot; to </span><span class="si">{</span><span class="n">default_type</span><span class="si">}</span><span class="s1">, leaving as string.</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span> <span class="c1"># TODO: convert to warning</span>
+                    <span class="n">out</span> <span class="o">=</span> <span class="n">arg</span>
+            <span class="k">return</span> <span class="n">out</span>
+
+        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">keep_type</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span> <span class="ow">in</span> <span class="n">kw</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="n">errormsg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Unrecognized key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">; valid arguments are:</span><span class="se">\n</span><span class="si">{</span><span class="n">sc</span><span class="o">.</span><span class="n">strjoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="k">raise</span> <span class="n">sc</span><span class="o">.</span><span class="n">KeyNotFoundError</span><span class="p">(</span><span class="n">errormsg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">keep_type</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setattribute</span><span class="p">(</span><span class="s1">&#39;_parsed&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
 </pre></div>
 
            </div>
