@@ -2776,7 +2776,7 @@
 <span class="sd">        have different time values). This quantity should be used when changing the simulation</span>
 <span class="sd">        start year, if using all of the data in the databook is desired.</span>
 
-<span class="sd">        :return: The earliest year in the databook</span>
+<span class="sd">        :return: The earliest year in the databook, or ``None`` if no time points are present</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -2784,7 +2784,11 @@
         <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">start_year</span><span class="p">:</span>
                 <span class="n">start_year</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">start_year</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">start_year</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">start_year</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">end_year</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -2804,7 +2808,11 @@
         <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">end_year</span><span class="p">:</span>
                 <span class="n">end_year</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">tvec</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">end_year</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">end_year</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">end_year</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="ProjectData.change_tvec">
 <a class="viewcode-back" href="../../_autosummary/atomica.data.ProjectData.html#atomica.data.ProjectData.change_tvec">[docs]</a>

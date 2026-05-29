@@ -3557,6 +3557,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tdve</span><span class="p">,</span> <span class="s2">&quot;code_name&quot;</span><span class="p">):</span>
             <span class="n">tdve</span><span class="o">.</span><span class="n">code_name</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">D</span>
+
+
+<span class="nd">@migration</span><span class="p">(</span><span class="s2">&quot;ProgramSet&quot;</span><span class="p">,</span> <span class="s2">&quot;1.31.6&quot;</span><span class="p">,</span> <span class="s2">&quot;1.31.7&quot;</span><span class="p">,</span> <span class="s2">&quot;Ensure non-targetable flag is present&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_progset_nontargetable_flag</span><span class="p">(</span><span class="n">progset</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">progset</span><span class="o">.</span><span class="n">comps</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s1">&#39;non_targetable&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s1">&#39;non_targetable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">progset</span>
 </pre></div>
 
            </div>
